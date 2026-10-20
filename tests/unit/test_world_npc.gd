@@ -57,19 +57,20 @@ func test_shop_buy_and_sell() -> void:
 	assert_has(ids, "w_dandao")
 	ch().money = 1000
 	assert_eq(reason("buy", { "npc": "n_xx_smith", "item": "c_jingyao" }), "no_item", "not sold here")
+	var dandao := int(tables()["items"]["w_dandao"]["price"])   # M3c2 審查 #6：單刀改價，期望值讀資料
 	ok("buy", { "npc": "n_xx_smith", "item": "w_dandao" })
-	assert_eq(int(ch().money), 850)
+	assert_eq(int(ch().money), 1000 - dandao)
 	assert_eq(item_count("w_dandao"), 1)
-	assert_eq(int(lastp("buy").get("cost", 0)), 150)
+	assert_eq(int(lastp("buy").get("cost", 0)), dandao)
 	ok("buy", { "npc": "n_xx_smith", "item": "w_mujian", "n": 2 })
 	assert_eq(item_count("w_mujian"), 2, "non-stackable bought one by one")
-	assert_eq(int(ch().money), 810)
+	assert_eq(int(ch().money), 1000 - dandao - 2 * int(tables()["items"]["w_mujian"]["price"]))
 	ch().money = 10
 	assert_eq(reason("buy", { "npc": "n_xx_smith", "item": "w_gangdao" }), "not_enough_money")
 	# 收購價 = ⌊價格 × 0.3⌋
 	var uid := first_uid("w_dandao")
 	ok("sell", { "npc": "n_xx_smith", "item_uid": uid })
-	assert_eq(int(ch().money), 10 + 45)
+	assert_eq(int(ch().money), 10 + floori(dandao * 0.3))
 	assert_eq(item_count("w_dandao"), 0)
 	assert_eq(reason("sell", { "npc": "n_xx_smith", "item_uid": uid }), "no_item")
 	# 已裝備的武器可以賣（先卸下）
@@ -99,6 +100,9 @@ func test_money_cap_on_sell() -> void:
 func test_teach_list_and_learn_basic() -> void:
 	if not game_ok():
 		return
+	# M3c2 WP-PACE（M3C2_PLAN §2.4）：預設規則的新手學藝加速（熟練 ×10）會讓第一次請教就碰到實戰上限，
+	# 這裡驗的是 M1 的學藝流程 → 改用忠實的 classic_strict（倍率 100%）
+	use_preset("classic_strict")
 	make_char()
 	goto("xx_wuguan")
 	ok("learn_list", { "npc": "n_xx_wushi" })

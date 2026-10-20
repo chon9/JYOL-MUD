@@ -7,14 +7,20 @@ const EDITABLE_KEYS := ["rule_preset", "pk_mode", "wait_mode", "stagecoach_enabl
 	# M3B_PLAN §2.3、§4.11
 	"enable_era_1_0b", "jail_location", "gb_assembly", "seize_enabled",
 	# M3C_PLAN §9.3（整合者：WP-NPCPK 的面板列需要主機開放）
-	"npc_respawn_pct", "loot_drop_pct"]
+	"npc_respawn_pct", "loot_drop_pct",
+	# M3C2_PLAN §8.3（整合者：WP-PACE 的面板列需要主機開放）
+	"spar_daily_cap"]
 const LABELS := {
 	"rule_preset": "死亡規則", "pk_mode": "PK 模式", "wait_mode": "戰鬥等待模式", "stagecoach_enabled": "驛站馬車（非原作）",
 	"scout_enabled": "查看偵察（非原作）", "sect_hostile_entry": "門派敵對入山",
 	"enable_era_1_0b": "開放神鵰大俠（1.0B）內容", "jail_location": "監獄位置", "gb_assembly": "丐幫聚會",
 	"seize_enabled": "捉拿公敵",
 	"npc_respawn_pct": "NPC 重生時間", "loot_drop_pct": "掉寶倍率",
+	"spar_daily_cap": "每日切磋獎勵",
 }
+## M3c2：每日切磋獎勵的選項（與面板 ServerOptionsDialog.SPAR_CAP_VALUES 相同；範圍 0–200）
+const SPAR_CAP_CHOICES := [0, 5, 10, 20, 30, 50, 100, 200]
+const SPAR_CAP_DESC := "每個遊戲日前幾場切磋給實戰與學點（學點只給新手）；0 ＝ 切磋沒有獎勵【設計提案】"
 ## M3c 兩個百分比選項（M3C_PLAN §9.3；值與面板 ServerOptionsDialog.M3C_OPTIONS 相同）
 const PCT_CHOICES := {
 	"npc_respawn_pct": [10, 25, 50, 100, 200, 300, 500, 1000],
@@ -79,6 +85,8 @@ func current_value(key: String) -> String:
 			return "false" if host.options.get("seize_enabled", true) == false else "true"
 		"npc_respawn_pct", "loot_drop_pct":
 			return str(int(host.options.get(key, 100)))
+		"spar_daily_cap":
+			return str(clampi(int(host.options.get(key, 30)), 0, 200))
 	return ""
 
 ## 1.0B 的狀態：enabled（世界已開）／pending（options.pending_eras 有 1.0B）／off
@@ -187,6 +195,16 @@ func choices(key: String) -> Array:
 			for v in vals:
 				po.append({ "value": str(v), "label": "%d%%" % v, "desc": PCT_DESC[key] })
 			return po
+		"spar_daily_cap":
+			var sc: Array = []
+			var svals: Array = SPAR_CAP_CHOICES.duplicate()
+			var scur := clampi(int(host.options.get(key, 30)), 0, 200)
+			if not (scur in svals):
+				svals.append(scur)
+				svals.sort()
+			for v in svals:
+				sc.append({ "value": str(v), "label": "%d 場" % v, "desc": SPAR_CAP_DESC })
+			return sc
 	return []
 
 func choice_label(key: String, value: String) -> String:
@@ -292,6 +310,8 @@ func opts_set(s: Session, key: String, value: String) -> Dictionary:
 			host.ws.options["seize_enabled"] = value == "true"
 		"npc_respawn_pct", "loot_drop_pct":
 			host.ws.options[key] = int(value)   # 只影響之後倒下的 NPC／之後的掉落
+		"spar_daily_cap":
+			host.ws.options[key] = int(value)   # 只影響之後的切磋（今天已領的場數照算）
 	SaveManager.save_options(host.ws.world_id, host.ws.options)
 	host.ws.save_now()
 	host.ws.broadcast_event(Protocol.CH_SYSTEM, Protocol.E_SERVER_OPTION_CHANGED,

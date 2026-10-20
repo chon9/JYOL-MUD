@@ -488,7 +488,7 @@ func _flush_dirty() -> void:
 			flush_session(s)
 
 func push_char_list(s: Session) -> void:
-	ClientState.deliver_char_list(s.peer_id, char_store.summaries(s.identity))
+	ClientState.deliver_char_list(s.peer_id, char_list_for(s))   # M3c2 WP-CARRY：另附可選身分的角色（§5.7）
 
 # ---------- 事件 ----------
 ## 本人收件：payload 一律補上 peer（3.8.1 註）
@@ -806,6 +806,93 @@ func on_autosave() -> void:
 	for s in sessions():
 		if s.character != null:
 			send_passport(s, s.character)
+
+# ==== M3c2 WP-CARRY ====（M3C2_PLAN §5.3、§5.7）
+const STEAM_IDENTITY_RE := "^steam_[1-9][0-9]{0,19}$"
+const META_BASE_IDENTITY := "m3c2_base_identity"   # session 原本的（連線時的）身分；換成 Steam 身分後讓玩家換回來
+## 測試用：非空時取代 SteamManager 的目前 SteamID（"none" ＝ Steam 沒開）
+var test_steam_id := ""
+
+## 外來角色可以匯入嗎：單機一律可以；開房（ENet／Steam）看 allow_foreign_characters（R9）
+func foreign_allowed() -> bool:
+	return NetworkManager.mode == NetworkManager.Mode.OFFLINE or options.get("allow_foreign_characters", false) == true
+
+## 目前登入的 Steam 帳號的 SteamID 字串；Steam 沒開／沒登入回 ""
+func current_steam_id() -> String:
+	if test_steam_id != "":
+		return "" if test_steam_id == "none" else test_steam_id
+	var sm: Node = ws.get_node_or_null("/root/SteamManager") if ws != null and ws.is_inside_tree() else null
+	if sm == null or not bool(sm.get("available")):
+		return ""
+	var sid := str(sm.call("steam_id_string")) if sm.has_method("steam_id_string") else ""
+	return "" if sid == "" or sid == "0" else sid
+
+## session 連線時的身分（換過 Steam 身分後仍記得原本的）
+func base_identity(s: Session) -> String:
+	return str(s.get_meta(META_BASE_IDENTITY, s.identity)) if s != null else ""
+
+## §5.7：單機（OFFLINE）且本機 session 時，可以改用的身分：[{ identity, needs_confirm, kind: "steam"|"local" }]
+## Steam 開著 → 只有 steam_<目前 SteamID>（有那個資料夾才列）；Steam 沒開 → 所有 steam_*（要確認）；
+## 另外一律提供原本的本機身分（已換成別的身分時）。不含目前的身分。
+func alt_identities(s: Session) -> Array:
+	var out: Array = []
+	if s == null or not s.is_local or NetworkManager.mode != NetworkManager.Mode.OFFLINE:
+		return out
+	var re := RegEx.create_from_string(STEAM_IDENTITY_RE)
+	var folders: PackedStringArray = SaveManager.list_identities(ws.world_id)
+	var sid := current_steam_id()
+	if sid != "":
+		var mine := "steam_" + sid
+		if mine != s.identity and mine in folders and re.search(mine) != null:
+			out.append({ "identity": mine, "needs_confirm": false, "kind": "steam" })
+	else:
+		for f in folders:
+			if f != s.identity and re.search(f) != null:
+				out.append({ "identity": f, "needs_confirm": true, "kind": "steam" })
+	var base := base_identity(s)
+	if base != "" and base != s.identity:
+		out.append({ "identity": base, "needs_confirm": false, "kind": "local" })
+	return out
+
+## 角色清單（3.9.5）：本身分的角色照舊；再附上每個可選身分的角色（摘要多 identity、alt、needs_confirm）
+func char_list_for(s: Session) -> Array:
+	var out: Array = []
+	if s == null or char_store == null:
+		return out
+	for row in char_store.summaries(s.identity):
+		row["identity"] = s.identity
+		row["alt"] = false
+		row["needs_confirm"] = false
+		out.append(row)
+	for alt in alt_identities(s):
+		for row in char_store.summaries(str(alt["identity"])):
+			row["identity"] = str(alt["identity"])
+			row["alt"] = true
+			row["needs_confirm"] = bool(alt["needs_confirm"])
+			row["identity_kind"] = str(alt["kind"])
+			out.append(row)
+	return out
+
+## char_select { identity }：換成可選身分（必須在 alt_identities 裡，否則 alt_identity_denied）；回傳原因碼或 ""
+func switch_identity(s: Session, identity: String) -> String:
+	if identity == "" or identity == s.identity:
+		return ""
+	var allowed := false
+	for alt in alt_identities(s):
+		if str(alt["identity"]) == identity:
+			allowed = true
+	if not allowed:
+		return Protocol.R_ALT_IDENTITY_DENIED
+	if not s.has_meta(META_BASE_IDENTITY):
+		s.set_meta(META_BASE_IDENTITY, s.identity)
+	if s.character != null:
+		switch_out(s)   # 先用舊身分存檔、離開房間
+	s.identity = identity
+	var known: Dictionary = ws.world.get_or_add("known_identities", {})
+	var entry: Dictionary = known.get(identity, { "banned": false })
+	entry["last_name"] = s.display_name
+	known[identity] = entry
+	return ""
 
 ## 子系統都持有 host（RefCounted 互相引用），不切斷就永遠不會被回收：
 ## 關閉遊戲時出現「9 resources still in use」，同一次執行反覆開關世界也會累積。

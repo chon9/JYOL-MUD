@@ -11,6 +11,8 @@ extends UiDialog
 ## M3b（M3B_PLAN §2.3、§4.11、§7.9）：新 4 列（開放 1.0B、監獄位置、丐幫聚會、捉拿公敵）走一般路徑；
 ## enable_era_1_0b 在世界已開 1.0B 時顯示「已開放」並灰掉，pending_eras 非空（已設定、還沒重開）時顯示「下次開服生效」並灰掉；
 ## 還沒開時下拉選單第一項是「未開放」（主機的 choices 只有 on）。
+## M3c2（M3C2_PLAN §5.3，WP-CARRY）：「允許外來角色」一列（開房時才有意義；單機一律允許）。主機 editable 沒有這個 key，
+## 由 intents_host 的 server_opts_set 處理（key allow_foreign_characters、value "true"／"false"）；目前值讀 world_info。
 ## M3c（M3C_PLAN §9.3，WP-NPCPK）：兩列整數選項「NPC 重生時間」（npc_respawn_pct，10–1000%）與「掉寶倍率」（loot_drop_pct，10–300%）。
 ## 主機 editable 有這兩個 key → 走一般路徑（可改）；沒有 → 照 M3C_OPTIONS 顯示目前值（預設 100%）並灰掉、附說明。
 
@@ -146,6 +148,8 @@ func apply_options(o: Dictionary) -> void:
 			story_rows[key] = ob
 	_add_unhosted_story_options(o, hosted)
 	_add_m3c_options(o)
+	_add_foreign_option(o)   # M3c2 WP-CARRY
+	_add_spar_cap_option(o)   # M3c2 WP-PACE
 	_update_desc()
 	_build_players(info.get("players", []) if info.get("players", []) is Array else [], bool(info.get("ban_enforced", false)))
 
@@ -370,3 +374,71 @@ func _on_events(batch: Array) -> void:
 			var p: Variant = e.get("p", {})
 			if p is Dictionary:
 				apply_options(p)
+
+# ==== M3c2 WP-CARRY ====
+const FOREIGN_KEY := "allow_foreign_characters"
+const FOREIGN_LABEL := "允許外來角色"
+var foreign_row: OptionButton = null   # 本面板自己加的那一列（不放進 selectors：那是主機 editable 的清單）
+const FOREIGN_DESC := "朋友可以把別的世界的角色匯入這個世界（數值會截到合法範圍；神兵看本世界登記）。單機遊玩一律允許。"
+
+## 主機 editable 已有這個 key → 走一般路徑；沒有 → 本面板自己加一列（開／關），送 server_opts_set
+func _add_foreign_option(o: Dictionary) -> void:
+	foreign_row = null
+	if selectors.has(FOREIGN_KEY):
+		foreign_row = selectors[FOREIGN_KEY]
+		return
+	var on := ServerOptionsDialog.foreign_value(o)
+	UiBuild.label(options_grid, FOREIGN_LABEL, 15)
+	var ob := OptionButton.new()
+	ob.name = "Opt_" + FOREIGN_KEY
+	ob.custom_minimum_size = Vector2(260, 0)
+	ob.add_item("開", 0)
+	ob.set_item_metadata(0, "true")
+	ob.add_item("關", 1)
+	ob.set_item_metadata(1, "false")
+	ob.select(0 if on else 1)
+	ob.set_meta("value", "true" if on else "false")
+	ob.tooltip_text = FOREIGN_DESC
+	ob.item_selected.connect(func(idx: int): _on_selected(FOREIGN_KEY, ob, idx))
+	options_grid.add_child(ob)
+	foreign_row = ob
+
+## 目前值：server_options.info.options → info → world_info.allow_foreign_characters → false
+static func foreign_value(o: Dictionary) -> bool:
+	var info: Variant = o.get("info", {})
+	if info is Dictionary:
+		var io2: Variant = (info as Dictionary).get("options", {})
+		if io2 is Dictionary and (io2 as Dictionary).has(FOREIGN_KEY):
+			return (io2 as Dictionary)[FOREIGN_KEY] == true
+		if (info as Dictionary).has(FOREIGN_KEY):
+			return (info as Dictionary)[FOREIGN_KEY] == true
+	return UiClient.world_info().get(FOREIGN_KEY, false) == true
+
+# ==== M3c2 WP-PACE ====
+## M3C2_PLAN §8.3：「每日切磋獎勵」一列（spar_daily_cap，0–200 場）。主機 editable 有這個 key → 走一般路徑（上面的迴圈）；
+## 沒有 → 照本機規格顯示目前值並灰掉、附說明（M3C2_PLAN 缺漏：主機端可改清單在 server/admin_system.gd，不在 WP-PACE 的檔案內）。
+const SPAR_CAP_KEY := "spar_daily_cap"
+const SPAR_CAP_VALUES := [0, 5, 10, 20, 30, 50, 100, 200]
+const SPAR_CAP_DESC := "每個遊戲日前幾場切磋給實戰與學點（學點只給新手）；0 ＝ 切磋沒有獎勵【設計提案】"
+
+func _add_spar_cap_option(o: Dictionary) -> void:
+	if selectors.has(SPAR_CAP_KEY):
+		return
+	UiBuild.muted(UiBuild.label(options_grid, "每日切磋獎勵", 15))
+	var ob := OptionButton.new()
+	ob.name = "Opt_" + SPAR_CAP_KEY
+	ob.custom_minimum_size = Vector2(260, 0)
+	var cur := ServerOptionsDialog.m3c_value(SPAR_CAP_KEY, o, 30)
+	var vals: Array = SPAR_CAP_VALUES.duplicate()
+	if not (cur in vals):
+		vals.append(cur)
+		vals.sort()
+	for i in vals.size():
+		ob.add_item("%d 場" % int(vals[i]), i)
+		ob.set_item_metadata(i, str(vals[i]))
+		if int(vals[i]) == cur:
+			ob.select(i)
+	ob.set_meta("value", str(cur))
+	ob.disabled = true
+	ob.tooltip_text = "%s\n（這個主機還沒開放在面板上修改；可在 options.json 設定 %s）" % [SPAR_CAP_DESC, SPAR_CAP_KEY]
+	options_grid.add_child(ob)

@@ -52,14 +52,16 @@ func test_every_row_has_era_and_valid_src() -> void:
 		"q_jq_", "c_jq_", "w_jq_", "n_tdh_", "q_tdh_", "i_tdh_", "a_tdh_", "h_tdh_", "q_jc_", "m_jc_", "c_jc_", "m_jcn_", "a_jcn_",
 		"er_xx_jc", "er_jc_", "er_dl_jc", "q_ec_biao_xx_jc", "q_ec_biao_jc_", "q_ec_biao_dl_jc", "n_ec_jc_",
 		# M3b 審查：馬王洞（馬賊王）改 1.0B；京城武館、京城驛站送信（1.0B）
-		"mawang", "m_mw_", "q_ym_mawang", "ms_jcwg_", "q_letter_jc_"]
+		"mawang", "m_mw_", "q_ym_mawang", "ms_jcwg_", "q_letter_jc_",
+		"q_ch_gb_"]   # M3c2：丐幫雜務（丐幫是 1.0B）
 	var m3b_1b_ids := ["qinghua", "life_carpentry", "t_juzi", "w_muzhang", "w_xuanmuzhang", "w_muzhua", "a_douli", "a_muzan",
 		"ms_ls_mujiang_carpentry", "n_ls_jc_mujiang", "n_ec_xx_tangzi", "n_ec_dl_tangzi", "n_og_jc_shuli",
 		"a_huangjia",   # M3b 審查 3：黃罩甲只有 1.0B 的馬賊王會掉
 		"bk_wumu", "lt_elite_1b",
 		"a_lt_jiehunjiezhi",
 		"n_na_xx_huanggou", "m_npc_huanggou", "r_gourou",
-		"n_na_xw_yang", "n_na_xe_kuangshi"]   # M3c 第三輪審查：羊、採礦師唯一出處 2002-06-17 → 與黃狗同一規則改 1.0B   # M3c 第二輪審查：黃狗（2001-10 才有出處）、牠的戰鬥單位與黃狗肉是 1.0B；M3c WP-LOOT：武穆遺書（基本陣法只在 1.0B）、1.0B 精英掉落表；M3c 審查：結婚戒指 1.0B（DIAO/2-1 京城婚姻）
+		"n_na_xw_yang", "n_na_xe_kuangshi",
+		"r_zhangmuxiang"]   # M3c2 審查 #6：工匠（1.0B）的樟木箱   # M3c 第三輪審查：羊、採礦師唯一出處 2002-06-17 → 與黃狗同一規則改 1.0B   # M3c 第二輪審查：黃狗（2001-10 才有出處）、牠的戰鬥單位與黃狗肉是 1.0B；M3c WP-LOOT：武穆遺書（基本陣法只在 1.0B）、1.0B 精英掉落表；M3c 審查：結婚戒指 1.0B（DIAO/2-1 京城婚姻）
 	var text_tables := ["text_templates", "rumors", "ambient"]   # 文字列的 era 由 lint 的參照檢查把關（1.0A NPC 不能用 1.0B 模板）
 	for t in loader.all_tables:
 		if t in DataLoader.NO_ERA_TABLES:
@@ -348,7 +350,7 @@ func test_all_m1_npcs_exist_with_services() -> void:
 		"n_xw_fisher": ["xw_creek", ["TEACH"]], "n_xw_woodcutter": ["xw_wood", ["TEACH"]],
 		"n_xe_miner": ["xe_mine", []], "n_hf_teaman": ["hf_teahouse", ["INN", "SHOP"]],
 		"n_sy_teaman": ["sy_teahouse", ["INN", "SHOP"]], "n_de_host": ["de_oasis", ["INN", "SHOP"]],
-		"n_sl_cha": ["sl_gate", ["RESPAWN"]], "n_sl_zhike": ["sl_gate", ["JOIN", "TEACH", "BETRAY"]],
+		"n_sl_cha": ["sl_gate", ["RESPAWN"]], "n_sl_zhike": ["sl_gate", ["JOIN", "QUEST", "TEACH", "BETRAY"]],   # M3c2：化緣雜務
 		"n_sl_huizhen": ["sl_wuchang", ["TEACH"]], "n_sl_huixu": ["sl_wuchang", ["TEACH"]],
 		"n_sl_huikong": ["sl_wuchang", ["TEACH"]], "n_sl_zhaiseng": ["sl_zhaitang", ["MEAL"]],
 		"n_hs_cha": ["hs_gate", ["RESPAWN"]], "n_yuebuqun": ["hs_square", ["JOIN", "QUEST", "TEACH", "BETRAY"]],
@@ -362,7 +364,7 @@ func test_all_m1_npcs_exist_with_services() -> void:
 		"n_bandit_chief": ["xw_hill", ["FIGHT"]],   # M2_PLAN 4.9（WP-PARTY Day-0）
 	}
 	# M3a：42 個 M1/M2 NPC + 少林補充 4 + 8 派 119；故事包 39（_world 1、_ambient 3、ev_* 24、sect_stories 11）
-	assert_eq(view["npcs"].size(), 251, "npc count（審查修正 +12：王大富人、李裁縫、楊康、賣藝商人、婦人、清為、崔叟、豬哥義、朱珠、布莊老闆、菜商、江清睿；M3b 1.0A +32；M3c WP-NPCPK n_na_* +6；M3c 第二輪審查：黃狗改 1.0B −1；第三輪：羊、採礦師改 1.0B −2）")
+	assert_eq(view["npcs"].size(), 264, "npc count（M3c2 審查：少林務農僧、火工頭陀 +2；M3c2：雜務 NPC n_ch_* +10、少林切磋弟子 n_sl_spar +1；審查修正 +12：王大富人、李裁縫、楊康、賣藝商人、婦人、清為、崔叟、豬哥義、朱珠、布莊老闆、菜商、江清睿；M3b 1.0A +32；M3c WP-NPCPK n_na_* +6；M3c 第二輪審查：黃狗改 1.0B −1；第三輪：羊、採礦師改 1.0B −2）")
 	for nid in expect:
 		if not assert_has(view["npcs"], nid, "npc:"):
 			continue
@@ -555,7 +557,12 @@ func test_attributes_table() -> void:
 
 func test_items_table() -> void:
 	var it: Dictionary = view["items"]
-	assert_eq(it.size(), 236, "27 + _cmd 8 + 門派 11 + 皮鞭 + 故事包 50 + 審查 14（尋找楊康、陳大寶、2001 雜事）+ M3b 1.0A 44（審查 3：黃罩甲改 1.0B）+ M3c WP-LOOT 1.0A 81（武穆遺書、結婚戒指 1.0B）")
+	# M3c2 WP-ECON：新原料／料理 10 列（§4.4）另外點名；WP-PACE 的雜務道具 i_ch_* 另計（各自的測試檢查）
+	var m3c2_econ := ["r_mai", "r_shucai", "r_songmu", "r_zhangmu", "r_liyu", "r_manyu", "c_maibing", "c_liyutang", "c_caifan", "c_kaomanyu"]
+	for id in m3c2_econ:
+		assert_has(it, id, "M3c2 WP-ECON")
+	var older := it.keys().filter(func(k): return not str(k).begins_with("i_ch_") and not (str(k) in m3c2_econ))
+	assert_eq(older.size(), 236, "27 + _cmd 8 + 門派 11 + 皮鞭 + 故事包 50 + 審查 14（尋找楊康、陳大寶、2001 雜事）+ M3b 1.0A 44（審查 3：黃罩甲改 1.0B）+ M3c WP-LOOT 1.0A 81（武穆遺書、結婚戒指 1.0B）")
 	# M3C_PLAN §1.4 F1：官方武器表第二個數字是重量 → 武器 def 一律 0
 	assert_eq([it["w_mudao"]["weapon_type"], it["w_mudao"]["atk"], it["w_mudao"]["def"], it["w_mudao"]["price"]], ["BLADE", 4, 0, 20])
 	assert_eq(it["a_cubudaopao"]["effects"], [{ "type": "attr", "stat": "wit", "value": 2 }])
@@ -573,7 +580,7 @@ func test_items_table() -> void:
 
 func test_monsters_table() -> void:
 	var m: Dictionary = view["monsters"]
-	assert_eq(m.size(), 117, "M1 的 8 種 + M2_PLAN 4.9 的山賊頭目、守城官兵 + M3a 33 + 故事包 32 + 審查 8 + 第三輪審查 1（李莫愁）+ M3b 1.0A 15（馬賊、馬王審查改 1.0B）+ M3c m_npc_* 10 + M3c 審查 2（滅派專用 m_npc_gm_dizi、m_npc_wd_hushan）+ 第二輪審查 6（門口硬闖 m_npc_<p>_gate；黃狗 m_npc_huanggou 是 1.0B 不算）")
+	assert_eq(m.size(), 118, "M3c2 少林切磋弟子 m_sl_dizi +1；M1 的 8 種 + M2_PLAN 4.9 的山賊頭目、守城官兵 + M3a 33 + 故事包 32 + 審查 8 + 第三輪審查 1（李莫愁）+ M3b 1.0A 15（馬賊、馬王審查改 1.0B）+ M3c m_npc_* 10 + M3c 審查 2（滅派專用 m_npc_gm_dizi、m_npc_wd_hushan）+ 第二輪審查 6（門口硬闖 m_npc_<p>_gate；黃狗 m_npc_huanggou 是 1.0B 不算）")
 	assert_has(m, "m_bandit_chief", "M2 4.9:")
 	assert_has(m, "m_city_guard", "M2 4.9:")
 	if m.has("m_city_guard"):
@@ -591,7 +598,7 @@ func test_monsters_table() -> void:
 	assert_eq(m["m_ghost"]["stats"]["qi"], 450, "D6")
 	assert_eq(m["m_bandit"]["weapon_type"], "BLADE")
 	assert_eq([m["m_bandit"]["morality_on_kill"], m["m_bandit"]["killing_intent_on_kill"]], [3, 5])
-	assert_eq(m["m_hs_trainee"]["no_rewards"], true)
+	assert_eq(m["m_hs_trainee"]["no_rewards"], false)   # M3c2 §2.3.3：切磋給獎勵
 	assert_eq(m["m_hs_trainee"]["weapon_type"], "SWORD")
 	assert_eq(m["m_guiwang"]["drops"][0], { "item": "c_qiyao", "chance": 1.0, "min": 2, "max": 3 })
 	assert_eq(m["m_guiwang"]["kind"], "BOSS")
@@ -612,10 +619,13 @@ func test_life_skills_table() -> void:
 	for id in expect:
 		assert_eq([l[id]["feature"], l[id]["tool"]], expect[id], id)
 		assert_eq([l[id]["jing_cost"], l[id]["cooldown_s"], l[id]["cap"]], [5, 5, 100], id)
-	assert_eq(l["life_woodcut"]["yield"][0]["n"], [1, 2])
+	# M3c2 WP-ECON §4.2：木材 [1,2] → [1,1]＋每 20 級 +1（n_per_levels）
+	assert_eq(l["life_woodcut"]["yield"][0]["n"], [1, 1])
+	assert_eq(l["life_woodcut"]["yield"][0]["n_per_levels"], 20)
 	assert_type(l["life_farming"]["yield"][0]["n"][0], TYPE_INT, "yield[].n[]")
+	assert_type(l["life_farming"]["yield"][0]["n_per_levels"], TYPE_INT, "yield[].n_per_levels")
 	var rc: Array = l["life_cooking"]["recipes"]
-	assert_eq(rc.size(), 2)
+	assert_eq(rc.size(), 6, "白飯、烤魚＋M3c2 麥餅、鯉魚湯、菜飯、烤鰻魚")
 	assert_eq(rc[0], { "id": "rc_baifan", "name": "白飯", "inputs": [{ "item": "r_rice", "n": 1 }],
 		"output": { "item": "c_baifan", "n": 1 }, "min_level": 1 })
 	assert_eq(rc[1]["min_level"], 5)
@@ -623,7 +633,7 @@ func test_life_skills_table() -> void:
 
 func test_quests_table() -> void:
 	var q: Dictionary = view["quests"]
-	assert_eq(q.size(), 70, "M1/M2 6 + M3a 8 + 故事包 35（P0 12、門派 15、2001 雜事 7、第三輪審查的天龍寺前的李莫愁 1）+ M3b 1.0A 21（q_ym_mawang 審查改 1.0B）")
+	assert_eq(q.size(), 112, "M3c2 審查：少林幫農、學佛 +2；M3c2 1.0A 雜務 q_ch_* 40；M1/M2 6 + M3a 8 + 故事包 35（P0 12、門派 15、2001 雜事 7、第三輪審查的天龍寺前的李莫愁 1）+ M3b 1.0A 21（q_ym_mawang 審查改 1.0B）")
 	assert_eq(q["q_rabbit"]["rewards"]["money"], 100)
 	assert_eq(q["q_rabbit"]["rewards"]["learn_points"], 25)
 	assert_eq(q["q_rabbit"]["steps"][0]["item"], "r_bigrabbitskin")
@@ -938,7 +948,7 @@ func test_m3a_entry_arts_and_acceptance_moves() -> void:
 					assert_true(mv["range"] >= 1, "%s range" % fx[4])
 		assert_true(found, "%s acceptance move %s" % [sid, fx[4]])
 		assert_eq(view["npcs"][fx[5]]["fight"]["monster"], fx[6], "%s spar" % sid)
-		assert_eq(view["monsters"][fx[6]].get("no_rewards", false), true, "%s spar no rewards" % fx[6])
+		assert_eq(view["monsters"][fx[6]].get("no_rewards", true), false, "%s spar rewards（M3c2 §2.3.3）" % fx[6])
 	# 3.2 其他固定點
 	var gm_ok := false
 	for c in DataLint.conditions_of_type(a["qz_jianfa"]["requires"], "sect"):

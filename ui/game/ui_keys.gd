@@ -180,6 +180,26 @@ const M3C_REASONS := ["bad_look", "npc_attack_off", "npc_not_attackable", "npc_s
 	"manuals_off", "not_manual", "manual_illiterate", "manual_cap", "divine_locked", "npc_routed"]
 const R_NPC_NOT_ATTACKABLE := "npc_not_attackable"
 const R_NPC_BUSY := "npc_busy"
+# ---------- M3c2（M3C2_PLAN §7；值與 Protocol 相同，VERSION 維持 5） ----------
+## char_select 多帶 identity（單機讀 Steam 身分的角色）；passport_import 多帶 new_name
+const E_FOREIGN_IMPORTED := "foreign_imported"   # ui：{ name, replaced, dropped:[String] }
+const E_CH_NO_LP := "ch_no_lp"
+const E_CH_SPAR_CAPPED := "ch_spar_capped"
+const M3C2_UI_KEYS := [E_FOREIGN_IMPORTED]
+const R_FOREIGN_DISABLED := "foreign_disabled"
+const R_FOREIGN_SAME_WORLD := "foreign_same_world"
+const R_FOREIGN_NOT_NEWER := "foreign_not_newer"
+const R_FOREIGN_OWNED := "foreign_owned"
+const R_FOREIGN_BAD_DATA := "foreign_bad_data"
+const R_FOREIGN_SUPERSEDED := "foreign_superseded"
+const R_FOREIGN_CHAR_BLOCKED := "foreign_char_blocked"
+const R_FOREIGN_QUOTA := "foreign_quota"
+const R_ALT_IDENTITY_DENIED := "alt_identity_denied"
+const R_PASSPORT_NAME_TAKEN := "passport_name_taken"
+const R_CHORE_TIRED := "chore_tired"
+const REJECT_WITH_BUILD := ["protocol_mismatch", "version_mismatch", "content_mismatch"]
+## 匯入檔的大小上限（§5.1：> 256 KB 客戶端直接說「檔案無法讀取」）
+const IMPORT_FILE_MAX_BYTES := 262144
 
 ## M3b 的 ui 事件（頂層 "ui": true）
 const E_BANK_VIEW := "bank_view"

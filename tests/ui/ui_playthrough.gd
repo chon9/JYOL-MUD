@@ -157,7 +157,7 @@ func _check(cond: bool, msg: String) -> bool:
 
 func _run() -> void:
 	var steps: Array[Callable] = [_enter_world, _char_select, _char_create, _main_ready, _npc_quest, _npc_shop,
-		_inner_and_meditate, _panels, _m2_social, _story_quest, _letter_quest, _m3a_setup, _scout, _go_wild_and_fight, _pelts_one_slot, _villain_prompt_ui, _m3a_sect_screens, _m3b_screens, _m3c_screens]
+		_inner_and_meditate, _panels, _m2_social, _story_quest, _letter_quest, _m3a_setup, _scout, _go_wild_and_fight, _pelts_one_slot, _villain_prompt_ui, _m3a_sect_screens, _m3b_screens, _m3c_screens, _m3c2_screens]
 	for s in steps:
 		if _done:
 			return
@@ -187,7 +187,7 @@ func _char_select() -> bool:
 	var row_label := ui.find_label(CHAR_NAME, "prefix")
 	if row_label != null:
 		print("[UiPlay] deleting old character via UI")
-		var del := ui.find_button("刪除", "exact", row_label.get_parent())
+		var del := ui.find_button("刪除", "exact", row_label.get_parent().get_parent())   # CharInfo → CharInfoBox → 列
 		if not await ui.click(del):
 			return false
 		var edit := ui.find(func(c): return c is LineEdit and (c as LineEdit).placeholder_text.contains("輸入角色名稱")) as LineEdit
@@ -2645,6 +2645,23 @@ func _m3c_look_dialog() -> bool:
 	await ui.shot("m3c_attr_look")
 	return await _close_panel()
 
+## 跨區趕路中遇敵：打完 → 回到地圖（全圖分頁）→ 等自動續走；等待中又遇敵就再打（最多 6 輪）。
+## 回傳「沒有戰鬥、正在趕路（頁尾 趕路中：往…）」
+func _resume_world_walk(mp: Control, mtc: TabContainer) -> bool:
+	for _i in 6:
+		if _battle() == null and bool(mp.call("is_walking")) and _map_footer().begins_with("趕路中：往"):
+			return true
+		if _battle() == null and _map_footer().begins_with("遇敵"):
+			await ui.wait_until(func(): return _battle() != null, 3.0)
+		if _battle() != null and not await _fight():
+			return false
+		if not _panel_open("地圖"):
+			await ui.press_key(KEY_M)
+			await ui.wait_until(func(): return _panel_open("地圖"), 3.0)
+		await ui.select_tab(mtc.get_tab_bar(), MapPanel.TAB_WORLD)
+		await ui.wait_until(func(): return _battle() != null or (bool(mp.call("is_walking")) and _map_footer().begins_with("趕路中：往")), 4.0)
+	return _battle() == null and bool(mp.call("is_walking")) and _map_footer().begins_with("趕路中：往")
+
 ## 江湖全圖點地區 → 跨區趕路（頁尾「趕路中：往X（剩N步）」）→ Esc 停（地圖不關）；快捷目的地 → 停止鈕
 func _m3c_world_route() -> bool:
 	print("[UiPlay] M3c: 江湖全圖趕路、快捷、Esc 停")
@@ -2665,21 +2682,16 @@ func _m3c_world_route() -> bool:
 	if not _check(await ui.wait_until(func(): return bool(mp.call("is_walking")) and (_map_footer().begins_with("趕路中：往") or _map_footer().begins_with("遇敵")), 3.0),
 			"world-map click did not start walking (footer「%s」)" % _map_footer()):
 		return false
-	# 一出城就遇敵（隨機）：打完等自動續走再往下（不穩修正）
-	if _battle() != null or _map_footer().begins_with("遇敵"):
-		await ui.wait_until(func(): return _battle() != null, 3.0)
-		if _battle() != null and not await _fight():
-			return false
-		if not _panel_open("地圖"):
-			await ui.press_key(KEY_M)
-			await ui.wait_until(func(): return _panel_open("地圖"), 3.0)
-		await ui.select_tab(mtc.get_tab_bar(), MapPanel.TAB_WORLD)
-		if not _check(await ui.wait_until(func(): return bool(mp.call("is_walking")) and _map_footer().begins_with("趕路中：往"), 4.0),
-				"walk did not resume after the encounter (footer「%s」)" % _map_footer()):
-			return false
+	# 一出城就遇敵（隨機）：打完等自動續走再往下（不穩修正；M3c2 第二輪審查：續走的等待裡又遇敵也要接著打）
+	if not _check(await _resume_world_walk(mp, mtc), "walk did not resume after the encounter (footer「%s」)" % _map_footer()):
+		return false
 	print("[UiPlay] world route: " + _map_footer())
 	await ui.seconds(0.4)
 	await ui.shot("m3c_world_route")
+	# M3c2 整合（不穩修正）：截圖到按 Esc 之間又遇敵 → 先打完、回到地圖、等自動續走（否則 Esc 會關地圖）
+	if not _check(await _resume_world_walk(mp, mtc) and _battle() == null and bool(mp.call("is_walking")),
+			"world walk not running before Esc (footer「%s」)" % _map_footer()):
+		return false
 	await ui.press_key(KEY_ESCAPE)
 	if not _check(await ui.wait_until(func(): return not bool(mp.call("is_walking")) and _map_footer().contains("已停止趕路"), 3.0),
 			"Esc did not stop the walk (footer「%s」)" % _map_footer()):
@@ -2726,7 +2738,18 @@ func _m3c_world_route() -> bool:
 	var cb: Button = mp.get("cancel_button")
 	if bool(mp.call("is_walking")) and cb != null and cb.is_visible_in_tree():
 		if not await ui.click(cb):
-			return false
+			# M3c2 整合（不穩修正）：按下去的瞬間踩到地雷、戰鬥畫面蓋住停止鈕 → 不是介面壞掉：打完再停
+			if _battle() == null:
+				return false
+			ui.last_error = ""
+			if not await _fight():
+				return false
+			if bool(mp.call("is_walking")) and cb.is_visible_in_tree():
+				if not _panel_open("地圖"):
+					await ui.press_key(KEY_M)
+					await ui.wait_until(func(): return _panel_open("地圖"), 3.0)
+				if not await ui.click(cb):
+					return false
 		if not _check(await ui.wait_until(func(): return not bool(mp.call("is_walking")), 3.0), "停止 did not stop the walk"):
 			return false
 	if _battle() != null and not await _fight():
@@ -2897,10 +2920,20 @@ func _m3c_minimap_edge() -> bool:
 	print("[UiPlay] mini map browse %s → walk to %s:「%s」" % [to_region, target, _mini_status()])
 	await ui.shot("m3c_minimap_edge_walk")
 	var stop: Button = mm.get("stop_button")
-	if bool(mp.call("is_walking")) and stop != null and stop.is_visible_in_tree():
-		if not await ui.click(stop):
-			return false
-		await ui.wait_until(func(): return not bool(mp.call("is_walking")), 3.0)
+	# M3c2 第二輪審查（不穩修正）：遇敵時 is_walking() 仍是 true（只是暫停）→ 先打完再按「停」，不然會點到戰鬥畫面
+	for _i in 4:
+		if _battle() != null:
+			if not await _fight():
+				return false
+			continue
+		if not bool(mp.call("is_walking")):
+			break
+		if stop != null and stop.is_visible_in_tree():
+			if not await ui.click(stop):
+				return false
+			await ui.wait_until(func(): return not bool(mp.call("is_walking")) or _battle() != null, 3.0)
+		else:
+			(mp.get("walker") as Node).call("stop", "")
 	if _battle() != null and not await _fight():
 		return false
 	if bool(mm.get("browsing")):
@@ -3081,20 +3114,20 @@ func _m3c_wield(kind: String) -> bool:
 		return true
 	var inv := await _open_inventory()
 	if inv == null:
-		return false
+		return _check(false, "M3c 換兵器（%s）：裝備窗打不開" % kind)
 	if want_id == "":
 		if not await _inv_select(cur_uid):
-			return false
+			return _check(false, "M3c 換兵器：背包裡找不到手上的兵器 %s" % cur_uid)
 		if not await ui.click_text("卸下", "exact", inv):
-			return false
+			return _check(false, "M3c 換兵器：按不到「卸下」")
 		if not _check(await ui.wait_until(func(): return str((UiClient.sheet().get("equipped", {}) as Dictionary).get("WEAPON", "")) == "", 3.0), "卸下 weapon failed"):
 			return false
 	else:
 		var uid := _uid_of(want_id)
 		if not await _inv_select(uid):
-			return false
+			return _check(false, "M3c 換兵器：背包裡找不到 %s（uid '%s'）" % [want_id, uid])
 		if not await ui.click_text("裝備", "exact", inv):
-			return false
+			return _check(false, "M3c 換兵器：按不到「裝備」")
 		if not _check(await ui.wait_until(func(): return str((UiClient.sheet().get("equipped", {}) as Dictionary).get("WEAPON", "")) == uid, 3.0), "equip %s failed" % want_id):
 			return false
 	return await _close_panel()
@@ -3106,12 +3139,12 @@ func _m3c_loot() -> bool:
 		if not _check(await _debug_set(str(kv[0]), kv[1]) == "", "debug_set %s" % str(kv[0])):
 			return false
 	if not await _m3c_wield("blade"):
-		return false
+		return _check(false, "M3c 打寶：換木刀失敗（在 %s）" % _room_id())
 	if not _check(await _debug_set("loot_force", "a_lt_jinggangjie") == "", "debug_set loot_force"):
 		return false
 	for attempt in 3:
 		if not await _ensure_healthy():
-			return false
+			return _check(false, "M3c 打寶：第 %d 次開打前回復失敗（在 %s，氣 %d/%d）" % [attempt + 1, _room_id(), _vital("qi"), _vital("qi_max")])
 		if not _check(await _debug_set("battle_monster", "m_bandit_chief") == "", "debug_set battle_monster"):
 			return false
 		if not _check(await ui.wait_until(func(): return _battle() != null, 5.0), "no 山賊頭目 battle"):
@@ -3119,7 +3152,7 @@ func _m3c_loot() -> bool:
 		m3c_loot_battle = true
 		m3c_loot_ok = false
 		if not await _fight():
-			return false
+			return _check(false, "M3c 打寶：第 %d 場山賊頭目沒打完（在 %s）" % [attempt + 1, _room_id()])
 		m3c_loot_battle = false
 		if m3c_loot_ok:
 			break
@@ -3127,7 +3160,7 @@ func _m3c_loot() -> bool:
 		return false
 	var inv := await _open_inventory()
 	if inv == null:
-		return false
+		return _check(false, "M3c 打寶：裝備窗打不開")
 	var slots: Dictionary = inv.get("body_buttons")
 	var enabled := 0
 	for k in slots:
@@ -3143,3 +3176,367 @@ func _m3c_loot() -> bool:
 	await ui.seconds(0.2)
 	await ui.shot("m3c_inventory_treasure")
 	return await _close_panel()
+
+# ---------- 22. M3c2（M3C2_PLAN §10.4）：門派雜務、匯出／匯入角色、標題版本列 ----------
+## 每派一件全天雜務：門派 -> [任務, 給的人, 給的人房間]（同 tools/m3c2_acceptance.gd ALLDAY）
+const M3C2_CHORES := {
+	"shaolin": ["q_ch_sl_saodi", "n_ch_sl_kanshui", "sl_court"], "wudang": ["q_ch_wd_taqiang", "n_wd_yulianzhou", "wd_tanqiang"],
+	"emei": ["q_ch_em_chanding", "n_em_jingxuan", "em_dadian"], "huashan": ["q_ch_hs_tiaoqi", "n_ch_hs_yejing", "hs_hall"],
+	"quanzhen": ["q_ch_qz_dujing", "n_qz_xiazhicheng", "qz_reading"], "gumu": ["q_ch_gm_hanyu", "n_gm_hanyu", "gm_hanyu"],
+	"hengshan": ["q_ch_hg_tiaoqi", "n_hg_dingjing", "hg_houshan"], "lingjiu": ["q_ch_lj_dingzuo", "n_lj_lanjian", "lj_east"],
+	"xingxiu": ["q_ch_xh_anqi", "n_xh_canjizi", "xh_mid1"], "xuedao": ["q_ch_xd_pizhi", "n_xd_shengdi", "xd_yard"],
+	"gaibang": ["q_ch_gb_jianchai", "n_gb_zhanggun", "gb_yuan"],
+}
+const FOREIGN_NAME := "異鄉俠客"
+const FOREIGN_FILE := "異鄉俠客_朋友的江湖_ui.jychar.json"
+const BAD_FILE := "壞掉的角色檔_ui.jychar.json"
+const CLASH_FILE := "同名俠客_朋友的江湖_ui.jychar.json"
+const RENAMED_NAME := "改名俠客"
+const STEAM_TEST_IDENT := "steam_76561190000000777"
+const STEAM_TEST_NAME := "蒸汽俠"
+
+func _m3c2_screens() -> bool:
+	_step(22, "M3c2 畫面：門派雜務、匯出／匯入角色、標題版本列")
+	if _battle() != null and not await _fight():
+		return false
+	if m3a_ready and not await _m3c2_chore():
+		return false
+	if _battle() != null and not await _fight():
+		return false
+	if not await _m3c2_export_import():
+		return false
+	return await _m3c2_title_line()
+
+## NPC 對話框「任務」→「接受」→ 場景的紅字任務動作 → 再找 NPC 交付 → 任務結束（截圖 m3c2_chore_*）
+func _m3c2_chore() -> bool:
+	var sect := str(UiClient.sheet().get("sect", ""))
+	if not M3C2_CHORES.has(sect):
+		ui.warn("M3c2 雜務：角色目前門派 '%s' 沒有對應的全天雜務，略過" % sect)
+		return true
+	var row: Array = M3C2_CHORES[sect]
+	var qid := str(row[0])
+	var giver := str(row[1])
+	var room := str(row[2])
+	var qname := str(UiClient.tables().get("quests", {}).get(qid, {}).get("name", qid))
+	# 設定（不是受測物）：精神回滿，免得交差時代價不夠
+	for k in ["vital:jing", "vital:shen"]:
+		var why: String = await _debug_set(k, 9999)
+		if not _check(why == "", "debug_set %s: %s" % [k, why]):
+			return false
+	if not await _goto(room):
+		return false
+	var lp0 := UiBuild.num(UiClient.sheet().get("learn_points", 0))
+	var dlg := await _talk(_npc_display(giver))
+	if dlg == null:
+		return false
+	if not await ui.click_text("任務", "prefix", dlg):
+		return false
+	var ql := await _wait_label(qname, dlg)
+	if not _check(ql != null, "chore %s not in %s's quest list" % [qname, _npc_display(giver)]):
+		return false
+	var accept := ui.find_button("接受", "exact", ql.get_parent(), true)
+	if not _check(accept != null, "chore %s has no 接受 button (%s)" % [qname, ql.text]):
+		return false
+	if not await ui.click(accept):
+		return false
+	if not _check(await ui.wait_until(func(): return _sheet_has_quest(qid), 3.0), "接受 did not start " + qid):
+		return false
+	await ui.shot("m3c2_chore_accept")
+	if not await _close_dialog(dlg):
+		return false
+	var act_name := "StoryAct_" + qid + "_a_work"
+	var holder := { "b": null }
+	await ui.wait_until(func():
+		holder["b"] = ui.find(func(c): return c is Button and str(c.name) == act_name and not (c as Button).disabled)
+		return holder["b"] != null, 5.0)
+	var act_btn: Button = holder["b"]
+	if not _check(act_btn != null, "no room action button %s in %s" % [act_name, _room_name()]):
+		return false
+	if not await ui.click(act_btn):
+		return false
+	var work_text := str(UiClient.tables().get("text_templates", {}).get("ch_work_" + qid.trim_prefix("q_ch_"), {}).get("self", ""))
+	await ui.wait_until(func(): return work_text == "" or _log_contains(work_text.left(8)), 3.0)
+	# 交付：有目前目標的 NPC 會直接開任務對話；沒有台詞的雜務開 NPC 對話框 →「任務」→「交付」
+	if not await ui.click_text(_npc_display(giver), "prefix", _npcs_box()):
+		return false
+	await ui.wait_until(func(): return _story_dialog() != null or ui.find_by_class("NpcDialog") != null, 5.0)
+	if _story_dialog() != null:
+		if not await _story_finish():
+			return false
+	if _sheet_has_quest(qid):
+		var d2 := ui.find_by_class("NpcDialog")
+		if not _check(d2 != null, "turn in: no NPC dialog for %s" % _npc_display(giver)):
+			return false
+		if not await ui.click_text("任務", "prefix", d2):
+			return false
+		var th := { "b": null }
+		await ui.wait_until(func():
+			th["b"] = ui.find_button("交付", "exact", d2, true)
+			return th["b"] != null, 3.0)
+		var turn_in: Button = th["b"]
+		if not _check(turn_in != null, "chore %s: no 交付 button" % qname):
+			return false
+		if not await ui.click(turn_in):
+			return false
+		if not _check(await ui.wait_until(func(): return not _sheet_has_quest(qid), 3.0), "交付 did not finish " + qid):
+			return false
+		await ui.frames(3)
+		await ui.shot("m3c2_chore_result")
+		await _close_dialog(d2)
+	else:
+		await ui.frames(3)
+		await ui.shot("m3c2_chore_result")
+	var lp1 := UiBuild.num(UiClient.sheet().get("learn_points", 0))
+	print("[UiPlay] M3c2 雜務 %s（%s）：學點 %d → %d" % [qname, sect, lp0, lp1])
+	return true
+
+func _wait_label(text: String, under: Node) -> Label:
+	var h := { "l": null }
+	await ui.wait_until(func():
+		h["l"] = ui.find_label(text, "prefix", under)
+		return h["l"] != null, 3.0)
+	return h["l"]
+
+## 系統窗「離開遊戲」→「返回角色選擇」→ 角色列「匯出」（訊息列出檔案路徑）→ 測試設定：把匯出檔改成「朋友世界」的角色檔
+## →「匯入角色」→「匯出資料夾」→ 點檔案 → 預覽 →「確定匯入」→ 清單出現（外來）的角色（截圖 m3c2_export／import_preview／char_foreign）
+func _m3c2_export_import() -> bool:
+	if not await _m3c2_steam_group():
+		return false
+	if not await ui.click_text("系統(", "prefix"):
+		return false
+	if not _check(await ui.wait_until(func(): return _panel_open("系統"), 3.0), "系統 window did not open"):
+		return false
+	if not await ui.click_text("離開遊戲", "exact", ui.find_by_class("SystemPanel")):
+		return false
+	if not await ui.click_text("返回角色選擇", "exact"):
+		return false
+	if not _check(await ui.wait_scene(SCENE_CHAR_SELECT, 10.0), "char_select not shown after 返回角色選擇"):
+		return false
+	var rh := { "l": null }
+	await ui.wait_until(func():
+		rh["l"] = ui.find_label(CHAR_NAME, "prefix")
+		return rh["l"] != null, 5.0)
+	var row_label: Label = rh["l"]
+	if not _check(row_label != null, "char_select has no row for " + CHAR_NAME):
+		return false
+	if not await _m3c2_steam_confirm():
+		return false
+	var exp_btn := ui.find_button("匯出", "exact", row_label.get_parent().get_parent(), true)   # CharInfo → CharInfoBox → 列
+	if not _check(exp_btn != null, "row %s has no 匯出 button" % CHAR_NAME):
+		return false
+	if not await ui.click(exp_btn):
+		return false
+	var eh := { "t": "" }
+	await ui.wait_until(func():
+		var l := ui.find_label("已匯出到：", "prefix")
+		eh["t"] = l.text if l != null else ""
+		return str(eh["t"]) != "", 8.0)
+	var exp_text := str(eh["t"])
+	if not _check(exp_text != "", "export did not report a path"):
+		return false
+	await ui.shot("m3c2_export")
+	# M3c2 第三輪審查：匯出訊息是三行（「已匯出到：」、路徑、說明）
+	var exp_lines := exp_text.split("\n")
+	var path := (exp_lines[1] if exp_lines.size() >= 2 else "").strip_edges().replace("\\", "/")
+	if not _check(FileAccess.file_exists(path) and path.ends_with(".jychar.json"), "export file missing: " + path):
+		return false
+	# 測試設定（不是受測物）：朋友給的檔案＝同一份角色換成別的世界、別的角色 id 與名字
+	var d: Variant = JSON.parse_string(FileAccess.get_file_as_string(path))
+	if not _check(d is Dictionary and (d as Dictionary).get("passport") is Dictionary, "export file is not an export"):
+		return false
+	var pp: Dictionary = d["passport"]
+	var ident := "local_" + "ef".repeat(16)
+	pp["world_id"] = "w_ui_friend"
+	pp["char_id"] = "ch_uifriend1"
+	pp["identity"] = ident
+	pp["name"] = FOREIGN_NAME
+	pp["saved_s"] = Time.get_unix_time_from_system()   # 每次執行都比上一次新（重跑時取代上次匯入的那個本地角色）
+	pp["char"]["id"] = "ch_uifriend1"
+	pp["char"]["identity"] = ident
+	pp["char"]["name"] = FOREIGN_NAME
+	d["world_name"] = "朋友的江湖"
+	var fpath := path.get_base_dir().path_join(FOREIGN_FILE)
+	var f := FileAccess.open(fpath, FileAccess.WRITE)
+	if not _check(f != null, "cannot write " + fpath):
+		return false
+	f.store_string(JSON.stringify(d))
+	f.close()
+	# 測試設定：壞檔、和名字撞到的朋友角色檔（改名列）
+	var bad := path.get_base_dir().path_join(BAD_FILE)
+	var fb0 := FileAccess.open(bad, FileAccess.WRITE)
+	if not _check(fb0 != null, "cannot write " + bad):
+		return false
+	fb0.store_string("{ 這不是 JSON")
+	fb0.close()
+	var d2: Dictionary = (d as Dictionary).duplicate(true)
+	d2["passport"]["char_id"] = "ch_uifriend2"
+	d2["passport"]["char"]["id"] = "ch_uifriend2"
+	d2["passport"]["name"] = CHAR_NAME
+	d2["passport"]["char"]["name"] = CHAR_NAME
+	var f2 := FileAccess.open(path.get_base_dir().path_join(CLASH_FILE), FileAccess.WRITE)
+	if not _check(f2 != null, "cannot write " + CLASH_FILE):
+		return false
+	f2.store_string(JSON.stringify(d2))
+	f2.close()
+	if not await ui.click_text("匯入角色", "exact"):
+		return false
+	if not _check(await ui.wait_until(func(): return ui.find_by_class("ImportDialog") != null, 3.0), "ImportDialog did not open"):
+		return false
+	var dlg := ui.find_by_class("ImportDialog")
+	if not await ui.click_text("匯出資料夾", "exact", dlg):
+		return false
+	# 壞檔：原因寫在預覽區（截圖 m3c2_import_bad）
+	if not await _m3c2_pick_file(dlg, BAD_FILE):
+		return false
+	if not _check(await ui.wait_until(func(): return ui.find_label(ImportDialog.unreadable_text("not_json"), "exact", dlg) != null, 3.0),
+			"broken file: preview does not say why"):
+		return false
+	await ui.shot("m3c2_import_bad")
+	# 本世界的檔案（剛剛匯出的）：只有提示與摘要、確定匯入灰掉（截圖 m3c2_import_sameworld）
+	if not await _m3c2_pick_file(dlg, path.get_file()):
+		return false
+	var cb0 := ui.find(func(c): return c is Button and str(c.name) == "ConfirmImport", dlg) as Button
+	if not _check(await ui.wait_until(func(): return ui.find_label(ImportDialog.SAME_WORLD_HINT, "exact", dlg) != null \
+			and cb0 != null and cb0.disabled and ui.find_label("會被拿掉", "prefix", dlg) == null, 3.0), "same-world file preview wrong"):
+		return false
+	await ui.shot("m3c2_import_sameworld")
+	# 名字撞到：按確定匯入 → 改名列（截圖 m3c2_import_rename）→ 填新名字再送
+	if not await _m3c2_pick_file(dlg, CLASH_FILE):
+		return false
+	if not _check(await ui.wait_until(func(): return cb0 != null and not cb0.disabled, 3.0), "clash file not importable"):
+		return false
+	if not await ui.click(cb0):
+		return false
+	var rr := ui.find(func(c): return c is Control and str(c.name) == "RenameRow", dlg) as Control
+	if not _check(await ui.wait_until(func(): return rr != null and rr.visible, 4.0), "rename row not shown after name clash (status: %s)" % _status_text()):
+		return false
+	await ui.shot("m3c2_import_rename")
+	var re := ui.find(func(c): return c is LineEdit, rr) as LineEdit
+	if not _check(re != null, "rename edit missing"):
+		return false
+	re.text = RENAMED_NAME
+	if not await ui.click(cb0):
+		return false
+	if not _check(await ui.wait_until(func(): return ui.find_label(RENAMED_NAME + "（外來）", "prefix") != null, 6.0),
+			"char list has no %s（外來） after rename import (status: %s)" % [RENAMED_NAME, _status_text()]):
+		return false
+	if not await ui.click_text("匯入角色", "exact"):
+		return false
+	if not _check(await ui.wait_until(func(): return ui.find_by_class("ImportDialog") != null and ui.find_by_class("ImportDialog").visible, 3.0), "ImportDialog did not reopen"):
+		return false
+	dlg = ui.find_by_class("ImportDialog")
+	if not await ui.click_text("匯出資料夾", "exact", dlg):
+		return false
+	var fh := { "b": null }
+	await ui.wait_until(func():
+		fh["b"] = ui.find_button(FOREIGN_FILE, "contains", dlg, true)
+		return fh["b"] != null, 3.0)
+	var fb: Button = fh["b"]
+	if not _check(fb != null, "import file list has no " + FOREIGN_FILE):
+		return false
+	if not await ui.click(fb):
+		return false
+	var confirm := ui.find(func(c): return c is Button and str(c.name) == "ConfirmImport", dlg) as Button
+	if not _check(await ui.wait_until(func(): return confirm != null and not confirm.disabled \
+			and ui.find_label(FOREIGN_NAME, "contains", dlg) != null, 3.0), "import preview did not show " + FOREIGN_NAME):
+		return false
+	await ui.shot("m3c2_import_preview")
+	if not await ui.click(confirm):
+		return false
+	if not _check(await ui.wait_until(func(): return ui.find_label(FOREIGN_NAME + "（外來）", "prefix") != null, 6.0),
+			"char list has no %s（外來） after import (status: %s)" % [FOREIGN_NAME, _status_text()]):
+		return false
+	await ui.frames(3)
+	await ui.shot("m3c2_char_foreign")
+	return true
+
+## 匯入視窗的檔案清單：點某個檔案
+func _m3c2_pick_file(dlg: Node, file_name: String) -> bool:
+	var fh := { "b": null }
+	await ui.wait_until(func():
+		fh["b"] = ui.find_button(file_name, "contains", dlg, true)
+		return fh["b"] != null, 3.0)
+	if not _check(fh["b"] != null, "import file list has no " + file_name):
+		return false
+	return await ui.click(fh["b"])
+
+## 測試設定：在這個世界放一個「另一個 Steam 帳號」的角色檔（朋友把整個世界資料夾給你）→ 角色選擇出現 Steam 分組；
+## 按「進入江湖」跳出確認框（截圖 m3c2_steam_group、m3c2_steam_confirm）→ 取消
+func _m3c2_steam_group() -> bool:
+	var wid := str(UiClient.world_info().get("world_id", ""))
+	if not _check(wid != "", "no world id"):
+		return false
+	var base: Dictionary = {}
+	var cid := str(UiClient.sheet().get("char_id", ""))
+	var rc: Dictionary = SaveManager.load_character(wid, UiClient.identity(), cid)
+	if rc.get("ok", false) and rc.get("data") is Dictionary:
+		base = (rc["data"] as Dictionary).duplicate(true)
+	if base.is_empty():
+		var r: Dictionary = SaveManager.load_passport(wid, cid)
+		if r.get("ok", false) and r.get("data") is Dictionary and (r["data"] as Dictionary).get("char") is Dictionary:
+			base = (r["data"]["char"] as Dictionary).duplicate(true)
+	if not _check(not base.is_empty(), "no local passport to copy for the Steam character"):
+		return false
+	for k in 2:
+		var dd := base.duplicate(true)
+		dd["id"] = "ch_uisteam%02d" % k
+		dd["identity"] = STEAM_TEST_IDENT
+		dd["name"] = STEAM_TEST_NAME + str(k + 1)
+		dd["origin_world"] = ""
+		if not _check(SaveManager.save_character(wid, STEAM_TEST_IDENT, dd) == OK, "cannot write steam character"):
+			return false
+	return true
+
+func _m3c2_steam_confirm() -> bool:
+	var hh := { "h": null }
+	await ui.wait_until(func():
+		hh["h"] = ui.find_label("Steam 角色（", "prefix")
+		return hh["h"] != null, 5.0)
+	if not _check(hh["h"] != null, "char_select has no Steam group header"):
+		return false
+	var back := ui.find_button("離開世界", "exact", null, true)
+	if not _check(back != null and back.get_global_rect().end.y <= back.get_viewport_rect().size.y + 0.5,
+			"離開世界 is off screen with a Steam group: %s" % (str(back.get_global_rect()) if back != null else "missing")):
+		return false
+	await ui.shot("m3c2_steam_group")
+	var row := ui.find_label(STEAM_TEST_NAME + "1", "prefix")
+	if not _check(row != null, "Steam character row missing"):
+		return false
+	var sc := ui.find(func(c): return c is ScrollContainer and str(c.name) == "CharListScroll") as ScrollContainer
+	if sc != null:
+		sc.ensure_control_visible(row)
+		await ui.frames(2)
+	var eb := ui.find_button("進入江湖", "exact", row.get_parent().get_parent(), true)   # CharInfo → CharInfoBox → 列
+	if not _check(eb != null, "Steam row has no 進入江湖"):
+		return false
+	if not await ui.click(eb):
+		return false
+	var ap := ui.find(func(c): return c is Control and str(c.name) == "AltConfirm") as Control
+	if not _check(await ui.wait_until(func(): return ap != null and ap.visible, 3.0), "Steam confirm box not shown"):
+		return false
+	if not _check(ui.find_label("（7656…", "contains", ap) != null, "confirm box does not use the short Steam id"):
+		return false
+	await ui.shot("m3c2_steam_confirm")
+	if not await ui.click_text("取消", "exact", ap):
+		return false
+	return _check(await ui.wait_until(func(): return not ap.visible, 3.0), "Steam confirm box did not close")
+
+## 角色選擇「離開世界」→ 標題畫面右下角版本列 = BuildInfo.line（截圖 m3c2_title）
+func _m3c2_title_line() -> bool:
+	if not await ui.click_text("離開世界", "exact"):
+		return false
+	if not _check(await ui.wait_scene("res://ui/game/title/title_screen.tscn", 10.0), "title screen not shown after 離開世界"):
+		return false
+	var th := { "l": null }
+	await ui.wait_until(func():
+		th["l"] = ui.find(func(c): return c is Label and str(c.name) == "BuildInfoLine")
+		return th["l"] != null, 5.0)
+	var l: Label = th["l"]
+	if not _check(l != null, "title: no BuildInfoLine"):
+		return false
+	var want := BuildInfo.line(GameData.content_hash)
+	if not _check(l.text == want and l.text.begins_with("v" + BuildInfo.version()), "title line '%s' (want '%s')" % [l.text, want]):
+		return false
+	print("[UiPlay] M3c2 標題版本列：" + l.text)
+	await ui.shot("m3c2_title")
+	return true

@@ -385,6 +385,10 @@ func test_craft_window_buttons_send_work() -> void:
 	assert_false(ok.disabled)
 	var bad := w.find_child("Recipe_t_rc_blade", true, false) as Button
 	assert_true(bad.disabled)
+	# M3c2 第三輪審查（介面 #3）：配方字太長也不撐寬視窗（固定 900，留在小地圖左邊）；完整內容在滑鼠提示
+	assert_true(ok.clip_text, "recipe text clipped")
+	assert_true(ok.tooltip_text.contains(str(ok.get_meta("base"))), "full text in tooltip")
+	assert_true(w.get_combined_minimum_size().x <= CraftWindow.WIDTH + 0.5, "width %s" % str(w.get_combined_minimum_size().x))
 	var why := w.find_child("Why_t_rc_blade", true, false) as Label
 	assert_true(why != null and why.text.contains("測試木炭"), "缺什麼寫出來")
 	assert_true((w.find_child("Why_t_rc_high", true, false) as Label).text.contains("需 20 級"))

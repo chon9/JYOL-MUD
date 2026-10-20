@@ -187,7 +187,8 @@ func test_to_sheet_and_summary_shape() -> void:
 	assert_eq(mudao["equippable"], true)
 	assert_eq(mudao["tab"], "WEAPON")
 	var sm := c.to_summary(t)
-	assert_eq(sm, { "char_id": "ch_00000001", "name": "測試俠客", "gender": "M", "sect_name": "少林", "combat_xp": 0, "room_name": "西夏廣場", "look": "shaolin_m" })  # M3c WP-LOOKS：summary 加 look
+	assert_eq(sm, { "char_id": "ch_00000001", "name": "測試俠客", "gender": "M", "sect_name": "少林", "combat_xp": 0, "room_name": "西夏廣場", "look": "shaolin_m",
+		"foreign": false, "origin_world_name": "", "online_s": 0.0 })  # M3c WP-LOOKS：summary 加 look；M3c2 WP-CARRY：foreign、origin_world_name、online_s
 
 func test_sheet_kill_step_progress() -> void:
 	var t := F.tables()

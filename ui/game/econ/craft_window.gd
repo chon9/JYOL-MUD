@@ -16,9 +16,15 @@ var entries: Array = []
 var action_buttons: Dictionary = {}   # "skill" 或 "skill:recipe" -> Button
 var cooldowns := CooldownTracker.new()
 var _shown_s := -1
+## M3c2 第二輪審查：配方列右邊兩欄（缺什麼、收購價）的固定寬度
+## M3c2 第三輪審查：整個視窗要留在小地圖左邊（對話框層置中在小地圖左邊的區域；原本被配方長字撐到約 970 寬、
+## 蓋住小地圖左緣）→ 視窗固定 900 寬、兩欄收窄、配方按鈕的字太長就以「…」截斷（完整內容在滑鼠提示）
+const WHY_COL_W := 110.0
+const VALUE_COL_W := 210.0
+const WIDTH := 900.0
 
 func dialog_size() -> Vector2:
-	return Vector2(640, 420)
+	return Vector2(WIDTH, 420)
 
 func _build_body() -> void:
 	title_label.text = "製作"
@@ -103,16 +109,35 @@ func _render() -> void:
 			b2.set_meta("ok", ok2)
 			b2.alignment = HORIZONTAL_ALIGNMENT_LEFT
 			b2.disabled = not ok2 or cd > 0
+			# M3c2 第二輪審查：按鈕撐滿、右邊兩欄固定寬（缺什麼／收購價），每列的字對齊成直欄
+			b2.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+			b2.clip_text = true
+			b2.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+			b2.tooltip_text = label
 			var sid2 := str(e["id"])
 			var rid := str(r["id"])
 			b2.pressed.connect(func(): do_work(sid2, rid, b2))
 			action_buttons[key] = b2
+			var why2 := UiBuild.label(row2, "" if ok2 else str(r["why"]), 14)
+			why2.name = "Why_" + rid
+			why2.custom_minimum_size = Vector2(WHY_COL_W, 0)
+			why2.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 			if ok2:
 				add_choice(b2)
 			else:
-				var why2 := UiBuild.error(UiBuild.label(row2, str(r["why"]), 14))
-				why2.name = "Why_" + rid
-				b2.tooltip_text = str(r["why"])
+				UiBuild.error(why2)
+				b2.tooltip_text = label + "
+" + str(r["why"])
+			# M3c2 審查：成品與材料的收購價（淡色小字），看得出哪個配方賺、哪個不如直接賣材料
+			var vt := EconUi.values_text(r.get("values", {}))
+			var pv := UiBuild.muted(UiBuild.label(row2, vt, 13))
+			pv.name = "Value_" + rid
+			pv.custom_minimum_size = Vector2(VALUE_COL_W, 0)
+			pv.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+			if vt != "":
+				b2.tooltip_text = label + "
+" + (vt if ok2 else str(r["why"]) + "
+" + vt)
 	if entries.is_empty():
 		UiBuild.muted(UiBuild.label(list, "這裡沒有可以做的生活技能。礦場、打鐵爐、鑄劍爐、織布機、烘皮爐、燒炭爐、打獵專區在各城與郊外；裁縫、工匠隨地可做。", 15, true))
 

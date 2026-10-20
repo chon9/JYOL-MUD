@@ -7,8 +7,8 @@
       "desc": "峭壁間鑿出的石階通往山門，門前立著「華山派」石碑。碑旁的老先生正在簿子上記事。往南下山就是華山腳下。",
       "exits": [ { "dir": "S", "to": "hy_foot" }, { "dir": "N", "to": "hs_square" } ],
       "npcs": ["n_hs_cha"], "features": [], "requires": [] },
-    {"id": "hs_square", "name": "玉女峰練武場", "desc": "玉女峰頂的平台上，華山弟子正練劍，劍光閃閃。一位中年文士負手而立，神色儒雅。北邊是正氣堂。", "exits": [{"dir": "S", "to": "hs_gate"}, {"dir": "N", "to": "hs_hall"}], "npcs": ["n_yuebuqun", "n_ludayou", "n_hs_lanyihan"], "features": [], "requires": []},
-    {"id": "hs_hall", "name": "正氣堂", "desc": "堂上懸著「正氣」二字，是華山派議事與傳授武藝的地方，只有本門弟子可以進入。堂後有條小路往北通到思過崖。", "exits": [{"dir": "S", "to": "hs_square"}, {"dir": "N", "to": "hs_siguoya"}], "npcs": ["n_liangfa"], "features": [], "requires": [{"type": "sect", "sect": "huashan"}]},
+    {"id": "hs_square", "name": "玉女峰練武場", "desc": "玉女峰頂的平台上，華山弟子正練劍，劍光閃閃。一位中年文士負手而立，神色儒雅。北邊是正氣堂。", "exits": [{"dir": "S", "to": "hs_gate"}, {"dir": "N", "to": "hs_hall"}], "npcs": ["n_yuebuqun", "n_ludayou", "n_hs_lanyihan", "n_ch_hs_hebaosheng", "n_ch_hs_zhuge"], "features": [], "requires": []},
+    {"id": "hs_hall", "name": "正氣堂", "desc": "堂上懸著「正氣」二字，是華山派議事與傳授武藝的地方，只有本門弟子可以進入。堂後有條小路往北通到思過崖。", "exits": [{"dir": "S", "to": "hs_square"}, {"dir": "N", "to": "hs_siguoya"}], "npcs": ["n_liangfa", "n_ch_hs_laosike", "n_ch_hs_yejing"], "features": [], "requires": [{"type": "sect", "sect": "huashan"}]},
     {"id": "hs_siguoya", "name": "思過崖破劍洞", "desc": "正氣堂後山的思過崖上有個山洞，洞壁刻滿劍招，一位老者盤膝坐在洞口。往南回正氣堂。", "exits": [{"dir": "S", "to": "hs_hall"}], "npcs": ["n_hs_chengbuyou"], "features": [], "requires": [{"type": "sect", "sect": "huashan"}]}
   ]
 }

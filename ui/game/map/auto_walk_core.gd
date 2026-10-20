@@ -127,6 +127,9 @@ func observe(view: Dictionary) -> void:
 	idx = at + 1
 	from_room = room
 	view_pending = false
+	# 已經走進下一間：上一步一定成功了。本機主機（單機、Steam 開房）會先送房間 view、再送 intent_result，
+	# 晚到的結果會被 AutoWalker 丟掉（那時已經不在等結果）；不清掉的話 next_step 永遠 WAIT（擁有者回報：走一步就不動）
+	move_pending = false
 	if idx >= path.size():
 		active = false
 		arrived = true

@@ -7,7 +7,7 @@ const HOST_OFFLINE_POLICIES := ["FROZEN", "BACKUP_HOST", "DEDICATED"]
 const SRC_TAGS := ["verified", "later", "unverified", "proposal"]
 ## M2_PLAN 4.7.1（與 Protocol.PK_MODES 相同）
 const PK_MODES := ["CLASSIC", "CHALLENGE_ONLY", "OFF"]
-const M2_BOOL_OPTIONS := ["guards_enabled", "encounters_enabled", "wait_mode", "allow_foreign_characters"]
+const M2_BOOL_OPTIONS := ["guards_enabled", "encounters_enabled", "wait_mode", "allow_foreign_characters", "allow_foreign_divine"]
 const M2_INT_OPTIONS := {
 	"chat_water_cost": [0, 100], "chat_min_interval_ms": [0, 60000], "party_max": [2, 8],
 	"battle_max_humans": [1, 8], "pending_ttl_real_s": [5, 3600], "pending_retry_cooldown_real_s": [0, 600], "mail_inbox_max": [1, 1000],
@@ -46,6 +46,7 @@ func lint(dir: String, verbose := false) -> int:
 	_check_m3b_raw(loader, eras)
 	_check_m3c_options(loader)
 	_check_proc_templates(loader)
+	_check_m3c2_options(loader)   # M3c2 WP-PACE
 
 	# 每個 era 加上它的 requires 閉包各跑一次 activate()（5.5.2）
 	var era_ids: Array = eras.keys()
@@ -575,6 +576,8 @@ static func check_content(view: Dictionary) -> PackedStringArray:
 	errs.append_array(check_m3b(view))
 	errs.append_array(check_m3c_npcpk(view))
 	errs.append_array(_check_m3c_loot(view))   # M3c WP-LOOT
+	errs.append_array(_check_m3c2_pace(view))   # M3c2 WP-PACE
+	errs.append_array(_check_m3c2_econ(view))   # M3c2 WP-ECON
 	return errs
 
 # 1. 房間圖格式、id 全域唯一、出口目標存在、雙向性、features 合法
@@ -966,6 +969,7 @@ static func _c_npc_rooms(view: Dictionary) -> PackedStringArray:
 		# 由 npcs.room 放（WorldIndex 以 npcs.room 補；1.0A 世界不會看到不存在的 NPC id）
 		var map_era := str(maps.get(idx[room_id]["region"], {}).get("era", ""))
 		var cross_era := str(npc.get("era", "")) != map_era
+		# M3c2 整合：雜務 NPC n_ch_* 已由整合者寫進地圖房間清單（M3C2_PLAN §9.4 例外），不再豁免
 		if not (nid in idx[room_id]["room"].get("npcs", [])) and not cross_era:
 			errs.append("npcs.%s: room %s does not list this npc" % [nid, room_id])
 		if npc.get("region", "") != idx[room_id]["region"]:
@@ -1719,7 +1723,9 @@ static func _c_sects(view: Dictionary) -> PackedStringArray:
 					errs.append("%s: art %s lacks prefix '%s_'" % [label, aid, prefix])
 			if not (sid in SECT_PREFIX_LEGACY):
 				for nid in npcs:
-					if str(npcs[nid].get("region", "")) == gate_region and not nid.begins_with("n_%s_" % prefix):
+					# M3c2 WP-PACE：雜務 NPC 的前綴是 n_ch_<派前綴>_（M3C2_PLAN Q6）
+					var ch_ok: bool = str(nid).begins_with("n_ch_%s_" % prefix)
+					if str(npcs[nid].get("region", "")) == gate_region and not nid.begins_with("n_%s_" % prefix) and not ch_ok:
 						errs.append("%s: npc %s lacks prefix 'n_%s_'" % [label, nid, prefix])
 		# 3.2 固定 id
 		if SECT_FIXED.has(sid):
@@ -2331,6 +2337,9 @@ static func _s_test_plan(view: Dictionary) -> PackedStringArray:
 	var errs := PackedStringArray()
 	for qid in story_quests(view):
 		var q: Dictionary = view["quests"][qid]
+		# M3c2 WP-PACE：門派雜務（group sect_chores）是可重複的短工作，由 test_m3c2_chores 與 m3c2_acceptance chores 覆蓋，不寫 test_plan
+		if str(q.get("group", "")) == M3C2_CHORE_GROUP:
+			continue
 		var covered := {}
 		var tp: Variant = q.get("test_plan", [])
 		if tp is Array:
@@ -3085,4 +3094,152 @@ static func _check_m3c_loot(tables: Dictionary) -> PackedStringArray:
 				continue
 			if LOOT_RARITIES.find(str(row.get("rarity", "COMMON"))) >= 2:
 				errs.append("npcs.%s.shop: %s is %s (RARE+ is never sold, §6.2)" % [nid, iid, row.get("rarity", "")])
+	return errs
+
+# ==== M3c2 WP-PACE ====
+## M3C2_PLAN §2.3、§8：雜務（quests.chore）、規則鍵、伺服器選項 spar_daily_cap
+const M3C2_INT_OPTIONS := { "spar_daily_cap": [0, 200] }
+
+func _check_m3c2_options(loader: DataLoader) -> void:
+	var so := loader.server_options_default
+	for k in M3C2_INT_OPTIONS:
+		if typeof(so.get(k)) != TYPE_INT or int(so[k]) < int(M3C2_INT_OPTIONS[k][0]) or int(so[k]) > int(M3C2_INT_OPTIONS[k][1]):
+			errors.append("server_options.%s must be an int in %s" % [k, str(M3C2_INT_OPTIONS[k])])
+
+const M3C2_CHORE_GROUP := "sect_chores"
+const M3C2_CHORE_COST_KEYS := ["jing", "shen", "qi"]
+const M3C2_CHORE_LP := [10, 100]
+const M3C2_SPAR_XP := [20, 300]
+const M3C2_SPAR_LP := [2, 30]
+const M3C2_TEMPLATES := ["ch_no_lp", "ch_no_lp_daily", "ch_no_lp_novice", "ch_spar_capped", "ch_spar_rule",
+	"err_chore_tired", "err_req_money_max", "err_req_has_item"]
+
+## 雜務列（chore 欄位）、每派至少 3 件且至少一件全天、切磋弟子的獎勵欄位、模板（M3C2_PLAN §2.1、§2.3）
+static func _check_m3c2_pace(view: Dictionary) -> PackedStringArray:
+	var errs := PackedStringArray()
+	var quests: Dictionary = view.get("quests", {})
+	var sects: Dictionary = view.get("sects", {})
+	var per_sect := {}
+	var allday := {}
+	for qid in quests:
+		var q: Dictionary = quests[qid]
+		var c: Variant = q.get("chore", null)
+		var grp := str(q.get("group", ""))
+		if c == null:
+			if grp == M3C2_CHORE_GROUP:
+				errs.append("quests.%s: group sect_chores needs a chore field (M3C2 §2.3.1)" % qid)
+			continue
+		var L := "quests.%s.chore" % qid
+		if not (c is Dictionary):
+			errs.append("%s: must be an object" % L)
+			continue
+		var sect := str(c.get("sect", ""))
+		var req_sect := ""
+		for r in q.get("requires", []):
+			if r is Dictionary and str(r.get("type", "")) == "sect":
+				req_sect = str(r.get("sect", ""))
+		if sect == "" or sect != req_sect:
+			errs.append("%s: sect '%s' must match requires sect '%s'" % [L, sect, req_sect])
+		var lp: Variant = c.get("lp", null)
+		if typeof(lp) != TYPE_INT or int(lp) < M3C2_CHORE_LP[0] or int(lp) > M3C2_CHORE_LP[1]:
+			errs.append("%s: lp must be an int in %s" % [L, str(M3C2_CHORE_LP)])
+		var dp: Variant = c.get("decay_pct", null)
+		if not (dp is Array) or (dp as Array).is_empty():
+			errs.append("%s: decay_pct must be a non-empty array" % L)
+		else:
+			var prev := 101
+			for v in dp:
+				if typeof(v) != TYPE_INT or int(v) < 0 or int(v) > 100 or int(v) > prev:
+					errs.append("%s: decay_pct must be non-increasing ints in [0, 100]" % L)
+					break
+				prev = int(v)
+		var cost: Variant = c.get("cost", {})
+		if not (cost is Dictionary):
+			errs.append("%s: cost must be an object" % L)
+		else:
+			for k in cost:
+				if not (str(k) in M3C2_CHORE_COST_KEYS) or typeof(cost[k]) != TYPE_INT or int(cost[k]) < 0:
+					errs.append("%s: cost.%s must be one of %s with an int >= 0" % [L, str(k), str(M3C2_CHORE_COST_KEYS)])
+		if typeof(c.get("prof_below", 50)) != TYPE_INT:
+			errs.append("%s: prof_below must be an int" % L)
+		if str(c.get("src_note", "")).strip_edges() == "":
+			errs.append("%s: src_note missing" % L)
+		if grp == M3C2_CHORE_GROUP:
+			if not str(qid).begins_with("q_ch_"):
+				errs.append("quests.%s: sect chores use the q_ch_ prefix (M3C2 Q6)" % qid)
+			var rp: Variant = q.get("repeat", {})
+			if not (rp is Dictionary) or int((rp as Dictionary).get("max", 1)) != 0 or float((rp as Dictionary).get("cooldown_days", 0.0)) <= 0.0:
+				errs.append("quests.%s: sect chores need repeat { max 0, cooldown_days > 0 } (M3C2 §2.5)" % qid)
+		per_sect[sect] = int(per_sect.get(sect, 0)) + 1
+		var timed := false
+		for r in q.get("requires", []):
+			if r is Dictionary and str(r.get("type", "")) == "hour_in":
+				timed = true
+		if not timed:
+			allday[sect] = true
+	for sid in sects:
+		if not per_sect.has(sid):
+			errs.append("sects.%s: no sect chores (M3C2 §2.3.2：每派至少 3 件)" % sid)
+			continue
+		if int(per_sect[sid]) < 3:
+			errs.append("sects.%s: only %d sect chores (need >= 3)" % [sid, int(per_sect[sid])])
+		if not allday.has(sid):
+			errs.append("sects.%s: needs at least one all-day chore (no hour_in)" % sid)
+	for mid in view.get("monsters", {}):
+		var smid := str(mid)
+		if not (smid == "m_hs_trainee" or (smid.ends_with("_dizi") and not smid.begins_with("m_npc_"))):
+			continue
+		var m: Dictionary = view["monsters"][mid]
+		if bool(m.get("no_rewards", false)):
+			continue
+		var xp := int(m.get("combat_xp", 0))
+		var mlp := int(m.get("learn_points", 0))
+		if xp < M3C2_SPAR_XP[0] or xp > M3C2_SPAR_XP[1]:
+			errs.append("monsters.%s: spar combat_xp %d outside %s (M3C2 §2.1)" % [mid, xp, str(M3C2_SPAR_XP)])
+		if mlp < M3C2_SPAR_LP[0] or mlp > M3C2_SPAR_LP[1]:
+			errs.append("monsters.%s: spar learn_points %d outside %s (M3C2 §2.1)" % [mid, mlp, str(M3C2_SPAR_LP)])
+	var tpl: Dictionary = view.get("text_templates", {})
+	if not tpl.is_empty():
+		for k in M3C2_TEMPLATES:
+			if not tpl.has(k):
+				errs.append("text_templates: missing '%s' (M3C2 §2.3)" % k)
+	return errs
+
+# ==== M3c2 WP-ECON ====
+## M3C2_PLAN §4.3、§4.4：商店材料循環（EconCalc.loop_violations，含多步驟閉包、最低買價 MIN_BUY_PCT）；
+## 新欄位 yield[].n_per_levels（int ≥ 0）、success_base（0–1）、success_per_level（≥ 0）。
+## 新增配方或改價做出「商店買材料 → 做 → 賣」賺錢的循環，這裡立刻報錯。
+static func _check_m3c2_econ(tables: Dictionary) -> PackedStringArray:
+	var errs := PackedStringArray()
+	var ls: Variant = tables.get("life_skills", {})
+	if not (ls is Dictionary) or (ls as Dictionary).is_empty():
+		return errs
+	for sid in ls:
+		var row: Variant = ls[sid]
+		if not (row is Dictionary):
+			continue
+		var y: Variant = row.get("yield", [])
+		if y is Array:
+			for i in (y as Array).size():
+				var e: Variant = y[i]
+				if e is Dictionary and e.has("n_per_levels"):
+					var npl: Variant = e["n_per_levels"]
+					if typeof(npl) != TYPE_INT or int(npl) < 0:
+						errs.append("life_skills.%s.yield[%d].n_per_levels must be an int >= 0 (M3C2 §4.4)" % [sid, i])
+		var srcs: Array = [["life_skills.%s" % sid, row]]
+		for rc in RecipeCheck.recipes_of(row):
+			if rc is Dictionary:
+				srcs.append(["life_skills.%s.recipes.%s" % [sid, str(rc.get("id", ""))], rc])
+		for pair in srcs:
+			var d: Dictionary = pair[1]
+			if d.has("success_base"):
+				var sb: Variant = d["success_base"]
+				if not (typeof(sb) in [TYPE_FLOAT, TYPE_INT]) or float(sb) < 0.0 or float(sb) > 1.0:
+					errs.append("%s.success_base must be a number in [0, 1] (M3C2 §4.4)" % pair[0])
+			if d.has("success_per_level"):
+				var sp: Variant = d["success_per_level"]
+				if not (typeof(sp) in [TYPE_FLOAT, TYPE_INT]) or float(sp) < 0.0:
+					errs.append("%s.success_per_level must be a number >= 0 (M3C2 §4.4)" % pair[0])
+	for e in EconCalc.loop_violations(tables):
+		errs.append("life_skills.%s (M3C2 §4.3 econ_loop)" % e)
 	return errs

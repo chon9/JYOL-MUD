@@ -708,6 +708,7 @@ func on_battle_settled(s: Session, ch, summary: Dictionary) -> void:
 		_guard.erase(cid)
 	if result == "VICTORY" and str(ch.sect) != "":
 		_kill_gain(s, ch, summary.get("kills", []))
+	_spar_settle(s, ch, summary)   # M3c2 WP-PACE：切磋獎勵（規則、每日上限、新手期）
 	if s != null and s.character == ch:
 		check_state(s, "BATTLE")
 
@@ -1535,3 +1536,167 @@ func on_seize_end(summary: Dictionary) -> void:
 ## 房間 players[] 的 M3b 標記（RegionSystem.player_entry 合併）
 func player_tags(viewer: Session, o: Session) -> Dictionary:
 	return { "seizable": seizable(viewer, o) }
+
+
+# ==== M3c2 WP-PACE ====
+## M3C2_PLAN §2.3.3：切磋獎勵。十派切磋弟子（m_<派>_dizi、m_hs_trainee；資料 no_rewards false、combat_xp、learn_points）打贏時
+## 由 BattleSystem 照 BattleRewards 發實戰與學點（BattleSystem 凍結在本包之外），這裡在 on_battle_settled 依規則收回：
+## - 規則 spar_rewards 關 → 實戰、學點全部收回（送 ch_spar_rule）；
+## - 本遊戲日已領 spar_daily_cap 場 → 全部收回（送 ch_spar_capped）；沒超過 → counters.spar_day.n += 1；
+## - 學點另受「最高本派武功 < novice_learn_below」限制（實戰不受；收回學點時送 ch_no_lp why novice）。
+## 收回的量：用 BattleRewards.xp_for／lp_for 從戰後實戰反推戰前實戰（固定點；隊伍分成 1/√n 依序試 n = 1…8）。
+## M3C2_PLAN 缺漏：更乾淨的做法是 BattleSystem 在 apply_rewards 之前呼叫 spar_adjust() 改寫獎勵（交整合者決定；
+## 有呼叫時 on_battle_settled 不再收回，見 _spar_pre）。
+const SPAR_DAY_KEY := "spar_day"
+const SPAR_DEFAULT_CAP := 30
+## char_id -> true：這場的獎勵已由 spar_adjust() 在發放前處理過
+var _spar_pre: Dictionary = {}
+
+## 切磋弟子的怪物列 id？（純邏輯在 Learning.is_spar_monster，balance_sim 共用）
+static func is_spar_monster(mid: String) -> bool:
+	return Learning.is_spar_monster(mid)
+
+func spar_cap() -> int:
+	return clampi(_opt_int("spar_daily_cap", SPAR_DEFAULT_CAP), 0, 200)
+
+## 本遊戲日的切磋計數（換日重設；就地寫回 counters）
+func spar_day(ch) -> Dictionary:
+	var today := int(host.clock().get("day", 0))   # M3c2 整合：子時換日（同 QuestSystem.day_index）
+	var sd: Variant = ch.counters.get(SPAR_DAY_KEY, null)
+	if not (sd is Dictionary) or CharData.to_int((sd as Dictionary).get("day", -1), -1) != today:
+		sd = { "day": today, "n": 0 }
+		ch.counters[SPAR_DAY_KEY] = sd
+	return sd
+
+## 這場切磋的處理結果：{ "xp": bool（實戰保留）, "lp": bool（學點保留）, "why": ""|"rule"|"capped"|"novice" }；
+## count = true 時記一場（只有真的給了獎勵才記）
+func spar_decide(ch, count: bool) -> Dictionary:
+	if host.rules.get("spar_rewards", false) != true:
+		return { "xp": false, "lp": false, "why": "rule" }
+	var sd := spar_day(ch)
+	if CharData.to_int(sd.get("n", 0)) >= spar_cap():
+		return { "xp": false, "lp": false, "why": "capped" }
+	if count:
+		sd["n"] = CharData.to_int(sd.get("n", 0)) + 1
+	if not Learning.is_novice(ch, host.tables, host.rules) or Learning.novice_lp_left(ch, host.rules) <= 0:
+		return { "xp": true, "lp": false, "why": "novice" }
+	return { "xp": true, "lp": true, "why": "" }
+
+## 這場打倒的切磋弟子（怪物列）
+func _spar_rows(kills: Variant) -> Array:
+	var out: Array = []
+	if not (kills is Array):
+		return out
+	var mons: Dictionary = host.tables.get("monsters", {})
+	for k in kills:
+		var mid := unit_monster(str(k))
+		if is_spar_monster(mid) and mons.has(mid) and not bool(mons[mid].get("no_rewards", false)):
+			out.append(mons[mid])
+	return out
+
+## 發放前鉤子（M3c2 整合：BattleSystem._settle_player 在 apply_rewards 之前呼叫）：就地改 r 的 combat_xp／learn_points。
+## dead_refs：這場被打倒的全部怪物 ref（BattleRewards 對每位存活玩家都算全部死掉的怪）；share：1/√存活玩家數。
+## 沒傳 dead_refs → 退回用 r.kills、share 1（舊呼叫法）
+func spar_adjust(s: Session, ch, r: Dictionary, kind: String, dead_refs: Array = [], share := 1.0) -> void:
+	if ch == null or kind != "FIGHT":
+		return
+	var rows := _spar_rows(dead_refs if not dead_refs.is_empty() else r.get("kills", []))
+	if rows.is_empty():
+		return
+	_spar_pre[str(ch.id)] = true
+	var x0 := int(ch.combat_xp)
+	var d := spar_decide(ch, true)
+	var xp := 0
+	var lp := 0
+	for row in rows:
+		xp += BattleRewards.xp_for(row, x0, share)
+		lp += BattleRewards.lp_for(row, x0, share)
+	if not bool(d["xp"]):
+		r["combat_xp"] = maxi(0, int(r.get("combat_xp", 0)) - xp)
+	if not bool(d["lp"]):
+		r["learn_points"] = maxi(0, int(r.get("learn_points", 0)) - lp)
+	else:
+		# M3c2 審查：一場最多 Learning.SPAR_LP_MAX；雜務＋切磋學點的一輩子上限（novice_lp_cap）
+		var keep := mini(Learning.spar_lp(lp), Learning.novice_lp_left(ch, host.rules))
+		r["learn_points"] = maxi(0, int(r.get("learn_points", 0)) - (lp - keep))
+		Learning.note_novice_lp(ch, keep)
+	_spar_tell(s, str(d["why"]))
+
+## 戰後反推：戰後實戰 x1 → 戰前實戰與這幾隻切磋弟子給的 { xp, lp }；找不到一致的分成 → { ok: false }。
+## prefer_n：先試的隊伍人數（同房間的隊友數＋自己）；實戰係數夾在上下限時不同人數都可能一致，所以先試最可能的那個
+static func spar_given(rows: Array, x1: int, prefer_n := 1) -> Dictionary:
+	var order: Array = [clampi(prefer_n, 1, 8)]
+	for k in range(1, 9):
+		if not (k in order):
+			order.append(k)
+	for n in order:
+		var share := 1.0 / sqrt(float(n))
+		var x0 := x1
+		for _i in 12:
+			var g := 0
+			for row in rows:
+				g += BattleRewards.xp_for(row, x0, share)
+			x0 = maxi(0, x1 - g)
+		var g2 := 0
+		var l2 := 0
+		for row in rows:
+			g2 += BattleRewards.xp_for(row, x0, share)
+			l2 += BattleRewards.lp_for(row, x0, share)
+		if x0 + g2 == x1:
+			return { "ok": true, "xp": g2, "lp": l2, "x0": x0, "n": n }
+	return { "ok": false, "xp": 0, "lp": 0 }
+
+func _spar_settle(s: Session, ch, summary: Dictionary) -> void:
+	if ch == null or str(summary.get("kind", "")) != "FIGHT" or str(summary.get("result", "")) != "VICTORY":
+		return
+	var cid := str(ch.id)
+	if _spar_pre.has(cid):
+		_spar_pre.erase(cid)
+		return
+	var rows := _spar_rows(summary.get("kills", []))
+	if rows.is_empty():
+		return
+	var d := spar_decide(ch, true)
+	if bool(d["xp"]) and bool(d["lp"]):
+		return
+	var g := spar_given(rows, int(ch.combat_xp), _party_here(s))
+	if not bool(g.get("ok", false)):
+		push_warning("[SectSystem] spar reward rollback: no consistent split for %s" % cid)
+		return
+	if not bool(d["xp"]):
+		ch.combat_xp = maxi(0, int(ch.combat_xp) - int(g["xp"]))
+	if not bool(d["lp"]):
+		ch.learn_points = maxi(0, int(ch.learn_points) - int(g["lp"]))
+	else:
+		var keep := mini(Learning.spar_lp(int(g["lp"])), Learning.novice_lp_left(ch, host.rules))
+		ch.learn_points = maxi(0, int(ch.learn_points) - (int(g["lp"]) - keep))
+		Learning.note_novice_lp(ch, keep)
+	if s != null:
+		s.sheet_dirty = true
+	_spar_tell(s, str(d["why"]))
+
+## 同房間的隊友數＋自己（切磋會把同房間的隊友拉進來；獎勵分成 1/√人數）
+func _party_here(s: Session) -> int:
+	if s == null:
+		return 1
+	var party = host.get("party")
+	if party == null or not (party as Object).has_method("members_in_room"):
+		return 1
+	var n := 1
+	for o in party.members_in_room(s):
+		if o != null and o != s and o.character != null:
+			n += 1
+	return n
+
+func _spar_tell(s: Session, why: String) -> void:
+	if s == null:
+		return
+	match why:
+		"capped":
+			host.tell(s, Protocol.CH_SYSTEM, Protocol.E_CH_SPAR_CAPPED, {})
+		"rule":
+			host.tell(s, Protocol.CH_SYSTEM, "ch_spar_rule", {})
+		"novice":
+			var t: Variant = host.tables.get("text_templates", {}).get("ch_no_lp_novice", {})
+			host.tell(s, Protocol.CH_SYSTEM, Protocol.E_CH_NO_LP, { "quest_name": "", "why": "novice",
+				"text": str((t as Dictionary).get("self", "")) if t is Dictionary else "" })

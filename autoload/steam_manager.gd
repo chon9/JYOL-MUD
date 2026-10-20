@@ -130,8 +130,17 @@ func _on_lobby_created(connect_result: int, new_lobby_id: int) -> void:
 		_steam.call("setLobbyJoinable", lobby_id, true)
 	_steam.call("setLobbyData", lobby_id, LOBBY_TAG_KEY, LOBBY_TAG_VALUE)
 	_steam.call("setLobbyData", lobby_id, "proto", str(Protocol.VERSION))
+	# M3c2 第二輪審查：大廳也公布版本與資料指紋（同協定、不同資料的大廳在清單上就灰掉，不必等握手才被拒）
+	_steam.call("setLobbyData", lobby_id, "ver", BuildInfo.version())
+	_steam.call("setLobbyData", lobby_id, "fp", my_fingerprint())
 	_steam.call("setLobbyData", lobby_id, "name", "%s 的江湖" % persona_name)
 	lobby_hosted.emit(lobby_id)
+
+## 本機的資料指紋前 12 字（GameData.content_hash；沒有載入時 ""）
+static func my_fingerprint() -> String:
+	var loop := Engine.get_main_loop() as SceneTree
+	var gd: Node = loop.root.get_node_or_null("GameData") if loop != null else null
+	return BuildInfo.fingerprint12(str(gd.get("content_hash"))) if gd != null and gd.get("content_hash") != null else ""
 
 # ---------- 加入大廳（客戶端） ----------
 func join_lobby(target_lobby_id: int) -> void:
@@ -202,6 +211,8 @@ func _on_lobby_match_list(lobbies: Array) -> void:
 			"id": int(id),
 			"name": str(_steam.call("getLobbyData", id, "name")),
 			"proto": str(_steam.call("getLobbyData", id, "proto")),
+			"ver": str(_steam.call("getLobbyData", id, "ver")),
+			"fp": str(_steam.call("getLobbyData", id, "fp")),
 			"game": str(_steam.call("getLobbyData", id, LOBBY_TAG_KEY)),
 			"members": int(_steam.call("getNumLobbyMembers", id)),
 		})

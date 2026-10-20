@@ -91,7 +91,7 @@ G="K:/Godot/Godot_v4.6.3-stable_win64_console.exe"
 | 項目 | 延到 | 理由 |
 |---|---|---|
 | 副主機 `BACKUP_HOST`（TECH_ARCH 8.5） | M4 | 擁有者已定「主機離線時世界凍結」；副主機會造成存檔分岔 |
-| 外來角色匯入 `passport_import`（`allow_foreign_characters`） | **P2**：M2 有時間才做，否則 M3 | 需要數值截斷與主機確認流程；預設關閉，不影響驗收 |
+| 外來角色匯入 `passport_import`（`allow_foreign_characters`） | **P2**：M2 有時間才做，否則 M3（**M3c2 已實作**：M3C2_PLAN §5；單機一律允許、開房看選項） | 需要數值截斷與主機確認流程；預設關閉，不影響驗收 |
 | 懸賞與賞金獵人牌照（GDD 13.3 列 M2） | M3 | 需要捕快 NPC 與衙門，M3 與京城一起做 |
 | 陣形（GDD 13.3 列 M2） | M3 | M3 才有「陣」指令與陣法資料 |
 | 神兵利器 PvP 轉移給擊殺者【已證實】 | M3 | 目前沒有任何物品標成神兵；M3 加 `items.divine` 欄位時一起做 |

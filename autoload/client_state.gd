@@ -20,6 +20,8 @@ signal world_info_changed(info: Dictionary)
 signal dialogue_changed(d: Dictionary)          # 最近一次 dialogue 事件；{} = 對話關閉
 signal rumors_changed(items: Array)             # rumor_list 事件的 items
 signal villain_changed(prompts: Dictionary)     # wid -> villain_prompt payload（villain_clear 時移除）
+# M3c2 WP-CARRY（M3C2_PLAN §5.6、§7）
+signal foreign_imported(p: Dictionary)          # foreign_imported（ui）：{ name, replaced, dropped }
 
 const LOG_CAPACITY := 2000
 
@@ -49,6 +51,9 @@ var last_result_extra: Dictionary = {}       # 最近一個 intent_result 的附
 var dialogue: Dictionary = {}                # 故事包：目前開著的任務對話（最近一次 dialogue 事件的 payload）
 var rumors: Array = []                       # 故事包：最近一次 rumor_list 的 items
 var villain_prompts: Dictionary = {}         # 故事包：wid -> villain_prompt payload
+## M3c2 WP-CARRY：主機這個連線目前用的身分（角色清單 alt == false 的列的 identity；單機換成 Steam 身分後會變）
+var active_identity := ""
+var last_foreign_import: Dictionary = {}     # 最近一次 foreign_imported 的 payload
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
@@ -70,6 +75,8 @@ func reset() -> void:
 	dialogue = {}
 	rumors = []
 	villain_prompts = {}
+	active_identity = ""
+	last_foreign_import = {}
 
 ## 本機身分：Steam 連線用 SteamID，ENet／離線用 local_<uuid>（6.2）；顯示名稱 Steam 可用時用暱稱
 func resolve_identity() -> void:
@@ -280,6 +287,10 @@ func _apply_sheet(new_sheet: Dictionary) -> void:
 
 func _apply_char_list(list: Array) -> void:
 	char_list = list
+	for row in list:   # M3c2：本身分的列帶 identity（舊主機沒有就維持原值）
+		if row is Dictionary and not bool(row.get("alt", false)) and str(row.get("identity", "")) != "":
+			active_identity = str(row["identity"])
+			break
 	char_list_changed.emit(char_list)
 
 func _apply_region_view(view: Dictionary) -> void:
@@ -354,5 +365,9 @@ func _apply_events(batch: Array) -> void:
 			Protocol.E_VILLAIN_CLEAR:
 				villain_prompts.erase(str(p.get("wid", "")))
 				villain_changed.emit(villain_prompts)
+			# ---- M3c2 WP-CARRY ----
+			Protocol.E_FOREIGN_IMPORTED:
+				last_foreign_import = p.duplicate(true)
+				foreign_imported.emit(last_foreign_import)
 		event_log.push(e)
 	events_received.emit(batch)

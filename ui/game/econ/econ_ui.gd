@@ -288,6 +288,28 @@ static func inputs_text(recipe: Dictionary) -> String:
 			parts.append("%s×%d" % [UiClient.name_of("items", str(i.get("item", ""))), maxi(1, UiBuild.num(i.get("n", 1)))])
 	return "、".join(parts)
 
+## M3c2 審查：配方的賣店價值（同 NpcSystem.sell_price）：{ out: 成品×數量, inputs: 材料（工具不算）×數量 }
+static func recipe_values(recipe: Dictionary, items: Dictionary = {}) -> Dictionary:
+	if items.is_empty():
+		items = UiClient.table("items")
+	var out_v := 0
+	var o: Variant = recipe.get("output", {})
+	if o is Dictionary and str((o as Dictionary).get("item", "")) != "":
+		out_v = EconCalc.sell_price(items.get(str(o["item"]), {})) * maxi(1, UiBuild.num((o as Dictionary).get("n", 1)))
+	var in_v := 0
+	for i in recipe.get("inputs", []):
+		if i is Dictionary and not str(i.get("item", "")).begins_with(EconCalc.TOOL_PREFIX):
+			in_v += EconCalc.sell_price(items.get(str(i.get("item", "")), {})) * maxi(1, UiBuild.num(i.get("n", 1)))
+	return { "out": out_v, "inputs": in_v }
+
+## 配方列後面的小字：「賣店約 N 兩（材料約 M 兩）」
+static func values_text(v: Dictionary) -> String:
+	if int(v.get("out", 0)) <= 0:
+		return ""
+	if int(v.get("inputs", 0)) <= 0:
+		return "收購價約 %d 兩" % int(v["out"])
+	return "收購價約 %d 兩（材料約 %d 兩）" % [int(v["out"]), int(v["inputs"])]
+
 ## 成品文字：「鐵劍」「木炭×2」
 static func output_text(recipe: Dictionary) -> String:
 	var o: Variant = recipe.get("output", {})
@@ -399,7 +421,7 @@ static func craft_entries(view: Dictionary, sheet: Dictionary, skills: Dictionar
 			var st := EconUi.recipe_state(skill, r, sheet)
 			(entry["recipes"] as Array).append({ "id": str(r.get("id", "")), "name": str(r.get("name", r.get("id", ""))),
 				"inputs": EconUi.inputs_text(r), "output": EconUi.output_text(r), "level": st["level"], "ok": st["ok"], "why": st["why"],
-				"feature": rf })
+				"feature": rf, "values": EconUi.recipe_values(r) })
 		if entry["gather"] != null or not (entry["recipes"] as Array).is_empty():
 			out.append(entry)
 	return out

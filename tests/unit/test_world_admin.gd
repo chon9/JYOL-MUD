@@ -43,7 +43,7 @@ func test_server_opts_get_shape() -> void:
 	assert_true(e.get("ui", false), "ui event")
 	var p: Dictionary = e.get("p", {})
 	var ed := _editable(p)
-	assert_eq(ed.keys().size(), 12, "M3a 的 6 個 + M3B_PLAN §4.11 的 4 個 + M3C_PLAN §9.3 的 2 個")
+	assert_eq(ed.keys().size(), 13, "M3a 的 6 個 + M3B_PLAN §4.11 的 4 個 + M3C_PLAN §9.3 的 2 個 + M3C2_PLAN §8.3 的 spar_daily_cap")
 	for k in ["rule_preset", "pk_mode", "wait_mode", "stagecoach_enabled", "scout_enabled", "sect_hostile_entry",
 			"enable_era_1_0b", "jail_location", "gb_assembly", "seize_enabled", "npc_respawn_pct", "loot_drop_pct"]:
 		assert_has(ed, k, "editable key")

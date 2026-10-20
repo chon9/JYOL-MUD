@@ -43,6 +43,7 @@ var region_label: Label
 var clock_label: Label
 var desc_label: Label
 var exits_box: HFlowContainer
+var exit_buttons: Dictionary = {}   # dir → 出口按鈕（WASD 走路用）
 var npcs_box: HFlowContainer
 var players_label: Label             # 沒有任何玩家時的「（無）」
 var players_box: HFlowContainer
@@ -138,6 +139,7 @@ func _build() -> void:
 
 func _rebuild_exits() -> void:
 	UiBuild.clear(exits_box)
+	exit_buttons.clear()
 	var jailed := is_jailed()
 	for ex in view.get("exits", []):
 		if not (ex is Dictionary):
@@ -152,6 +154,7 @@ func _rebuild_exits() -> void:
 		var b := UiBuild.button(exits_box, t)
 		b.add_theme_font_size_override("font_size", 14)
 		b.pressed.connect(_on_move.bind(dir, b))
+		exit_buttons[dir] = b
 		if jailed:
 			b.disabled = true
 			b.tooltip_text = "正在思過處思過，刑期未滿不能離開。"
@@ -641,6 +644,14 @@ func _on_head_input(ev: InputEvent) -> void:
 ## 把卷軸夾在場景區內（至少留標題列在畫面裡）
 static func clamp_into(pos: Vector2, sz: Vector2, area: Vector2) -> Vector2:
 	return Vector2(clampf(pos.x, 0.0, maxf(0.0, area.x - sz.x)), clampf(pos.y, 0.0, maxf(0.0, area.y - 40.0)))
+
+## WASD 走路：等同按下該方向的出口鈕（灰掉、等待回應中、沒有這個出口都不走）。回傳有沒有送出
+func key_move(dir: String) -> bool:
+	var b: Button = exit_buttons.get(dir, null)
+	if b == null or not is_instance_valid(b) or b.disabled:
+		return false
+	_on_move(dir, b)
+	return true
 
 func _on_move(dir: String, b: Button) -> void:
 	_gate().send(UiKeys.I_MOVE, { "dir": dir }, [b])

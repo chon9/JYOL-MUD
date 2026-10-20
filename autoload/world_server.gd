@@ -43,6 +43,8 @@ var game_error := ""
 var time_scale := 1.0                    # --time-scale，夾在 [0.1, 100]（D10）
 ## --debug-intents（M3A_PLAN 6.11）：GameHost 建立時讀這個值決定要不要註冊 debug_set（只給驗收 bot 用）
 var debug_intents := false
+## M3c2 WP-CARRY：標題畫面開房前勾選的「允許外來角色」（-1 ＝沒指定；0／1）；start() 套用後清回 -1
+var host_foreign_choice := -1
 var _tick_acc := 0.0
 
 func _ready() -> void:
@@ -153,6 +155,12 @@ func start(p_world_id: String, world_name: String = "") -> Error:
 		SaveManager.save_options(world_id, options)
 		print("[WorldServer] stagecoach_enabled = %s" % str(on))
 	options["stagecoach_enabled"] = options.get("stagecoach_enabled", false) == true
+	# M3c2 WP-CARRY（§5.3）：標題畫面開房前勾的「允許外來角色」→ 存進這個世界的 options.json（只用一次）
+	if host_foreign_choice >= 0:
+		options["allow_foreign_characters"] = host_foreign_choice == 1
+		SaveManager.save_options(world_id, options)
+		print("[WorldServer] allow_foreign_characters = %s" % str(host_foreign_choice == 1))
+		host_foreign_choice = -1
 	if not GameData.activate(world.get("enabled_eras", ["1.0A"]), world.get("rule_profile", {})):
 		last_error = "資料啟用失敗：%s" % ", ".join(GameData.activate_errors)
 		push_error("[WorldServer] " + last_error)
@@ -312,6 +320,10 @@ func world_info() -> Dictionary:
 		"pending_eras": (options.get("pending_eras", []) as Array).duplicate() if options.get("pending_eras") is Array else [],
 		# 創角的出生城（生效 regions 中 birth_allowed 的 CITY；M3B_PLAN §5.1.9、§7 #10）：[{ id, name }]
 		"birth_cities": _birth_cities(),
+		# M3c2 WP-CARRY（M3C2_PLAN §5.3、§6）：外來角色（單機一律可以；開房看選項）與主機的版本列
+		"allow_foreign_characters": options.get("allow_foreign_characters", false) == true,
+		"foreign_allowed": game.foreign_allowed() if game != null else false,
+		"game_version": BuildInfo.version(),
 	}
 
 func _birth_cities() -> Array:
@@ -478,7 +490,7 @@ func handle_hello(peer_id: int, hello: Dictionary) -> String:
 	_pending_hello.erase(peer_id)
 	var reason := validate_hello(peer_id, hello)
 	if reason != "":
-		ClientState.deliver_rejected(peer_id, reason)
+		ClientState.deliver_rejected(peer_id, reject_wire(reason))   # M3c2 WP-CARRY §6.3：附主機的版本、協定、指紋
 		get_tree().create_timer(REJECT_DISCONNECT_S).timeout.connect(NetworkManager.force_disconnect.bind(peer_id))
 		return reason
 	var identity := NetworkManager.identity_for_peer(peer_id, str(hello.get("identity", "")))
@@ -551,7 +563,7 @@ func _add_session(peer_id: int, identity: String, display_name: String, local :=
 	var entry: Dictionary = known.get(identity, { "banned": false })
 	entry["last_name"] = s.display_name
 	known[identity] = entry
-	var chars: Array = game.char_store.summaries(identity) if game != null else []
+	var chars: Array = game.char_list_for(s) if game != null else []   # M3c2 WP-CARRY：含可選身分的角色（§5.7）
 	ClientState.deliver_welcome(peer_id, { "world_info": world_info(), "your_characters": chars, "your_peer_id": peer_id })
 	session_added.emit(peer_id)
 	_broadcast(Protocol.CH_SYSTEM, Protocol.E_JOIN, { "name": s.display_name, "peer": peer_id })
@@ -696,3 +708,14 @@ func flush() -> void:
 
 func pending_events(peer_id: int) -> Array:
 	return _outbox.get(peer_id, [])
+
+# ==== M3c2 WP-CARRY ====（M3C2_PLAN §6.3）
+## 協定／版本／資料不同的拒絕：送 "<code>|<主機版本>|<主機協定>|<主機指紋12>"；其他原因照舊只有代碼
+static func reject_wire(reason: String) -> String:
+	if reason in Protocol.REJECT_WITH_BUILD:
+		return BuildInfo.reject_reason(reason, GameData.content_hash)
+	return reason
+
+## 標題畫面：開房前指定這次開的世界要不要允許外來角色（start() 時存進 options.json）
+func set_host_foreign_choice(allow: bool) -> void:
+	host_foreign_choice = 1 if allow else 0

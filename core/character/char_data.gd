@@ -39,6 +39,15 @@ static func to_int(v: Variant, def: int = 0) -> int:
 			return int(v) if String(v).is_valid_int() else def
 	return def
 
+## 不可信資料（護照、匯入檔）裡的字串欄位：只接受 String／StringName，其他型別回 def（M3c2 審查：String(int) 會讓引擎報錯）
+static func to_str(v: Variant, def: String = "") -> String:
+	match typeof(v):
+		TYPE_STRING:
+			return v
+		TYPE_STRING_NAME:
+			return String(v)
+	return def
+
 static func to_float(v: Variant, def: float = 0.0) -> float:
 	match typeof(v):
 		TYPE_INT, TYPE_FLOAT:

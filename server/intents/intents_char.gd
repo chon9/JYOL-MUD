@@ -1,6 +1,7 @@
 class_name IntentsChar
 extends RefCounted
 ## char_list char_roll char_create char_select char_delete（M1_PLAN 3.6）
+## M3c2 WP-CARRY（M3C2_PLAN §5.7）：char_select 可選 identity（單機讀 Steam 身分的角色；GameHost.alt_identities）
 ## M3c WP-LOOKS（M3C_PLAN §3.3）：char_create 可選 look；set_look { look }（免費、純外觀）
 
 const NOTE_SECT_FALLBACK := "（拜在門下時仍穿門派服裝）"
@@ -88,6 +89,22 @@ static func birth_cities(host: GameHost) -> Array:
 
 static func char_select(host: GameHost, s: Session, a: Dictionary) -> Dictionary:
 	var char_id := str(a["char_id"])
+	# M3c2 WP-CARRY（M3C2_PLAN §5.7）：identity 有值且不是目前身分 → 必須是可選身分（單機讀 Steam 身分的角色）
+	var want := str(a.get("identity", ""))
+	if want != "" and want != s.identity:
+		var allowed := false
+		for alt in host.alt_identities(s):
+			allowed = allowed or str(alt["identity"]) == want
+		if not allowed:
+			return GameHost.fail(Protocol.R_ALT_IDENTITY_DENIED)
+		if not host.char_store.has_char(want, char_id):
+			return GameHost.fail("no_such_char")
+		if host.session_for_char(char_id) != null and host.session_for_char(char_id) != s:
+			return GameHost.fail("char_active")
+		var why := host.switch_identity(s, want)
+		if why != "":
+			return GameHost.fail(why)
+		host.push_char_list(s)   # 清單的「本機／Steam」分組跟著換
 	if not host.char_store.has_char(s.identity, char_id):
 		return GameHost.fail("no_such_char")
 	# M2_PLAN 4.6.1、D4：這個角色還在進行中的戰鬥裡（斷線後自動防）→ 接回原戰鬥，沿用戰鬥中的同一個 Character 物件
@@ -98,6 +115,11 @@ static func char_select(host: GameHost, s: Session, a: Dictionary) -> Dictionary
 		if bool(host.battles.reattach(s, char_id)) and s.character != null:
 			host.enter_character(s, s.character)   # 進房事件、視圖、角色表、未讀信提醒
 			return GameHost.ok({ "battle_id": bid })
+	# M3c2 審查：開房（ENet／Steam）且沒開放外來角色 → 已匯入的外來角色也不能進入（不只擋匯入動作）
+	if not host.foreign_allowed():
+		var probe = host.char_store.load_char(s.identity, char_id)
+		if probe != null and str(probe.origin_world) != "":
+			return GameHost.fail(Protocol.R_FOREIGN_CHAR_BLOCKED)
 	if s.character != null:
 		host.switch_out(s)   # 先送護照、存檔並離開房間（重新選同一個角色也一樣：從檔案重新載入）
 	var ch = host.char_store.load_char(s.identity, char_id)

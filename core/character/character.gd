@@ -108,12 +108,12 @@ static func default_sect_record() -> Dictionary:
 
 static func from_dict(d: Dictionary) -> Character:
 	var c := Character.new()
-	c.id = String(d.get("id", ""))
-	c.identity = String(d.get("identity", ""))
-	c.name = String(d.get("name", ""))
-	c.gender = String(d.get("gender", "M"))
+	c.id = CharData.to_str(d.get("id", ""))
+	c.identity = CharData.to_str(d.get("identity", ""))
+	c.name = CharData.to_str(d.get("name", ""))
+	c.gender = CharData.to_str(d.get("gender", "M"))
 	c.birth_month = clampi(CharData.to_int(d.get("birth_month", 1), 1), 1, 12)
-	c.birth_city = String(d.get("birth_city", ""))
+	c.birth_city = CharData.to_str(d.get("birth_city", ""))
 	c.created_s = CharData.to_float(d.get("created_s", 0.0))
 	c.online_s = CharData.to_float(d.get("online_s", 0.0))
 	var a: Variant = d.get("attrs", {})
@@ -131,16 +131,17 @@ static func from_dict(d: Dictionary) -> Character:
 	c.pk = maxi(0, CharData.to_int(d.get("pk", 0)))
 	c.pk_stamp_s = CharData.to_float(d.get("pk_stamp_s", 0.0))
 	c.prefs = _prefs_from(d.get("prefs", {}))
-	c.origin_world = String(d.get("origin_world", ""))
+	c.origin_world = CharData.to_str(d.get("origin_world", ""))
 	c.money = CharData.to_int(d.get("money", 0))
-	c.sect = String(d.get("sect", ""))
+	c.sect = CharData.to_str(d.get("sect", ""))
 	c.sect_enemies = []
-	for s in d.get("sect_enemies", []):
-		c.sect_enemies.append(String(s))
+	for s in (d.get("sect_enemies", []) if d.get("sect_enemies", []) is Array else []):
+		if CharData.to_str(s) != "":
+			c.sect_enemies.append(CharData.to_str(s))
 	c.sect_traitor = []
-	for s in d.get("sect_traitor", []):
-		if not c.sect_traitor.has(String(s)):
-			c.sect_traitor.append(String(s))
+	for s in (d.get("sect_traitor", []) if d.get("sect_traitor", []) is Array else []):
+		if CharData.to_str(s) != "" and not c.sect_traitor.has(CharData.to_str(s)):
+			c.sect_traitor.append(CharData.to_str(s))
 	c.skills = SkillBook.from_dict(_dict(d.get("skills", {})))
 	c.inventory = Inventory.from_dict(_dict(d.get("inventory", {})))
 	c.location = _place(d.get("location", {}))
@@ -157,7 +158,7 @@ static func from_dict(d: Dictionary) -> Character:
 	c.dead_count = CharData.to_int(d.get("dead_count", 0))
 	c.dormant = _dict(d.get("dormant", {})).duplicate(true)
 	# M3a：舊檔（沒有 data_version）沒有這些欄位 → 預設值
-	c.sect_master = String(d.get("sect_master", ""))
+	c.sect_master = CharData.to_str(d.get("sect_master", ""))
 	c.sect_record = _sect_record_from(d.get("sect_record", {}))
 	c.jail = _jail_from(d.get("jail", {}))
 	c.conditions = _conditions_from(d.get("conditions", {}))
@@ -170,14 +171,14 @@ static func from_dict(d: Dictionary) -> Character:
 	c.sect_rank = maxi(0, CharData.to_int(d.get("sect_rank", 0)))
 	c.sect_rank_pending = _rank_pending_from(d.get("sect_rank_pending", {}))
 	c.bank = _bank_from(d.get("bank", {}))
-	c.guild = String(d.get("guild", "")) if typeof(d.get("guild", "")) == TYPE_STRING else ""
+	c.guild = CharData.to_str(d.get("guild", "")) if typeof(d.get("guild", "")) == TYPE_STRING else ""
 	return c
 
 static func _rank_pending_from(v: Variant) -> Dictionary:
 	var d := _dict(v)
-	if String(d.get("sect", "")) == "":
+	if CharData.to_str(d.get("sect", "")) == "":
 		return {}
-	return { "sect": String(d.get("sect", "")), "rank": maxi(0, CharData.to_int(d.get("rank", 0))),
+	return { "sect": CharData.to_str(d.get("sect", "")), "rank": maxi(0, CharData.to_int(d.get("rank", 0))),
 		"since_world_s": CharData.to_float(d.get("since_world_s", 0.0)) }
 
 ## 錢莊：money ≥ 0；items 的每一列照 Inventory 的列格式清理（uid、id、n、born_s；其他鍵原樣保留給 WP-ECON）
@@ -192,11 +193,11 @@ static func _bank_from(v: Variant) -> Dictionary:
 			if typeof(it) != TYPE_DICTIONARY:
 				continue
 			var n := CharData.to_int(it.get("n", 1), 1)
-			if n <= 0 or String(it.get("uid", "")) == "" or String(it.get("id", "")) == "":
+			if n <= 0 or CharData.to_str(it.get("uid", "")) == "" or CharData.to_str(it.get("id", "")) == "":
 				continue
 			var e: Dictionary = (it as Dictionary).duplicate(true)
-			e["uid"] = String(it["uid"])
-			e["id"] = String(it["id"])
+			e["uid"] = CharData.to_str(it["uid"])
+			e["id"] = CharData.to_str(it["id"])
 			e["n"] = n
 			e["born_s"] = CharData.to_float(it.get("born_s", 0.0))
 			if it.get("lots") is Array:
@@ -217,19 +218,19 @@ static func _sect_record_from(v: Variant) -> Dictionary:
 	var r := default_sect_record()
 	r["joined_online_s"] = CharData.to_float(d.get("joined_online_s", 0.0))
 	r["ban_until_online_s"] = CharData.to_float(d.get("ban_until_online_s", 0.0))
-	r["lockout"] = String(d.get("lockout", "")) if typeof(d.get("lockout", "")) == TYPE_STRING else ""
+	r["lockout"] = CharData.to_str(d.get("lockout", "")) if typeof(d.get("lockout", "")) == TYPE_STRING else ""
 	var br := {}
 	var src_br := _dict(d.get("breached", {}))
 	for k in src_br:
 		if bool(src_br[k]):
-			br[String(k)] = true
+			br[CharData.to_str(k)] = true
 	r["breached"] = br
 	var hist: Array = []
 	var src_h: Variant = d.get("history", [])
 	if typeof(src_h) == TYPE_ARRAY:
 		for h in src_h:
 			if typeof(h) == TYPE_DICTIONARY:
-				hist.append({ "sect": String(h.get("sect", "")), "what": String(h.get("what", "")),
+				hist.append({ "sect": CharData.to_str(h.get("sect", "")), "what": CharData.to_str(h.get("what", "")),
 					"online_s": CharData.to_float(h.get("online_s", 0.0)) })
 	while hist.size() > SECT_HISTORY_MAX:
 		hist.pop_front()
@@ -238,14 +239,14 @@ static func _sect_record_from(v: Variant) -> Dictionary:
 
 static func _jail_from(v: Variant) -> Dictionary:
 	var d := _dict(v)
-	if d.is_empty() or String(d.get("sect", "")) == "":
+	if d.is_empty() or CharData.to_str(d.get("sect", "")) == "":
 		return {}
-	return { "sect": String(d.get("sect", "")), "room": String(d.get("room", "")),
+	return { "sect": CharData.to_str(d.get("sect", "")), "room": CharData.to_str(d.get("room", "")),
 		"until_online_s": CharData.to_float(d.get("until_online_s", 0.0)),
-		"reason": String(d.get("reason", "BREACH")), "rule": String(d.get("rule", "")),
+		"reason": CharData.to_str(d.get("reason", "BREACH")), "rule": CharData.to_str(d.get("rule", "")),
 		"days": maxi(1, CharData.to_int(d.get("days", 1), 1)), "notified": bool(d.get("notified", true)),
 		# M3B_PLAN §5.1.4：SECT（各派思過處）／CAPITAL（京城監獄）；舊檔 → SECT
-		"scope": "CAPITAL" if String(d.get("scope", "SECT")) == "CAPITAL" else "SECT" }
+		"scope": "CAPITAL" if CharData.to_str(d.get("scope", "SECT")) == "CAPITAL" else "SECT" }
 
 static func _conditions_from(v: Variant) -> Dictionary:
 	var out := {}
@@ -256,9 +257,9 @@ static func _conditions_from(v: Variant) -> Dictionary:
 		var ticks := CharData.to_int(e.get("ticks_left", 0))
 		if lv <= 0 or ticks <= 0:
 			continue
-		out[String(k)] = { "level": lv, "ticks_left": ticks, "next_online_s": CharData.to_float(e.get("next_online_s", 0.0)) }
+		out[CharData.to_str(k)] = { "level": lv, "ticks_left": ticks, "next_online_s": CharData.to_float(e.get("next_online_s", 0.0)) }
 		if e.has("actions_left"):
-			out[String(k)]["actions_left"] = maxi(0, CharData.to_int(e.get("actions_left", 0)))
+			out[CharData.to_str(k)]["actions_left"] = maxi(0, CharData.to_int(e.get("actions_left", 0)))
 	return out
 
 func to_dict() -> Dictionary:
@@ -317,7 +318,7 @@ static func _prefs_from(v: Variant) -> Dictionary:
 
 static func _place(v: Variant) -> Dictionary:
 	var d := _dict(v)
-	return { "region": String(d.get("region", "")), "room": String(d.get("room", "")) }
+	return { "region": CharData.to_str(d.get("region", "")), "room": CharData.to_str(d.get("room", "")) }
 
 ## 舊 API（M1）：改由 QuestState.migrate 處理新舊格式
 static func _quests_from(v: Variant) -> Dictionary:
@@ -330,7 +331,7 @@ static func _counters_from(d: Dictionary) -> Dictionary:
 	for k in ["food_acc_s", "water_acc_s", "regen_acc_s", "last_meditate_s"]:
 		c[k] = CharData.to_float(c[k], -1.0 if k == "last_meditate_s" else 0.0)
 	c["last_birthday_year"] = CharData.to_int(c["last_birthday_year"])
-	c["last_meal_key"] = String(c["last_meal_key"])
+	c["last_meal_key"] = CharData.to_str(c["last_meal_key"])
 	var uses: Array = []
 	for t in (c["med_uses"] if typeof(c["med_uses"]) == TYPE_ARRAY else []):
 		uses.append(CharData.to_float(t))
@@ -648,6 +649,9 @@ func to_combatant(tables: Dictionary, options: Dictionary, side: int, peer_id: i
 		"killing_intent": killing_intent,
 		"carry_ratio": (float(d["carry"]) / cmax) if cmax > 0 else 0.0,
 		"monster_row": "",
+		# M3c2 整合：BattleRewards 的實戰／學點比例要玩家實戰（M1_PLAN 4.8；battle_rewards.gd 檔頭「to_combatant 會帶上」）。
+		# 以前漏帶 → 主機上每一場都當成實戰 0（實戰 ×2、學點 ×3 的上限），和 balance_sim 的模型不一致
+		"combat_xp": combat_xp,
 	}
 
 ## 戰鬥指令可用的武功（M3A_PLAN 3.11、5.1）：{ POISON, MEDIC, HIDDEN, FORMATION, INNER, ACUPOINT }。
@@ -729,6 +733,10 @@ func to_summary(tables: Dictionary) -> Dictionary:
 		"combat_xp": combat_xp,
 		"room_name": CharData.room_name(tables, String(location.get("room", ""))),
 		"look": battle_look(),   # M3c WP-LOOKS
+		# M3c2 WP-CARRY（M3C2_PLAN §5.6、§7）：外來角色標記；online_s 給匯出時比對本機護照是否最新
+		"foreign": origin_world != "",
+		"origin_world_name": "" if origin_world == "" else (String(ext["foreign"].get("world_name", origin_world)) if ext.get("foreign") is Dictionary else origin_world),
+		"online_s": online_s,
 	}
 
 ## now_s >= 0：物品帶 spoil_left_days（最早一批還剩幾天會壞；-1 ＝不會腐壞）

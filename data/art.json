@@ -1094,6 +1094,31 @@
       "required": false,
       "placeholder": false
     },
+    "n_sl_spar": {
+      "alias": "shaolin_m",
+      "required": false,
+      "placeholder": false
+    },
+    "m_sl_dizi": {
+      "alias": "shaolin_m",
+      "required": false,
+      "placeholder": false
+    },
+    "n_ch_wd_chaifu": {
+      "alias": "n_taoyun",
+      "required": false,
+      "placeholder": false
+    },
+    "n_ch_qz_chaifu": {
+      "alias": "n_taoyun",
+      "required": false,
+      "placeholder": false
+    },
+    "n_ch_gm_fengnu": {
+      "alias": "n_shuanger",
+      "required": false,
+      "placeholder": false
+    },
     "n_wd_spar": {
       "alias": "huashan_m",
       "required": false,

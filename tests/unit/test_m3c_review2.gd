@@ -99,7 +99,10 @@ func test_qz_gate_fight_pays_learn_points() -> void:
 	ok("npc_attack", { "npc": "n_qz_zhike" })
 	assert_eq(_foes().size(), 4)
 	NA.finish(self)
-	assert_true(int(ch().learn_points) - lp0 >= 160, "全真硬闖一場 ≥ 160 學點（%d）" % (int(ch().learn_points) - lp0))
+	# M3c2 整合：戰鬥單位帶上玩家實戰（BattleRewards 依實戰遞減，GDD 學點公式）。研究更正（verified_research gaoshou/31）：
+	# 全真 160 是「一整趟 17–18 個 NPC」的總數，不是每場 → 一場 4 個 ≈ 160 × 4/18 ≈ 36；實戰 20 萬時一場要在 30–160 之間
+	var got := int(ch().learn_points) - lp0
+	assert_true(got >= 30 and got <= 160, "全真硬闖一場（4 個）學點 %d，應在 30–160（一趟 18 個約 160）" % got)
 
 # ---------------------------------------------------------------- 孫婆婆、黃狗、羊、資料標記
 func test_sunpopo_always_six() -> void:

@@ -98,6 +98,7 @@ static func _result() -> Dictionary:
 		"ok": false, "reason": "", "times_done": 0, "prof_gain": 0, "lp_cost": 0, "jing_cost": 0,
 		"neili_cost": 0, "shen_cost": 0, "money_cost": 0, "level_before": 0, "level_after": 0,
 		"stopped_reason": "",
+		"novice": false,   # M3C2_PLAN §2.4：這批至少有一次用到新手學藝加速
 	}
 
 static func _finish(res: Dictionary, reason: String) -> Dictionary:
@@ -149,6 +150,11 @@ static func learn(ch: Character, npc_id: String, skill_id: String, times: int, t
 			stop = "cap_xp"
 			break
 		var wc := wit_cost(int(ch.effective_attrs(tables, options)["wit"]))
+		# M3C2_PLAN §2.4：新手學藝加速（每次重算：同一批可能跨過門檻）
+		var nm := novice_mults(ch, skill_id, rules)
+		if float(nm["prof"]) != 1.0 or float(nm["jing"]) != 1.0:
+			wc = { "prof": maxi(1, roundi(int(wc["prof"]) * float(nm["prof"]))), "jing": maxi(1, roundi(int(wc["jing"]) * float(nm["jing"]))) }
+			res["novice"] = true
 		if ch.learn_points < LP_PER_TIME:
 			stop = "not_enough_lp"
 			break
@@ -179,6 +185,113 @@ static func learn(ch: Character, npc_id: String, skill_id: String, times: int, t
 		res["money_cost"] += price
 	res["level_after"] = ch.skills.level(skill_id)
 	return _finish(res, stop)
+
+# ---------------------------------------------------------------- M3c2 WP-PACE（M3C2_PLAN §2.4）
+## 新手學藝加速【設計提案】：向師父學藝（Learning.learn）時，該技能目前等級 < rules.novice_learn_below 才生效。
+## prof = novice_learn_pct / 100、jing = novice_jing_pct / 100；等級 ≥ 門檻或規則缺 → { 1.0, 1.0 }。
+## 只影響 learn；自修、秘笈、生活技能、任務 skill_prof 不受影響。classic_strict 為 100／100（忠實）。
+static func novice_mults(ch: Character, skill_id: String, rules: Dictionary) -> Dictionary:
+	var none := { "prof": 1.0, "jing": 1.0 }
+	if not rules.has("novice_learn_pct") and not rules.has("novice_jing_pct"):
+		return none
+	var below := CharData.to_int(rules.get("novice_learn_below", 40), 40)
+	if ch.skills.level(skill_id) >= below:
+		return none
+	# M3c2 審查：老手（實戰 ≥ novice_xp_below）學新武功不算新手（原本只看這門技能 < 40）
+	if not novice_by_xp(ch, rules):
+		return none
+	var lp := CharData.to_int(rules.get("novice_learn_pct", 100), 100)
+	var jp := CharData.to_int(rules.get("novice_jing_pct", 100), 100)
+	return { "prof": maxf(0.01, lp / 100.0), "jing": maxf(0.0, jp / 100.0) }
+
+## 角色「最高的本派武功」等級（martial_arts 的 sect_id == 角色門派；monster_only 不算）。沒門派或沒學 → 0。
+## M3C2_PLAN §2.3.1、§2.3.3：雜務與切磋的學點只在這個值 < rules.novice_learn_below 時給（新手期）。
+static func highest_sect_art(ch: Character, tables: Dictionary) -> int:
+	if ch.sect == "":
+		return 0
+	var best := 0
+	for k in ch.skills.entries:
+		var r := CharData.row(tables, "martial_arts", String(k))
+		if r.is_empty() or bool(r.get("monster_only", false)) or String(r.get("sect_id", "")) != ch.sect:
+			continue
+		best = maxi(best, ch.skills.level(String(k)))
+	return best
+
+## 新手期（雜務、切磋給學點）：最高本派武功 < novice_learn_below（規則缺時 40），而且實戰 < novice_xp_below
+## （M3c2 審查：只看武功等級的話，把本派武功壓在 39 級、或老手換門派，都能一直當新手）
+static func is_novice(ch: Character, tables: Dictionary, rules: Dictionary) -> bool:
+	return highest_sect_art(ch, tables) < CharData.to_int(rules.get("novice_learn_below", 40), 40) and novice_by_xp(ch, rules)
+
+## 實戰還在新手範圍（規則 novice_xp_below；缺或 ≤ 0 → 不限）
+static func novice_by_xp(ch: Character, rules: Dictionary) -> bool:
+	var cap := CharData.to_int(rules.get("novice_xp_below", 0), 0)
+	return cap <= 0 or int(ch.combat_xp) < cap
+
+## M3c2 審查：雜務＋切磋學點的「一輩子」上限（規則 novice_lp_cap；缺或 ≤ 0 → 不限）。計數 counters.novice_lp。
+const NOVICE_LP_KEY := "novice_lp"
+static func novice_lp_left(ch: Character, rules: Dictionary) -> int:
+	var cap := CharData.to_int(rules.get("novice_lp_cap", 0), 0)
+	if cap <= 0:
+		return 1 << 30
+	return maxi(0, cap - CharData.to_int(ch.counters.get(NOVICE_LP_KEY, 0)))
+
+static func note_novice_lp(ch: Character, n: int) -> void:
+	if n > 0:
+		ch.counters[NOVICE_LP_KEY] = CharData.to_int(ch.counters.get(NOVICE_LP_KEY, 0)) + n
+
+## 切磋一場最多給多少學點（M3c2 審查：lp_for 對新手的比例上限 3.0 會讓 25 點的切磋弟子一場給 75；§2.1 的範圍是 2–30）
+const SPAR_LP_MAX := 30
+static func spar_lp(raw: int) -> int:
+	return clampi(raw, 0, SPAR_LP_MAX)
+
+## 雜務學點（M3C2_PLAN §2.3.1 #2）：n_today = 本遊戲日已完成這件雜務的次數（不含這次）。
+## 回傳 { "lp": int, "why": ""|"daily"|"novice"|"rule" }；why 非空時 lp = 0。
+static func chore_lp(chore: Dictionary, n_today: int, ch: Character, tables: Dictionary, rules: Dictionary) -> Dictionary:
+	var dp: Variant = chore.get("decay_pct", [100])
+	var pct := 100
+	if dp is Array and not (dp as Array).is_empty():
+		pct = CharData.to_int(dp[mini(maxi(0, n_today), (dp as Array).size() - 1)])
+	var lp := floori(CharData.to_int(chore.get("lp", 0)) * pct / 100.0)
+	if rules.get("chore_xuedian", false) != true:
+		return { "lp": 0, "why": "rule" }
+	if not is_novice(ch, tables, rules):
+		return { "lp": 0, "why": "novice" }
+	if lp <= 0:
+		return { "lp": 0, "why": "daily" }
+	var left := novice_lp_left(ch, rules)
+	if left <= 0:
+		return { "lp": 0, "why": "novice" }
+	return { "lp": mini(lp, left), "why": "" }
+
+## 雜務的忠實熟練度（M3C2_PLAN §2.3.1 #3）：每項只在該技能等級 < prof_below 時給；
+## 武功（ART）與生活技能（LIFE）沒學過（等級 0）不給（例：沒學過樵夫，砍柴不加樵夫）【設計提案】
+static func chore_prof(sp: Dictionary, prof_below: int, ch: Character, tables: Dictionary) -> Dictionary:
+	var out := {}
+	for sid in sp:
+		var k := String(sid)
+		var lv := ch.skills.level(k)
+		if lv >= prof_below:
+			continue
+		var kind := SkillBook.kind_of(k, tables)
+		if kind == "" or ((kind == SkillBook.KIND_ART or kind == SkillBook.KIND_LIFE) and lv < 1):
+			continue
+		out[k] = CharData.to_int(sp[sid])
+	return out
+
+## 切磋弟子的怪物列 id？（M3C2_PLAN §2.3.3：m_<派>_dizi 與華山的 m_hs_trainee；滅派專用列 m_npc_* 不算）
+const SPAR_EXTRA := ["m_hs_trainee"]
+static func is_spar_monster(mid: String) -> bool:
+	return mid in SPAR_EXTRA or (mid.begins_with("m_") and mid.ends_with("_dizi") and not mid.begins_with("m_npc_"))
+
+## 雜務代價付不起 → "chore_tired"（＝Protocol.R_CHORE_TIRED）；cost 的鍵 jing／shen／qi
+const CHORE_COST_KEYS := ["jing", "shen", "qi"]
+static func chore_cost_reason(ch: Character, chore: Dictionary) -> String:
+	var cost: Variant = chore.get("cost", {})
+	if cost is Dictionary:
+		for k in cost:
+			if String(k) in CHORE_COST_KEYS and int(ch.vitals.get(String(k), 0)) < CharData.to_int(cost[k]):
+				return "chore_tired"
+	return ""
 
 ## 自修上限（4.4）
 static func self_study_cap(ch: Character, skill_id: String, tables: Dictionary, rules: Dictionary) -> int:

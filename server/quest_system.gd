@@ -502,6 +502,10 @@ func _precheck(s: Session, qid: String, acts: Variant) -> String:
 						and int(_st(ch, qid).get("objs", {}).get(str(o.get("id", "")), 0)) < 1:
 					var it2 := str(o.get("item", ""))
 					need[it2] = int(need.get(it2, 0)) + maxi(1, int(o.get("count", 1)))
+				# M3c2 WP-PACE：雜務交差前先看精神付不付得起（不夠 → chore_tired，任務留著）
+				var tired := chore_precheck(s, qid, str(a.get("obj", "")))
+				if tired != "":
+					return tired
 			"accept":
 				if not _active(ch).has(qid):
 					var why := _can_accept(s, qid)
@@ -1005,7 +1009,7 @@ func _finish(s: Session, qid: String, outcome: String) -> void:
 	host.tell(s, Protocol.CH_SYSTEM, Protocol.E_QUEST_COMPLETE, { "quest_name": str(def.get("name", qid)), "outcome_label": label })
 	var params := { "name": str(ch.name), "quest_name": str(def.get("name", qid)), "outcome_label": label,
 		"room_name": host.room_name(s.room_id()) }
-	_give_rewards(s, oc.get("rewards", {}), true, params)
+	_give_rewards(s, chore_rewards(s, qid, def, oc.get("rewards", {})), true, params)   # M3c2 WP-PACE：雜務
 	# 任務列的 rumors.first／each 由 RumorSystem 輪詢 ws.world.quest_firsts 與各角色的 done 次數發出（WP-AMBIENT，§5.1 #2），
 	# 這裡不再重複發；結局獎勵的 rumor 與動作 rumor 照上面直接交給 RumorSystem。
 	s.sheet_dirty = true
@@ -1434,3 +1438,84 @@ func _end(s: Session) -> void:
 			_depth -= 1
 	if not _recheck.is_empty() and _depth == 0:
 		_recheck.clear()   # 一輪就好，避免物品來回觸發
+
+
+# ==== M3c2 WP-PACE ====
+## M3C2_PLAN §2.3：門派雜務（任務列帶 chore 欄位；新列 group "sect_chores"，既有的恆山早晚課、星宿馬屁／練毒只加 chore）。
+## 交差時扣代價（cost：jing／shen／qi；不夠 → chore_tired，任務留著）；學點 = floor(lp × decay_pct[n] / 100)，
+## n = 這個角色本遊戲日已完成這件雜務的次數；規則 chore_xuedian 關、或最高本派武功 ≥ novice_learn_below → 學點 0；
+## 熟練度 skill_prof 每項只在等級 < prof_below 時給（武功與生活技能沒學過不給）。計數：counters.chore_day = { day, n: { qid: 次數 } }。
+const CHORE_GROUP := "sect_chores"
+const CHORE_DAY_KEY := "chore_day"
+const CHORE_COST_KEYS := ["jing", "shen", "qi"]
+
+## 任務列的 chore 欄位（沒有 → {}）
+static func chore_of(def: Dictionary) -> Dictionary:
+	var c: Variant = def.get("chore", null)
+	return c if c is Dictionary else {}
+
+## 遊戲日＝WorldClock 的 day（子時換日；M3c2 整合：原本用 now_s / day_s，換日點落在辰時，與時辰窗、時鐘的「第幾天」不一致）
+func day_index() -> int:
+	return int(host.clock().get("day", 0))
+
+## 本遊戲日的雜務計數（換日就重設；就地寫回 counters）
+func chore_day(ch) -> Dictionary:
+	var today := day_index()
+	var cd: Variant = ch.counters.get(CHORE_DAY_KEY, null)
+	if not (cd is Dictionary) or CharData.to_int((cd as Dictionary).get("day", -1), -1) != today \
+			or not ((cd as Dictionary).get("n") is Dictionary):
+		cd = { "day": today, "n": {} }
+		ch.counters[CHORE_DAY_KEY] = cd
+	return cd
+
+## 這次「完成目標」會不會結束這件雜務（目標在目前階段、階段的 next 全是 END、而且其他目標都已完成）→ 先看代價
+func chore_precheck(s: Session, qid: String, oid: String) -> String:
+	var def := quest_row(qid)
+	var c := chore_of(def)
+	if c.is_empty():
+		return ""
+	var ch = s.character
+	var st := _st(ch, qid)
+	if st.is_empty():
+		return ""
+	var stage := _stage(def, st)
+	if QuestDef.objective(def, str(st.get("stage", "")), oid).is_empty():
+		return ""
+	for e in stage.get("next", []):
+		if not (e is Dictionary) or not QuestDef.is_end(str(e.get("goto", ""))):
+			return ""
+	if not bool(stage.get("any", false)):
+		for o in stage.get("objectives", []):
+			if o is Dictionary and str(o.get("id", "")) != oid and not _objective_done(s, st, o):
+				return ""
+	return chore_cost_reason(ch, c)
+
+## 代價付不起 → chore_tired（純邏輯在 Learning.chore_cost_reason，balance_sim 共用）
+static func chore_cost_reason(ch, c: Dictionary) -> String:
+	return Protocol.R_CHORE_TIRED if Learning.chore_cost_reason(ch, c) != "" else ""
+
+## _finish 的結局獎勵 → 雜務版（扣代價、算學點、過濾熟練度、記次數、必要時送 ch_no_lp）；不是雜務原樣回傳
+func chore_rewards(s: Session, qid: String, def: Dictionary, rw_in: Variant) -> Variant:
+	var c := chore_of(def)
+	if c.is_empty():
+		return rw_in
+	var ch = s.character
+	var rw := QuestDef.norm_rewards(rw_in)
+	var cost: Variant = c.get("cost", {})
+	if cost is Dictionary:
+		for k in cost:
+			if str(k) in CHORE_COST_KEYS:
+				ch.vitals[str(k)] = maxi(0, int(ch.vitals.get(str(k), 0)) - CharData.to_int(cost[k]))
+	var cd := chore_day(ch)
+	var n := CharData.to_int((cd["n"] as Dictionary).get(qid, 0))
+	var got := Learning.chore_lp(c, n, ch, host.tables, host.rules)
+	cd["n"][qid] = n + 1
+	Learning.note_novice_lp(ch, int(got["lp"]))   # M3c2 審查：雜務＋切磋學點的一輩子上限
+	rw["learn_points"] = CharData.to_int(rw.get("learn_points", 0)) + int(got["lp"])
+	rw["skill_prof"] = Learning.chore_prof(rw.get("skill_prof", {}), CharData.to_int(c.get("prof_below", 50), 50), ch, host.tables)
+	var why := str(got["why"])
+	if why == "daily" or why == "novice":
+		host.tell(s, Protocol.CH_SYSTEM, Protocol.E_CH_NO_LP, { "quest_name": str(def.get("name", qid)), "why": why,
+			"text": _template_text("ch_no_lp_" + why) })
+	s.sheet_dirty = true
+	return rw

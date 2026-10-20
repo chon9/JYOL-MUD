@@ -345,8 +345,29 @@ static func battle_label(b: Dictionary) -> String:
 
 # ---------------------------------------------------------------- 連線
 
+## M3c2 WP-CARRY（M3C2_PLAN §6.3）：協定／版本／資料不同時，主機送 "<code>|<版本>|<協定>|<指紋12>"；
+## 第一段查原有文字，再加一行雙方的值。沒有 "|" 的舊主機 → 原文字＋自己的值（只對這三種原因）
 static func reject_text(reason: String) -> String:
-	return str(REJECT_TEXT.get(reason, "主機拒絕連線：" + reason))
+	var parsed := BuildInfo.parse_reject(reason)
+	var code := str(parsed["code"])
+	var text := str(REJECT_TEXT.get(code, "主機拒絕連線：" + code))
+	if not (code in UiKeys.REJECT_WITH_BUILD):
+		return text
+	return text + "
+" + build_compare_line(parsed.get("host", {}), local_content_hash())
+
+## 「主機：v0.6.1.0　協定 5　資料 9d24a2e10ccc／你：v0.6.0.0　協定 5　資料 1a2b3c4d5e6f」（舊主機沒帶值 → 只有「你：…」）
+static func build_compare_line(host: Dictionary, my_content_hash: String) -> String:
+	var mine := "你：" + BuildInfo.line(my_content_hash)
+	if host.is_empty():
+		return mine
+	return "主機：%s／%s" % [BuildInfo.format_line(str(host.get("version", "?")), int(host.get("protocol", 0)),
+		str(host.get("fp", ""))), mine]
+
+static func local_content_hash() -> String:
+	var loop := Engine.get_main_loop() as SceneTree
+	var gd: Node = loop.root.get_node_or_null("GameData") if loop != null else null
+	return str(gd.get("content_hash")) if gd != null else ""
 
 static func kick_text(reason: String) -> String:
 	return str(KICK_TEXT.get(reason, "被主機請出：" + reason))

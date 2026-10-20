@@ -606,6 +606,10 @@ func _shortcut_input(event: InputEvent) -> void:
 		hotbar.trigger(Hotbar.ROW_CMD, k.keycode - KEY_F1)
 		get_viewport().set_input_as_handled()
 		return
+	if not mods and k.physical_keycode in WASD_KEYS and not _typing():
+		get_viewport().set_input_as_handled()
+		_wasd_queue(k.physical_keycode)
+		return
 	if k.keycode == KEY_M and not k.alt_pressed and not k.meta_pressed and (k.ctrl_pressed or not _typing()):
 		toggle_panel(MAP_PANEL)
 		get_viewport().set_input_as_handled()
@@ -617,6 +621,39 @@ func _shortcut_input(event: InputEvent) -> void:
 	if k.ctrl_pressed and not k.alt_pressed and k.keycode == UiKeys.QUESTS_HOTKEY:
 		toggle_panel(QUEST_PANEL)
 		get_viewport().set_input_as_handled()
+
+## WASD 走路：W 北、S 南、A 西、D 東；兩鍵一起按走斜向（W+A 西北、W+D 東北、S+A 西南、S+D 東南）。
+## 第一個鍵按下後等 WASD_COMBO_S 收集同時按的鍵，再照出口鈕走一步（沒有那個出口就不動）。
+## 用實體鍵位（physical_keycode），換鍵盤配置也一樣在左手位置。
+const WASD_KEYS := [KEY_W, KEY_A, KEY_S, KEY_D]
+const WASD_COMBO_S := 0.08
+var _wasd_pending := false
+var _wasd_seen: Dictionary = {}
+
+func _wasd_queue(key: int) -> void:
+	_wasd_seen[key] = true
+	if _wasd_pending:
+		return
+	_wasd_pending = true
+	await get_tree().create_timer(WASD_COMBO_S).timeout
+	_wasd_pending = false
+	var held := func(kc: int) -> bool: return _wasd_seen.has(kc) or Input.is_physical_key_pressed(kc)
+	var dir := wasd_dir(held.call(KEY_W), held.call(KEY_S), held.call(KEY_A), held.call(KEY_D))
+	_wasd_seen.clear()
+	if dir == "" or not is_inside_tree() or _battle_open() or _typing():
+		return
+	for d in _dialogs():
+		if d.visible:
+			return   # 對話、商店等視窗開著時不走（免得視窗內容跟所在房間對不上）
+	if map_panel.is_walking():
+		map_panel.esc_stop()   # 自己按方向就停止自動趕路
+	scene_panel.key_move(dir)
+
+## 四個鍵的狀態 → 方向碼（N/S/E/W/NE/NW/SE/SW；相反的鍵互相抵消；都沒有 → ""）
+static func wasd_dir(n: bool, s: bool, w: bool, e: bool) -> String:
+	var v := "N" if n and not s else ("S" if s and not n else "")
+	var h := "W" if w and not e else ("E" if e and not w else "")
+	return v + h
 
 ## 正在打字（聊天框等）時 M 不開地圖
 func _typing() -> bool:

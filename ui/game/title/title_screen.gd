@@ -5,6 +5,10 @@ extends UiScreen
 ## - 斷線回來時顯示原因（主機關閉 →「主機已離線，江湖凍結」、被踢 → 原因）；有上次連線目標時多一顆「重新連線」
 ##   （ReconnectFlow：最多自動重試 3 次、間隔 5 秒）。
 ## - Steam 大廳：開房（可勾公開）、邀請好友、搜尋公開大廳並加入（協定版本不同的大廳灰掉）。
+## M3c2 WP-CARRY（M3C2_PLAN §5.3、§6.2）：
+## - 右下角一行淡色小字：版本、連線協定、資料指紋（BuildInfo.line），跟朋友連線前互相對照。
+## - 開房前可勾「允許外來角色」（存進該世界 options.json 的 allow_foreign_characters；預設跟著世界現有設定，新世界不勾）。
+## - Steam 大廳清單的不相容列後面附主機的值（大廳資料有的才顯示）。
 
 var world_edit: LineEdit
 var addr_edit: LineEdit
@@ -25,6 +29,10 @@ var btn_find: Button
 var lobby_list: ItemList
 var lobbies: Array = []
 var disconnect_info: Dictionary = {}
+var foreign_check: CheckBox
+var build_label: Label
+const BUILD_TOOLTIP := "跟朋友連線前互相對照：協定與資料指紋都一樣才能連線。"
+const FOREIGN_TOOLTIP := "開房時接受朋友從別的世界帶來的角色（匯入時會檢查並截斷數值）。單機遊玩一律允許。"
 
 func _ready() -> void:
 	requires_session = false
@@ -84,6 +92,19 @@ func _build() -> void:
 	srow.add_child(public_check)
 	btn_invite = UiBuild.button(srow, "邀請好友", _on_invite)
 	btn_find = UiBuild.button(srow, "搜尋大廳", _on_find)
+	# M3c2 WP-CARRY §5.3：開房（區網、Steam）共用的「允許外來角色」
+	var frow := UiBuild.hbox(col, 8)
+	UiBuild.muted(UiBuild.label(frow, "開房選項", 15)).custom_minimum_size = Vector2(90, 0)
+	foreign_check = CheckBox.new()
+	foreign_check.name = "AllowForeign"
+	foreign_check.text = "允許外來角色"
+	foreign_check.tooltip_text = FOREIGN_TOOLTIP
+	frow.add_child(foreign_check)
+	# 主題的 CheckBox 字是亮色、底卻是按鈕的米色 → 改用按鈕的深色字（可讀性）
+	var ink := foreign_check.get_theme_color("font_color", "Button")
+	for k in ["font_color", "font_hover_color", "font_pressed_color", "font_hover_pressed_color", "font_focus_color"]:
+		foreign_check.add_theme_color_override(k, ink)
+	world_edit.text_changed.connect(func(_t: String): load_foreign_choice())
 	steam_label = UiBuild.muted(UiBuild.label(col, "", 15, true))
 	lobby_list = ItemList.new()
 	lobby_list.custom_minimum_size = Vector2(0, 72)
@@ -110,6 +131,40 @@ func _build() -> void:
 		if b != null and b.has_method("set_music_enabled"):
 			b.call("set_music_enabled", on))
 	col.add_child(music)
+	# M3c2 WP-CARRY §6.2：右下角版本列
+	build_label = UiBuild.muted(UiBuild.label(null, build_line(), 13))
+	build_label.name = "BuildInfoLine"
+	build_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	build_label.tooltip_text = BUILD_TOOLTIP
+	build_label.mouse_filter = Control.MOUSE_FILTER_PASS
+	add_child(build_label)
+	build_label.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_RIGHT, Control.PRESET_MODE_MINSIZE, 12)
+	build_label.grow_horizontal = Control.GROW_DIRECTION_BEGIN
+	build_label.grow_vertical = Control.GROW_DIRECTION_BEGIN
+	load_foreign_choice()
+
+## BuildInfo.line(GameData.content_hash)
+static func build_line() -> String:
+	var loop := Engine.get_main_loop() as SceneTree
+	var gd: Node = loop.root.get_node_or_null("GameData") if loop != null else null
+	return BuildInfo.line(str(gd.get("content_hash")) if gd != null else "")
+
+## 勾選狀態跟著「世界名稱」那個世界的 options.json（沒有這個世界 → 不勾）
+func load_foreign_choice() -> void:
+	if foreign_check == null:
+		return
+	var sm := get_node_or_null("/root/SaveManager")
+	var on := false
+	if sm != null and sm.has_method("load_options"):
+		var o: Variant = sm.call("load_options", world_id())
+		on = o is Dictionary and (o as Dictionary).get("allow_foreign_characters", false) == true
+	foreign_check.set_pressed_no_signal(on)
+
+## 開房前把勾選告訴 WorldServer（start() 時存進 options.json）
+func _apply_foreign_choice() -> void:
+	var w := get_node_or_null("/root/WorldServer")
+	if w != null and w.has_method("set_host_foreign_choice") and foreign_check != null:
+		w.call("set_host_foreign_choice", foreign_check.button_pressed)
 
 
 func refresh() -> void:
@@ -153,6 +208,7 @@ func _on_enet_host() -> void:
 	var nm := _nm()
 	if nm == null:
 		return
+	_apply_foreign_choice()
 	if nm.start_enet_host(world_id(), nm.ENET_DEFAULT_PORT) != OK:
 		show_message(str(nm.status_text))
 		return
@@ -170,6 +226,8 @@ func _on_enet_join() -> void:
 
 func _on_steam_host() -> void:
 	var nm := _nm()
+	if nm:
+		_apply_foreign_choice()
 	if nm and not nm.host_steam(world_id(), public_check.button_pressed):
 		show_message(str(nm.status_text))
 
@@ -202,7 +260,7 @@ func apply_lobbies(list: Array) -> void:
 		var i := lobby_list.add_item(TitleLobby.label(l))
 		lobby_list.set_item_disabled(i, not same)
 		if not same:
-			lobby_list.set_item_tooltip(i, "版本不符，不能加入")
+			lobby_list.set_item_tooltip(i, "版本不符，不能加入" + TitleLobby.host_values(l))
 
 func _on_lobby_activated(index: int) -> void:
 	if index < 0 or index >= lobbies.size() or lobby_list.is_item_disabled(index):
@@ -232,10 +290,36 @@ func _on_status(t: String) -> void:
 
 ## 大廳清單的文字與版本判斷（純函式）
 class TitleLobby:
-	static func compatible(l: Dictionary) -> bool:
+	## 協定相同，而且（大廳有公布資料指紋時）資料指紋也相同（M3c2 第二輪審查；舊主機沒有 fp → 只看協定）
+	## my_fp 空 → 讀本機 GameData.content_hash
+	static func compatible(l: Dictionary, my_fp := "") -> bool:
 		var proto := str(l.get("proto", str(Protocol.VERSION)))
-		return proto == str(Protocol.VERSION)
+		if proto != str(Protocol.VERSION):
+			return false
+		var fp := BuildInfo.fingerprint12(str(l.get("fp", "")))
+		if fp == "":
+			return true
+		var mine := my_fp if my_fp != "" else TitleLobby.local_fp()
+		return mine == "" or BuildInfo.fingerprint12(mine) == fp
+
+	static func local_fp() -> String:
+		var loop := Engine.get_main_loop() as SceneTree
+		var gd: Node = loop.root.get_node_or_null("GameData") if loop != null else null
+		return BuildInfo.fingerprint12(str(gd.get("content_hash"))) if gd != null and gd.get("content_hash") != null else ""
 
 	static func label(l: Dictionary) -> String:
 		var t := "%s（%d 人）" % [str(l.get("name", "?")), int(l.get("members", 0))]
-		return t if TitleLobby.compatible(l) else t + "　版本不符"
+		return t if TitleLobby.compatible(l) else t + "　版本不符" + TitleLobby.host_values(l)
+
+	## M3c2 §6.2：不相容的大廳後面附「（主機 v… 協定 … 資料 …）」——大廳資料有的值才顯示，都沒有回 ""
+	static func host_values(l: Dictionary) -> String:
+		var parts: Array = []
+		var ver := str(l.get("version", l.get("ver", "")))
+		if ver != "":
+			parts.append("v" + ver)
+		if str(l.get("proto", "")) != "":
+			parts.append("協定 " + str(l["proto"]))
+		var fp := str(l.get("fp", l.get("content_fp", "")))
+		if fp != "":
+			parts.append("資料 " + BuildInfo.fingerprint12(fp))
+		return "" if parts.is_empty() else "（主機 %s）" % "　".join(parts)

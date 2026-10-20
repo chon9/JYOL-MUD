@@ -5,7 +5,11 @@ extends RefCounted
 
 const INT_FIELDS := {
 	"eras": ["order"],
-	"rule_profiles": ["rules.xuedian_cap"],
+	"rule_profiles": ["rules.xuedian_cap",
+		# M3C2_PLAN §8.4（WP-PACE）
+		"rules.novice_learn_pct", "rules.novice_jing_pct", "rules.novice_learn_below",
+		# M3c2 審查：新手期另看實戰（novice_xp_below）與雜務＋切磋學點的一輩子上限（novice_lp_cap）
+		"rules.novice_xp_below", "rules.novice_lp_cap"],
 	"attributes": ["roll_cap"],
 	"basic_skills": ["max_level", "attr_bonus_per10.*", "attr_bonus_cap.*"],
 	"sects": ["join_requires[].value", "expel_rules[].value", "sect_skill_cap", "sect_art_cap_bonus",
@@ -53,7 +57,9 @@ const INT_FIELDS := {
 		"outcomes.*.rewards.killing_intent", "outcomes.*.rewards.items[].n", "outcomes.*.rewards.skill_prof.*",
 		"outcomes.*.rewards.learn.*",
 		# M3B_PLAN §4.9
-		"outcomes.*.rewards.sect_rank.rank"],
+		"outcomes.*.rewards.sect_rank.rank",
+		# M3C2_PLAN §8.4（WP-PACE：門派雜務）
+		"chore.lp", "chore.decay_pct[]", "chore.cost.*", "chore.prof_below"],
 	# STORY_PLAN §5（WP-MERGE 從碎片建立；檔案不存在時是空表）
 	"rumors": ["weight", "requires[].value"],
 	"wanderers": ["move_every_ke", "aggro.chance_pct", "aggro.requires[].value", "talk_fight.requires[].value"],
@@ -62,7 +68,8 @@ const INT_FIELDS := {
 	"life_skills": ["jing_cost", "cooldown_s", "cap", "yield[].n[]", "recipes[].inputs[].n",
 		"recipes[].output.n", "recipes[].min_level",
 		# M3B_PLAN §4.5（第 2 版）
-		"yield[].min_level", "recipes[].jing_cost", "recipes[].prof", "hunt.drops[].n[]", "hunt.drops[].min_level"],
+		"yield[].min_level", "recipes[].jing_cost", "recipes[].prof", "hunt.drops[].n[]", "hunt.drops[].min_level",
+		"yield[].n_per_levels"],   # M3c2 WP-ECON（M3C2_PLAN §4.4、§9.2）
 	"status_effects": ["duration_actions", "persist_tick_real_s", "persist_ticks_per_level"],
 	# 房間圖（M1_PLAN 3.11.8，D1）
 	"maps": ["escape_tiles_hint", "rooms[].encounter.table[].w", "rooms[].encounter.table[].count[]",
@@ -83,7 +90,9 @@ const INT_FIELDS := {
 		"bank_money_cap", "consign_fee_base", "consign_fee_per_weight", "consign_hold_days",
 		"org_found_fame", "org_signer_fame", "org_found_fee", "org_member_max", "org_petition_days",
 		# M3C_PLAN §9.3
-		"npc_respawn_pct", "loot_drop_pct"],
+		"npc_respawn_pct", "loot_drop_pct",
+		# M3C2_PLAN §8.3（WP-PACE）
+		"spar_daily_cap"],
 }
 
 ## table -> [[path, target_table], ...]；空字串與 null 不檢查。
@@ -112,7 +121,9 @@ const REFS := {
 		["requires[].sect", "sects"],
 		# STORY_PLAN §8.3 Day-0（房間參照由 data_lint 自訂檢查）
 		["stages[].objectives[].npc", "npcs"], ["stages[].objectives[].item", "items"],
-		["stages[].objectives[].monster", "monsters"], ["outcomes.*.rewards.items[].id", "items"]],
+		["stages[].objectives[].monster", "monsters"], ["outcomes.*.rewards.items[].id", "items"],
+		# M3C2_PLAN §8.4（WP-PACE）
+		["chore.sect", "sects"]],
 	"wanderers": [["npc", "npcs"], ["monster", "monsters"]],
 	"rumors": [["quest", "quests"]],
 	"life_skills": [["tool", "items"], ["yield[].item", "items"], ["recipes[].inputs[].item", "items"],
@@ -145,6 +156,15 @@ const RULE_DEFAULTS := {
 	# M3c 第二輪審查：新手（實戰 < newbie_pk_protect_xp）善惡為負不被守城官兵追殺、城內行兇不招來官兵【設計提案】；
 	# classic_strict 關（2001 規則：news_4-2「善惡度為負…只要進城就會被城中守衛追殺」沒有新手例外）
 	"newbie_guard_spare": true,
+	# M3C2_PLAN §8.2（WP-PACE）：新手學藝加速、雜務學點、切磋獎勵。預設＝關（舊的自訂組合不會突然變快）；四個內建組合明確寫值
+	"novice_learn_pct": 100,
+	"novice_jing_pct": 100,
+	"novice_learn_below": 40,
+	# M3c2 審查：實戰到這裡就不算新手（新手學藝加速、雜務／切磋學點都停）；雜務＋切磋學點一輩子最多這麼多【設計提案】
+	"novice_xp_below": 30000,
+	"novice_lp_cap": 4000,
+	"chore_xuedian": false,
+	"spar_rewards": false,
 }
 
 const RULE_ENUMS := {
@@ -170,7 +190,9 @@ const REQUIRE_TYPES := ["morality_min", "morality_max", "sect", "no_sect", "not_
 	# 審查修正：上限型武功門檻（藍鳳凰：基本毒術 < 30，台免）
 	"skill_max",
 	# M3B_PLAN §4.3
-	"sect_not", "sect_rank_min", "org_member", "no_org", "life_min"]
+	"sect_not", "sect_rank_min", "org_member", "no_org", "life_min",
+	# M3C2_PLAN §2.3.1（WP-PACE）
+	"money_max"]
 
 ## 各條件 type 必備的欄位（M1_PLAN 3.11.1；data_lint 檢查）
 const REQUIRE_FIELDS_BY_TYPE := {
@@ -190,6 +212,8 @@ const REQUIRE_FIELDS_BY_TYPE := {
 	"skill_max": ["skill", "value"],
 	# M3B_PLAN §4.3（org_member 的 org 選填：空 = 任何組織）
 	"sect_not": ["sect"], "sect_rank_min": ["sect", "value"], "org_member": [], "no_org": [], "life_min": ["skill", "value"],
+	# M3C2_PLAN §2.3.1
+	"money_max": ["value"],
 }
 
 ## 十二時辰名（masters.hours、hour_in 條件；與 WorldClock 相同順序）

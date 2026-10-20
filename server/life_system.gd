@@ -17,8 +17,9 @@ var host: GameHost
 func _init(p_host: GameHost) -> void:
 	host = p_host
 
-static func success_chance(level: int) -> float:
-	return minf(0.95, 0.5 + level * 0.005)
+## M3C2_PLAN §4.4：讀技能列／配方列的 success_base、success_per_level（預設 0.5／0.005，上限 0.95）
+static func success_chance(level: int, row: Dictionary = {}, recipe: Dictionary = {}) -> float:
+	return RecipeCheck.success_chance(level, row, recipe)
 
 ## 驗證順序（§5.2.4）：no_feature（配方 feature 覆寫）→ not_known → no_tool（tool＋tools＋配方 tools）→ busy
 ## → not_enough_jing → no_recipe／recipe_level／no_ingredients → 產出放不下 too_heavy（先檢查，不扣精、不扣材料）
@@ -70,7 +71,7 @@ func work(s: Session, skill_id: String, recipe_id: String) -> Dictionary:
 
 	ch.vitals["jing"] = int(ch.vitals.get("jing", 0)) - jing_cost
 	ch.counters[CD_KEY] = now + float(row.get("cooldown_s", 5))
-	var success := host.rng.randf() < success_chance(lv)
+	var success := host.rng.randf() < success_chance(lv, row, recipe)
 	var pr := _practice(ch, skill_id, success, RecipeCheck.prof_mult(recipe) if success else 1)
 	var prof_gain := int(pr.get("gain", 0))
 	var sname := host.skill_name(skill_id)

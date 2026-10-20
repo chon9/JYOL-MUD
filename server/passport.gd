@@ -85,6 +85,9 @@ static func check_format(passport: Dictionary) -> String:
 		return "passport_bad_format"
 	if not (typeof(passport["saved_s"]) in [TYPE_INT, TYPE_FLOAT]):
 		return "passport_bad_format"
+	# M3c2 第三輪審查：NaN／INF 的 saved_s（var_to_bytes 會原樣送過來）——比較永遠是 false、存成 JSON 會變 null
+	if not is_finite(float(passport["saved_s"])):
+		return "passport_bad_format"
 	return ""
 
 static func verify(world_secret: String, world_id: String, passport: Dictionary) -> bool:

@@ -101,7 +101,7 @@ func is_warned(field: String) -> bool:
 func apply_sheet(s: Dictionary) -> void:
 	if not _built:
 		_build()
-	header.text = "%s（%s）　生日 %d 月　出生於%s" % [str(s.get("name", "")),
+	header.text = "%s%s（%s）　生日 %d 月　出生於%s" % [str(s.get("name", "")), foreign_mark(s),   # M3c2 WP-CARRY：外來角色
 		UiKeys.GENDER_LABELS.get(str(s.get("gender", "")), ""), UiBuild.num(s.get("birth_month", 0)),
 		UiClient.name_of("regions", str(s.get("birth_city", "")))]
 	apply_look(s)
@@ -204,3 +204,13 @@ static func corpse_lines(s: Dictionary) -> String:
 				UiSocial.corpse_status(c, UiBuild.num(c.get("left_s", 0)))])
 	return "
 ".join(out)
+
+## M3c2 WP-CARRY（M3C2_PLAN §5.6）：外來角色名字後加「（外來）」。角色表沒有這個欄位 → 查角色清單（summary.foreign）
+static func foreign_mark(s: Dictionary) -> String:
+	if bool(s.get("foreign", false)):
+		return "（外來）"
+	var cid := str(s.get("char_id", ""))
+	for row in UiClient.char_list():
+		if row is Dictionary and str(row.get("char_id", "")) == cid and cid != "":
+			return "（外來）" if bool(row.get("foreign", false)) else ""
+	return ""

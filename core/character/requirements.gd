@@ -165,6 +165,9 @@ static func _ok(t: String, c: Dictionary, ch: Character, tables: Dictionary, opt
 			return ch.guild == ""
 		"life_min":
 			return ch.skills.level(String(c.get("skill", ""))) >= CharData.to_int(value)
+		# ---- M3C2_PLAN §2.3.1（WP-PACE）：化緣「身上銀兩 ≤ value」 ----
+		"money_max":
+			return ch.money <= CharData.to_int(value)
 	return false
 
 ## 中文說明，例：「佛法 10 級以上」
@@ -273,6 +276,9 @@ static func describe(cond: Dictionary, tables: Dictionary) -> String:
 			return "沒有加入任何組織"
 		"life_min":
 			return "生活技能%s %d 級以上" % [SkillBook.skill_name(String(cond.get("skill", "")), tables), CharData.to_int(value)]
+		# ---- M3C2_PLAN §2.3.1 ----
+		"money_max":
+			return "身上沒有銀兩" if CharData.to_int(value) <= 0 else "身上銀兩 %d 兩以下" % CharData.to_int(value)
 	return "特殊條件"
 
 ## sect_ranks 列的名稱（找不到回 ""）；生效視圖裡同一派同一 rank 只會有一列

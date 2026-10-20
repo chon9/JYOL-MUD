@@ -29,10 +29,10 @@ static func from_dict(d: Dictionary) -> Inventory:
 		if typeof(it) != TYPE_DICTIONARY:
 			continue
 		var n := CharData.to_int(it.get("n", 1), 1)
-		if n <= 0 or String(it.get("uid", "")) == "" or String(it.get("id", "")) == "":
+		if n <= 0 or CharData.to_str(it.get("uid", "")) == "" or CharData.to_str(it.get("id", "")) == "":
 			continue
 		var e := {
-			"uid": String(it["uid"]), "id": String(it["id"]), "n": n,
+			"uid": CharData.to_str(it["uid"]), "id": CharData.to_str(it["id"]), "n": n,
 			"born_s": CharData.to_float(it.get("born_s", 0.0)),
 		}
 		if it.get("lots") is Array:
@@ -42,7 +42,7 @@ static func from_dict(d: Dictionary) -> Inventory:
 	var eq: Variant = d.get("equipped", {})
 	if typeof(eq) == TYPE_DICTIONARY:
 		for slot in SLOTS:
-			var uid := String(eq.get(slot, ""))
+			var uid := CharData.to_str(eq.get(slot, ""))
 			inv.equipped[slot] = uid if (uid != "" and not inv.find(uid).is_empty()) else ""
 	return inv
 

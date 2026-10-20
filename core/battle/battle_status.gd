@@ -12,7 +12,8 @@ const FANG_EFFECT := "POISON_FANG"
 const FANG_STATUS := "poison"
 const FANG_LEVEL_STEP := 25
 const EVADE_HIT_DROP := 0.15    # EVADE：這一下命中率 −15 個百分點
-const HEAVY_MULT := 1.5
+const HEAVY_MULT := 1.4             # M3C2 R6：1.5 → 1.4（血刀威嚇小幅削弱，期望增傷約 −28%）
+const HEAVY_CHANCE_MULT := 0.9      # M3C2 R6：HEAVY 的觸發機率 = proc_chance(lv) × 0.9
 const REST_PROC_PCT := 0.10     # REST：氣、內力各再回 10%
 const DINGLI_BASE := 20         # 定力縮短狀態：每高於 20 的 10 點 −1 次【設計提案】
 const DINGLI_STEP := 10
@@ -154,7 +155,11 @@ static func try_proc(b: Battle, u: BattleUnit, effect: String, tables: Dictionar
 	for k in cost:
 		if _stat(u, str(k)) < PROC_COST:
 			return false
-	if b.rng.randf() >= BattleFormulas.proc_chance(int(u.sect_skill().get("level", 0))):
+	# M3C2_PLAN §3.1：HEAVY（血刀威嚇）的機率 × HEAVY_CHANCE_MULT；一樣只擲一次亂數（其他效果的亂數序列不變）
+	var p := BattleFormulas.proc_chance(int(u.sect_skill().get("level", 0)))
+	if effect == "HEAVY":
+		p *= HEAVY_CHANCE_MULT
+	if b.rng.randf() >= p:
 		return false
 	for k in cost:
 		_pay(u, str(k), PROC_COST)

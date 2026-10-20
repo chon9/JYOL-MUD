@@ -121,11 +121,42 @@ static func n_range(nr: Variant) -> Array:
 		return [int(nr), int(nr)]
 	return [1, 1]
 
+## M3C2_PLAN §4.4：yield[].n_per_levels（int，預設 0＝不變）——每多 N 級，採集數量上下限各 +1。
+## 「多」從該列的 min_level（預設 1）算起：加成 = ⌊max(0, 等級 − min_level) / N⌋。
+## M3C2_PLAN 缺漏：計畫沒寫從幾級開始算 → 從該列的 min_level 算（高階產物剛解鎖時是基本數量）。
+static func n_bonus(e: Dictionary, level: int) -> int:
+	var per := int(e.get("n_per_levels", 0))
+	if per <= 0:
+		return 0
+	return maxi(0, level - int(e.get("min_level", 1))) / per
+
+## 這個等級的數量範圍 [lo, hi]（n 範圍＋n_per_levels 加成）
+static func yield_range(e: Dictionary, level: int) -> Array:
+	var r := n_range(e.get("n", [1, 1]))
+	var b := n_bonus(e, level)
+	return [int(r[0]) + b, int(r[1]) + b]
+
+## M3C2_PLAN §4.4：成功率 = min(0.95, success_base + success_per_level × 等級)；
+## 預設 0.5／0.005（既有規則）；技能列可以寫，配方列再覆寫技能列
+const SUCCESS_BASE := 0.5
+const SUCCESS_PER_LEVEL := 0.005
+const SUCCESS_MAX := 0.95
+
+static func success_chance(level: int, row: Dictionary = {}, recipe: Dictionary = {}) -> float:
+	var base := SUCCESS_BASE
+	var per := SUCCESS_PER_LEVEL
+	for src in [row, recipe]:
+		if (src as Dictionary).has("success_base"):
+			base = float(src["success_base"])
+		if (src as Dictionary).has("success_per_level"):
+			per = float(src["success_per_level"])
+	return clampf(base + per * level, 0.0, SUCCESS_MAX)
+
 ## 採集最多可能拿到多少（放不放得下的保守檢查）：[[item, n_max], …]
 static func gather_max(row: Dictionary, level: int) -> Array:
 	var out: Array = []
 	for e in eligible_yields(row, level):
-		var r := n_range(e.get("n", [1, 1]))
+		var r := yield_range(e, level)
 		if int(r[1]) > 0:
 			out.append([str(e["item"]), int(r[1])])
 	return out
@@ -136,7 +167,7 @@ static func roll_gather(row: Dictionary, level: int, rng: RandomNumberGenerator)
 	for e in eligible_yields(row, level):
 		if rng.randf() >= float(e.get("chance", 1.0)):
 			continue
-		var r := n_range(e.get("n", [1, 1]))
+		var r := yield_range(e, level)
 		var n := rng.randi_range(int(r[0]), int(r[1]))
 		if n > 0:
 			out.append([str(e["item"]), n])

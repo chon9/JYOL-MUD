@@ -38,7 +38,7 @@
       "features": [], "requires": [{"type": "sect", "sect": "wudang"}] },
     { "id": "wd_houshan", "name": "後山松林", "desc": "後山松林清幽，雲霧在林間繚繞，六俠殷梨亭與七俠莫聲谷常在此練功。林子東邊有間石屋。",
       "exits": [{"dir": "N", "to": "wd_tanqiang"}, {"dir": "E", "to": "wd_siguo"}],
-      "npcs": ["n_wd_yinliting", "n_wd_moshenggu"], "features": ["WOOD"],
+      "npcs": ["n_wd_yinliting", "n_wd_moshenggu", "n_ch_wd_chaifu"], "features": ["WOOD"],
       "requires": [{"type": "sect", "sect": "wudang"}] },
     { "id": "wd_siguo", "name": "思過處", "desc": "石壁圍成的小屋只有一扇鐵窗，觸犯門規的弟子被押到這裡面壁思過。執法道長守在門口。",
       "exits": [{"dir": "W", "to": "wd_houshan"}], "npcs": ["n_wd_jailer"], "features": [], "jail": true,

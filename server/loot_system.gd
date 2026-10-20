@@ -483,3 +483,36 @@ func read_manual(s, uid: String, times: int) -> Dictionary:
 	s.sheet_dirty = true
 	return GameHost.ok({ "times_done": int(r.get("times_done", 0)), "level": int(r.get("level_after", 0)),
 		"cap": int(r.get("cap_eff", 0)), "stopped_reason": str(r.get("stopped_reason", "")) })
+
+# ==== M3c2 WP-CARRY ====
+## M3C2_PLAN §5.5、R10：外來角色帶進來的神兵。本世界登記（world.divine）沒人持有 → 登記給 ch、保留；
+## 已有人持有（另一個角色）→ 從 ch 拿掉（已裝備的先卸下）並回傳物品名稱清單。不變成普通複製品。
+## 呼叫前（取代時）主機先用 on_char_deleted(本地 id) 撤銷舊角色的登記。先惰性校正登記（持有者已不在或身上沒有 → 釋放）。
+func on_foreign_import(ch) -> Array:
+	var names: Array = []
+	if ch == null or ch.inventory == null:
+		return names
+	validate_registry()
+	var reg := divine_registry()
+	var changed := false
+	var kept := {}   # 同一把神兵只能有一件（多的一樣拿掉）
+	for it in ch.inventory.items.duplicate():
+		var iid := str(it.get("id", ""))
+		if not is_divine(iid):
+			continue
+		var n := int(it.get("n", 1))
+		var holder := str(reg.get(iid, ""))
+		if (holder != "" and holder != str(ch.id)) or kept.has(iid):
+			ch.inventory.remove(str(it.get("uid", "")), n)
+			names.append(host.item_name(iid))
+			continue
+		if n > 1:
+			ch.inventory.remove(str(it.get("uid", "")), n - 1)
+			names.append(host.item_name(iid))
+		kept[iid] = true
+		if holder == "":
+			reg[iid] = str(ch.id)
+			changed = true
+	if changed:
+		_save_world()
+	return names

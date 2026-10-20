@@ -552,6 +552,22 @@ func _finish(entry: Dictionary) -> void:
 	# M3C_PLAN §5.3：攻擊 NPC 的戰鬥（解鎖、消失、善惡門派後果、守衛）；NpcAttackSystem 為 null 時略過
 	host.m2_call(host.get("npcpk"), "on_battle_finished", [entry, out])
 
+## M3c2 整合（M3C2_PLAN §2.3.3）：交給 SectSystem.spar_adjust 在 apply_rewards 之前改寫切磋弟子給的實戰與學點；
+## 傳這場打倒的全部怪物 ref 與 BattleRewards 的分成（1/√存活玩家數），結果框顯示的就是真的發出去的量
+func _spar_adjust(entry: Dictionary, s: Session, ch, r: Dictionary) -> void:
+	var sects = host.get("sects")
+	if sects == null or not (sects as Object).has_method("spar_adjust"):
+		return
+	var b: Battle = entry["battle"]
+	var dead: Array = []
+	var alive := 0
+	for u in b.units:
+		if u.side == 1 and not u.is_player() and u.is_dead():
+			dead.append(str(u.spec.get("monster_row", u.spec.get("ref", ""))))
+		elif u.side == 0 and u.is_player() and u.is_active():
+			alive += 1
+	sects.spar_adjust(s, ch, r, str(entry.get("kind", "")), dead, 1.0 / sqrt(float(maxi(1, alive))))
+
 ## M3C_PLAN §6.6：BattleRewards.compute 的第 4 個參數 ctx 由 WP-LOOT 加上；還沒有時照舊 3 個參數（容錯，平行開發）
 static func compute_rewards(b: Battle, tables: Dictionary, rng: RandomNumberGenerator, ctx: Dictionary) -> Dictionary:
 	var sc: Script = BattleRewards
@@ -637,6 +653,7 @@ func _settle_player(entry: Dictionary, s: Session, ch, u: Dictionary, r: Variant
 	if per == "VICTORY":
 		var kills: Array = []
 		if r is Dictionary:
+			_spar_adjust(entry, s, ch, r)   # M3c2 整合：切磋獎勵在發放前依規則／每日上限／新手期改寫（M3C2_PLAN §2.3.3）
 			var got: Dictionary = ch.apply_rewards(r, host.rules)
 			close["rewards"]["combat_xp"] = int(got.get("combat_xp", 0))
 			close["rewards"]["learn_points"] = int(got.get("learn_points", 0))

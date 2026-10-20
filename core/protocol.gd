@@ -8,6 +8,9 @@ extends RefCounted
 ## 4（2026-10，M3A_PLAN K1）：戰鬥指令集合（毒醫暗陣內穴＋用藥）、battle_cmd 的 mode、門派 intent、快照與角色表欄位改變。
 ## 5（2026-10，STORY_PLAN S1）：角色表 quests 列形狀、view 欄位（story_actions、escort、wanderers）、對話樹與故事 intent。
 const VERSION := 5
+## 握手相容字串（M3C2 R14；M3c2 第二輪審查補註）：**不是**標題顯示的遊戲版本（那是 BuildInfo.version()，
+## 只是資訊）。它從 0.1.0 起沒變過，validate_hello 的 version_mismatch 是保留給「存檔／握手格式不相容的大改版」用的；
+## 平常能不能連線看協定 VERSION 與資料指紋（content_hash）。改它等於讓所有舊版客戶端連不上。
 const GAME_VERSION := "0.1.0"
 
 # ---- intents (c2s)，M1_PLAN 3.6 ----
@@ -67,7 +70,7 @@ const I_SERVER_OPTS_SET := "server_opts_set"
 const I_ADMIN_KICK := "admin_kick"
 const I_PASSPORT_REQUEST := "passport_request"
 const I_PASSPORT_RESTORE := "passport_restore"
-const I_PASSPORT_IMPORT := "passport_import"      # P2：處理器可以只回 foreign_disabled
+const I_PASSPORT_IMPORT := "passport_import"      # M3c2 §5.6：實作（外來角色匯入）
 
 # ---- 查看偵察（M3 小範圍【設計提案・非原作】；docs/GDD.md §5.10）：純新增，RPC 簽名不變 → 不升 VERSION ----
 ## look 多一個可選參數 scout（bool）：true 且在有遇敵表的房間 → 主機擲遇敵表、送 scout_offer（ui）。
@@ -379,6 +382,28 @@ const E_LT_DIVINE_TRANSFER := "lt_divine_transfer"
 const E_LT_MANUAL_READ := "lt_manual_read"
 ## M3c 中 "ui": true 的事件
 const M3C_UI_EVENTS := [E_LOOK_CHANGED]
+# ---- M3c2（M3C2_PLAN §7；Q1：純新增，RPC 簽名不變 → VERSION 維持 5） ----
+# I_CHAR_SELECT 參數表加 "identity": [TYPE_STRING, false]
+# I_PASSPORT_IMPORT 參數表加 "new_name": [TYPE_STRING, false]
+const E_FOREIGN_IMPORTED := "foreign_imported"        # ui：{ name, replaced, dropped:[String] }
+const E_CH_NO_LP := "ch_no_lp"                        # 系統：{ quest_name, why: "daily"|"novice"|"rule" }
+const E_CH_SPAR_CAPPED := "ch_spar_capped"            # 系統：{}
+## M3c2 新原因碼（模板 err_<code>）
+const R_FOREIGN_SAME_WORLD := "foreign_same_world"
+const R_FOREIGN_NOT_NEWER := "foreign_not_newer"
+const R_FOREIGN_OWNED := "foreign_owned"
+const R_FOREIGN_BAD_DATA := "foreign_bad_data"
+## M3c2 審查：外來角色已被較新的匯入取代（舊護照不能還原）；開房且沒開放外來角色時，外來角色不能進入
+const R_FOREIGN_SUPERSEDED := "foreign_superseded"
+const R_FOREIGN_CHAR_BLOCKED := "foreign_char_blocked"
+## M3c2 第二輪審查：每個身分在本世界帶進的不同來源角色數已滿
+const R_FOREIGN_QUOTA := "foreign_quota"
+const R_ALT_IDENTITY_DENIED := "alt_identity_denied"
+const R_CHORE_TIRED := "chore_tired"
+## 握手拒絕時附帶主機資訊的原因（§6.3："<code>|<版本>|<協定>|<指紋12>"）
+const REJECT_WITH_BUILD := ["protocol_mismatch", "version_mismatch", "content_mismatch"]
+## M3c2 中 "ui": true 的事件
+const M3C2_UI_EVENTS := [E_FOREIGN_IMPORTED]
 
 const CHAT_MAX_LEN := 200
 const MAIL_MAX_LEN := 200
@@ -510,7 +535,7 @@ const INTENT_SCHEMA := {
 	I_CHAR_CREATE: { "name": [TYPE_STRING, true], "gender": [TYPE_STRING, true],
 		"birth_month": [TYPE_INT, true], "birth_city": [TYPE_STRING, true], "alloc": [TYPE_DICTIONARY, true],
 		"look": [TYPE_INT, false] },
-	I_CHAR_SELECT: { "char_id": [TYPE_STRING, true] },
+	I_CHAR_SELECT: { "char_id": [TYPE_STRING, true], "identity": [TYPE_STRING, false] },   # M3c2 §5.7：identity 可選
 	I_CHAR_DELETE: { "char_id": [TYPE_STRING, true], "confirm_name": [TYPE_STRING, true] },
 	I_LOOK: { "scout": [TYPE_BOOL, false] },
 	I_MOVE: { "dir": [TYPE_STRING, true] },
@@ -562,7 +587,7 @@ const INTENT_SCHEMA := {
 	I_ADMIN_KICK: { "peer": [TYPE_INT, true], "ban": [TYPE_BOOL, false] },
 	I_PASSPORT_REQUEST: { "char_id": [TYPE_STRING, true] },
 	I_PASSPORT_RESTORE: { "passport": [TYPE_DICTIONARY, true] },
-	I_PASSPORT_IMPORT: { "passport": [TYPE_DICTIONARY, true] },
+	I_PASSPORT_IMPORT: { "passport": [TYPE_DICTIONARY, true], "new_name": [TYPE_STRING, false] },   # M3c2 §5.6
 	# ---- 查看偵察 ----
 	I_SCOUT_ACCEPT: { "offer_id": [TYPE_STRING, true] },
 	I_SCOUT_DECLINE: { "offer_id": [TYPE_STRING, true] },

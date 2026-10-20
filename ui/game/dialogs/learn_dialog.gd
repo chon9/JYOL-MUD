@@ -13,6 +13,7 @@ var list: VBoxContainer
 var portrait: TextureRect
 var block_label: Label
 var blocked := ""
+var novice_label: Label   # M3c2 審查：新手學藝加速只在視窗上方寫一行（原本每列一個紅字標籤，像錯誤訊息）
 
 func dialog_size() -> Vector2:
 	return Vector2(860, 460)
@@ -23,6 +24,11 @@ func _build_body() -> void:
 	block_label.name = "TeachBlocked"
 	block_label.visible = false
 	info_label = UiBuild.muted(UiBuild.label(body, "", 15, true))
+	novice_label = UiBuild.label(body, "", 14, true)
+	novice_label.name = "LearnNoviceHeader"
+	novice_label.add_theme_color_override("font_color", UiTheme.JY_GOLD_LIGHT)
+	novice_label.mouse_filter = Control.MOUSE_FILTER_PASS
+	novice_label.visible = false
 	var book := PanelContainer.new()
 	var paper := StyleBoxFlat.new()
 	paper.bg_color = UiTheme.JY_PARCHMENT
@@ -65,9 +71,15 @@ func open_list(p: Dictionary) -> void:
 		UiBuild.num(sh.get("learn_points", 0)), UiBuild.num((sh.get("vitals", {}) as Dictionary).get("jing", 0)),
 		UiBuild.num(sh.get("money", 0))]
 	UiBuild.clear(list)
+	var any_novice := false
 	for e in p.get("entries", []):
 		if e is Dictionary:
 			_row(e)
+			any_novice = any_novice or novice_applies(str(e.get("kind", "")), int(UiBuild.num(e.get("level", 0))), {},
+				UiBuild.num(sh.get("combat_xp", 0)))
+	novice_label.visible = any_novice
+	novice_label.text = novice_header() if any_novice else ""
+	novice_label.tooltip_text = novice_tip() if any_novice else ""
 	if list.get_child_count() == 0:
 		UiBuild.muted(UiBuild.label(list, "（沒有可以請教的武學）", 15))
 	visible = true
@@ -116,3 +128,37 @@ func _row(e: Dictionary) -> void:
 
 func refresh_list() -> void:
 	_gate().send(UiKeys.I_LEARN_LIST, { "npc": npc_id() })
+
+# ---------------------------------------------------------------- M3c2 WP-PACE（M3C2_PLAN §2.4）
+## 主機規則（world_info 展開後的 rule_profile）：novice_learn_pct／novice_jing_pct／novice_learn_below
+static func novice_rules() -> Dictionary:
+	var rp: Variant = UiClient.world_info().get("rule_profile", {})
+	return rp if rp is Dictionary else {}
+
+## 這一列（向師父學、非生活技能、目前等級 < 門檻、而且倍率真的有加速）會不會吃到新手加速。
+## combat_xp ≥ 0 時另外要實戰 < novice_xp_below（M3c2 審查：老手學新武功不算新手；同 Learning.novice_mults）
+static func novice_applies(kind: String, level: int, rules: Dictionary = {}, combat_xp: int = -1) -> bool:
+	if kind == "LIFE" or kind == "":
+		return false
+	var r := rules if not rules.is_empty() else novice_rules()
+	var lp := int(r.get("novice_learn_pct", 100))
+	var jp := int(r.get("novice_jing_pct", 100))
+	if lp <= 100 and jp >= 100:
+		return false
+	if combat_xp >= 0 and r.has("novice_xp_below") and combat_xp >= int(r.get("novice_xp_below", 0)):
+		return false
+	return level < int(r.get("novice_learn_below", 40))
+
+## 視窗上方那一行（玩家看的字：不帶【設計提案】之類的內部標記）
+static func novice_header(rules: Dictionary = {}) -> String:
+	var r := rules if not rules.is_empty() else novice_rules()
+	return "新手期：%d 級以前向師父請教會加速。" % int(r.get("novice_learn_below", 40))
+
+static func novice_tip(rules: Dictionary = {}) -> String:
+	var r := rules if not rules.is_empty() else novice_rules()
+	var t := "新手學藝加速（本伺服器規則）：%d 級以前每次請教熟練度 ×%s、精 ×%s" % [
+		int(r.get("novice_learn_below", 40)), str(snappedf(int(r.get("novice_learn_pct", 100)) / 100.0, 0.01)),
+		str(snappedf(int(r.get("novice_jing_pct", 100)) / 100.0, 0.01))]
+	if r.has("novice_xp_below"):
+		t += "；實戰 %d 以上就不算新手" % int(r.get("novice_xp_below", 0))
+	return t

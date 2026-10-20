@@ -37,7 +37,7 @@
       "exits": [{"dir": "E", "to": "gm_hall"}, {"dir": "N", "to": "gm_huayuan"}], "npcs": ["n_gm_songfan"],
       "features": ["STOVE"], "requires": [] },
     { "id": "gm_huayuan", "name": "墓後花園", "desc": "墓後一塊隱密的園子，種著花樹與菜蔬，蜂巢裡的玉蜂嗡嗡飛舞。一道山泉從石縫間流過。",
-      "exits": [{"dir": "S", "to": "gm_food"}], "npcs": [], "features": ["FIELD", "WATER"],
+      "exits": [{"dir": "S", "to": "gm_food"}], "npcs": ["n_ch_gm_fengnu"], "features": ["FIELD", "WATER"],
       "requires": [
         { "type": "any_of",
           "options": [

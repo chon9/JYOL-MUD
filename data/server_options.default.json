@@ -16,6 +16,7 @@
   "guild_signers": 3,
   "attr_from_basic_skills": false,
   "allow_foreign_characters": false,
+  "allow_foreign_divine": false,
   "newbie_pk_protect_xp": 500,
   "max_players": 8,
   "autosave_interval_s": 60,
@@ -64,5 +65,6 @@
   "org_member_max": 50,
   "org_petition_days": 3,
   "npc_respawn_pct": 100,
-  "loot_drop_pct": 100
+  "loot_drop_pct": 100,
+  "spar_daily_cap": 30
 }

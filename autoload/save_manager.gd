@@ -161,7 +161,7 @@ static func _is_valid_world(d: Variant) -> bool:
 static func _coerce_world(d: Dictionary) -> Dictionary:
 	d["schema_version"] = int(d.get("schema_version", 0))
 	d["lineage"] = int(d.get("lineage", 0))
-	d["world_time_s"] = float(d.get("world_time_s", 0.0))
+	d["world_time_s"] = CharData.to_float(d.get("world_time_s"), 0.0)
 	# M1 新增欄位（M1_PLAN 3.10.2）：舊檔載入時補齊
 	if not (d.get("char_names") is Dictionary):
 		d["char_names"] = {}
@@ -175,7 +175,7 @@ static func _coerce_world(d: Dictionary) -> Dictionary:
 	var mails: Array = []
 	for m in d["mail"]:
 		if m is Dictionary:
-			m["sent_s"] = float(m.get("sent_s", 0.0))
+			m["sent_s"] = CharData.to_float(m.get("sent_s"), 0.0)
 			m["read"] = m.get("read", false) == true
 			mails.append(m)
 	d["mail"] = mails
@@ -191,7 +191,17 @@ static func _coerce_world(d: Dictionary) -> Dictionary:
 				c["authorized"] = []
 			c["public_notified"] = c.get("public_notified", false) == true
 			if c.has("created_s"):
-				c["created_s"] = float(c["created_s"])
+				c["created_s"] = CharData.to_float(c["created_s"], 0.0)
+	# M3c2（M3C2_PLAN §8.1）：外來角色登記 { "<來源世界>/<來源角色>": { char_id, identity, saved_s, imported_s } }；舊檔沒有就不建
+	if d.has("foreign_imports"):
+		if not (d["foreign_imports"] is Dictionary):
+			d["foreign_imports"] = {}
+		for k in d["foreign_imports"]:
+			var e: Variant = d["foreign_imports"][k]
+			if e is Dictionary:
+				# M3c2 第三輪審查：舊版可能寫進 null（NaN 存成 JSON）→ float(null) 會讓讀檔中斷
+				e["saved_s"] = CharData.to_float(e.get("saved_s"), 0.0)
+				e["imported_s"] = CharData.to_float(e.get("imported_s"), 0.0)
 	return d
 
 func new_world(world_id: String, world_name: String, content_hash: String, options: Dictionary) -> Dictionary:
@@ -306,7 +316,7 @@ func deleted_character_online_s(world_id: String, identity: String, char_id: Str
 		var txt := FileAccess.get_file_as_string(del_dir.path_join(f))
 		var d: Variant = JSON.parse_string(txt) if txt != "" else null
 		if d is Dictionary and str(d.get("id", "")) == char_id:
-			best = maxf(best, float(d.get("online_s", 0.0)))
+			best = maxf(best, CharData.to_float(d.get("online_s"), 0.0))
 	return best
 
 # ---------- 角色護照（M2_PLAN 4.6.8、4.6.9；客戶端 <資料根目錄>/passports/<world_id>/<char_id>.json） ----------
@@ -361,3 +371,74 @@ func load_settings() -> Dictionary:
 
 func save_settings(settings: Dictionary) -> Error:
 	return write_json_atomic(settings_path(), settings)
+
+# ---------- M3c2 WP-CARRY：帶走角色（M3C2_PLAN §5.1、§5.2、§5.7） ----------
+const EXPORT_SUFFIX := ".jychar.json"
+const IMPORT_MAX_BYTES := 262144   # §5.1：> 256 KB 直接說「檔案無法讀取」
+
+## <資料根目錄>/exports/（不存在就建）；回傳絕對路徑（結尾不帶斜線）
+func exports_dir() -> String:
+	var d := ProjectSettings.globalize_path(_p("exports"))
+	if not DirAccess.dir_exists_absolute(d):
+		DirAccess.make_dir_recursive_absolute(d)
+	return d
+
+## <資料根目錄>/passports/（絕對路徑；匯入的檔案選擇預設在這裡）
+func passports_dir() -> String:
+	return ProjectSettings.globalize_path(_p("passports"))
+
+## 匯出檔名：<角色名>_<世界id>_<YYYYMMDD-HHMM>.jychar.json（每一段都經 _safe_name）
+static func export_file_name(char_name: String, world_id: String, dt: Dictionary) -> String:
+	return "%s_%s_%04d%02d%02d-%02d%02d%s" % [_safe_name(char_name), _safe_name(world_id),
+		int(dt.get("year", 0)), int(dt.get("month", 0)), int(dt.get("day", 0)),
+		int(dt.get("hour", 0)), int(dt.get("minute", 0)), EXPORT_SUFFIX]
+
+## 把護照包成匯出檔寫到 exports/（§5.1）。meta：{ world_name, content_hash, [game_version, protocol] }。
+## 回傳寫好的絕對路徑；失敗回 "" 並設 last_error
+func export_character(passport: Dictionary, meta: Dictionary) -> String:
+	last_error = ""
+	if Passport.check_format(passport) != "":
+		last_error = "passport_bad_format"
+		return ""
+	var dt := Time.get_datetime_dict_from_system()
+	var path := exports_dir().path_join(export_file_name(str(passport.get("name", "")), str(passport.get("world_id", "")), dt))
+	var data := ForeignImport.make_export(passport, meta)
+	var err := write_json_atomic(path, data)
+	if err != OK:
+		return ""
+	return path
+
+## 讀匯入檔（匯出檔或裸護照）→ ForeignImport.parse_text 的結果，另加 path；太大或讀不了 → ok false
+func read_import_file(path: String) -> Dictionary:
+	var abs_path := ProjectSettings.globalize_path(path)
+	var fail := { "ok": false, "passport": {}, "world_name": "", "kind": "", "error": "unreadable", "path": abs_path }
+	if not FileAccess.file_exists(abs_path):
+		return fail
+	var f := FileAccess.open(abs_path, FileAccess.READ)
+	if f == null:
+		return fail
+	var size := f.get_length()
+	if size > IMPORT_MAX_BYTES:
+		f.close()
+		fail["error"] = "too_large"
+		return fail
+	var text := f.get_as_text()
+	f.close()
+	var r := ForeignImport.parse_text(text)
+	r["path"] = abs_path
+	return r
+
+## 世界 characters/ 底下的身分資料夾（排序；不含 deleted 之類的非身分名稱由呼叫端用正規式過濾）
+func list_identities(world_id: String) -> PackedStringArray:
+	var out := PackedStringArray()
+	var dir := ProjectSettings.globalize_path(world_dir(world_id).path_join("characters"))
+	if not DirAccess.dir_exists_absolute(dir):
+		return out
+	var names := DirAccess.get_directories_at(dir)
+	var arr: Array = []
+	for n in names:
+		arr.append(str(n))
+	arr.sort()
+	for n in arr:
+		out.append(n)
+	return out

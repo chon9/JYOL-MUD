@@ -447,11 +447,13 @@ func case_econ_chain(_runs: int, _seed0: int) -> int:
 					losers.append("%s %d<%d" % [str(rc.get("name", rc.get("id", ""))), int(out_v), int(in_v)])
 				if ratio2 < 0.3 or ratio2 > 1.5:
 					outliers.append("%s %.2f" % [str(rc.get("name", rc.get("id", ""))), ratio2])
-		print("%-24s REPORT  打獵基準 %.2f 兩／精；採集 [%s]；超出 0.3–1.5 倍的配方 %d 條：%s" % ["econ_chain", base,
-			", ".join(lines), outliers.size(), ", ".join(outliers.slice(0, 12)) + (" …" if outliers.size() > 12 else "")])
+		# M3c2 審查 #6：超出 0.3–1.5 倍的配方／採集原本只報告，改成不通過
+		print("%-24s %s  打獵基準 %.2f 兩／精；採集 [%s]；超出 0.3–1.5 倍的配方 %d 條%s" % ["econ_chain",
+			"ok  " if outliers.is_empty() else "FAIL", base, ", ".join(lines), outliers.size(),
+			"" if outliers.is_empty() else "：" + ", ".join(outliers.slice(0, 12)) + (" …" if outliers.size() > 12 else "")])
 		print("%-24s %s  成品收購價不高於材料的配方 %d 條%s" % ["econ_no_loss", "ok  " if losers.is_empty() else "FAIL", losers.size(),
 			"" if losers.is_empty() else "：" + ", ".join(losers)])
-		return 1 if losers.is_empty() else 0)
+		return 1 if losers.is_empty() and outliers.is_empty() else 0)
 
 var tables: Dictionary = {}
 var _loader: DataLoader = null   # 需要別的 era 視圖的案例用（陣法屬 1.0B）
@@ -463,6 +465,16 @@ func _initialize() -> void:
 	var dir := "res://data"
 	var seed0 := 1
 	for a in OS.get_cmdline_user_args():
+		if a == "--pace-trace":
+			pace_trace = true
+		# 調校用（不改資料）：--pace-rules=novice_learn_pct:3000,novice_jing_pct:10 ；--pace-spar=實戰,參考實戰,學點
+		if a.begins_with("--pace-rules="):
+			for kv in a.substr(13).split(","):
+				var kvs := kv.split(":")
+				if kvs.size() == 2:
+					pace_rule_over[kvs[0]] = int(kvs[1]) if kvs[1].is_valid_int() else (kvs[1] == "true")
+		if a.begins_with("--pace-spar="):
+			pace_spar_over = Array(a.substr(12).split(",")).map(func(x): return int(x))
 		if a.begins_with("--group="):
 			group_mons = Array(a.substr(8).split(","))
 		if a.begins_with("--runs="):
@@ -571,6 +583,28 @@ func _initialize() -> void:
 			continue
 		ran += 1
 		if r4 == 0:
+			failed += 1
+	# M3c2 WP-PACE（M3C2_PLAN §2.6、§3.3）：1.0A 視圖（丐幫案例自己換視圖）
+	for c in pace_cases():
+		if only != "" and c[0] != only:
+			continue
+		var r5: int = c[1].call(runs, seed0)
+		if r5 < 0:
+			skipped += 1
+			continue
+		ran += 1
+		if r5 == 0:
+			failed += 1
+	# M3c2 WP-ECON（M3C2_PLAN §4；econ2_cases 在檔尾 WP-ECON 區塊）
+	for c in econ2_cases():
+		if only != "" and c[0] != only:
+			continue
+		var r6: int = c[1].call(runs, seed0)
+		if r6 < 0:
+			skipped += 1
+			continue
+		ran += 1
+		if r6 == 0:
 			failed += 1
 	if skipped > 0:
 		print("BALANCE note: %d 個 M3a／故事包案例因資料尚未合併而略過（SKIP）" % skipped)
@@ -1252,8 +1286,10 @@ func simulate_multi(pspecs: Array, first: Array, waves: Array, s: int, policy: C
 	for u in b.units:
 		if u.side == 0 and u.is_dead():
 			deaths += 1
+	# M3c2 WP-PACE：另回 tick 數與第一位玩家戰後的精氣神內力（節奏模擬的時間與戰後狀態）
 	return { "result": b.result_name(), "killed": b.units.filter(func(u): return u.side == 1).all(func(u): return u.is_dead()),
-		"actions": me.actions, "dmg_sum": 0, "dmg_n": 0, "qi_pct": me.qi / float(me.qi_max()), "deaths": deaths }
+		"actions": me.actions, "dmg_sum": 0, "dmg_n": 0, "qi_pct": me.qi / float(me.qi_max()), "deaths": deaths,
+		"ticks": b.tick_no, "qi": me.qi, "jing": me.jing, "shen": me.shen, "neili": me.neili, "dead": me.is_dead() }
 
 # ==== M3c WP-LOOT ====
 ## 裝備與打寶的平衡（M3C_PLAN §12.2）。掉落表的經濟用期望值（解析）＋固定種子的擲骰次數；戰鬥案例照 run_generic。
@@ -1658,3 +1694,1219 @@ func case_m3c_npcpk(runs: int, seed0: int) -> int:
 		if r == 0:
 			all_ok = 0
 	return all_ok
+
+# ==== M3c2 WP-PACE ====
+## M3C2_PLAN §2.6、§2.5、§3.3：門派節奏 pace_<派>、雜務防刷 chore_bot_cap、血刀威嚇 xd_weihe_uplift。
+## pace_<派>：剛拜師（P0 屬性、悟性 21、起始學點 100、實戰 0）到 §2.2 的 P2 門檻的真實遊玩時數。
+## 模型（綁定，§2.6）：真的 CharacterFactory／Character／Learning.learn（masters.json 的師父與上限、規則 classic_standard）、
+## Survival.tick 回精回氣、WorldClock 的時辰（雜務時辰窗）、雜務資料（quests.chore）、切磋與野外戰鬥用 simulate_multi。
+## 時間：走一間房 4 秒、對話 6 秒、房間動作 8 秒、學藝每次 1 秒（10 次一批）、戰鬥 ticks × Battle.TICK ＋ 結果畫面 2.5 ＋ 偵察冷卻 6。
+## 策略（每一步依序檢查，第一個成立就做）：(a) 雜務 (b) 學門檻表裡完成度最低的技能 10 次 (c) 切磋 (d) 出門練功 8 場 (e) 等回精回氣。
+const PACE_SECTS := ["shaolin", "huashan", "wudang", "emei", "hengshan", "quanzhen", "gumu", "lingjiu", "xingxiu", "xuedao", "gaibang"]
+## §2.2 門檻表：[入門武功, 心法]。丐幫：M3C2_PLAN 缺漏——「第一位師父教的最低 cap 的 ART」照字面是瘋魔杖法（cap 60，
+## 但要二袋、太祖棍法 50、心法 30、乞討 30，不是入門武功）→ 改用傳功長老第一門沒有前置條件的入門武功太祖長拳（與 gb_spec 相同）
+const PACE_GATE := {
+	"shaolin": ["sl_changquan", "sl_xinfa"], "huashan": ["hs_jianfa", "hs_xinfa"], "wudang": ["wd_changquan", "wd_xinfa"],
+	"emei": ["em_piaoxue", "em_xinfa"], "hengshan": ["hg_jianfa", "hg_xinfa"], "quanzhen": ["qz_jianfa", "qz_xinfa"],
+	"gumu": ["gm_yunu_jian", "gm_xinfa"], "lingjiu": ["lj_zhemei", "lj_xiaoyao"], "xingxiu": ["xh_chousui", "xh_xinfa"],
+	"xuedao": ["xd_daofa", "xd_xinfa"], "gaibang": ["gb_taizu_quan", "gb_xinfa"],
+}
+const PACE_LV_SECT := 30
+const PACE_LV_ART := 35
+const PACE_LV_BASE := 35
+const PACE_LV_XINFA := 30
+const PACE_LV_BASIC := 30
+const PACE_XP := 9000
+## M3c2 審查 #1：「第二階段」要真的打得動第二階段的練功點——門檻另含 P2 參考角色（player_spec("P2")）的其他部分：
+## 本派輕功與基本輕功各 20、氣上限 660（180＋60 次修練 × 8；P2 參考）；最後還要通過「門檻角色 vs m_ghost」
+## 勝率 ≥ 70%、剩氣 ≥ 25%（原 p2_vs_ghost 標準）。armor：P2 參考是粗布道袍（def 4），本模型照創角的布衣（def 2）【較嚴】。
+const PACE_LIGHT := {
+	"shaolin": "sl_shenfa", "emei": "em_shenfa", "gumu": "gm_tianluo_shen", "hengshan": "hg_shenfa", "lingjiu": "lj_yueying",
+	"quanzhen": "qz_jinyan", "wudang": "wd_shenfa", "xingxiu": "xh_shenfa", "xuedao": "xd_xuedun",
+}
+const PACE_LV_LIGHT := 20
+const PACE_QI_MAX := 660
+const PACE_GHOST := "m_ghost"
+const PACE_GHOST_WIN := 0.70
+const PACE_GHOST_QI := 0.25
+const PACE_GHOST_SIMS := 40
+const PACE_BONUS_QI := 80            # 門檻都到了但還打不過鬼：再修練 10 次、武功與基本功再 +2（每次）
+const PACE_BONUS_LV := 2
+const PACE_BONUS_MAX := 6
+const PACE_MEDITATE_S := 10.0        # 打坐冷卻 Survival.MEDITATE_COOLDOWN_S
+const PACE_CULT_JING := 0.6          # 有學點可學時，精 ≥ 六成才打坐修練
+const PACE_STEP_S := 4.0
+const PACE_TALK_S := 6.0
+const PACE_ACT_S := 8.0
+const PACE_LEARN_S := 1.0
+const PACE_BATTLE_END_S := 2.5
+const PACE_SCOUT_S := 6.0
+const PACE_BATCH := 10
+## M3c2 第三輪審查 #3：「真人操作」估計——機器人不看選單、不讀字、打完立刻接下一場。報告另列「含真人操作」的時數
+## （每場戰鬥 +25 秒、每件雜務交接 +25 秒、每次學藝 +0.5 秒；直接加在機器人時數上，不重跑：等待時的回精回氣不扣，偏保守）。
+## 只報告、不當通過條件（3 小時是機器人的最佳情況，見 README／GDD）【設計提案】
+const PACE_HUMAN_FIGHT_S := 25.0
+const PACE_HUMAN_CHORE_S := 25.0
+const PACE_HUMAN_LEARN_S := 0.5
+const PACE_HUNT_N := 8
+const PACE_WIN_MIN := 0.8
+const PACE_SPAR_WIN_MIN := 0.3
+const PACE_WINRATE_SIMS := 50
+const PACE_HUNT_RADIUS := 8
+const PACE_QI_FIGHT := 0.6          # 氣 ≥ 60% 才出門練功／切磋
+const PACE_QI_BACK := 0.3           # 氣 < 30% 就回（§2.6 (d)）
+const PACE_WAIT_S := 30.0
+const PACE_MAX_H := 12.0
+const PACE_RUNS_MAX := 100
+const PACE_BAND := { "shaolin": [2.5, 3.5], "xuedao": [2.0, 5.0] }
+const PACE_BAND_DEFAULT := [2.0, 4.5]
+const PACE_CHORE_SHARE_MIN := 0.30  # 少林：雜務佔學點收入 ≥ 30%
+const CHORE_DAY_CAP_LP := 600       # §2.5
+const WEIHE_LEVELS := [10, 50, 100]
+const WEIHE_HITS := 20000           # §3.3 寫 5000 次出手；用 20000 次壓低觸發率的抽樣誤差（比 5000 嚴格）
+const WEIHE_RATIO := [0.70, 0.80]
+
+var pace_trace := false             # --pace-trace：印每 30 分鐘的進度（第一輪）
+var pace_rule_over := {}
+var pace_spar_over: Array = []
+var _pace_winrate := {}             # "<怪>|<數量>|<角色強度>" -> 勝率（各輪共用；兩把兵器取較好的）
+var _pace_wpick := {}               # 同一個鍵 -> 用入門武功類別的兵器（true）或身上的木刀（false）
+var _pace_dist := {}                # 起點房間 -> { 房間: 步數 }
+var _pace_graph := {}
+
+func pace_cases() -> Array:
+	var out: Array = []
+	for sid in PACE_SECTS:
+		var nm := "pace_" + str(sid)
+		var sect_id := str(sid)
+		out.append([nm, func(runs: int, s0: int) -> int:
+			if sect_id == "gaibang":
+				return _with_1_0b(func() -> int: return case_pace(sect_id, runs, s0))
+			return case_pace(sect_id, runs, s0)])
+	out.append(["chore_bot_cap", case_chore_bot_cap])
+	out.append(["xd_weihe_uplift", case_xd_weihe_uplift])
+	return out
+
+## classic_standard 的規則（RULE_DEFAULTS ＋ 預設組合）
+func pace_rules(preset := "classic_standard") -> Dictionary:
+	var r: Dictionary = DataSchema.RULE_DEFAULTS.duplicate(true)
+	var rp: Dictionary = tables.get("rule_profiles", {}).get(preset, {})
+	var rr: Variant = rp.get("rules", {})
+	if rr is Dictionary:
+		for k in rr:
+			r[k] = rr[k]
+	for k in pace_rule_over:
+		r[k] = pace_rule_over[k]
+	return r
+
+func pace_options() -> Dictionary:
+	var o: Dictionary = _loader.server_options_default.duplicate(true) if _loader != null else {}
+	return o
+
+func _pace_dists(from: String) -> Dictionary:
+	if _pace_graph.is_empty():
+		_pace_graph = DataLint.room_graph(tables)
+	var key := from + "@" + str(tables.get("sects", {}).has("gaibang"))
+	if _pace_dist.has(key):
+		return _pace_dist[key]
+	var d := { from: 0 }
+	var q: Array = [from]
+	while not q.is_empty():
+		var c: String = q.pop_front()
+		for n in _pace_graph.get(c, []):
+			if not d.has(n):
+				d[n] = int(d[c]) + 1
+				q.append(n)
+	_pace_dist[key] = d
+	return d
+
+func _pace_steps(a: String, b: String) -> int:
+	if a == b:
+		return 0
+	return int(_pace_dists(a).get(b, 999))
+
+## 門派的固定資料：門檻、師父、雜務路線、切磋、練功點、客棧
+func _pace_setup(sid: String) -> Dictionary:
+	_pace_graph = DataLint.room_graph(tables)
+	_pace_dist.clear()
+	var srow: Dictionary = tables.get("sects", {}).get(sid, {})
+	var arts: Dictionary = tables.get("martial_arts", {})
+	var npcs: Dictionary = tables.get("npcs", {})
+	var gate: Array = PACE_GATE[sid]
+	var art := str(gate[0])
+	var xinfa := str(gate[1])
+	var ss := str(srow.get("sect_skill", ""))
+	var base := str(arts.get(art, {}).get("base_skill", "basic_fist"))
+	var light := str(PACE_LIGHT.get(sid, ""))
+	if light != "" and not arts.has(light):
+		light = ""
+	var skills := [ss, art, base, xinfa, "basic_inner", "basic_parry", "basic_dodge", "basic_body"]
+	if light != "":
+		skills.append(light)
+	var masters := {}
+	for sk in skills:
+		var ms: Array = []
+		for m in tables.get("masters", {}).values():
+			if str(m.get("skill_id", "")) == sk and npcs.has(str(m.get("npc_id", ""))):
+				ms.append(m)
+		ms.sort_custom(func(a, b): return int(a.get("cap", 0)) > int(b.get("cap", 0)))
+		masters[sk] = ms
+	var ss_cap := 0
+	for m in masters.get(ss, []):
+		var ok_req := true
+		for r in m.get("requires", []):
+			if r is Dictionary and str(r.get("type", "")) in ["skill_min", "sect_master"]:
+				ok_req = false
+		if ok_req:
+			ss_cap = maxi(ss_cap, int(m.get("cap", 0)))
+	# M3C2_PLAN 缺漏：武當俠義、峨嵋斷惡（師父只教到 20）、丐幫乞討（陳長老只教到 10）的門派技能 30 學不到 → 門檻取 min(30, 師父上限)
+	var targets := { ss: mini(PACE_LV_SECT, ss_cap), art: PACE_LV_ART, base: PACE_LV_BASE, xinfa: PACE_LV_XINFA,
+		"basic_inner": PACE_LV_BASIC, "basic_parry": PACE_LV_BASIC, "basic_dodge": PACE_LV_BASIC }
+	# M3c2 審查 #1：P2 參考角色的身法 20、基本輕功 20（師父教得到才算）
+	var extra := { "basic_body": PACE_LV_LIGHT }
+	if light != "":
+		extra[light] = PACE_LV_LIGHT
+	for sk in extra:
+		if not (masters.get(sk, []) as Array).is_empty() and not targets.has(sk):
+			targets[sk] = int(extra[sk])
+	var gate_room := str(srow.get("gate_room", ""))
+	# 雜務
+	var chores: Array = []
+	for qid in tables.get("quests", {}):
+		var q: Dictionary = tables["quests"][qid]
+		var c: Variant = q.get("chore", null)
+		if not (c is Dictionary) or str(c.get("sect", "")) != sid:
+			continue
+		var route := _pace_chore_route(q)
+		if route.is_empty():
+			continue
+		chores.append({ "qid": str(qid), "def": q, "chore": c, "route": route,
+			"cd_s": float(q.get("repeat", {}).get("cooldown_days", 0.0)) * 7200.0 })
+	chores.sort_custom(func(a, b): return int(a.chore.get("lp", 0)) > int(b.chore.get("lp", 0)))
+	# 切磋
+	var spar_mon := ""
+	var spar_room := ""
+	var prefix := str(srow.get("prefix", ""))
+	for nid in npcs:
+		var f: Variant = npcs[nid].get("fight", {})
+		if not (f is Dictionary):
+			continue
+		var mid := str(f.get("monster", ""))
+		if not Learning.is_spar_monster(mid) or not tables.get("monsters", {}).has(mid):
+			continue
+		if mid == "m_%s_dizi" % prefix or (sid == "huashan" and mid == "m_hs_trainee"):
+			spar_mon = mid
+			spar_room = str(npcs[nid].get("room", ""))
+	# 練功點：山門附近（PACE_HUNT_RADIUS 步內）有遇敵表的房間
+	var hunt: Array = []
+	var ridx: Dictionary = DataLint.room_index(tables)
+	var dg := _pace_dists(gate_room)
+	for rid in dg:
+		if int(dg[rid]) > PACE_HUNT_RADIUS or not ridx.has(rid):
+			continue
+		var enc: Variant = ridx[rid]["room"].get("encounter", null)
+		if not (enc is Dictionary):
+			continue
+		var tbl: Array = enc.get("table", [])
+		var tw := 0
+		for e in tbl:
+			tw += maxi(0, int(e.get("w", 0)))
+		for e in tbl:
+			var mid2 := str(e.get("monster", ""))
+			if tw <= 0 or not tables.get("monsters", {}).has(mid2):
+				continue
+			var cnt: Array = e.get("count", [1, 1])
+			hunt.append({ "room": rid, "monster": mid2, "p": maxi(0, int(e.get("w", 0))) / float(tw),
+				"lo": int(cnt[0]) if cnt.size() > 0 else 1, "hi": int(cnt[cnt.size() - 1]) if cnt.size() > 0 else 1 })
+	# 客棧（回精：來回比原地等快才去）
+	var inn_room := ""
+	var inn_price := 0
+	var best := 999
+	for nid in npcs:
+		var n: Dictionary = npcs[nid]
+		if "INN" in n.get("services", []):
+			var dd := _pace_steps(gate_room, str(n.get("room", "")))
+			if dd < best:
+				best = dd
+				inn_room = str(n.get("room", ""))
+				inn_price = int(n.get("inn_price", 10))
+	return { "sid": sid, "art": art, "xinfa": xinfa, "ss": ss, "base": base, "skills": skills, "masters": masters,
+		"targets": targets, "gate_room": gate_room, "chores": chores, "spar_mon": spar_mon, "spar_room": spar_room,
+		"hunt": hunt, "inn_room": inn_room, "inn_price": inn_price, "home": str(srow.get("home_city", "xixia")),
+		"gender": str((srow.get("gender", ["M"]) as Array)[0]) if not (srow.get("gender", []) as Array).is_empty() else "M",
+		"personal": bool(srow.get("personal_master", false)) }
+
+## 雜務路線：[{ room, kind: TALK/ACT/FIGHT, hours, requires, item, monster, count }]；要先去買東西的（送酒、蛇膽）回 []
+func _pace_chore_route(q: Dictionary) -> Array:
+	var npcs: Dictionary = tables.get("npcs", {})
+	var giver := str(q.get("giver", ""))
+	if not npcs.has(giver):
+		return []
+	var given := {}
+	for gi in q.get("give_items", []):
+		if gi is Dictionary:
+			given[str(gi.get("id", ""))] = true
+	var out: Array = [{ "room": str(npcs[giver].get("room", "")), "kind": "TALK" }]
+	for stg in q.get("stages", []):
+		if not (stg is Dictionary):
+			continue
+		var kill_n := 0
+		for o in stg.get("objectives", []):
+			if o is Dictionary and str(o.get("type", "")) == "KILL":
+				kill_n += maxi(1, int(o.get("count", 1)))
+		for ra in stg.get("room_actions", []):
+			if not (ra is Dictionary):
+				continue
+			var fight := {}
+			for a in ra.get("do", []):
+				if a is Dictionary and str(a.get("do", "")) == "fight":
+					fight = a
+			if not fight.is_empty():
+				out.append({ "room": str(ra.get("room", "")), "kind": "FIGHT", "monster": str((fight.get("monsters", [""]) as Array)[0]),
+					"count": maxi(1, kill_n) })
+			else:
+				out.append({ "room": str(ra.get("room", "")), "kind": "ACT", "hours": ra.get("hours", []), "requires": ra.get("requires", []) })
+		for o in stg.get("objectives", []):
+			if not (o is Dictionary):
+				continue
+			var ty := str(o.get("type", ""))
+			if ty in ["TALK", "DELIVER"] and npcs.has(str(o.get("npc", ""))):
+				var it := str(o.get("item", "")) if ty == "DELIVER" else ""
+				if it != "" and not given.has(it):
+					return []   # 要自己去買或去打的東西（嗜酒的淨歧、邪惡的練毒）：模擬不做
+				out.append({ "room": str(npcs[str(o["npc"])].get("room", "")), "kind": "TALK" })
+	return out
+
+## P0 新弟子（真的 CharacterFactory；悟性 21；剛拜師）
+func _pace_new_char(su: Dictionary, rng: RandomNumberGenerator, opts: Dictionary) -> Character:
+	var ch := CharacterFactory.create({ "id": "sim_pace", "identity": "local_sim", "name": "節奏", "gender": su.gender,
+		"birth_month": 1, "birth_city": su.home, "alloc": {} }, ATTRS_P.duplicate(), tables, opts, rng, 0.0)
+	ch.sect = str(su.sid)
+	ch.morality = -150 if str(su.sid) in ["xingxiu", "xuedao"] else 100
+	if bool(su.personal):
+		for m in su.masters.get(su.art, []):
+			for r in m.get("requires", []):
+				if r is Dictionary and str(r.get("type", "")) == "sect_master" and ch.sect_master == "":
+					ch.sect_master = str(r.get("npc", ""))
+	return ch
+
+func _pace_spend(st: Dictionary, secs: float, regen := true) -> void:
+	if secs <= 0.0:
+		return
+	Survival.tick(st.ch, secs, not regen, tables, st.opts)
+	st.T = float(st.T) + secs
+
+func _pace_walk(st: Dictionary, to: String) -> bool:
+	if to == "" or to == str(st.room):
+		return to != ""
+	var n := _pace_steps(str(st.room), to)
+	if n >= 999:
+		return false
+	_pace_spend(st, n * PACE_STEP_S)
+	st.room = to
+	return true
+
+func _pace_shichen(t: float) -> String:
+	return str(WorldClock.clock(t, 7200.0)["shichen_name"])
+
+func _pace_day(t: float) -> int:
+	return int(WorldClock.clock(t, 7200.0)["day"])   # 子時換日（同主機 QuestSystem.day_index）
+
+## 這個技能現在的目標等級（門檻都到了但還打不過鬼時，入門武功與它的基本功每次再 +2）
+func _pace_target(st: Dictionary, sk: String) -> int:
+	var t := int(st.su.targets.get(sk, 0))
+	if sk == str(st.su.art) or sk == str(st.su.base):
+		t += int(st.get("bonus", 0)) * PACE_BONUS_LV
+	return t
+
+func _pace_qi_target(st: Dictionary) -> int:
+	return PACE_QI_MAX + int(st.get("bonus", 0)) * PACE_BONUS_QI
+
+## 技能門檻（§2.2 表＋實戰 9000）
+func _pace_skill_gate(st: Dictionary) -> bool:
+	var ch: Character = st.ch
+	if int(ch.combat_xp) < PACE_XP:
+		return false
+	for sk in st.su.targets:
+		if ch.skills.level(str(sk)) < int(st.su.targets[sk]):
+			return false
+	return true
+
+## 到達第二階段：技能門檻＋（目標加碼後的）技能、氣上限，而且打得動 m_ghost（M3c2 審查 #1）
+func _pace_done(st: Dictionary) -> bool:
+	var ch: Character = st.ch
+	if not _pace_skill_gate(st):
+		return false
+	if float(st.get("t_skill", -1.0)) < 0.0:
+		st.t_skill = float(st.T)
+	for sk in st.su.targets:
+		if ch.skills.level(str(sk)) < mini(_pace_target(st, str(sk)), _pace_cap(ch, str(sk))):
+			return false
+	if int(ch.derived(tables, st.opts)["qi_max"]) < _pace_qi_target(st) and _pace_can_cultivate(st):
+		return false
+	if not tables.get("monsters", {}).has(PACE_GHOST):
+		return true
+	var g := _pace_ghost(st)
+	if float(g.win) >= PACE_GHOST_WIN and float(g.qi) >= PACE_GHOST_QI:
+		return true
+	if int(st.get("bonus", 0)) < PACE_BONUS_MAX:
+		st.bonus = int(st.get("bonus", 0)) + 1
+	else:
+		return true   # 加碼到上限還打不過：算到達（報表的「vs 鬼」欄會照實寫，case 判 FAIL）
+	return false
+
+## 門檻角色 vs m_ghost：滿狀態、兩把兵器取較好的；{ win, qi（勝場平均剩氣比例） }；依角色強度快取
+var _pace_ghostc := {}
+func _pace_ghost(st: Dictionary) -> Dictionary:
+	var key := _pace_key(st, PACE_GHOST, 1) + "|%d|%d" % [int(st.ch.skills.level(str(st.su.art))), int(st.ch.cultivations)]
+	if _pace_ghostc.has(key):
+		return _pace_ghostc[key]
+	var d := ch_derived_full(st)
+	var best := { "win": -1.0, "qi": 0.0 }
+	for use_cat in [true, false]:
+		var spec := _pace_spec(st, use_cat)
+		spec.qi = int(d.qi_max)
+		spec.jing = int(d.jing_max)
+		spec.neili = int(d.neili_max)
+		spec.shen = int(d.shen_max)
+		var w := 0
+		var q := 0.0
+		for i in PACE_GHOST_SIMS:
+			var r := simulate_multi([spec], [PACE_GHOST], [], 9100 + i)
+			if str(r.result) == "VICTORY" and bool(r.killed):
+				w += 1
+				q += float(r.qi_pct)
+		var rate := w / float(PACE_GHOST_SIMS)
+		if rate > float(best.win):
+			best = { "win": rate, "qi": (q / w) if w > 0 else 0.0 }
+	_pace_ghostc[key] = best
+	return best
+
+## 修練（打坐：內力滿了才會把內力化成氣上限 +8；次數上限 基本內功 × 5）還有沒有空間
+func _pace_can_cultivate(st: Dictionary) -> bool:
+	var ch: Character = st.ch
+	var inner := ch.skills.level("basic_inner")
+	return inner >= 1 and ch.cultivations < inner * Survival.CULTIVATE_PER_INNER
+
+## (b2) 修練：氣上限還沒到目標 → 打坐一次（內力沒滿先補內力；滿了就修練）。每次精 2、10 秒冷卻（真的 Survival.meditate）
+func _pace_try_cultivate(st: Dictionary) -> bool:
+	var ch: Character = st.ch
+	if int(ch.derived(tables, st.opts)["qi_max"]) >= _pace_qi_target(st) or not _pace_can_cultivate(st):
+		return false
+	if int(ch.vitals.jing) < Survival.MEDITATE_JING:
+		return false
+	# 精優先給學藝：還有學點可以學、精又不到六成 → 先不打坐（打坐每次精 2，會把回的精吃光）
+	if ch.learn_points >= PACE_BATCH and int(ch.vitals.jing) < PACE_CULT_JING * int(ch.derived(tables, st.opts)["jing_max"]):
+		return false
+	var r := Survival.meditate(ch, tables, st.opts, float(st.T))
+	if not bool(r.get("ok", false)):
+		if str(r.get("reason", "")) == "busy":
+			_pace_spend(st, PACE_MEDITATE_S)
+			return true
+		return false
+	_pace_spend(st, PACE_MEDITATE_S)
+	st.n_meditate = int(st.get("n_meditate", 0)) + 1
+	return true
+
+## (a) 雜務：門派對、時辰窗內（到做事房間時也在窗內）、不在冷卻、代價付得起、今天學點還沒遞減到 0
+func _pace_try_chore(st: Dictionary) -> bool:
+	var ch: Character = st.ch
+	var day := _pace_day(st.T)
+	if int(st.chore_day.day) != day:
+		st.chore_day = { "day": day, "n": {} }
+	for c in st.su.chores:
+		var qid: String = c.qid
+		if float(st.chore_cd.get(qid, -1.0)) > float(st.T):
+			continue
+		var n_today := int(st.chore_day.n.get(qid, 0))
+		var got := Learning.chore_lp(c.chore, n_today, ch, tables, st.rules)
+		if int(got.lp) <= 0:
+			continue
+		if Requirements.check(c.def.get("requires", []), ch, tables, st.opts, st.rules,
+				{ Requirements.CTX_SHICHEN: _pace_shichen(st.T) }) != "":
+			continue
+		if Learning.chore_cost_reason(ch, c.chore) != "":
+			continue
+		# 走一遍路線估時間：房間動作要在時辰窗內
+		var t: float = st.T
+		var room: String = st.room
+		var ok := true
+		for step in c.route:
+			t += _pace_steps(room, str(step.room)) * PACE_STEP_S
+			room = str(step.room)
+			if str(step.kind) == "ACT":
+				var hs: Variant = step.get("hours", [])
+				if hs is Array and not (hs as Array).is_empty() and not (_pace_shichen(t) in hs):
+					ok = false
+				if Requirements.check(step.get("requires", []), ch, tables, st.opts, st.rules) != "":
+					ok = false
+				t += PACE_ACT_S
+			elif str(step.kind) == "FIGHT":
+				if _pace_win(st, str(step.monster), 1) < PACE_WIN_MIN:
+					ok = false   # 打不過的狩獵雜務先不接
+				t += 60.0 * int(step.count)
+			else:
+				t += PACE_TALK_S
+		if not ok:
+			continue
+		for step in c.route:
+			_pace_walk(st, str(step.room))
+			match str(step.kind):
+				"ACT":
+					_pace_spend(st, PACE_ACT_S)
+				"FIGHT":
+					for i in int(step.count):
+						if _pace_fight(st, [str(step.monster)], "wild").result != "VICTORY":
+							st.chore_cd[qid] = float(st.T) + 600.0   # 打輸了：這趟雜務作廢（模型簡化成放棄，10 分鐘後再說）
+							return true
+				_:
+					_pace_spend(st, PACE_TALK_S)
+		while Learning.chore_cost_reason(ch, c.chore) != "" and float(st.T) - float(st.t0) < PACE_MAX_H * 3600.0:
+			_pace_spend(st, PACE_WAIT_S)
+		var cost: Variant = c.chore.get("cost", {})
+		if cost is Dictionary:
+			for k in cost:
+				ch.vitals[str(k)] = maxi(0, int(ch.vitals.get(str(k), 0)) - int(cost[k]))
+		got = Learning.chore_lp(c.chore, int(st.chore_day.n.get(qid, 0)) if int(st.chore_day.day) == _pace_day(st.T) else 0, ch, tables, st.rules)
+		if int(st.chore_day.day) != _pace_day(st.T):
+			st.chore_day = { "day": _pace_day(st.T), "n": {} }
+		st.chore_day.n[qid] = int(st.chore_day.n.get(qid, 0)) + 1
+		ch.add_learn_points(int(got.lp), st.rules)
+		Learning.note_novice_lp(ch, int(got.lp))
+		st.lp_src.chore = int(st.lp_src.chore) + int(got.lp)
+		var rw: Dictionary = c.def.get("outcomes", {}).get("default", {}).get("rewards", {})
+		var sp := Learning.chore_prof(rw.get("skill_prof", {}), int(c.chore.get("prof_below", 50)), ch, tables)
+		for sk in sp:
+			ch.skills.add_prof(str(sk), int(sp[sk]), tables, _pace_cap(ch, str(sk)))
+		st.chore_cd[qid] = float(st.T) + float(c.cd_s)
+		st.n_chores = int(st.n_chores) + 1
+		return true
+	return false
+
+func _pace_cap(ch: Character, sk: String) -> int:
+	var mx := SkillBook.max_level_of(sk, tables)
+	if SkillBook.kind_of(sk, tables) == SkillBook.KIND_LIFE:
+		return mx
+	return mini(mx, DerivedStats.art_level_cap(ch.combat_xp))
+
+## 這個技能現在可以跟哪位師父學（check_master 通過的第一位，依上限高低）
+func _pace_master(st: Dictionary, sk: String) -> String:
+	for m in st.su.masters.get(sk, []):
+		var nid := str(m.get("npc_id", ""))
+		if Learning.check_master(st.ch, nid, sk, tables, st.opts, st.rules) == "":
+			# 學費付不起一批（例：武館教頭收錢、身上只剩幾兩）→ 記下「要賺錢」，練功時改挑掉錢多的怪（M3c2 審查：丐幫新手常常身無分文）
+			if int(m.get("price", 0)) * PACE_BATCH > int(st.ch.money):
+				st.need_money = true
+				continue
+			return nid
+	return ""
+
+## 學一次要多少精／內力／神（新手加速後）
+func _pace_learn_need(st: Dictionary, sk: String) -> Dictionary:
+	var ch: Character = st.ch
+	var wc := Learning.wit_cost(int(ch.effective_attrs(tables, st.opts)["wit"]))
+	var nm := Learning.novice_mults(ch, sk, st.rules)
+	var jing := maxi(1, roundi(int(wc.jing) * float(nm.jing))) if float(nm.jing) != 1.0 or float(nm.prof) != 1.0 else int(wc.jing)
+	var neili := 0
+	var shen := 0
+	if SkillBook.kind_of(sk, tables) == SkillBook.KIND_SECT:
+		var srow := CharData.sect_of_skill(tables, sk)
+		var cost: Variant = srow.get("sect_skill_train_cost", srow.get("sect_skill_cost", []))
+		if cost is Array:
+			if (cost as Array).has("neili"):
+				neili = Learning.SECT_NEILI_COST
+			if (cost as Array).has("shen"):
+				shen = Learning.SECT_SHEN_COST
+	return { "jing": jing, "neili": neili, "shen": shen }
+
+## (b) 學點 ≥ 10 且精夠 → 學門檻表裡完成度最低、沒被上限擋住的技能 10 次
+func _pace_try_learn(st: Dictionary) -> bool:
+	var ch: Character = st.ch
+	if ch.learn_points < PACE_BATCH:
+		return false
+	var best := ""
+	var best_r := 9.0
+	var best_npc := ""
+	for sk in st.su.targets:
+		var tgt := _pace_target(st, str(sk))
+		var lv := ch.skills.level(str(sk))
+		if lv >= tgt or lv >= _pace_cap(ch, str(sk)):
+			continue
+		var nid := _pace_master(st, str(sk))
+		if nid == "":
+			continue
+		var need := _pace_learn_need(st, str(sk))
+		if int(ch.vitals.neili) < int(need.neili) or int(ch.vitals.shen) < int(need.shen):
+			continue
+		if int(ch.vitals.jing) < int(need.jing) * PACE_BATCH:
+			continue
+		var r := lv / float(tgt)
+		if r < best_r:
+			best_r = r
+			best = str(sk)
+			best_npc = nid
+	if best == "":
+		return false
+	var npc_room := str(tables.get("npcs", {}).get(best_npc, {}).get("room", ""))
+	var moved := npc_room != str(st.room)
+	if not _pace_walk(st, npc_room):
+		return false
+	if moved:
+		_pace_spend(st, PACE_TALK_S)
+	st.need_money = false
+	var res := Learning.learn(ch, best_npc, best, PACE_BATCH, tables, st.opts, st.rules)
+	var n := int(res.get("times_done", 0))
+	_pace_spend(st, n * PACE_LEARN_S)
+	st.n_learn = int(st.n_learn) + n
+	return n > 0
+
+## 角色的戰鬥單位（真的 to_combatant）。use_cat：換成入門武功類別最便宜的兵器（拳腳＝空手）；否則用身上裝備的（創角的木刀）。
+## 玩家會挑打得比較好的那一把：_pace_win 對兩種都算勝率、記下比較好的（_pace_wpick）
+func _pace_spec(st: Dictionary, use_cat := false) -> Dictionary:
+	var ch: Character = st.ch
+	var spec := ch.to_combatant(tables, st.opts, 0, 0)
+	spec.ai = "melee_basic"
+	if use_cat:
+		var cat := str(tables.get("martial_arts", {}).get(st.su.art, {}).get("category", "FIST"))
+		var w := weapon_for(cat)
+		spec.weapon = w
+		spec.weapon_options = [w] if str(w.uid) != "" else []
+	return spec
+
+## 戰鬥：回傳 simulate_multi 的結果；勝利時發實戰、學點、銀兩（kind：wild／spar）；時間 = ticks × TICK ＋ 2.5 ＋ 6
+func _pace_fight(st: Dictionary, mons: Array, kind: String) -> Dictionary:
+	var ch: Character = st.ch
+	var rng: RandomNumberGenerator = st.rng
+	_pace_win(st, str(mons[0]), mons.size())   # 決定用哪把兵器（快取）
+	var use_cat := bool(_pace_wpick.get(_pace_key(st, str(mons[0]), mons.size()), true))
+	var r := simulate_multi([_pace_spec(st, use_cat)], mons, [], rng.randi())
+	_pace_spend(st, int(r.ticks) * Battle.TICK, false)
+	_pace_spend(st, PACE_BATTLE_END_S + PACE_SCOUT_S)
+	ch.vitals.qi = maxi(1, int(r.qi))
+	ch.vitals.jing = maxi(0, int(r.jing))
+	ch.vitals.shen = maxi(0, int(r.shen))
+	ch.vitals.neili = maxi(0, int(r.neili))
+	st.n_fights = int(st.n_fights) + 1
+	if str(r.result) == "VICTORY" and bool(r.killed):
+		var xp0 := int(ch.combat_xp)
+		var xp := 0
+		var lp := 0
+		var money := 0
+		for mid in mons:
+			var row: Dictionary = tables.get("monsters", {}).get(str(mid), {})
+			if row.is_empty() or bool(row.get("no_rewards", false)):
+				continue
+			xp += BattleRewards.xp_for(row, xp0, 1.0)
+			lp += BattleRewards.lp_for(row, xp0, 1.0)
+			var mr: Variant = row.get("money", {})
+			if mr is Dictionary and not (mr as Dictionary).is_empty():
+				money += rng.randi_range(int(mr.get("min", 0)), maxi(int(mr.get("min", 0)), int(mr.get("max", 0))))
+		if kind == "spar":
+			if not Learning.is_novice(ch, tables, st.rules):
+				lp = 0
+			# M3c2 審查：一場最多 SPAR_LP_MAX、雜務＋切磋學點一輩子上限（同 SectSystem.spar_adjust）
+			lp = mini(Learning.spar_lp(lp), Learning.novice_lp_left(ch, st.rules))
+			Learning.note_novice_lp(ch, lp)
+		ch.combat_xp += xp
+		ch.add_learn_points(lp, st.rules)
+		ch.money += money
+		st.xp_src[kind] = int(st.xp_src.get(kind, 0)) + xp
+		st.lp_src[kind] = int(st.lp_src.get(kind, 0)) + lp
+	elif bool(r.get("dead", false)) and kind != "spar":
+		# 戰敗（切磋除外）：回山門重來，氣剩 1【模型簡化：不扣實戰】
+		_pace_spend(st, 120.0)
+		st.room = st.su.gate_room
+		st.deaths = int(st.deaths) + 1
+	return r
+
+## (c) 切磋：今天還有獎勵、氣 ≥ 60%
+func _pace_try_spar(st: Dictionary) -> bool:
+	var ch: Character = st.ch
+	if str(st.su.spar_mon) == "" or st.rules.get("spar_rewards", false) != true:
+		return false
+	var day := _pace_day(st.T)
+	if int(st.spar.day) != day:
+		st.spar = { "day": day, "n": 0 }
+	if int(st.spar.n) >= int(st.opts.get("spar_daily_cap", 30)):
+		return false
+	if int(ch.vitals.qi) < PACE_QI_FIGHT * int(ch.derived(tables, st.opts)["qi_max"]):
+		return false
+	# 幾乎打不過的切磋不打（勝率 < 30% 先去練功、學藝；輸了不扣東西，所以 30% 以上照打）【模型】
+	if _pace_win(st, str(st.su.spar_mon), 1) < PACE_SPAR_WIN_MIN:
+		return false
+	_pace_walk(st, str(st.su.spar_room))
+	_pace_spend(st, PACE_TALK_S)
+	var r := _pace_fight(st, [str(st.su.spar_mon)], "spar")
+	if str(r.result) == "VICTORY":
+		st.spar.n = int(st.spar.n) + 1
+	return true
+
+func _pace_sig(st: Dictionary) -> String:
+	var ch: Character = st.ch
+	var tot := 0
+	for sk in st.su.targets:
+		tot += ch.skills.level(str(sk))
+	return "%s_%d_%d_%d" % [st.su.sid, tot / 5, ch.skills.level(str(st.su.base)) / 5, int(ch.derived(tables, st.opts)["qi_max"]) / 40]
+
+func _pace_key(st: Dictionary, mid: String, n: int) -> String:
+	return "%s|%d|%s" % [mid, n, _pace_sig(st)]
+
+func _pace_win(st: Dictionary, mid: String, n: int) -> float:
+	var key := _pace_key(st, mid, n)
+	if _pace_winrate.has(key):
+		return float(_pace_winrate[key])
+	var d := ch_derived_full(st)
+	var mons: Array = []
+	for i in n:
+		mons.append(mid)
+	var best := -1.0
+	for use_cat in [true, false]:
+		var spec := _pace_spec(st, use_cat)
+		spec.qi = int(d.qi_max)
+		spec.jing = int(d.jing_max)
+		spec.neili = int(d.neili_max)
+		spec.shen = int(d.shen_max)
+		var w := 0
+		for i in PACE_WINRATE_SIMS:
+			var r := simulate_multi([spec], mons, [], 7000 + i)
+			if str(r.result) == "VICTORY" and bool(r.killed):
+				w += 1
+		var rate := w / float(PACE_WINRATE_SIMS)
+		if rate > best:
+			best = rate
+			_pace_wpick[key] = use_cat
+	_pace_winrate[key] = best
+	return best
+
+func ch_derived_full(st: Dictionary) -> Dictionary:
+	return (st.ch as Character).derived(tables, st.opts)
+
+## (d) 出門練功一趟：勝率 ≥ 0.8 中實戰最高的怪，打 8 場（偵察：不是目標的怪就放過，每次 6 秒），氣 < 30% 就回
+func _pace_try_hunt(st: Dictionary) -> bool:
+	var ch: Character = st.ch
+	var qmax := int(ch.derived(tables, st.opts)["qi_max"])
+	if int(ch.vitals.qi) < PACE_QI_FIGHT * qmax:
+		return false
+	var best := {}
+	var best_v := -1.0
+	for h in st.su.hunt:
+		var row: Dictionary = tables.get("monsters", {}).get(str(h.monster), {})
+		if row.is_empty() or float(h.p) <= 0.0:
+			continue
+		if _pace_win(st, str(h.monster), ceili((int(h.lo) + int(h.hi)) / 2.0)) < PACE_WIN_MIN:
+			continue
+		var v := BattleRewards.xp_for(row, int(ch.combat_xp), 1.0) * (int(h.lo) + int(h.hi)) / 2.0
+		if bool(st.get("need_money", false)):
+			var mr: Variant = row.get("money", {})
+			v = ((float(mr.get("min", 0)) + float(mr.get("max", 0))) / 2.0 if mr is Dictionary and not (mr as Dictionary).is_empty() else 0.0) * (int(h.lo) + int(h.hi)) / 2.0
+		# 同樣的實戰：離山門近、遇到機率高的優先
+		var cost := _pace_steps(str(st.su.gate_room), str(h.room)) * PACE_STEP_S * 2.0 / PACE_HUNT_N + (1.0 / float(h.p) - 1.0) * PACE_SCOUT_S
+		var score := v / (60.0 + cost)
+		if score > best_v:
+			best_v = score
+			best = h
+	if best.is_empty():
+		return false
+	if not _pace_walk(st, str(best.room)):
+		return false
+	var rng: RandomNumberGenerator = st.rng
+	for i in PACE_HUNT_N:
+		if int(ch.vitals.qi) < PACE_QI_BACK * qmax:
+			break
+		# 偵察：要找到目標怪平均要擲 1/p 次，每次 6 秒（找到的那一次算在戰鬥時間裡）
+		var tries := 1
+		while rng.randf() >= float(best.p) and tries < 50:
+			tries += 1
+		_pace_spend(st, (tries - 1) * PACE_SCOUT_S)
+		var mons: Array = []
+		for k in rng.randi_range(int(best.lo), maxi(int(best.lo), int(best.hi))):
+			mons.append(str(best.monster))
+		var r := _pace_fight(st, mons, "wild")
+		if str(r.result) != "VICTORY":
+			break
+	return true
+
+## (e) 等：原地等回精回氣（客棧來回比較快就去休息）
+func _pace_wait(st: Dictionary) -> void:
+	var ch: Character = st.ch
+	var d := ch.derived(tables, st.opts)
+	var regen_per_s: float = ceilf(int(d.jing_max) * Survival.REGEN_PCT) / Survival.REGEN_INTERVAL_S
+	var need := maxf(0.0, int(d.jing_max) * 0.9 - int(ch.vitals.jing))
+	var wait_s := need / maxf(0.01, regen_per_s)
+	var inn := str(st.su.inn_room)
+	if inn != "" and ch.money >= int(st.su.inn_price):
+		var trip := (_pace_steps(str(st.room), inn) + _pace_steps(inn, str(st.su.gate_room))) * PACE_STEP_S + PACE_TALK_S
+		if trip < wait_s and trip < 600.0:
+			_pace_walk(st, inn)
+			_pace_spend(st, PACE_TALK_S)
+			ch.money -= int(st.su.inn_price)
+			Survival.rest_full(ch, tables, st.opts)
+			st.n_inn = int(st.n_inn) + 1
+			return
+	_pace_spend(st, PACE_WAIT_S)
+	st.wait_s = float(st.wait_s) + PACE_WAIT_S
+
+## 一輪：回傳 { hours, lp_src, xp_src, ch, timeout }
+func pace_run(su: Dictionary, sd: int) -> Dictionary:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = sd * 104729 + 17
+	var opts := pace_options()
+	var rules := pace_rules()
+	var ch := _pace_new_char(su, rng, opts)
+	var t0 := rng.randf_range(0.0, 7200.0)   # 起始時辰均勻隨機
+	var st := { "ch": ch, "su": su, "rng": rng, "opts": opts, "rules": rules, "T": t0, "t0": t0, "room": su.gate_room,
+		"lp_src": { "start": int(ch.learn_points), "chore": 0, "spar": 0, "wild": 0, "quest": 0 },
+		"xp_src": { "spar": 0, "wild": 0 }, "chore_cd": {}, "chore_day": { "day": -1, "n": {} }, "spar": { "day": -1, "n": 0 },
+		"n_fights": 0, "n_learn": 0, "n_chores": 0, "n_inn": 0, "deaths": 0, "wait_s": 0.0,
+		"t_skill": -1.0, "bonus": 0, "n_meditate": 0 }
+	var limit := t0 + PACE_MAX_H * 3600.0
+	var next_trace := t0
+	if pace_trace:
+		var hs: PackedStringArray = []
+		for h in su.hunt:
+			hs.append("%s@%s(d%d p%.2f %d-%d)" % [h.monster, h.room, _pace_steps(str(su.gate_room), str(h.room)), float(h.p), int(h.lo), int(h.hi)])
+		print("  hunt: " + ", ".join(hs))
+	while not _pace_done(st) and float(st.T) < limit:
+		if pace_trace and float(st.T) >= next_trace:
+			next_trace += 1800.0
+			var lv: PackedStringArray = []
+			for sk in su.targets:
+				lv.append("%s %d/%d" % [sk, ch.skills.level(str(sk)), int(su.targets[sk])])
+			print("  [%.1fh] xp %d lp %d money %d jing %d/%d qi %d fights %d chores %d learn %d wait %.0fm deaths %d | %s" % [
+				(float(st.T) - t0) / 3600.0, ch.combat_xp, ch.learn_points, ch.money, int(ch.vitals.jing),
+				int(ch.derived(tables, opts).jing_max), int(ch.vitals.qi), int(st.n_fights), int(st.n_chores), int(st.n_learn),
+				float(st.wait_s) / 60.0, int(st.deaths), ", ".join(lv)])
+		if _pace_try_chore(st):
+			continue
+		if _pace_try_learn(st):
+			continue
+		if _pace_try_spar(st):
+			continue
+		if _pace_try_cultivate(st):
+			continue
+		if _pace_try_hunt(st):
+			continue
+		_pace_wait(st)
+	var t_sk := float(st.t_skill) if float(st.t_skill) >= 0.0 else float(st.T)
+	return { "hours": (float(st.T) - t0) / 3600.0, "timeout": not _pace_done(st), "st": st,
+		"skill_hours": (t_sk - t0) / 3600.0, "active_hours": (float(st.T) - t0 - float(st.wait_s)) / 3600.0 }
+
+static func _pct(a: Array, q: float) -> float:
+	if a.is_empty():
+		return 0.0
+	var s := a.duplicate()
+	s.sort()
+	return float(s[clampi(int(floor(q * (s.size() - 1) + 0.5)), 0, s.size() - 1)])
+
+func case_pace(sid: String, runs: int, seed0: int) -> int:
+	var name := "pace_" + sid
+	if not tables.get("sects", {}).has(sid) or not PACE_GATE.has(sid):
+		return _skip(name, "門派 " + sid)
+	if pace_spar_over.size() == 3:
+		for mid in tables.get("monsters", {}):
+			if Learning.is_spar_monster(str(mid)) and not bool(tables.monsters[mid].get("no_rewards", false)):
+				tables.monsters[mid]["combat_xp"] = int(pace_spar_over[0])
+				tables.monsters[mid]["combat_xp_ref"] = int(pace_spar_over[1])
+				tables.monsters[mid]["learn_points"] = int(pace_spar_over[2])
+	var su := _pace_setup(sid)
+	var n := mini(runs, PACE_RUNS_MAX)
+	var hours: Array = []
+	var skill_hours: Array = []
+	var active_hours: Array = []
+	var human_hours: Array = []
+	var meds := 0
+	var bonus := 0
+	var lp := { "start": 0, "chore": 0, "spar": 0, "wild": 0, "quest": 0 }
+	var xp := { "spar": 0, "wild": 0 }
+	var timeouts := 0
+	var fights := 0
+	var chores := 0
+	var learns := 0
+	var inns := 0
+	var deaths := 0
+	var waits := 0.0
+	var finals: Array = []
+	for i in n:
+		var r := pace_run(su, seed0 + i)
+		hours.append(float(r.hours))
+		skill_hours.append(float(r.skill_hours))
+		active_hours.append(float(r.active_hours))
+		meds += int(r.st.get("n_meditate", 0))
+		bonus += int(r.st.get("bonus", 0))
+		if bool(r.timeout):
+			timeouts += 1
+		var st: Dictionary = r.st
+		human_hours.append(float(r.hours) + (int(st.n_fights) * PACE_HUMAN_FIGHT_S + int(st.n_chores) * PACE_HUMAN_CHORE_S 			+ int(st.n_learn) * PACE_HUMAN_LEARN_S) / 3600.0)
+		for k in lp:
+			lp[k] = int(lp[k]) + int(st.lp_src.get(k, 0))
+		for k in xp:
+			xp[k] = int(xp[k]) + int(st.xp_src.get(k, 0))
+		fights += int(st.n_fights)
+		chores += int(st.n_chores)
+		learns += int(st.n_learn)
+		inns += int(st.n_inn)
+		deaths += int(st.deaths)
+		waits += float(st.wait_s)
+		if finals.size() < 10:
+			finals.append(st)
+	var med := _pct(hours, 0.5)
+	var band: Array = PACE_BAND.get(sid, PACE_BAND_DEFAULT)
+	var earned := maxi(1, int(lp.chore) + int(lp.spar) + int(lp.wild) + int(lp.quest))
+	var chore_share := int(lp.chore) / float(earned)
+	var why: PackedStringArray = []
+	if med < float(band[0]) or med > float(band[1]):
+		why.append("中位數 %.2f 小時不在 %.1f–%.1f" % [med, float(band[0]), float(band[1])])
+	if timeouts * 2 > n:
+		why.append("過半數超過 %d 小時" % int(PACE_MAX_H))
+	if not why.is_empty() and str(su.spar_mon) == "":
+		# M3C2_PLAN 缺漏：本派沒有切磋弟子（m_<派>_dizi）→ 實戰只能靠野外怪（凍結），9000 實戰的門檻到不了
+		why.append("本派沒有切磋弟子 m_%s_dizi（實戰只能打野外怪）：M3C2_PLAN 缺漏，交整合者" % str(tables.sects[sid].get("prefix", "")))
+	if sid == "shaolin" and chore_share < PACE_CHORE_SHARE_MIN:
+		why.append("雜務學點 %.0f%% < %.0f%%" % [chore_share * 100.0, PACE_CHORE_SHARE_MIN * 100.0])
+	# 門檻角色 vs m_ghost（M3c2 審查 #1：通過條件；原 p2_vs_ghost 標準：勝率 ≥ 70%、剩氣 ≥ 25%）
+	var gwin := 0.0
+	var gqi := 0.0
+	var gn := 0
+	if tables.get("monsters", {}).has(PACE_GHOST):
+		for fst in finals:
+			var g := _pace_ghost(fst)
+			gwin += float(g.win)
+			gqi += float(g.qi)
+			gn += 1
+		gwin /= maxf(1.0, gn)
+		gqi /= maxf(1.0, gn)
+		if gwin < PACE_GHOST_WIN or gqi < PACE_GHOST_QI:
+			why.append("門檻角色 vs 鬼 勝 %.0f%%／剩氣 %.0f%%（要 ≥ %.0f%%／≥ %.0f%%）" % [gwin * 100.0, gqi * 100.0, PACE_GHOST_WIN * 100.0, PACE_GHOST_QI * 100.0])
+	var ok := why.is_empty()
+	print("%-24s %s  median=%.2fh  P10=%.2fh  P90=%.2fh  含真人操作 median=%.2fh P90=%.2fh  runs=%d  timeout=%d  技能門檻 %.2fh  實際操作 %.2fh（等待 %.0f 分／輪）  學點來源 雜務 %.0f%%／切磋 %.0f%%／野外 %.0f%%（合計 %d／輪）  實戰 切磋 %.0f%%／野外 %.0f%%  戰鬥 %.0f／輪  雜務 %.0f／輪  學藝 %.0f 次／輪  打坐 %.0f／輪  加碼 %.1f  客棧 %.1f／輪  戰敗 %d  門檻 vs 鬼 勝 %.0f%% 剩氣 %.0f%%%s" % [
+		name, "ok  " if ok else "FAIL", med, _pct(hours, 0.1), _pct(hours, 0.9), _pct(human_hours, 0.5), _pct(human_hours, 0.9), n, timeouts,
+		_pct(skill_hours, 0.5), _pct(active_hours, 0.5), waits / 60.0 / n,
+		int(lp.chore) * 100.0 / earned, int(lp.spar) * 100.0 / earned, int(lp.wild) * 100.0 / earned, earned / n,
+		int(xp.spar) * 100.0 / maxi(1, int(xp.spar) + int(xp.wild)), int(xp.wild) * 100.0 / maxi(1, int(xp.spar) + int(xp.wild)),
+		fights / float(n), chores / float(n), learns / float(n), meds / float(n), bonus / float(n), inns / float(n), deaths,
+		gwin * 100.0, gqi * 100.0,
+		"" if ok else "  (" + "；".join(why) + ")"])
+	return 1 if ok else 0
+
+## §2.5：一派所有雜務一個遊戲日的理論最大學點 ≤ CHORE_DAY_CAP_LP；最高本派武功 40 的角色只做雜務一個遊戲日 = 0 學點
+func case_chore_bot_cap(_runs: int, _seed0: int) -> int:
+	return _with_1_0b(func() -> int:
+		var per := {}
+		var per_lines: PackedStringArray = []
+		var rules := pace_rules()
+		var opts := pace_options()
+		var bad: PackedStringArray = []
+		for qid in tables.get("quests", {}):
+			var q: Dictionary = tables["quests"][qid]
+			var c: Variant = q.get("chore", null)
+			if not (c is Dictionary):
+				continue
+			var sid := str(c.get("sect", ""))
+			var hours: Array = []
+			for r in q.get("requires", []):
+				if r is Dictionary and str(r.get("type", "")) == "hour_in":
+					hours = r.get("hours", [])
+			var cd := maxf(1.0, float(q.get("repeat", {}).get("cooldown_days", 0.0)) * 7200.0)
+			# 遊戲日 = floor(世界秒 / 7200)：一天從世界秒 0（辰時）開始；貪婪地在時辰窗內每隔冷卻做一次
+			var count := 0
+			var t := 0.0
+			while t < 7200.0:
+				var sc := str(WorldClock.clock(t, 7200.0)["shichen_name"])
+				if hours.is_empty() or sc in hours:
+					count += 1
+					t += cd
+				else:
+					t += 60.0
+			var dp: Array = c.get("decay_pct", [100])
+			var lp := 0
+			for k in count:
+				lp += floori(int(c.get("lp", 0)) * int(dp[mini(k, dp.size() - 1)]) / 100.0)
+			per[sid] = int(per.get(sid, 0)) + lp
+		var ids: Array = per.keys()
+		ids.sort()
+		var ok := true
+		for sid in ids:
+			per_lines.append("%s %d" % [sid, int(per[sid])])
+			if int(per[sid]) > CHORE_DAY_CAP_LP:
+				ok = false
+				bad.append(sid)
+		# 過了新手期：最高本派武功 40 → 每件雜務學點 0
+		var vet_zero := true
+		for sid in ids:
+			if not tables.get("sects", {}).has(sid):
+				continue
+			var su := { "sid": sid, "home": str(tables["sects"][sid].get("home_city", "xixia")), "gender": "M", "personal": false, "masters": {}, "art": "" }
+			var rng := RandomNumberGenerator.new()
+			var ch := _pace_new_char(su, rng, opts)
+			var arts: Dictionary = tables.get("martial_arts", {})
+			for aid in arts:
+				if str(arts[aid].get("sect_id", "")) == sid and not bool(arts[aid].get("monster_only", false)):
+					ch.skills.set_level(str(aid), 40, tables)
+					break
+			for qid in tables["quests"]:
+				var c2: Variant = tables["quests"][qid].get("chore", null)
+				if c2 is Dictionary and str(c2.get("sect", "")) == sid and int(Learning.chore_lp(c2, 0, ch, tables, rules).lp) != 0:
+					vet_zero = false
+		ok = ok and vet_zero
+		print("%-24s %s  一個遊戲日理論最大學點（上限 %d）：%s；40 級角色 %s%s" % ["chore_bot_cap", "ok  " if ok else "FAIL",
+			CHORE_DAY_CAP_LP, "、".join(per_lines), "0 學點" if vet_zero else "還有學點",
+			"" if ok else "  (超過上限：%s)" % ", ".join(bad)])
+		# M3c2 第二輪審查 #3：切磋不在 600 的雜務上限裡 → 另外報「雜務＋切磋」一個遊戲日的理論最大值
+		# （切磋 = spar_daily_cap 場 × 一場最多 SPAR_LP_MAX；新角色實戰 0 時拿最多）。兩者合計受一輩子上限 novice_lp_cap 限制
+		var cap_n := clampi(int(opts.get("spar_daily_cap", 30)), 0, 200)
+		var both: PackedStringArray = []
+		var mons: Dictionary = tables.get("monsters", {})
+		for sid in ids:
+			var srow: Dictionary = tables.get("sects", {}).get(sid, {})
+			var mid := "m_hs_trainee" if sid == "huashan" else "m_%s_dizi" % str(srow.get("prefix", ""))
+			var per_fight := Learning.spar_lp(BattleRewards.lp_for(mons.get(mid, {}), 0, 1.0)) if mons.has(mid) else 0
+			both.append("%s %d＋%d＝%d" % [sid, int(per[sid]), cap_n * per_fight, int(per[sid]) + cap_n * per_fight])
+		print("%-24s REPORT  雜務＋切磋（%d 場 × 一場最多 %d）一個遊戲日理論最大學點：%s；兩者合計一輩子上限 %d（novice_lp_cap）" % [
+			"chore_bot_cap", cap_n, Learning.SPAR_LP_MAX, "、".join(both), int(rules.get("novice_lp_cap", 0))])
+		return 1 if ok else 0)
+
+## §3.3：P1 血刀（威嚇 10／50／100）對野狼出手，量「有威嚇／威嚇效果移除」的平均每擊傷害比 → 新／舊增傷比 ∈ [0.70, 0.80]
+## 觸發的那一下傷害 = max(1, round(基礎 × HEAVY_MULT))：基礎傷害 = 觸發那一下 ÷ HEAVY_MULT（威嚇效果移除），沒觸發的不變。
+## 舊增傷（期望值）= proc_chance(lv) × 0.5（M3a：×1.5、機率不打折）。
+func case_xd_weihe_uplift(_runs: int, seed0: int) -> int:
+	if not _has_art("xd_daofa") or not tables.get("monsters", {}).has("m_wolf"):
+		return _skip("xd_weihe_uplift", "xd_daofa／m_wolf")
+	var ok := true
+	var parts: PackedStringArray = []
+	for lv in WEIHE_LEVELS:
+		var ps := sect_spec("P1", "xuedao", "xd_daofa", 20)
+		ps.sect_skill = { "id": "weihe", "effect": "HEAVY", "level": lv }
+		ps.skills["weihe"] = lv
+		var wolf := Encounter.monster_spec("m_wolf", tables)
+		wolf.qi = 1 << 28
+		wolf.qi_max = 1 << 28
+		var b := Battle.new(1, seed0 + lv, { "wait_mode": false, "escape_tiles": 2 })
+		b.add_unit(ps)
+		b.add_unit(wolf)
+		b.start(tables)
+		var me := b.unit(1)
+		var foe := b.unit(2)
+		me.pos = Vector2i(1, 3)
+		foe.pos = Vector2i(2, 3)
+		var dmg_sum := 0.0
+		var base_sum := 0.0
+		var hits := 0
+		var procs := 0
+		var tries := 0
+		while hits < WEIHE_HITS and tries < WEIHE_HITS * 4:
+			tries += 1
+			me.jing = 9000
+			me.neili = 9000
+			me.qi = me.qi_max()
+			foe.qi = 1 << 28
+			me.state = BattleUnit.READY
+			var cmd := { "cmd": "ATTACK", "target": [foe.pos.x, foe.pos.y] }
+			if BattleRules.validate_cmd(b, me, cmd, tables) != "":
+				me.state = BattleUnit.CHARGING
+				continue
+			var ev: Array = BattleRules.execute(b, me, cmd, tables, b.rng)
+			var heavy := false
+			var dmg := -1
+			for e in ev:
+				if str(e.key) == "battle_proc_HEAVY":
+					heavy = true
+				var p: Dictionary = e.p
+				if int(p.get("atk_uid", 0)) == 1 and p.has("dmg") and not p.get("counter", false):
+					dmg = int(p.dmg)
+			if dmg <= 0:
+				continue
+			hits += 1
+			dmg_sum += dmg
+			if heavy:
+				procs += 1
+				base_sum += dmg / BattleStatus.HEAVY_MULT
+			else:
+				base_sum += dmg
+		var up_new := dmg_sum / maxf(1.0, base_sum) - 1.0
+		var up_old := BattleFormulas.proc_chance(lv) * 0.5
+		var ratio := up_new / maxf(1e-9, up_old)
+		parts.append("lv%d 觸發 %.1f%% 增傷 +%.2f%%（舊 +%.2f%%）比 %.2f" % [lv, procs * 100.0 / maxi(1, hits), up_new * 100.0, up_old * 100.0, ratio])
+		if ratio < WEIHE_RATIO[0] or ratio > WEIHE_RATIO[1]:
+			ok = false
+	print("%-24s %s  %s%s" % ["xd_weihe_uplift", "ok  " if ok else "FAIL", "；".join(parts), "" if ok else "  (新／舊增傷比不在 0.70–0.80)"])
+	return 1 if ok else 0
+
+# ==== M3c2 WP-ECON ====
+## M3C2_PLAN §4：製作經濟。回傳 [[名稱, Callable(runs, seed0) -> int]]
+## - econ_hourly：每條生活技能鏈在等級 10／30／50 的每小時收入（EconModel；§4.1 時間模型），
+##   對同階段戰鬥收入（§4.2：P1 打山豬、P2 打鬼、實戰 2 萬打山賊頭目；每場 行動數 × 2 秒＋60 秒，銀兩＋掉落賣店）。
+##   等級 30、50：0.5–0.9 倍；等級 10：> 0 且 0.3–0.9 倍；每條鏈 10 ≤ 30 ≤ 50；hunt_tailor 只檢查 > 0、不遞減，
+##   M3c2 審查 #5 起另外不能超過 0.9 倍（R7：生產收入低於同階段戰鬥）。
+##   M3c2 審查 #6：製作鏈在等級 30、50 的最佳產物必須是製作技能的成品（製作比直接賣原料划算）。
+## - econ_loop：商店買得到的材料（含多步驟閉包）做出來的成品，收購價一定低於材料最低買價（EconCalc.loop_violations）。
+## [鏈 id, 技能, 只採集, 製作技能（M3c2 審查 #6：等級 30、50 這些技能的成品要比賣原料划算）]
+const ECON2_CHAINS := [
+	["g_farm", ["life_farming"], true, []],
+	["g_wood", ["life_woodcut"], true, []],
+	["g_fish", ["life_fishing"], true, []],
+	["g_mine", ["life_mining"], true, []],
+	["farm_cook", ["life_farming", "life_cooking"], false, ["life_cooking"]],
+	["fish_cook", ["life_fishing", "life_woodcut", "life_cooking"], false, ["life_cooking"]],
+	["wood_char", ["life_woodcut"], false, ["life_woodcut"]],
+	["wood_carp", ["life_woodcut", "life_carpentry"], false, ["life_carpentry"]],
+	["mine_smith", ["life_mining", "life_smithing"], false, ["life_smithing"]],
+	["mine_sword", ["life_mining", "life_smithing", "life_swordsmith", "life_woodcut"], false, ["life_swordsmith"]],
+	["ma_tailor", ["life_farming", "life_weaving", "life_tailoring"], false, ["life_weaving", "life_tailoring"]],
+	["hunt_tailor", ["life_hunting", "life_weaving", "life_tailoring"], false, ["life_weaving", "life_tailoring"]],
+]
+## 製作要勝過賣原料的等級（M3c2 審查 #6）
+const ECON2_CRAFT_WIN_LEVELS := [30, 50]
+## M3c2 第二輪審查 #2：等級 10 的製作品每小時收入也要 > 0（製作不能一開始就賠錢），
+## 例外只有研究的等級擋住的鏈（擁有者決定 O8；README「生活技能」同步）：
+const ECON2_L10_CRAFT_EXEMPT := {
+	"wood_char": "燒炭 20 級才開（研究 鐵心網：炭爐 30 級以上，本作已壓到 20）；10 級只能賣木材",
+	"ma_tailor": "麻要種田 21 級才收得到（研究 鐵心網）；之前只能買麻種子，照 R8 一定虧；10 級只能賣稻米",
+}
+## [技能等級, 參考角色（精上限與戰鬥）, 練功怪, 報表標籤]
+const ECON2_STAGES := [[10, "P1", "m_boar", "P1"], [30, "P2", "m_ghost", "P2"], [50, "20k", "m_bandit_chief", "20k"]]
+const ECON2_BAND := { 10: [0.3, 0.9], 30: [0.5, 0.9], 50: [0.5, 0.9] }
+const ECON2_HUNT_ONLY := ["hunt_tailor"]
+const ECON2_HUNT_MONSTERS := ["m_hunt_yetu", "m_hunt_dayetu", "m_hunt_shanzhu", "m_hunt_lang", "m_hunt_xuehu"]
+const ECON2_HUNT_FIGHT_S := 30.0   # （舊）打獵一場固定 30 秒——M3c2 審查 #5：比戰鬥基準（行動數 × 2 秒＋60 秒）快好幾倍，改用下面的模型
+## M3c2 審查 #5：打獵一場的時間＝同階段參考角色打狩獵區獵物的平均行動數 × 2 秒＋ECON2_HUNT_OVERHEAD_S
+## （和戰鬥基準同一個時間模型：每場另加 60 秒——結果畫面、在獵場找獵物、走位【設計提案】）
+const ECON2_HUNT_OVERHEAD_S := 60.0
+const ECON2_FIGHT_SIMS := 200
+
+func econ2_cases() -> Array:
+	return [
+		["econ_hourly", case_econ_hourly],
+		["econ_loop", case_econ_loop],
+	]
+
+## 參考角色的回精速度（精／秒）：精上限 × Survival.REGEN_PCT / REGEN_INTERVAL_S
+func _econ2_regen(code: String) -> float:
+	# §4.1：等級 10→P1、30→P2、50→P3 的精上限（等級 50 的戰鬥基準是實戰 2 萬，另算）
+	var ps: Dictionary = player_spec("P3" if code == "20k" else code)
+	return float(ps.jing_max) * Survival.REGEN_PCT / Survival.REGEN_INTERVAL_S
+
+## 同階段戰鬥收入（兩／小時）：勝場（怪物真的死了）× 每場（銀兩＋掉落賣店）期望
+func _econ2_combat_h(code: String, mid: String, runs: int, seed0: int) -> Dictionary:
+	if not tables.get("monsters", {}).has(mid):
+		return {}
+	var party: Array = _p_party(20000, 1) if code == "20k" else [player_spec(code)]
+	var n := mini(runs, ECON2_FIGHT_SIMS)
+	var acts := 0
+	var kills := 0
+	for i in n:
+		var r := simulate_multi(party, [mid], [], seed0 + i)
+		acts += int(r.actions)
+		if r.result == "VICTORY" and bool(r.get("killed", true)):
+			kills += 1
+	var per_fight_s := acts / float(maxi(1, n)) * 2.0 + 60.0
+	var fights_h := 3600.0 / per_fight_s * kills / float(maxi(1, n))
+	var ev := _base_ev(mid) + _loot_ev(mid)
+	return { "h": ev * fights_h, "fights_h": fights_h, "ev": ev, "kill": kills / float(maxi(1, n)) }
+
+## 打獵一場的秒數：參考角色對狩獵區每種獵物的平均行動數 × 2 ＋ ECON2_HUNT_OVERHEAD_S（獵物平均）
+func _econ2_hunt_fight_s(code: String, runs: int, seed0: int) -> float:
+	var party: Array = _p_party(20000, 1) if code == "20k" else [player_spec(code)]
+	var n := mini(runs, 60)
+	var tot := 0.0
+	var nm := 0
+	for mid in ECON2_HUNT_MONSTERS:
+		if not tables.get("monsters", {}).has(mid):
+			continue
+		nm += 1
+		var acts := 0
+		for i in n:
+			acts += int(simulate_multi(party, [mid], [], seed0 + i).actions)
+		tot += acts / float(maxi(1, n)) * 2.0
+	return (tot / maxf(1.0, nm)) + ECON2_HUNT_OVERHEAD_S
+
+func case_econ_hourly(runs: int, seed0: int) -> int:
+	return _with_1_0b(func() -> int:
+		var ls: Dictionary = tables.get("life_skills", {})
+		if not ls.has("life_hunting"):
+			return _skip("econ_hourly", "life_hunting")
+		var combat := {}
+		var head: PackedStringArray = []
+		for st in ECON2_STAGES:
+			var c := _econ2_combat_h(st[1], st[2], runs, seed0)
+			if c.is_empty():
+				return _skip("econ_hourly", st[2])
+			combat[st[0]] = c
+			head.append("%s %s %.0f/h（%.1f 場×%.1f 兩）" % [st[3], st[2], c.h, c.fights_h, c.ev])
+		print("%-24s REPORT  同階段戰鬥收入：%s" % ["econ_hourly", "；".join(head)])
+		var base := { "tables": tables, "potion_per_jing": EconModel.potion_per_jing(tables),
+			"hunt_monsters": ECON2_HUNT_MONSTERS, "hunt_fight_s": ECON2_HUNT_FIGHT_S }
+		var hunt_s := {}
+		var hs_txt: PackedStringArray = []
+		for st in ECON2_STAGES:
+			hunt_s[st[0]] = _econ2_hunt_fight_s(st[1], runs, seed0)
+			hs_txt.append("%s %.0f 秒" % [st[3], float(hunt_s[st[0]])])
+		print("%-24s REPORT  打獵一場（行動數 × 2＋%.0f 秒）：%s" % ["econ_hourly", ECON2_HUNT_OVERHEAD_S, "；".join(hs_txt)])
+		var bad := 0
+		for ch in ECON2_CHAINS:
+			var cname: String = ch[0]
+			if (ch[1] as Array).any(func(s): return not ls.has(s)):
+				print("%-24s SKIP  %s 的技能還沒合併" % ["econ_hourly", cname])
+				continue
+			var parts: PackedStringArray = []
+			var why: PackedStringArray = []
+			var prev := -INF
+			for st in ECON2_STAGES:
+				var lv: int = st[0]
+				var ch_h: float = combat[lv].h
+				var b2 := base.duplicate()
+				b2.regen = _econ2_regen(st[1])
+				b2.hunt_fight_s = float(hunt_s[lv])
+				var best := EconModel.chain_best(b2, ch[1], lv, ch[2], ch_h * 0.7 / 3600.0)
+				var rate: float = best.rate
+				var ratio := rate / maxf(1.0, ch_h)
+				var craft_txt := ""
+				if not (ch[3] as Array).is_empty():
+					var cp := EconModel.craft_products(tables, ch[3], ch[1])
+					var cb := EconModel.chain_best(b2, ch[1], lv, ch[2], ch_h * 0.7 / 3600.0, cp)
+					craft_txt = "［製作 %s %.0f］" % [_econ2_item_name(str(cb.item)), float(cb.rate)]
+					if lv in ECON2_CRAFT_WIN_LEVELS and float(cb.rate) < rate - 0.5:
+						why.append("L%d 製作品（%s %.0f）不如賣原料（%s %.0f）" % [lv, _econ2_item_name(str(cb.item)), float(cb.rate),
+							_econ2_item_name(best.item), rate])
+					if lv == 10 and not (float(cb.rate) > 0.0):
+						if ECON2_L10_CRAFT_EXEMPT.has(cname):
+							craft_txt += "（練功期：%s）" % str(ECON2_L10_CRAFT_EXEMPT[cname])
+						else:
+							why.append("L10 製作品（%s %.0f）不賺錢" % [_econ2_item_name(str(cb.item)), float(cb.rate)])
+				parts.append("L%d %s %.0f/h (%.2f×%s) %s%s" % [lv, best.mode, rate, ratio, st[3], _econ2_item_name(best.item), craft_txt])
+				if cname in ECON2_HUNT_ONLY:
+					var hb: Array = ECON2_BAND[lv]
+					if not (rate > 0.0) or ratio > float(hb[1]):
+						why.append("L%d %.2f×（> 0 且 ≤ %.1f）" % [lv, ratio, float(hb[1])])
+				else:
+					var band: Array = ECON2_BAND[lv]
+					if not (rate > 0.0) or ratio < float(band[0]) or ratio > float(band[1]):
+						why.append("L%d %.2f× 不在 %.1f–%.1f" % [lv, ratio, band[0], band[1]])
+				if rate < prev - 0.5:
+					why.append("L%d 比前一級少" % lv)
+				prev = rate
+			if not why.is_empty():
+				bad += 1
+			print("%-12s %s  %-11s %s%s" % ["econ_hourly", "ok  " if why.is_empty() else "FAIL", cname, "  ".join(parts),
+				"" if why.is_empty() else "  ← " + "；".join(why)])
+		return 1 if bad == 0 else 0)
+
+func _econ2_item_name(id: String) -> String:
+	return str(tables.get("items", {}).get(id, {}).get("name", id))
+
+## 1.0A 與 1.0A＋1.0B 兩個視圖都檢查（1.0B 多了京城的商店與工匠）
+func case_econ_loop(_runs: int, _seed0: int) -> int:
+	var errs := EconCalc.loop_violations(tables)
+	var n_a := EconCalc.closure_recipe_count(tables)
+	var pct := EconCalc.min_buy_pct(tables)
+	var box := { "n_b": 0, "errs_b": PackedStringArray() }   # lambda 抓的是值：用字典帶回結果
+	_with_1_0b(func() -> int:
+		box.errs_b = EconCalc.loop_violations(tables)
+		box.n_b = EconCalc.closure_recipe_count(tables)
+		return 1)
+	var n_b: int = box.n_b
+	for e in box.errs_b:
+		if not (e in errs):
+			errs.append("[1.0B] " + e)
+	print("%-12s %s  商店材料循環 %d 條（最低買價 %d%%；閉包內配方 1.0A %d 條、1.0A＋1.0B %d 條）%s" % ["econ_loop",
+		"ok  " if errs.is_empty() else "FAIL", errs.size(), pct, n_a, n_b, "" if errs.is_empty() else "：" + "；".join(errs)])
+	return 1 if errs.is_empty() else 0
