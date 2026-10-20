@@ -1,0 +1,22 @@
+{
+  "table": "basic_skills", "version": 1,
+  "rows": [
+    { "id": "basic_blade",     "name": "基本刀法", "curve": "CUBIC",    "difficulty": 0.9, "max_level": 250, "attr_bonus_per10": {},           "era": "1.0A", "src": "verified" },
+    { "id": "basic_sword",     "name": "基本劍法", "curve": "CUBIC",    "difficulty": 0.9, "max_level": 250, "attr_bonus_per10": {},           "era": "1.0A", "src": "verified" },
+    { "id": "basic_whip",      "name": "基本鞭法", "curve": "CUBIC",    "difficulty": 0.9, "max_level": 250, "attr_bonus_per10": {},           "era": "1.0A", "src": "verified" },
+    { "id": "basic_staff",     "name": "基本棍法", "curve": "CUBIC",    "difficulty": 0.9, "max_level": 250, "attr_bonus_per10": {},           "era": "1.0A", "src": "verified" },
+    { "id": "basic_spear",     "name": "基本槍法", "curve": "CUBIC",    "difficulty": 0.9, "max_level": 250, "attr_bonus_per10": {},           "era": "1.0A", "src": "verified" },
+    { "id": "basic_inner",     "name": "基本內功", "curve": "QUARTIC",  "difficulty": 0.8, "max_level": 250, "attr_bonus_per10": { "con": 1 }, "attr_bonus_cap": { "con": 14 }, "era": "1.0A", "src": "verified" },
+    { "id": "basic_stab",      "name": "基本刺術", "curve": "CUBIC",    "difficulty": 0.9, "max_level": 250, "attr_bonus_per10": {},           "era": "1.0A", "src": "verified" },
+    { "id": "basic_parry",     "name": "拆招卸力", "curve": "CUBIC",    "difficulty": 0.9, "max_level": 250, "attr_bonus_per10": {},           "era": "1.0A", "src": "verified" },
+    { "id": "basic_fist",      "name": "搏擊格鬥", "curve": "CUBIC",    "difficulty": 0.9, "max_level": 250, "attr_bonus_per10": { "str": 1 }, "attr_bonus_cap": { "str": 15 }, "era": "1.0A", "src": "verified" },
+    { "id": "basic_dodge",     "name": "閃躲縱躍", "curve": "CUBIC",    "difficulty": 0.9, "max_level": 250, "attr_bonus_per10": { "agi": 1 }, "attr_bonus_cap": { "agi": 14 }, "era": "1.0A", "src": "verified" },
+    { "id": "basic_body",      "name": "基本身法", "curve": "CUBIC",    "difficulty": 0.9, "max_level": 250, "attr_bonus_per10": {},           "era": "1.0A", "src": "verified" },
+    { "id": "basic_formation", "name": "基本陣法", "curve": "CUBIC",    "difficulty": 0.9, "max_level": 250, "attr_bonus_per10": {},           "era": "1.0B", "src": "verified" },
+    { "id": "basic_poison",    "name": "基本毒術", "curve": "CUBIC",    "difficulty": 0.9, "max_level": 250, "attr_bonus_per10": {},           "era": "1.0A", "src": "verified" },
+    { "id": "basic_medic",     "name": "基本醫術", "curve": "CUBIC",    "difficulty": 0.9, "max_level": 250, "attr_bonus_per10": {},           "era": "1.0A", "src": "verified" },
+    { "id": "basic_hidden",    "name": "基本暗器", "curve": "CUBIC",    "difficulty": 0.9, "max_level": 250, "attr_bonus_per10": {},           "era": "1.0A", "src": "verified" },
+    { "id": "basic_literacy",  "name": "讀書識字", "curve": "LITERACY", "difficulty": 1.0, "max_level": 250, "attr_bonus_per10": {},           "attr_bonus_cap": { "wit": 10 }, "era": "1.0A", "src": "verified" },
+    { "id": "basic_trade",     "name": "交易之道", "curve": "CUBIC",    "difficulty": 0.9, "max_level": 250, "attr_bonus_per10": {},           "era": "1.0A", "src": "verified" }
+  ]
+}

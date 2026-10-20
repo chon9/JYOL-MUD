@@ -1,0 +1,68 @@
+{
+  "region_id": "wudang",
+  "era": "1.0A",
+  "src": "proposal",
+  "desc": "武當山上的武當派，張三丰真人在此開宗立派，門下七俠名震江湖。",
+  "escape_tiles_hint": 2,
+  "rooms": [
+    { "id": "wd_gate", "name": "武當山門", "desc": "山門前的石階打掃得乾乾淨淨，知客道長在門口迎送香客，一旁的老先生正在簿子上記事。往南是練武場，往北下山的石階通往山腳。",
+      "exits": [{"dir": "N", "to": "wd_road2"}, {"dir": "S", "to": "wd_square"}],
+      "npcs": ["n_wd_cha", "n_wd_zhike", "n_wd_beizhong"], "features": [], "requires": [] },
+    { "id": "wd_square", "name": "練武場", "desc": "青石鋪成的廣場上，武當弟子兩兩一組推手「抱太極」，一位中年道人在旁指點。南邊是大殿，東邊是書房，西邊是稻田。",
+      "exits": [
+        {"dir": "N", "to": "wd_gate"},
+        {"dir": "S", "to": "wd_dadian"},
+        {"dir": "E", "to": "wd_shufang"},
+        {"dir": "W", "to": "wd_daotian"}
+      ],
+      "npcs": ["n_wd_yudaiyan", "n_wd_spar", "n_wd_zhongfei"], "features": [], "requires": [] },
+    { "id": "wd_daotian", "name": "稻田", "desc": "山腰開出的一片梯田，稻子長得正好，一位老農夫捲著褲管在田裡忙活。武當弟子平日也來幫忙耕作。",
+      "exits": [{"dir": "E", "to": "wd_square"}], "npcs": ["n_wd_nongfu", "n_wd_nanyu"], "features": ["FIELD"],
+      "requires": [{"type": "sect", "sect": "wudang"}] },
+    { "id": "wd_shufang", "name": "書房", "desc": "書架上堆滿道經與字帖，案上筆墨未乾。四俠張松溪常在這裡教弟子寫書法、讀書識字。",
+      "exits": [{"dir": "W", "to": "wd_square"}], "npcs": ["n_wd_zhangsongxi", "n_wd_xiyun"], "features": [],
+      "requires": [{"type": "sect", "sect": "wudang"}] },
+    { "id": "wd_dadian", "name": "大殿", "desc": "殿上供奉真武大帝，香煙繚繞，大俠宋遠橋端坐殿中處理派務。殿後有間小屋，東邊是三清宮。",
+      "exits": [{"dir": "N", "to": "wd_square"}, {"dir": "S", "to": "wd_tanqiang"}, {"dir": "E", "to": "wd_sanqing"}],
+      "npcs": ["n_wd_songyuanqiao", "n_wd_songqingshu"], "features": [],
+      "requires": [
+        { "type": "any_of",
+          "options": [
+            [{"type": "sect", "sect": "wudang"}],
+            [{"type": "has_item", "item": "i_wd_yinjianshu", "n": 1}],
+            [{"type": "quest_flag", "flag": "wd_recommended"}]
+          ] }
+      ] },
+    { "id": "wd_tanqiang", "name": "大殿後屋", "desc": "大殿後頭的小屋，牆面被踩出一排排腳印，二俠俞蓮舟在這裡督促弟子練「踏牆」輕功。往南是後山。",
+      "exits": [{"dir": "N", "to": "wd_dadian"}, {"dir": "S", "to": "wd_houshan"}], "npcs": ["n_wd_yulianzhou"],
+      "features": [], "requires": [{"type": "sect", "sect": "wudang"}] },
+    { "id": "wd_houshan", "name": "後山松林", "desc": "後山松林清幽，雲霧在林間繚繞，六俠殷梨亭與七俠莫聲谷常在此練功。林子東邊有間石屋。",
+      "exits": [{"dir": "N", "to": "wd_tanqiang"}, {"dir": "E", "to": "wd_siguo"}],
+      "npcs": ["n_wd_yinliting", "n_wd_moshenggu"], "features": ["WOOD"],
+      "requires": [{"type": "sect", "sect": "wudang"}] },
+    { "id": "wd_siguo", "name": "思過處", "desc": "石壁圍成的小屋只有一扇鐵窗，觸犯門規的弟子被押到這裡面壁思過。執法道長守在門口。",
+      "exits": [{"dir": "W", "to": "wd_houshan"}], "npcs": ["n_wd_jailer"], "features": [], "jail": true,
+      "requires": [{"type": "sect", "sect": "wudang"}] },
+    { "id": "wd_sanqing", "name": "三清宮", "desc": "宮中供奉三清道祖，莊嚴肅穆，右手邊站著一位道人。往南穿過迴廊是內堂。",
+      "exits": [{"dir": "W", "to": "wd_dadian"}, {"dir": "S", "to": "wd_neitang"}], "npcs": ["n_wd_dongchao"],
+      "features": [],
+      "requires": [
+        { "type": "any_of",
+          "options": [
+            [{"type": "sect", "sect": "wudang"}],
+            [{"type": "has_item", "item": "i_wd_yinjianshu", "n": 1}],
+            [{"type": "quest_flag", "flag": "wd_recommended"}]
+          ] }
+      ] },
+    { "id": "wd_neitang", "name": "內堂", "desc": "內堂陳設簡樸，一位鬚髮皆白的老道人盤膝而坐，神光內斂。想拜入武當，得帶著引薦書來這裡向張真人下跪。",
+      "exits": [{"dir": "N", "to": "wd_sanqing"}], "npcs": ["n_wd_zhangsanfeng"], "features": [],
+      "requires": [
+        { "type": "any_of",
+          "options": [
+            [{"type": "sect", "sect": "wudang"}],
+            [{"type": "has_item", "item": "i_wd_yinjianshu", "n": 1}],
+            [{"type": "quest_flag", "flag": "wd_recommended"}]
+          ] }
+      ] }
+  ]
+}

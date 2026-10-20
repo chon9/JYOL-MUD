@@ -1,0 +1,19 @@
+{
+  "fragment": "_merge_fill", "version": 1, "author": "WP-MERGE",
+  "text_templates": [
+    {"id": "talk_n_lf_lanfenghuang@NIGHT", "era": "1.0A", "self": "{npc_name}提著一盞小燈籠蹲在岸邊石縫旁，笑道：「夜裡的蜈蚣最肥，你要是不怕，就陪我一起等。」", "src": "proposal", "src_note": "WP-MERGE 補 §5.3 @NIGHT 句【設計提案・非原作】"},
+    {"id": "talk_n_hs_lanyihan@NIGHT", "era": "1.0A", "self": "{npc_name}收劍入鞘，打了個呵欠：「天都黑了，師父說夜裡練劍容易走岔了氣，我也該回去歇著了。」", "src": "proposal", "src_note": "WP-MERGE 補 §5.3 @NIGHT 句【設計提案・非原作】"},
+    {"id": "talk_n_hn_moda@NIGHT", "era": "1.0A", "self": "{npc_name}的胡琴聲早停了，只剩水邊一個瘦削的背影，對你擺了擺手，不願多說。", "src": "proposal", "src_note": "WP-MERGE 補 §5.3 @NIGHT 句（莫大只在申、酉出現，此句備用）【設計提案・非原作】"},
+    {"id": "talk_n_hn_mimike@NIGHT", "era": "1.0A", "self": "{npc_name}把斗笠壓得更低，桌下的手始終按著刀柄：「夜深了，不相干的人少在這裡晃。」", "src": "proposal", "src_note": "WP-MERGE 補 §5.3 @NIGHT 句【設計提案・非原作】"},
+    {"id": "talk_n_hs_linghuchong@NIGHT", "era": "1.0A", "self": "{npc_name}早已不見蹤影，池邊只留下一只空酒葫蘆。附近的人說：「令狐大俠白天才在這裡喝酒練劍，夜裡不知溜到哪去了。」", "src": "proposal", "src_note": "WP-MERGE 補 §5.3 @NIGHT 句【設計提案・非原作】"},
+    {"id": "talk_n_ym_lingzhi@NIGHT", "era": "1.0A", "self": "{npc_name}裹著毛氈縮在關口牆角，凍得直打哆嗦：「夜裡關外更不太平，橋那頭黑漆漆的，我可不敢再過去了。」", "src": "proposal", "src_note": "WP-MERGE 補 §5.3 @NIGHT 句【設計提案・非原作】"},
+    {"id": "talk_n_sl_daopin@NIGHT", "era": "1.0A", "self": "{npc_name}剛做完晚課，就著油燈翻經：「夜深了，施主早些歇息。虛竹師弟的事，明日再說不遲。」", "src": "proposal", "src_note": "WP-MERGE 補 §5.3 @NIGHT 句【設計提案・非原作】"},
+    {"id": "talk_n_xx_xuzhu@NIGHT", "era": "1.0A", "self": "{npc_name}坐在衙門簷下打著瞌睡，被你一叫，嚇得連念「阿彌陀佛」。", "src": "proposal", "src_note": "WP-MERGE 補 §5.3 @NIGHT 句【設計提案・非原作】"},
+    {"id": "talk_n_xx_palace_guard_l@NIGHT", "era": "1.0A", "self": "{npc_name}在火把下挺直了腰，低喝：「入夜宮禁森嚴，再往前一步，休怪刀下無情！」", "src": "proposal", "src_note": "WP-MERGE 補 §5.3 @NIGHT 句【設計提案・非原作】"},
+    {"id": "talk_n_xx_palace_guard_r@NIGHT", "era": "1.0A", "self": "{npc_name}打了個呵欠，又趕緊站直，仍舊一句話也不說。", "src": "proposal", "src_note": "WP-MERGE 補 §5.3 @NIGHT 句【設計提案・非原作】"},
+    {"id": "talk_n_xx_litaian@NIGHT", "era": "1.0A", "self": "{npc_name}點著油燈抄藥方：「鋪子打烊了，我在溫習藥書。雲兒……呃，沒事，你明日再來吧。」", "src": "proposal", "src_note": "WP-MERGE 補 §5.3 @NIGHT 句【設計提案・非原作】"},
+    {"id": "talk_n_xx_abao@NIGHT", "era": "1.0A", "self": "{npc_name}摸黑往回走，差點撞上你：「天一黑，這山坡上的路就更認不得了……」", "src": "proposal", "src_note": "WP-MERGE 補 §5.3 @NIGHT 句【設計提案・非原作】"},
+    {"id": "talk_n_xd_pantu@NIGHT", "era": "1.0A", "self": "{npc_name}縮在雪地的石頭後面發抖，眼睛死死盯著你的兵器。", "src": "proposal", "src_note": "WP-MERGE 補 §5.3 @NIGHT 句【設計提案・非原作】"}
+  ],
+  "notes": "WP-MERGE：test_ambient_system 與 §5.3 要求每個有 talk 模板的 STORY／QUEST NPC 都有 @NIGHT 句；新 NPC 的碎片把 @NIGHT 留給 _ambient，_ambient 只寫了既有 NPC，由 WP-MERGE 補上 13 句。"
+}

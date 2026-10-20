@@ -1,0 +1,6 @@
+{ "table": "rule_profiles", "version": 1, "rows": [
+  { "id": "classic_standard", "name": "std", "era": "1.0A",
+    "rules": { "death_rule": "STANDARD", "corpse_window": "CLASSIC_30", "betrayal_halves_basics": false,
+               "xuedian_cap": 65200, "jail_enabled": true, "self_study_cap": "NONE" } },
+  { "id": "partial", "name": "partial", "era": "1.0A", "rules": { "death_rule": "CASUAL" } }
+] }

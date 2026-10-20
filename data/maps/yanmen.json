@@ -1,0 +1,16 @@
+{
+  "region_id": "yanmen",
+  "era": "1.0A",
+  "src": "proposal",
+  "escape_tiles_hint": 2,
+  "desc": "北方雄關雁門關，關外風沙漫天，商旅往來都要在這裡歇一口氣。",
+  "rooms": [
+    {"id": "ym_road", "name": "雁門古道", "desc": "從恆山岔路往東北延伸的古道，越走越荒涼，北風捲著黃沙。往西南回恆山岔路，往北就是雁門關口。", "exits": [{"dir": "SW", "to": "hf_fork"}, {"dir": "N", "to": "ym_gate"}, {"dir": "E", "to": "jcn_road4", "era": "1.0B"}], "npcs": [], "features": [], "requires": [], "encounter": {"rate": 0.1, "table": [{"monster": "m_bigrabbit", "w": 60, "count": [1, 1]}, {"monster": "m_wolf", "w": 35, "count": [1, 1]}, {"monster": "m_bandit", "w": 5, "count": [1, 1]}]}, "desc_1_0b": "從恆山岔路往東北延伸的古道，越走越荒涼，北風捲著黃沙。往西南回恆山岔路，往北就是雁門關口；往東的山徑翻過去可到京城北郊。"},
+    {"id": "ym_gate", "name": "雁門關口", "desc": "雄關聳立，城樓上旌旗獵獵。關口邊擺著幾個商販的攤子。往南回雁門古道，往北進關，東南出關有座小橋。", "exits": [{"dir": "S", "to": "ym_road"}, {"dir": "N", "to": "ym_inner"}, {"dir": "SE", "to": "ym_bridge"}, {"dir": "W", "to": "mw_mouth", "era": "1.0B"}], "npcs": ["n_ym_lingzhi"], "features": [], "requires": [], "safe": true, "encounter": {"rate": 0.05, "table": [{"monster": "m_rabbit", "w": 100, "count": [1, 1]}]}, "desc_1_0b": "雄關聳立，城樓上旌旗獵獵。關口邊擺著幾個商販的攤子。往南回雁門古道，往北進關，東南出關有座小橋。關口西邊靠山處有個黑黝黝的山洞（馬王洞）。"},
+    {"id": "ym_bridge", "name": "關外橋邊", "desc": "關外一座木橋橫跨乾涸的河床，常有歹人在橋下埋伏過路的商旅。往西北回雁門關口，往南可以下到橋下的河床，往東是一望無際的關外荒原。", "exits": [{"dir": "NW", "to": "ym_gate"}, {"dir": "S", "to": "ym_qiaoxia"}, {"dir": "E", "to": "ym_outside"}], "npcs": ["n_ym_qiangdao"], "features": [], "requires": [], "encounter": {"rate": 0.1, "table": [{"monster": "m_wolf", "w": 50, "count": [1, 1]}, {"monster": "m_bandit", "w": 50, "count": [1, 1]}]}},
+    {"id": "ym_qiaoxia", "name": "關外橋下", "desc": "橋下乾涸的河床亂石堆疊，石縫裡丟著撕破的衣裙與空酒罈，看得人心裡發毛。往北爬回橋邊。", "exits": [{"dir": "N", "to": "ym_bridge"}], "npcs": [], "features": [], "requires": [], "encounter": {"rate": 0.1, "table": [{"monster": "m_wolf", "w": 50, "count": [1, 1]}, {"monster": "m_bandit", "w": 50, "count": [1, 1]}]}, "src": "verified", "src_note": "研究：17173 gaoshou/23「淫魔 below the 強盜」（強盜在「靈芝商人右下橋附近」）→ 橋邊往南的橋下；審查修正（原本淫賊和強盜同一間）。房間描述【設計提案】"},
+    {"id": "ym_inner", "name": "雁門關內", "desc": "關內一條長街，酒旗招展，戍邊的軍士與南來北往的豪客擠在一起喝酒。往南出關口，往西的巷底立著一塊刻字石碑。", "exits": [{"dir": "S", "to": "ym_gate"}, {"dir": "W", "to": "ym_stele"}], "npcs": ["n_ym_hufei", "n_ym_azhu"], "features": [], "requires": [], "safe": true},
+    {"id": "ym_outside", "name": "雁門關外", "desc": "出了關是一望無際的荒原，北風捲著枯草，一個背負長劍的黃臉漢子獨自佇立風中。往西回關外橋邊。", "exits": [{"dir": "W", "to": "ym_bridge"}], "npcs": ["n_ym_miaorenfeng"], "features": [], "requires": [], "encounter": {"rate": 0.1, "table": [{"monster": "m_bigrabbit", "w": 55, "count": [1, 1]}, {"monster": "m_wolf", "w": 40, "count": [1, 1]}, {"monster": "m_bandit", "w": 5, "count": [1, 1]}]}, "src": "verified", "src_note": "研究：gaoshou/23 苗人鳳「雁門關外右下」；other.htm 稱「雁門關外的靈芝商人」→ 關口即關外；房間文字【設計提案】"},
+    {"id": "ym_stele", "name": "刻字石碑", "desc": "關內巷底立著一塊丈許高的大石碑，碑上刻滿了字，有一大片卻被人用利器刮得模糊難辨。往東回關內長街。", "exits": [{"dir": "E", "to": "ym_inner"}], "npcs": ["n_ym_keshi"], "features": [], "requires": [], "safe": true, "src": "verified", "src_note": "研究：other.htm 拓印「去雁門關，與在刻字石塊前的NPC講話」【已證實】；石塊在關內【設計提案】；字被刮去取材《天龍八部》蕭遠山石壁遺書被智光刮去【設計提案】"}
+  ]
+}

@@ -1,0 +1,14 @@
+# Godot 4
+.godot/
+
+# 匯出結果（TECH_ARCH 4.1：不進版控）
+/build/
+
+# 開源（2026-10-20）：不進版控
+# 美術原始投稿與備份（處理後的成品在 assets/art/）
+/assets/art_in/
+/assets/art_in_backup_section11/
+/ChatGPT Image*.png
+/ChatGPT Image*.png.import
+# 工作流程腳本（本機路徑，內部用）
+/.workflows/

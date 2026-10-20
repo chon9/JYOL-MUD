@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://drmdlvoqxyafi"
+path="res://.godot/imported/群俠聚金庸 天涯循歸途.mp3-78f9feff30cee3d2c046df4f11206df5.mp3str"
+
+[deps]
+
+source_file="res://assets/bgm/群俠聚金庸 天涯循歸途.mp3"
+dest_files=["res://.godot/imported/群俠聚金庸 天涯循歸途.mp3-78f9feff30cee3d2c046df4f11206df5.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

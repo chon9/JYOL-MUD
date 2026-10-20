@@ -1,0 +1,31 @@
+{
+  "region_id": "xingxiu_road",
+  "era": "1.0A",
+  "src": "proposal",
+  "desc": "西夏南坡的沙丘往西漸漸變成泥灘，盡頭就是星宿海。",
+  "escape_tiles_hint": 2,
+  "rooms": [
+    { "id": "xh_road1", "name": "蛇骨小徑", "desc": "沙地上每隔一段就插著一根蛇骨，指著往西的方向。往南的低窪處飄來一股腥甜的濕氣。",
+      "exits": [{"dir": "E", "to": "ws_dunes"}, {"dir": "W", "to": "xh_road2"}, {"dir": "S", "to": "xh_marsh"}],
+      "npcs": [], "features": [], "requires": [],
+      "encounter": { "rate": 0.1,
+        "table": [
+          {"monster": "m_rabbit", "w": 45, "count": [1, 1]},
+          {"monster": "m_bigrabbit", "w": 45, "count": [1, 1]},
+          {"monster": "m_xh_snake", "w": 10, "count": [1, 1]}
+        ] } },
+    { "id": "xh_road2", "name": "星宿海邊", "desc": "沙地到這裡變成泥灘，前方一片灰藍的湖水就是星宿海。往西的木棧道通往星宿派。",
+      "exits": [{"dir": "E", "to": "xh_road1"}, {"dir": "W", "to": "xh_gate"}], "npcs": [], "features": ["WATER"],
+      "requires": [],
+      "encounter": { "rate": 0.1,
+        "table": [{"monster": "m_rabbit", "w": 50, "count": [1, 1]}, {"monster": "m_bigrabbit", "w": 50, "count": [1, 1]}] } },
+    { "id": "xh_marsh", "name": "毒沼", "desc": "蘆葦間的泥沼冒著氣泡，毒蛇、蠍子和蟾蜍在爛泥裡爬來爬去。星宿弟子常來這裡捉毒物練功。",
+      "exits": [{"dir": "N", "to": "xh_road1"}], "npcs": [], "features": ["WATER"], "requires": [],
+      "encounter": { "rate": 0.15,
+        "table": [
+          {"monster": "m_xh_snake", "w": 50, "count": [1, 2]},
+          {"monster": "m_xh_scorpion", "w": 35, "count": [1, 1]},
+          {"monster": "m_xh_toad", "w": 15, "count": [1, 1]}
+        ] } }
+  ]
+}

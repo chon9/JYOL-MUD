@@ -1,0 +1,24 @@
+{
+  "region_id": "xixia_south",
+  "era": "1.0A",
+  "src": "proposal",
+  "desc": "西夏城南的緩坡順著雪水小溪往南延伸，越往南越乾。",
+  "escape_tiles_hint": 2,
+  "rooms": [
+    { "id": "ws_slope", "name": "南坡", "desc": "小溪沿著緩坡往南流，坡上的草越來越稀，偶爾能看到野兔在石縫間打洞。",
+      "exits": [{"dir": "N", "to": "xw_creek"}, {"dir": "SW", "to": "ws_ford"}], "npcs": [], "features": [],
+      "requires": [],
+      "encounter": { "rate": 0.1,
+        "table": [{"monster": "m_rabbit", "w": 60, "count": [1, 1]}, {"monster": "m_bigrabbit", "w": 40, "count": [1, 1]}] } },
+    { "id": "ws_ford", "name": "溪口淺灘", "desc": "溪水在這裡攤成一片淺灘，踩著石頭就能過去。對岸往南是一片黃沙。",
+      "exits": [{"dir": "NE", "to": "ws_slope"}, {"dir": "S", "to": "ws_dunes"}], "npcs": [], "features": ["WATER"],
+      "requires": [],
+      "encounter": { "rate": 0.1,
+        "table": [{"monster": "m_bigrabbit", "w": 50, "count": [1, 1]}, {"monster": "m_rabbit", "w": 50, "count": [1, 1]}] } },
+    { "id": "ws_dunes", "name": "沙丘邊緣", "desc": "連綿的沙丘從西邊漫過來。往西有一條插著蛇骨標記的小路通往星宿海，往南的路通往大漠。",
+      "exits": [{"dir": "N", "to": "ws_ford"}, {"dir": "S", "to": "de_edge"}, {"dir": "W", "to": "xh_road1"}],
+      "npcs": [], "features": [], "requires": [],
+      "encounter": { "rate": 0.1,
+        "table": [{"monster": "m_bigrabbit", "w": 50, "count": [1, 1]}, {"monster": "m_rabbit", "w": 50, "count": [1, 1]}] } }
+  ]
+}

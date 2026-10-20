@@ -1,0 +1,8 @@
+{ "table": "martial_arts", "version": 1, "rows": [
+  { "id": "sl_changquan", "name": "少林長拳", "sect_id": "shaolin", "base_skill": "", "difficulty": 1.0,
+    "self_study_until": 0, "party_size": 0, "requires": [], "era": "1.0A",
+    "moves": [ { "id": "m1", "name": "黑虎掏心", "unlock_level": 1, "power": 20, "range": 1,
+                 "cost_inner": 0, "cost_jing": 0, "status_chance": 0.0, "flavor": "move_fist_basic" } ] },
+  { "id": "gb_xianglong", "name": "降龍十八掌", "sect_id": "gaibang", "base_skill": "", "difficulty": 1.5,
+    "self_study_until": 10, "party_size": 0, "requires": [], "era": "1.0B", "moves": [] }
+] }

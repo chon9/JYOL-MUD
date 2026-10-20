@@ -1,0 +1,8 @@
+{ "region_id": "r_a", "era": "1.0A", "src": "proposal", "desc": "甲地", "escape_tiles_hint": 3,
+  "rooms": [
+    { "id": "ra_1", "name": "甲一", "desc": "甲地一號房", "exits": [ { "dir": "E", "to": "ra_2" } ],
+      "npcs": [], "features": ["FIELD"], "requires": [ { "type": "attr_min", "attr": "str", "value": 10 } ],
+      "encounter": { "rate": 0.25, "table": [ { "monster": "m_x", "w": 70, "count": [1, 2] } ] } },
+    { "id": "ra_2", "name": "甲二", "desc": "甲地二號房", "exits": [ { "dir": "W", "to": "ra_1" } ],
+      "npcs": [], "features": [], "requires": [] }
+  ] }

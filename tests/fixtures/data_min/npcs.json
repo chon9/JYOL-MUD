@@ -1,0 +1,5 @@
+{ "table": "npcs", "version": 1, "rows": [
+  { "id": "n_old",   "name": "舊人", "region": "r_a", "era": "1.0A", "era_until": "1.0B" },
+  { "id": "n_new",   "name": "新人", "region": "r_b", "era": "1.0B" },
+  { "id": "n_patch", "name": "搬家", "region": "r_a", "era": "1.0A" }
+] }

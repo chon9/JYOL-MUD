@@ -1,0 +1,1972 @@
+{
+ "fragment": "xingxiu",
+ "version": 1,
+ "author": "WP-SECT-xingxiu",
+ "sect": {
+  "id": "xingxiu",
+  "name": "星宿",
+  "home_city": "xixia",
+  "gate_region": "xingxiu",
+  "prefix": "xh",
+  "gate_room": "xh_gate",
+  "head_npc": "n_xh_dingchunqiu",
+  "gender": [
+   "M",
+   "F"
+  ],
+  "join_requires": [
+   {
+    "type": "morality_max",
+    "value": -100
+   },
+   {
+    "type": "no_sect"
+   },
+   {
+    "type": "not_enemy_of",
+    "sect": "xingxiu"
+   }
+  ],
+  "teach_requires": [
+   {
+    "type": "morality_max",
+    "value": -100
+   }
+  ],
+  "sect_skill": "chanmei",
+  "sect_skill_name": "諂媚",
+  "sect_skill_effect": {
+   "effect": "DISTRACT"
+  },
+  "sect_skill_cost": [
+   "jing",
+   "shen"
+  ],
+  "sect_skill_cap": 100,
+  "sect_skill_limits_arts": true,
+  "sect_art_cap_bonus": 10,
+  "forbid_meat": false,
+  "sect_skill_gain": [],
+  "sect_skill_penalties": [
+   {
+    "trigger": "DAILY_IF",
+    "if": [
+     {
+      "type": "killing_intent_min",
+      "value": 2001
+     }
+    ],
+    "levels": 1
+   }
+  ],
+  "personal_master": false,
+  "enforcer": false,
+  "enforcers": [],
+  "jail_room": "",
+  "hostile_entry": [
+   {
+    "if": [
+     {
+      "type": "enemy_of",
+      "sect": "xingxiu"
+     }
+    ],
+    "rooms": "ALL",
+    "monster": "m_xh_guard",
+    "count": [
+     1,
+     2
+    ],
+    "chance": 1.0,
+    "no_flee": false,
+    "capture": false
+   }
+  ],
+  "visitors": "OPEN",
+  "meal_npc": "",
+  "src_note": "研究 星宿：諂媚＝分心（官方 index_jy2-25，耗精與神）；諂媚限制可學武功（mengpai/8）；門規「善惡大於−100 無法學習武功」、執法者 無（index_jy2-22）；入派 善惡≤−100、無門派、非叛徒（mengpai/8，M3A_PLAN 9）；殺氣高諂媚降（2018 repost，衰減數值設計提案）；叛徒成星宿公敵永不得回",
+  "era": "1.0A",
+  "src": "verified"
+ },
+ "sect_rules": [],
+ "regions": [
+  {
+   "id": "xingxiu_road",
+   "name": "星宿海邊",
+   "type": "WILD",
+   "city": "xixia",
+   "map": "res://data/maps/xingxiu_road.json",
+   "world_pos": [
+    200,
+    205
+   ],
+   "suggested_xp": [
+    0,
+    3000
+   ],
+   "pk_allowed": true,
+   "birth_allowed": false,
+   "birth_room": "",
+   "night_closed": [],
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "M3A_PLAN 2.1：內插於西夏南坡與星宿海之間【設計提案】"
+  },
+  {
+   "id": "xingxiu",
+   "name": "星宿派",
+   "type": "SECT",
+   "city": "xixia",
+   "map": "res://data/maps/xingxiu.json",
+   "world_pos": [
+    142,
+    192
+   ],
+   "suggested_xp": [
+    0,
+    0
+   ],
+   "pk_allowed": false,
+   "birth_allowed": false,
+   "birth_room": "",
+   "night_closed": [],
+   "era": "1.0A",
+   "src": "verified",
+   "src_note": "17173 gaoshou/17 山門座標 3408,4608 ÷24"
+  }
+ ],
+ "maps": {
+  "xingxiu": {
+   "region_id": "xingxiu",
+   "era": "1.0A",
+   "src": "proposal",
+   "desc": "星宿海畔的星宿派，木屋架在水上，弟子們整天把「星宿老仙」掛在嘴邊。",
+   "escape_tiles_hint": 2,
+   "rooms": [
+    {
+     "id": "xh_gate",
+     "name": "星宿海外景",
+     "desc": "湖面上架著木棧道和一排高腳木屋，岸邊停著小船，一尊巨大的海蛇石像昂首對著湖心。廣場北邊就是星宿派大殿。",
+     "exits": [
+      {
+       "dir": "E",
+       "to": "xh_road2"
+      },
+      {
+       "dir": "N",
+       "to": "xh_hall"
+      }
+     ],
+     "npcs": [
+      "n_xh_cha",
+      "n_xh_menren"
+     ],
+     "features": [
+      "WATER"
+     ],
+     "requires": []
+    },
+    {
+     "id": "xh_hall",
+     "name": "星宿大殿",
+     "desc": "殿中鋪著長長的紅地毯，四個角落都靠著木梯。一位鶴髮童顏的老者坐在殿上，左右弟子不停地歌功頌德。",
+     "exits": [
+      {
+       "dir": "S",
+       "to": "xh_gate"
+      },
+      {
+       "dir": "W",
+       "to": "xh_left"
+      },
+      {
+       "dir": "E",
+       "to": "xh_right"
+      },
+      {
+       "dir": "N",
+       "to": "xh_mid1"
+      }
+     ],
+     "npcs": [
+      "n_xh_dingchunqiu"
+     ],
+     "features": [],
+     "requires": []
+    },
+    {
+     "id": "xh_left",
+     "name": "左房",
+     "desc": "房裡掛滿了歌頌星宿老仙的條幅，一個大嗓門的弟子正在教師弟們怎麼拍馬屁。",
+     "exits": [
+      {
+       "dir": "E",
+       "to": "xh_hall"
+      }
+     ],
+     "npcs": [
+      "n_xh_shihouzi"
+     ],
+     "features": [],
+     "requires": [
+      {
+       "type": "sect",
+       "sect": "xingxiu"
+      }
+     ]
+    },
+    {
+     "id": "xh_right",
+     "name": "右房",
+     "desc": "架上擺滿裝毒蟲的瓦罐，空地上星宿弟子正互相拆招練掌。",
+     "exits": [
+      {
+       "dir": "W",
+       "to": "xh_hall"
+      }
+     ],
+     "npcs": [
+      "n_xh_chuchenzi",
+      "n_xh_spar"
+     ],
+     "features": [],
+     "requires": [
+      {
+       "type": "sect",
+       "sect": "xingxiu"
+      }
+     ]
+    },
+    {
+     "id": "xh_mid1",
+     "name": "中房一樓",
+     "desc": "這裡是弟子們打點雜務的地方，牆邊堆著獵具和暗器匣。角落的木梯通往二樓。",
+     "exits": [
+      {
+       "dir": "S",
+       "to": "xh_hall"
+      },
+      {
+       "dir": "U",
+       "to": "xh_mid2"
+      }
+     ],
+     "npcs": [
+      "n_xh_canjizi",
+      "n_xh_shudouzi"
+     ],
+     "features": [],
+     "requires": [
+      {
+       "type": "sect",
+       "sect": "xingxiu"
+      }
+     ]
+    },
+    {
+     "id": "xh_mid2",
+     "name": "中房二樓",
+     "desc": "二樓窗外就是星宿海，屋裡擺著幾只小木鼎，鼎中藥汁冒著五顏六色的煙。",
+     "exits": [
+      {
+       "dir": "D",
+       "to": "xh_mid1"
+      }
+     ],
+     "npcs": [
+      "n_xh_tianlangzi"
+     ],
+     "features": [],
+     "requires": [
+      {
+       "type": "sect",
+       "sect": "xingxiu"
+      }
+     ]
+    }
+   ]
+  },
+  "xingxiu_road": {
+   "region_id": "xingxiu_road",
+   "era": "1.0A",
+   "src": "proposal",
+   "desc": "西夏南坡的沙丘往西漸漸變成泥灘，盡頭就是星宿海。",
+   "escape_tiles_hint": 2,
+   "rooms": [
+    {
+     "id": "xh_road1",
+     "name": "蛇骨小徑",
+     "desc": "沙地上每隔一段就插著一根蛇骨，指著往西的方向。往南的低窪處飄來一股腥甜的濕氣。",
+     "exits": [
+      {
+       "dir": "E",
+       "to": "ws_dunes"
+      },
+      {
+       "dir": "W",
+       "to": "xh_road2"
+      },
+      {
+       "dir": "S",
+       "to": "xh_marsh"
+      }
+     ],
+     "npcs": [],
+     "features": [],
+     "requires": [],
+     "encounter": {
+      "rate": 0.1,
+      "table": [
+       {
+        "monster": "m_rabbit",
+        "w": 45,
+        "count": [
+         1,
+         1
+        ]
+       },
+       {
+        "monster": "m_bigrabbit",
+        "w": 45,
+        "count": [
+         1,
+         1
+        ]
+       },
+       {
+        "monster": "m_xh_snake",
+        "w": 10,
+        "count": [
+         1,
+         1
+        ]
+       }
+      ]
+     }
+    },
+    {
+     "id": "xh_road2",
+     "name": "星宿海邊",
+     "desc": "沙地到這裡變成泥灘，前方一片灰藍的湖水就是星宿海。往西的木棧道通往星宿派。",
+     "exits": [
+      {
+       "dir": "E",
+       "to": "xh_road1"
+      },
+      {
+       "dir": "W",
+       "to": "xh_gate"
+      }
+     ],
+     "npcs": [],
+     "features": [
+      "WATER"
+     ],
+     "requires": [],
+     "encounter": {
+      "rate": 0.1,
+      "table": [
+       {
+        "monster": "m_rabbit",
+        "w": 50,
+        "count": [
+         1,
+         1
+        ]
+       },
+       {
+        "monster": "m_bigrabbit",
+        "w": 50,
+        "count": [
+         1,
+         1
+        ]
+       }
+      ]
+     }
+    },
+    {
+     "id": "xh_marsh",
+     "name": "毒沼",
+     "desc": "蘆葦間的泥沼冒著氣泡，毒蛇、蠍子和蟾蜍在爛泥裡爬來爬去。星宿弟子常來這裡捉毒物練功。",
+     "exits": [
+      {
+       "dir": "N",
+       "to": "xh_road1"
+      }
+     ],
+     "npcs": [],
+     "features": [
+      "WATER"
+     ],
+     "requires": [],
+     "encounter": {
+      "rate": 0.15,
+      "table": [
+       {
+        "monster": "m_xh_snake",
+        "w": 50,
+        "count": [
+         1,
+         2
+        ]
+       },
+       {
+        "monster": "m_xh_scorpion",
+        "w": 35,
+        "count": [
+         1,
+         1
+        ]
+       },
+       {
+        "monster": "m_xh_toad",
+        "w": 15,
+        "count": [
+         1,
+         1
+        ]
+       }
+      ]
+     }
+    }
+   ]
+  }
+ },
+ "extra_rooms": {},
+ "exit_patches": [
+  {
+   "room": "ws_dunes",
+   "add_exits": [
+    {
+     "dir": "W",
+     "to": "xh_road1"
+    }
+   ],
+   "desc": "連綿的沙丘從西邊漫過來。往西有一條插著蛇骨標記的小路通往星宿海，往南的路通往大漠。"
+  }
+ ],
+ "npcs": [
+  {
+   "id": "n_xh_cha",
+   "name": "查小鏞",
+   "kind": "FUNC",
+   "region": "xingxiu",
+   "room": "xh_gate",
+   "alignment": "GOOD",
+   "talk": "talk_n_xh_cha",
+   "services": [
+    "RESPAWN"
+   ],
+   "night_closed": false,
+   "desc": "不知怎麼流落到星宿海邊，替往來江湖人記錄落腳處的老先生。",
+   "era": "1.0A",
+   "src": "later"
+  },
+  {
+   "id": "n_xh_menren",
+   "name": "星宿門人",
+   "kind": "GUARD",
+   "region": "xingxiu",
+   "room": "xh_gate",
+   "alignment": "EVIL",
+   "talk": "talk_n_xh_menren",
+   "services": [],
+   "night_closed": false,
+   "desc": "站在棧道口的星宿弟子，手裡搖著一面小旗，嘴裡唸唸有詞。",
+   "era": "1.0A",
+   "src": "proposal"
+  },
+  {
+   "id": "n_xh_dingchunqiu",
+   "name": "丁春秋",
+   "kind": "MASTER",
+   "region": "xingxiu",
+   "room": "xh_hall",
+   "alignment": "EVIL",
+   "talk": "talk_n_xh_dingchunqiu",
+   "services": [
+    "JOIN",
+    "TEACH",
+    "BETRAY"
+   ],
+   "night_closed": false,
+   "join_sect": "xingxiu",
+   "betray": true,
+   "src_note": "官方門派頁：「此門派功夫由丁春秋一人傳授」",
+   "desc": "星宿派掌門，自號「星宿老仙」，鶴髮童顏，一身毒功深不可測。本派武功全由他一人傳授。",
+   "era": "1.0A",
+   "src": "verified"
+  },
+  {
+   "id": "n_xh_shihouzi",
+   "name": "獅吼子",
+   "kind": "MASTER",
+   "region": "xingxiu",
+   "room": "xh_left",
+   "alignment": "EVIL",
+   "talk": "talk_n_xh_shihouzi",
+   "services": [
+    "TEACH",
+    "QUEST"
+   ],
+   "night_closed": false,
+   "quests": [
+    "q_xh_maipi"
+   ],
+   "src_note": "NPC 名見星宿任務列表（馬屁研習），最早 2004 擷取；教諂媚為 M3A_PLAN 3.2 指定",
+   "desc": "嗓門奇大的星宿弟子，最會吹捧師父，負責教師弟們諂媚之道。",
+   "era": "1.0A",
+   "src": "later"
+  },
+  {
+   "id": "n_xh_chuchenzi",
+   "name": "出塵子",
+   "kind": "QUEST",
+   "region": "xingxiu",
+   "room": "xh_right",
+   "alignment": "EVIL",
+   "talk": "talk_n_xh_chuchenzi",
+   "services": [
+    "QUEST"
+   ],
+   "night_closed": false,
+   "quests": [
+    "q_xh_liandu"
+   ],
+   "src_note": "NPC 名見星宿任務列表（邪惡的練毒），最早 2004 擷取",
+   "desc": "整天擺弄毒蟲瓦罐的星宿弟子，身上一股腥味。",
+   "era": "1.0A",
+   "src": "later"
+  },
+  {
+   "id": "n_xh_spar",
+   "name": "摘星子",
+   "kind": "FUNC",
+   "region": "xingxiu",
+   "room": "xh_right",
+   "alignment": "EVIL",
+   "talk": "talk_n_xh_spar",
+   "services": [
+    "FIGHT"
+   ],
+   "night_closed": false,
+   "fight": {
+    "monster": "m_xh_dizi",
+    "requires": [
+     {
+      "type": "sect",
+      "sect": "xingxiu"
+     }
+    ]
+   },
+   "desc": "星宿派大弟子，奉師父之命帶新入門的師弟妹切磋。",
+   "era": "1.0A",
+   "src": "proposal"
+  },
+  {
+   "id": "n_xh_canjizi",
+   "name": "燦極子",
+   "kind": "SHOP",
+   "region": "xingxiu",
+   "room": "xh_mid1",
+   "alignment": "EVIL",
+   "talk": "talk_n_xh_canjizi",
+   "services": [
+    "SHOP"
+   ],
+   "night_closed": false,
+   "shop": {
+    "items": [
+     "h_tieling",
+     "c_jieduyao",
+     "c_qiyao"
+    ]
+   },
+   "src_note": "NPC 名見星宿任務列表（毒門暗器）；賣鐵菱為 M3A_PLAN 3.9 建議【設計提案】",
+   "desc": "管理暗器匣的星宿弟子，也替同門張羅解藥。",
+   "era": "1.0A",
+   "src": "later"
+  },
+  {
+   "id": "n_xh_shudouzi",
+   "name": "疏斗子",
+   "kind": "STORY",
+   "region": "xingxiu",
+   "room": "xh_mid1",
+   "alignment": "EVIL",
+   "talk": "talk_n_xh_shudouzi",
+   "services": [],
+   "night_closed": false,
+   "src_note": "NPC 名見星宿任務列表（狩獵的技巧）；任務本身 M3b",
+   "desc": "背著弓箭與網兜的星宿弟子，專門到毒沼捉毒物。",
+   "era": "1.0A",
+   "src": "later"
+  },
+  {
+   "id": "n_xh_tianlangzi",
+   "name": "天狼子",
+   "kind": "STORY",
+   "region": "xingxiu",
+   "room": "xh_mid2",
+   "alignment": "EVIL",
+   "talk": "talk_n_xh_tianlangzi",
+   "services": [],
+   "night_closed": false,
+   "src_note": "2004 師父名單：天狼子（飛星術）；1.0 只由丁春秋傳授，故只對話",
+   "desc": "守著小木鼎煉毒的星宿弟子，聽說懂得飛星暗器的手法。",
+   "era": "1.0A",
+   "src": "later"
+  }
+ ],
+ "masters": [
+  {
+   "id": "ms_xh_shihouzi_chanmei",
+   "npc_id": "n_xh_shihouzi",
+   "skill_id": "chanmei",
+   "cap": 50,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "xingxiu"
+    }
+   ],
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "M3A_PLAN 3.2 門派技能師父 cap 50"
+  },
+  {
+   "id": "ms_xh_dcq_xinfa",
+   "npc_id": "n_xh_dingchunqiu",
+   "skill_id": "xh_xinfa",
+   "cap": 100,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "xingxiu"
+    }
+   ],
+   "era": "1.0A",
+   "src": "verified",
+   "src_note": "2018 開服模板 6 套；上限 100【後期版】"
+  },
+  {
+   "id": "ms_xh_dcq_chousui",
+   "npc_id": "n_xh_dingchunqiu",
+   "skill_id": "xh_chousui",
+   "cap": 100,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "xingxiu"
+    }
+   ],
+   "era": "1.0A",
+   "src": "verified",
+   "src_note": "入門武功只限 sect（M3A_PLAN 3.2）；後期門檻 心法10 諂媚10 基毒10 不用"
+  },
+  {
+   "id": "ms_xh_dcq_shenfa",
+   "npc_id": "n_xh_dingchunqiu",
+   "skill_id": "xh_shenfa",
+   "cap": 100,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "xingxiu"
+    }
+   ],
+   "era": "1.0A",
+   "src": "verified"
+  },
+  {
+   "id": "ms_xh_dcq_fangdu",
+   "npc_id": "n_xh_dingchunqiu",
+   "skill_id": "xh_fangdu",
+   "cap": 120,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "xingxiu"
+    },
+    {
+     "type": "skill_min",
+     "skill": "basic_poison",
+     "value": 1
+    }
+   ],
+   "era": "1.0A",
+   "src": "verified",
+   "src_note": "放毒法上限 120（免費版表）【後期版】；條件依 M3A_PLAN 3.2"
+  },
+  {
+   "id": "ms_xh_dcq_sanyin",
+   "npc_id": "n_xh_dingchunqiu",
+   "skill_id": "xh_sanyin",
+   "cap": 80,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "xingxiu"
+    },
+    {
+     "type": "skill_min",
+     "skill": "xh_xinfa",
+     "value": 20
+    },
+    {
+     "type": "skill_min",
+     "skill": "chanmei",
+     "value": 30
+    },
+    {
+     "type": "skill_min",
+     "skill": "basic_poison",
+     "value": 40
+    }
+   ],
+   "era": "1.0A",
+   "src": "later",
+   "src_note": "免費版表：上限 80，心法20 諂媚30 基毒40"
+  },
+  {
+   "id": "ms_xh_dcq_tianshan",
+   "npc_id": "n_xh_dingchunqiu",
+   "skill_id": "xh_tianshan",
+   "cap": 100,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "xingxiu"
+    },
+    {
+     "type": "skill_min",
+     "skill": "xh_xinfa",
+     "value": 10
+    },
+    {
+     "type": "skill_min",
+     "skill": "basic_staff",
+     "value": 10
+    }
+   ],
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "上限 100（免費版表）；門檻【設計提案】"
+  },
+  {
+   "id": "ms_xh_dcq_feixing",
+   "npc_id": "n_xh_dingchunqiu",
+   "skill_id": "xh_feixing",
+   "cap": 100,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "xingxiu"
+    },
+    {
+     "type": "skill_min",
+     "skill": "xh_xinfa",
+     "value": 50
+    },
+    {
+     "type": "skill_min",
+     "skill": "chanmei",
+     "value": 40
+    },
+    {
+     "type": "skill_min",
+     "skill": "basic_poison",
+     "value": 50
+    }
+   ],
+   "era": "1.0A",
+   "src": "later",
+   "src_note": "免費版表：心法50 門技40 基毒50（善惡−1000 與叛徒任務不採用）；1.0 是否存在【待考證】"
+  },
+  {
+   "id": "ms_xh_dcq_bpoison",
+   "npc_id": "n_xh_dingchunqiu",
+   "skill_id": "basic_poison",
+   "cap": 140,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "xingxiu"
+    }
+   ],
+   "era": "1.0A",
+   "src": "later",
+   "src_note": "基本武學 140 為後期數字【後期版】"
+  },
+  {
+   "id": "ms_xh_dcq_bhidden",
+   "npc_id": "n_xh_dingchunqiu",
+   "skill_id": "basic_hidden",
+   "cap": 140,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "xingxiu"
+    }
+   ],
+   "era": "1.0A",
+   "src": "later",
+   "src_note": "基本武學 140 為後期數字【後期版】"
+  },
+  {
+   "id": "ms_xh_dcq_bstaff",
+   "npc_id": "n_xh_dingchunqiu",
+   "skill_id": "basic_staff",
+   "cap": 140,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "xingxiu"
+    }
+   ],
+   "era": "1.0A",
+   "src": "later",
+   "src_note": "基本武學 140 為後期數字【後期版】"
+  },
+  {
+   "id": "ms_xh_dcq_bfist",
+   "npc_id": "n_xh_dingchunqiu",
+   "skill_id": "basic_fist",
+   "cap": 140,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "xingxiu"
+    }
+   ],
+   "era": "1.0A",
+   "src": "later",
+   "src_note": "基本武學 140 為後期數字【後期版】"
+  },
+  {
+   "id": "ms_xh_dcq_binner",
+   "npc_id": "n_xh_dingchunqiu",
+   "skill_id": "basic_inner",
+   "cap": 140,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "xingxiu"
+    }
+   ],
+   "era": "1.0A",
+   "src": "later",
+   "src_note": "基本武學 140 為後期數字【後期版】"
+  },
+  {
+   "id": "ms_xh_dcq_bparry",
+   "npc_id": "n_xh_dingchunqiu",
+   "skill_id": "basic_parry",
+   "cap": 140,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "xingxiu"
+    }
+   ],
+   "era": "1.0A",
+   "src": "later",
+   "src_note": "基本武學 140 為後期數字【後期版】"
+  },
+  {
+   "id": "ms_xh_dcq_bdodge",
+   "npc_id": "n_xh_dingchunqiu",
+   "skill_id": "basic_dodge",
+   "cap": 140,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "xingxiu"
+    }
+   ],
+   "era": "1.0A",
+   "src": "later",
+   "src_note": "基本武學 140 為後期數字【後期版】"
+  },
+  {
+   "id": "ms_xh_dcq_bbody",
+   "npc_id": "n_xh_dingchunqiu",
+   "skill_id": "basic_body",
+   "cap": 140,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "xingxiu"
+    }
+   ],
+   "era": "1.0A",
+   "src": "later",
+   "src_note": "基本武學 140 為後期數字【後期版】"
+  }
+ ],
+ "martial_arts": [
+  {
+   "id": "xh_xinfa",
+   "name": "星宿心法",
+   "sect_id": "xingxiu",
+   "category": "INNER",
+   "base_skill": "basic_inner",
+   "difficulty": 0.5,
+   "tier": "BASIC",
+   "self_study_until": 0,
+   "self_study_cap": 0,
+   "party_size": 0,
+   "monster_only": false,
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "xingxiu"
+    }
+   ],
+   "desc": "星宿派的入門內功，練到深處能以內力逼出體內毒素。",
+   "era": "1.0A",
+   "src": "verified",
+   "src_note": "2018 開服模板 6 套之一；係數 0.5（免費版表）【後期版】",
+   "moves": [],
+   "inner": {
+    "heal_mult": 1.0,
+    "expel_mult": 1.2
+   }
+  },
+  {
+   "id": "xh_shenfa",
+   "name": "星宿身法",
+   "sect_id": "xingxiu",
+   "category": "LIGHTNESS",
+   "base_skill": "basic_dodge",
+   "difficulty": 0.83,
+   "tier": "BASIC",
+   "self_study_until": 0,
+   "self_study_cap": 0,
+   "party_size": 0,
+   "monster_only": false,
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "xingxiu"
+    }
+   ],
+   "desc": "飄忽詭異的步法，練的是閃躲縱躍的功夫。",
+   "era": "1.0A",
+   "src": "verified",
+   "src_note": "2018 開服模板：星宿身法 → 閃躲縱躍熟練度；係數 0.83【後期版】",
+   "moves": []
+  },
+  {
+   "id": "xh_chousui",
+   "name": "抽髓掌",
+   "sect_id": "xingxiu",
+   "category": "FIST",
+   "base_skill": "basic_fist",
+   "difficulty": 0.87,
+   "tier": "BASIC",
+   "self_study_until": 0,
+   "self_study_cap": 0,
+   "party_size": 0,
+   "monster_only": false,
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "xingxiu"
+    }
+   ],
+   "desc": "以毒為本的掌法，掌風帶著腥甜的氣味，中掌者往往跟著中毒。",
+   "era": "1.0A",
+   "src": "verified",
+   "src_note": "研究 星宿：2018 開服模板 6 套之一（搏擊格鬥、毒術）；係數 0.87（巴哈 2004）；每招都可能中毒【已證實】",
+   "moves": [
+    {
+     "id": "xh_cs_1",
+     "name": "腐骨穿心",
+     "unlock_level": 1,
+     "power": 22,
+     "range": 1,
+     "aoe": "SINGLE",
+     "cost_inner": 0,
+     "cost_jing": 0,
+     "status": "poison",
+     "status_chance": 0.15,
+     "flavor": "move_palm_poison",
+     "src": "proposal"
+    },
+    {
+     "id": "xh_cs_2",
+     "name": "抽髓吸血",
+     "unlock_level": 30,
+     "power": 34,
+     "range": 1,
+     "aoe": "SINGLE",
+     "cost_inner": 6,
+     "cost_jing": 0,
+     "status": "poison",
+     "status_chance": 0.2,
+     "flavor": "move_palm_poison",
+     "src": "proposal"
+    },
+    {
+     "id": "xh_cs_3",
+     "name": "毒焰焚身",
+     "unlock_level": 60,
+     "power": 46,
+     "range": 1,
+     "aoe": "SINGLE",
+     "cost_inner": 12,
+     "cost_jing": 0,
+     "status": "poison",
+     "status_chance": 0.25,
+     "flavor": "move_palm_poison",
+     "src": "proposal"
+    }
+   ]
+  },
+  {
+   "id": "xh_sanyin",
+   "name": "三陰蜈蚣爪",
+   "sect_id": "xingxiu",
+   "category": "FIST",
+   "base_skill": "basic_fist",
+   "difficulty": 1.43,
+   "tier": "ADVANCED",
+   "self_study_until": 0,
+   "self_study_cap": 0,
+   "party_size": 0,
+   "monster_only": false,
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "xingxiu"
+    },
+    {
+     "type": "skill_min",
+     "skill": "xh_xinfa",
+     "value": 20
+    },
+    {
+     "type": "skill_min",
+     "skill": "chanmei",
+     "value": 30
+    },
+    {
+     "type": "skill_min",
+     "skill": "basic_poison",
+     "value": 40
+    }
+   ],
+   "desc": "陰毒狠辣的爪功，爪尖淬毒，練到四十級以後一爪抓出，四面八方都是爪影。",
+   "era": "1.0A",
+   "src": "later",
+   "src_note": "2018 開服模板 6 套之一；係數 1.43+5000、上限 80、1–39 級直線、40 級起大十字（免費版表／巴哈 2004）【後期版】",
+   "moves": [
+    {
+     "id": "xh_sy_1",
+     "name": "蜈蚣探路",
+     "unlock_level": 1,
+     "power": 33,
+     "range": 2,
+     "aoe": "LINE",
+     "cost_inner": 8,
+     "cost_jing": 0,
+     "status": "poison",
+     "status_chance": 0.2,
+     "flavor": "move_xh_claw_poison",
+     "src": "proposal"
+    },
+    {
+     "id": "xh_sy_2",
+     "name": "三陰奪魄",
+     "unlock_level": 40,
+     "power": 41,
+     "range": 2,
+     "aoe": "CROSS_L",
+     "cost_inner": 14,
+     "cost_jing": 0,
+     "status": "poison",
+     "status_chance": 0.2,
+     "flavor": "move_xh_claw_poison",
+     "src": "proposal"
+    },
+    {
+     "id": "xh_sy_3",
+     "name": "百足穿心",
+     "unlock_level": 70,
+     "power": 50,
+     "range": 3,
+     "aoe": "CROSS_L",
+     "cost_inner": 20,
+     "cost_jing": 0,
+     "status": "poison",
+     "status_chance": 0.25,
+     "flavor": "move_xh_claw_poison",
+     "src": "proposal"
+    }
+   ]
+  },
+  {
+   "id": "xh_tianshan",
+   "name": "天山杖法",
+   "sect_id": "xingxiu",
+   "category": "STAFF",
+   "base_skill": "basic_staff",
+   "difficulty": 0.9,
+   "tier": "ADVANCED",
+   "self_study_until": 0,
+   "self_study_cap": 0,
+   "party_size": 0,
+   "monster_only": false,
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "xingxiu"
+    },
+    {
+     "type": "skill_min",
+     "skill": "xh_xinfa",
+     "value": 10
+    },
+    {
+     "type": "skill_min",
+     "skill": "basic_staff",
+     "value": 10
+    }
+   ],
+   "desc": "丁春秋得自天山的杖法，杖頭藏毒，一掃便是一大片。",
+   "era": "1.0A",
+   "src": "verified",
+   "src_note": "2018 開服模板 6 套之一（毒術）；係數 0.9（巴哈 2004 進階）；半米字【後期版：免費版表】",
+   "moves": [
+    {
+     "id": "xh_ts_1",
+     "name": "橫掃千軍",
+     "unlock_level": 1,
+     "power": 30,
+     "range": 2,
+     "aoe": "FAN",
+     "cost_inner": 6,
+     "cost_jing": 0,
+     "status": "poison",
+     "status_chance": 0.1,
+     "flavor": "move_staff_fan",
+     "src": "proposal"
+    },
+    {
+     "id": "xh_ts_2",
+     "name": "天山雪崩",
+     "unlock_level": 30,
+     "power": 38,
+     "range": 2,
+     "aoe": "FAN",
+     "cost_inner": 10,
+     "cost_jing": 0,
+     "status": "poison",
+     "status_chance": 0.15,
+     "flavor": "move_staff_fan",
+     "src": "proposal"
+    },
+    {
+     "id": "xh_ts_3",
+     "name": "群魔亂舞",
+     "unlock_level": 60,
+     "power": 48,
+     "range": 3,
+     "aoe": "FAN",
+     "cost_inner": 16,
+     "cost_jing": 0,
+     "status": "poison",
+     "status_chance": 0.2,
+     "flavor": "move_staff_fan",
+     "src": "proposal"
+    }
+   ]
+  },
+  {
+   "id": "xh_fangdu",
+   "name": "放毒法",
+   "sect_id": "xingxiu",
+   "category": "POISON",
+   "base_skill": "basic_poison",
+   "difficulty": 0.96,
+   "tier": "BASIC",
+   "self_study_until": 0,
+   "self_study_cap": 0,
+   "party_size": 0,
+   "monster_only": false,
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "xingxiu"
+    },
+    {
+     "type": "skill_min",
+     "skill": "basic_poison",
+     "value": 1
+    }
+   ],
+   "desc": "星宿派的看家本事：走到敵人面前，光明正大地把毒放出去。眼尖的人看得見，也躲得開。",
+   "era": "1.0A",
+   "src": "verified",
+   "src_note": "2018 開服模板（毒術、暗器）；2002 文「走過來係你面前出手…光明正大地放毒」→ 短射程；係數 0.96、上限 120【後期版】",
+   "moves": [
+    {
+     "id": "xh_fd_1",
+     "name": "化骨綿香",
+     "unlock_level": 1,
+     "power": 20,
+     "range": 1,
+     "aoe": "SINGLE",
+     "cost_inner": 4,
+     "cost_jing": 0,
+     "status": "poison",
+     "status_chance": 0.0,
+     "flavor": "move_palm_poison",
+     "src": "proposal"
+    },
+    {
+     "id": "xh_fd_2",
+     "name": "腐屍毒煙",
+     "unlock_level": 60,
+     "power": 32,
+     "range": 2,
+     "aoe": "SINGLE",
+     "cost_inner": 10,
+     "cost_jing": 0,
+     "status": "poison",
+     "status_chance": 0.0,
+     "flavor": "move_palm_poison",
+     "src": "proposal"
+    }
+   ],
+   "poison": {
+    "status": "poison",
+    "level_bonus": 0
+   }
+  },
+  {
+   "id": "xh_feixing",
+   "name": "飛星術",
+   "sect_id": "xingxiu",
+   "category": "HIDDEN",
+   "base_skill": "basic_hidden",
+   "difficulty": 0.59,
+   "tier": "SPECIAL",
+   "self_study_until": 0,
+   "self_study_cap": 0,
+   "party_size": 0,
+   "monster_only": false,
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "xingxiu"
+    },
+    {
+     "type": "skill_min",
+     "skill": "xh_xinfa",
+     "value": 50
+    },
+    {
+     "type": "skill_min",
+     "skill": "chanmei",
+     "value": 40
+    },
+    {
+     "type": "skill_min",
+     "skill": "basic_poison",
+     "value": 50
+    }
+   ],
+   "desc": "把淬了毒的暗器像流星一般打出，中者傷口發黑。",
+   "era": "1.0A",
+   "src": "later",
+   "src_note": "2004 師父名單 天狼子；巴哈 2004 暗器係數 0.59；1.0 是否存在【待考證】（D6：做成資料供暗器指令使用）",
+   "moves": [
+    {
+     "id": "xh_fx_1",
+     "name": "流星趕月",
+     "unlock_level": 1,
+     "power": 20,
+     "range": 3,
+     "aoe": "SINGLE",
+     "cost_inner": 4,
+     "cost_jing": 0,
+     "status": "poison",
+     "status_chance": 0.2,
+     "flavor": "move_xh_hidden_poison",
+     "src": "proposal"
+    },
+    {
+     "id": "xh_fx_2",
+     "name": "滿天星斗",
+     "unlock_level": 50,
+     "power": 30,
+     "range": 3,
+     "aoe": "SINGLE",
+     "cost_inner": 10,
+     "cost_jing": 0,
+     "status": "poison",
+     "status_chance": 0.25,
+     "flavor": "move_xh_hidden_poison",
+     "src": "proposal"
+    }
+   ],
+   "hidden": {
+    "range_bonus": 1
+   }
+  },
+  {
+   "id": "xh_mon_venom",
+   "name": "毒牙",
+   "sect_id": "",
+   "category": "FIST",
+   "base_skill": "basic_fist",
+   "difficulty": 0.9,
+   "tier": "BASIC",
+   "self_study_until": 0,
+   "self_study_cap": 0,
+   "party_size": 0,
+   "monster_only": true,
+   "requires": [],
+   "desc": "毒物的毒牙毒螯。",
+   "era": "1.0A",
+   "src": "proposal",
+   "moves": [
+    {
+     "id": "xh_mon_venom_1",
+     "name": "毒牙",
+     "unlock_level": 1,
+     "power": 12,
+     "range": 1,
+     "aoe": "SINGLE",
+     "cost_inner": 0,
+     "cost_jing": 0,
+     "status": "poison",
+     "status_chance": 0.15,
+     "flavor": "move_bite",
+     "src": "proposal"
+    }
+   ]
+  }
+ ],
+ "monsters": [
+  {
+   "id": "m_xh_dizi",
+   "name": "星宿弟子",
+   "short": "弟子",
+   "kind": "MONSTER",
+   "alignment": "EVIL",
+   "desc": "摘星子手下的星宿弟子，奉命與你切磋。（設計提案）",
+   "stats": {
+    "qi": 220,
+    "neili": 25,
+    "jing": 120,
+    "str": 15,
+    "guts": 14,
+    "wit": 16,
+    "luck": 15,
+    "cal": 15,
+    "agi": 18,
+    "con": 16
+   },
+   "skills": {
+    "basic_dodge": 8,
+    "basic_parry": 8,
+    "basic_inner": 5,
+    "basic_fist": 8
+   },
+   "arts": [
+    {
+     "art": "xh_chousui",
+     "level": 8
+    }
+   ],
+   "weapon_type": "FIST",
+   "weapon_power": 0,
+   "armor_power": 6,
+   "combat_xp_ref": 300,
+   "combat_xp": 0,
+   "learn_points": 0,
+   "drops": [],
+   "money": {
+    "min": 0,
+    "max": 0
+   },
+   "morality_on_kill": 0,
+   "killing_intent_on_kill": 0,
+   "ai": "melee_basic",
+   "no_rewards": true,
+   "sect": "xingxiu",
+   "era": "1.0A",
+   "src": "proposal"
+  },
+  {
+   "id": "m_xh_guard",
+   "name": "星宿護法弟子",
+   "short": "護法",
+   "kind": "ELITE",
+   "alignment": "EVIL",
+   "desc": "丁春秋座下的護法弟子，專門對付叛出師門的人。（叛徒成公敵：已證實；數值：設計提案）",
+   "stats": {
+    "qi": 3000,
+    "neili": 400,
+    "jing": 600,
+    "str": 30,
+    "guts": 30,
+    "wit": 22,
+    "luck": 20,
+    "cal": 30,
+    "agi": 30,
+    "con": 30
+   },
+   "skills": {
+    "basic_dodge": 80,
+    "basic_parry": 80,
+    "basic_inner": 60,
+    "basic_fist": 80,
+    "basic_poison": 80
+   },
+   "arts": [
+    {
+     "art": "xh_sanyin",
+     "level": 80
+    },
+    {
+     "art": "xh_chousui",
+     "level": 80
+    },
+    {
+     "art": "xh_fangdu",
+     "level": 60
+    }
+   ],
+   "weapon_type": "FIST",
+   "weapon_power": 30,
+   "armor_power": 60,
+   "combat_xp_ref": 60000,
+   "combat_xp": 0,
+   "learn_points": 0,
+   "drops": [],
+   "money": {},
+   "morality_on_kill": 0,
+   "killing_intent_on_kill": 0,
+   "ai": "melee_basic",
+   "no_rewards": true,
+   "sect": "xingxiu",
+   "era": "1.0A",
+   "src": "proposal"
+  },
+  {
+   "id": "m_xh_snake",
+   "name": "毒蛇",
+   "short": "毒蛇",
+   "kind": "MONSTER",
+   "alignment": "NEUTRAL",
+   "desc": "一條花紋斑斕的毒蛇，吐著信子盤在沙地上。（設計提案）",
+   "stats": {
+    "qi": 130,
+    "neili": 0,
+    "jing": 60,
+    "str": 9,
+    "guts": 8,
+    "wit": 5,
+    "luck": 10,
+    "cal": 8,
+    "agi": 18,
+    "con": 10
+   },
+   "skills": {
+    "basic_dodge": 8,
+    "basic_parry": 0,
+    "basic_inner": 0
+   },
+   "arts": [
+    {
+     "art": "xh_mon_venom",
+     "level": 4
+    }
+   ],
+   "weapon_type": "FIST",
+   "weapon_power": 0,
+   "armor_power": 26,
+   "combat_xp_ref": 400,
+   "combat_xp": 12,
+   "learn_points": 5,
+   "drops": [
+    {
+     "item": "r_xh_shedan",
+     "chance": 0.4,
+     "min": 1,
+     "max": 1
+    }
+   ],
+   "money": {
+    "min": 0,
+    "max": 2
+   },
+   "morality_on_kill": 0,
+   "killing_intent_on_kill": 0,
+   "ai": "melee_basic",
+   "no_rewards": false,
+   "era": "1.0A",
+   "src": "proposal"
+  },
+  {
+   "id": "m_xh_scorpion",
+   "name": "毒蠍",
+   "short": "毒蠍",
+   "kind": "MONSTER",
+   "alignment": "NEUTRAL",
+   "desc": "巴掌大的黑蠍子，尾鉤高高翹起。（設計提案）",
+   "stats": {
+    "qi": 280,
+    "neili": 0,
+    "jing": 90,
+    "str": 12,
+    "guts": 14,
+    "wit": 6,
+    "luck": 10,
+    "cal": 14,
+    "agi": 20,
+    "con": 16
+   },
+   "skills": {
+    "basic_dodge": 15,
+    "basic_parry": 8,
+    "basic_inner": 0
+   },
+   "arts": [
+    {
+     "art": "xh_mon_venom",
+     "level": 12
+    }
+   ],
+   "weapon_type": "FIST",
+   "weapon_power": 0,
+   "armor_power": 30,
+   "combat_xp_ref": 1200,
+   "combat_xp": 22,
+   "learn_points": 10,
+   "drops": [
+    {
+     "item": "r_xh_xiewei",
+     "chance": 0.4,
+     "min": 1,
+     "max": 1
+    }
+   ],
+   "money": {
+    "min": 0,
+    "max": 3
+   },
+   "morality_on_kill": 0,
+   "killing_intent_on_kill": 0,
+   "ai": "melee_basic",
+   "no_rewards": false,
+   "era": "1.0A",
+   "src": "proposal"
+  },
+  {
+   "id": "m_xh_toad",
+   "name": "毒蟾蜍",
+   "short": "蟾蜍",
+   "kind": "MONSTER",
+   "alignment": "NEUTRAL",
+   "desc": "背上長滿疙瘩的大蟾蜍，一張口就噴出毒霧。（設計提案）",
+   "stats": {
+    "qi": 520,
+    "neili": 0,
+    "jing": 140,
+    "str": 18,
+    "guts": 22,
+    "wit": 8,
+    "luck": 10,
+    "cal": 18,
+    "agi": 14,
+    "con": 24
+   },
+   "skills": {
+    "basic_dodge": 15,
+    "basic_parry": 20,
+    "basic_inner": 10
+   },
+   "arts": [
+    {
+     "art": "xh_mon_venom",
+     "level": 25
+    }
+   ],
+   "weapon_type": "FIST",
+   "weapon_power": 0,
+   "armor_power": 34,
+   "combat_xp_ref": 3500,
+   "combat_xp": 40,
+   "learn_points": 16,
+   "drops": [
+    {
+     "item": "r_xh_shedan",
+     "chance": 0.3,
+     "min": 1,
+     "max": 2
+    }
+   ],
+   "money": {
+    "min": 0,
+    "max": 5
+   },
+   "morality_on_kill": 0,
+   "killing_intent_on_kill": 0,
+   "ai": "melee_basic",
+   "no_rewards": false,
+   "era": "1.0A",
+   "src": "proposal"
+  }
+ ],
+ "items": [
+  {
+   "id": "r_xh_shedan",
+   "name": "蛇膽",
+   "tab": "OTHER",
+   "slot": "",
+   "atk": 0,
+   "def": 0,
+   "weight": 1,
+   "price": 20,
+   "stack": 99,
+   "spoil_days": 0,
+   "effects": [],
+   "usable": false,
+   "usable_in_battle": false,
+   "no_sell": false,
+   "quest_item": false,
+   "desc": "毒蛇的膽，星宿弟子拿來練毒。",
+   "era": "1.0A",
+   "src": "proposal"
+  },
+  {
+   "id": "r_xh_xiewei",
+   "name": "蠍尾",
+   "tab": "OTHER",
+   "slot": "",
+   "atk": 0,
+   "def": 0,
+   "weight": 1,
+   "price": 30,
+   "stack": 99,
+   "spoil_days": 0,
+   "effects": [],
+   "usable": false,
+   "usable_in_battle": false,
+   "no_sell": false,
+   "quest_item": false,
+   "desc": "毒蠍的尾鉤，還帶著毒。",
+   "era": "1.0A",
+   "src": "proposal"
+  }
+ ],
+ "quests": [
+  {
+   "id": "q_xh_maipi",
+   "name": "馬屁研習",
+   "giver": "n_xh_shihouzi",
+   "text": "獅吼子要你去大殿向師父丁春秋好好吹捧一番，回來說說師父聽了高不高興。",
+   "repeatable": true,
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "xingxiu"
+    }
+   ],
+   "give_items": [],
+   "steps": [
+    {
+     "type": "TALK",
+     "target": "n_xh_dingchunqiu",
+     "item": "",
+     "count": 1,
+     "text": "到大殿吹捧星宿老仙"
+    },
+    {
+     "type": "TALK",
+     "target": "n_xh_shihouzi",
+     "item": "",
+     "count": 1,
+     "text": "回左房向獅吼子覆命"
+    }
+   ],
+   "rewards": {
+    "money": 0,
+    "combat_xp": 0,
+    "learn_points": 5,
+    "fame": 0,
+    "morality": -5,
+    "items": [],
+    "flags": [],
+    "skill_prof": {
+     "chanmei": 20
+    }
+   },
+   "era": "1.0A",
+   "src": "later",
+   "src_note": "星宿任務列表「馬屁研習（獅吼子）」與門派工作「馬屁經：找特定 NPC 對話，增加諂媚」（mengpai/8，2004）；步驟與獎勵【設計提案】"
+  },
+  {
+   "id": "q_xh_liandu",
+   "name": "邪惡的練毒",
+   "giver": "n_xh_chuchenzi",
+   "text": "出塵子練毒缺材料。到星宿海邊蛇骨小徑南面的毒沼捉毒蛇，取 3 顆蛇膽交給他。",
+   "repeatable": true,
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "xingxiu"
+    }
+   ],
+   "give_items": [],
+   "steps": [
+    {
+     "type": "DELIVER",
+     "target": "n_xh_chuchenzi",
+     "item": "r_xh_shedan",
+     "count": 3,
+     "text": "交給出塵子 3 顆蛇膽"
+    }
+   ],
+   "rewards": {
+    "money": 0,
+    "combat_xp": 0,
+    "learn_points": 10,
+    "fame": 0,
+    "morality": -10,
+    "items": [],
+    "flags": [],
+    "skill_prof": {
+     "basic_poison": 30
+    }
+   },
+   "era": "1.0A",
+   "src": "later",
+   "src_note": "星宿任務列表「邪惡的練毒（出塵子）」（gonglue/8，2004）；步驟與獎勵【設計提案】"
+  }
+ ],
+ "text_templates": [
+  {
+   "id": "talk_n_xh_cha",
+   "era": "1.0A",
+   "self": "{npc_name}嘆了口氣：「這星宿海邊的人整天唱歌頌德，聽得老頭子耳朵長繭。記個落腳處吧，萬一中了毒，也好有個地方回來。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_xh_menren",
+   "era": "1.0A",
+   "self": "{npc_name}搖著小旗高聲唱道：「星宿老仙，法力無邊！神通廣大，威震天下！」唱完斜眼看你：「想入我星宿派？心腸不夠黑可不成。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_xh_dingchunqiu",
+   "era": "1.0A",
+   "self": "{npc_name}捋著白鬍子，眯眼打量你：「想拜入老仙門下？心存善念的人就別來了。善惡在負一百以下，我自然教你本門毒功。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_xh_shihouzi",
+   "era": "1.0A",
+   "self": "{npc_name}扯開大嗓門：「入了星宿派，第一要學的就是諂媚！師父愛聽什麼，你就說什麼，說得好，武功才學得上去。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_xh_chuchenzi",
+   "era": "1.0A",
+   "self": "{npc_name}捧著一隻瓦罐，裡面的東西沙沙作響：「練毒嘛，材料最要緊。毒沼裡的毒蛇蛇膽，有多少我收多少。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_xh_spar",
+   "era": "1.0A",
+   "self": "{npc_name}傲然道：「我是師父座下大弟子。新來的，先跟師弟們過兩招，別丟了星宿派的臉。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_xh_canjizi",
+   "era": "1.0A",
+   "self": "{npc_name}打開暗器匣：「鐵菱淬了毒更好用。中了毒也別慌，我這裡有解毒藥，同門價錢公道。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_xh_shudouzi",
+   "era": "1.0A",
+   "self": "{npc_name}拍拍網兜：「捉毒物講究眼明手快。毒沼裡的蟾蜍會噴毒霧，功夫不夠的別往深處去。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_xh_tianlangzi",
+   "era": "1.0A",
+   "self": "{npc_name}盯著鼎裡的藥汁，頭也不抬：「別碰那只鼎。這毒煉好了，打在暗器上，比流星還快。」",
+   "src": "proposal"
+  },
+  {
+   "id": "move_xh_claw_poison",
+   "era": "1.0A",
+   "self": "你一招{art}「{move}」（{tenths}成力），五指如鉤抓中{def}的{part}，爪痕立刻發黑！（-{dmg}）",
+   "target": "{atk}一招{art}「{move}」，五指如鉤抓中你的{part}，傷口一陣麻癢！（-{dmg}）",
+   "other": "{atk}一招{art}「{move}」，五指如鉤抓中{def}的{part}！",
+   "src": "proposal"
+  },
+  {
+   "id": "move_xh_hidden_poison",
+   "era": "1.0A",
+   "self": "你一招{art}「{move}」（{tenths}成力），寒星一閃打中{def}的{part}！（-{dmg}）",
+   "target": "{atk}一招{art}「{move}」，寒星一閃打中你的{part}，傷口隱隱發黑！（-{dmg}）",
+   "other": "{atk}一招{art}「{move}」，寒星一閃打中{def}的{part}！",
+   "src": "proposal"
+  }
+ ],
+ "art_requests": {
+  "units": [
+   {
+    "id": "xingxiu_m",
+    "alias": "huashan_m",
+    "prompt": "星宿派男弟子：暗紫短褂、腰繫毒囊、髮束亂髻，神情狡猾。"
+   },
+   {
+    "id": "xingxiu_f",
+    "alias": "huashan_f",
+    "prompt": "星宿派女弟子：暗紫衣裙、腰掛小瓦罐與毒囊，眼神陰冷。"
+   },
+   {
+    "id": "n_xh_dingchunqiu",
+    "alias": "n_yuebuqun",
+    "prompt": "丁春秋：鶴髮童顏的老者，白鬚飄飄、手持羽扇，紫袍，仙風道骨卻帶著陰狠。"
+   },
+   {
+    "id": "n_xh_cha",
+    "alias": "n_xx_cha",
+    "prompt": "查小鏞：拿簿子記事的老先生（沿用其他山門造型）。"
+   },
+   {
+    "id": "n_xh_menren",
+    "alias": "n_ludayou",
+    "prompt": "星宿門人：搖小旗唱頌歌的弟子，紫衣。"
+   },
+   {
+    "id": "n_xh_shihouzi",
+    "alias": "n_liangfa",
+    "prompt": "獅吼子：體格粗壯、張口大喊的星宿弟子。"
+   },
+   {
+    "id": "n_xh_chuchenzi",
+    "alias": "n_liangfa",
+    "prompt": "出塵子：捧著毒蟲瓦罐的瘦長星宿弟子。"
+   },
+   {
+    "id": "n_xh_spar",
+    "alias": "n_ludayou",
+    "prompt": "摘星子：星宿大弟子，年輕、驕傲、紫衣佩囊。"
+   },
+   {
+    "id": "n_xh_canjizi",
+    "alias": "n_hf_teaman",
+    "prompt": "燦極子：抱著暗器匣的星宿弟子。"
+   },
+   {
+    "id": "n_xh_shudouzi",
+    "alias": "n_xw_woodcutter",
+    "prompt": "疏斗子：背弓箭與網兜的星宿弟子。"
+   },
+   {
+    "id": "n_xh_tianlangzi",
+    "alias": "n_liangfa",
+    "prompt": "天狼子：守著小木鼎煉毒的陰沉弟子。"
+   },
+   {
+    "id": "m_xh_dizi",
+    "alias": "m_hs_trainee",
+    "prompt": "星宿弟子（切磋用），紫衣徒手掌法。"
+   },
+   {
+    "id": "m_xh_guard",
+    "alias": "m_city_guard",
+    "prompt": "星宿護法弟子：高大、紫黑勁裝、雙手戴鐵爪。"
+   },
+   {
+    "id": "m_xh_snake",
+    "alias": "m_wolf",
+    "prompt": "毒蛇：花紋斑斕、盤起吐信的蛇。"
+   },
+   {
+    "id": "m_xh_scorpion",
+    "alias": "m_rabbit",
+    "prompt": "毒蠍：巴掌大的黑蠍子，尾鉤翹起。"
+   },
+   {
+    "id": "m_xh_toad",
+    "alias": "m_boar",
+    "prompt": "毒蟾蜍：背上滿是疙瘩的大蟾蜍，口吐綠霧。"
+   }
+  ],
+  "backgrounds": [
+   {
+    "id": "xingxiu",
+    "alias": "river_road",
+    "prompt": "星宿海外景：灰藍湖面上的木棧道與高腳木屋、岸邊小船、巨大的海蛇石像。"
+   },
+   {
+    "id": "xingxiu_road",
+    "alias": "xixia_south",
+    "prompt": "沙丘轉為泥灘，插著蛇骨的小徑，遠處灰藍湖水。"
+   }
+  ]
+ },
+ "todo_verify": [
+  "招式名稱全部【設計提案】（研究沒有任何招式名單）",
+  "諂媚（分心）觸發數值與各武功的諂媚門檻【待考證】；三陰蜈蚣爪門檻用免費版表 心法20 諂媚30 基毒40【後期版】",
+  "飛星術是否屬於 1.0【待考證】（2018 開服模板只列 6 套；D6 做成資料）；門檻沿用免費版 心法50 諂媚40 基毒50，善惡 −1000 與叛徒任務不採用",
+  "化功大法不做（D6）；星宿逍遙掌為 2004 成名技，不做",
+  "天山杖法學習門檻（心法10、基本棍法10）【設計提案】；半米字形狀出自免費版表【後期版】",
+  "1.0 中毒數值（成功率、等級、傷害、時間）【待考證】，各招 status_chance 0.10–0.25【設計提案】",
+  "房間配置：只確定場景名（外景、大殿、左房、右房、中房一樓、中房二樓），房間與 NPC 的對應【待考證】；NPC 獅吼子、出塵子、疏斗子、燦極子的年代（最早 2004 擷取）【待考證】",
+  "西夏 → 星宿海路線（xh_road1、xh_road2、xh_marsh 毒沼）【設計提案】；毒蛇、毒蠍、毒蟾蜍怪【設計提案】",
+  "煉毒（小木鼎）、試武、步法等門派工作不做（M3b）；七毒任務（楚禮子，2001-08-18）不做",
+  "諂媚衰減：殺氣 > 2000 每遊戲日 −1 級（機制已證實，數值【設計提案】）",
+  "叛派觸發「對丁春秋下 PK 指令」屬 M3b（ATTACK_SECT_NPC），本碎片無 sect_rules",
+  "敵對入山只對星宿公敵（ALL，不 capture、可逃）；其他敵對條件【待考證】",
+  "摘星子當切磋 NPC 名【設計提案】（摘星子入派流程是 2020 版）",
+  "基本武學 cap 140、放毒法 cap 120、三陰蜈蚣爪 cap 80 皆為免費版數字【後期版】",
+  "星宿身法的 base_skill 用 basic_dodge（2018 文：增加閃躲縱躍熟練度），與少林身法用 basic_body 不同"
+ ],
+ "notes": "星宿 1.0 武功由丁春秋一人傳授（官方）；入門兩套 xh_chousui、xh_xinfa（另學 basic_poison、xh_fangdu 供毒指令）。所有本派攻擊招式帶 poison（已證實每招可能中毒）。沒有執法者 → 違規一律 BAN、jail_room 空。內室（左、右、中房）只限本派弟子；大殿開放以便拜師。h_tieling、c_jieduyao 由 _cmd 碎片提供。move_palm_poison、move_staff_fan 由 WP-CMD 的 _cmd 碎片提供；本碎片新增 move_xh_claw_poison、move_xh_hidden_poison。"
+}

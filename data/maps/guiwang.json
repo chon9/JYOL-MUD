@@ -1,0 +1,29 @@
+{
+  "region_id": "guiwang", "era": "1.0A", "src": "proposal",
+  "desc": "西夏東北礦山腹中的血刀洞迷宮，陰氣森森，小鬼成群，鬼王盤據在最深處。",
+  "escape_tiles_hint": 2,
+  "rooms": [
+    { "id": "gw_entrance", "name": "洞口甬道",
+      "desc": "狹長的甬道濕滑陰冷，石壁上的火把忽明忽滅，黑暗中有東西在窸窣移動。",
+      "exits": [ { "dir": "OUT", "to": "xe_xuedao" }, { "dir": "N", "to": "gw_hall" } ],
+      "npcs": [], "features": [], "requires": [],
+      "encounter": { "rate": 0.3, "table": [
+        { "monster": "m_ghost", "w": 100, "count": [1, 1] } ] } },
+    { "id": "gw_hall", "name": "陰風廳",
+      "desc": "洞中一座天然石廳，陰風呼嘯，地上散落著白骨，成群的小鬼在此遊蕩。北邊分出好幾條岔道。",
+      "exits": [ { "dir": "S", "to": "gw_entrance" }, { "dir": "N", "to": "gw_maze" } ],
+      "npcs": [], "features": [], "requires": [],
+      "encounter": { "rate": 0.35, "table": [
+        { "monster": "m_ghost", "w": 100, "count": [1, 2] } ] } },
+    { "id": "gw_maze", "name": "迷宮回廊",
+      "desc": "岔道交錯，石壁上刻滿亂七八糟的記號，走過的路轉眼就認不出來。最裡頭隱約有火光。",
+      "exits": [ { "dir": "S", "to": "gw_hall" }, { "dir": "N", "to": "gw_throne" } ],
+      "npcs": [], "features": [], "requires": [],
+      "encounter": { "rate": 0.35, "table": [
+        { "monster": "m_ghost", "w": 100, "count": [1, 2] } ] } },
+    { "id": "gw_throne", "name": "鬼王殿",
+      "desc": "石殿盡頭有一張骨座，鬼王端坐其上，冷冷地注視著闖入者。",
+      "exits": [ { "dir": "S", "to": "gw_maze" } ],
+      "npcs": ["n_guiwang"], "features": [], "requires": [] }
+  ]
+}

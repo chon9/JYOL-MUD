@@ -1,0 +1,3014 @@
+{
+  "table": "art",
+  "version": 1,
+  "note": "Presentation only (not game data; not part of content_hash). Files: assets/art/{units,bg,fx,map,icons}/ from tools/import_art.py, else assets/art/placeholder/. 'placeholder': true = no owner art imported yet (import_art.py keeps this flag up to date). scale is relative to a 1.0 human; y_offset is in sprite pixels at scale 1 (negative = up). 'alias' reuses another entry; 'flip': true mirrors a source that faces lower-right on import. M3c: 'map', 'map_icons', 'weapon_fx', 'weapon_icons' have no placeholder art: while 'placeholder' is true ArtRegistry returns null and the caller draws its procedural fallback.",
+  "unit_canvas_h": 256,
+  "units": {
+    "player_m": {
+      "sprite": "player_m",
+      "scale": 1.0,
+      "y_offset": 0,
+      "required": true,
+      "placeholder": false
+    },
+    "player_f": {
+      "sprite": "player_f",
+      "scale": 1.0,
+      "y_offset": 0,
+      "required": true,
+      "placeholder": false
+    },
+    "look_m01": {
+      "sprite": "look_m01",
+      "scale": 1.0,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "look_m02": {
+      "sprite": "look_m02",
+      "scale": 1.0,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "look_m03": {
+      "sprite": "look_m03",
+      "scale": 1.0,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "look_m04": {
+      "sprite": "look_m04",
+      "scale": 1.0,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "look_m05": {
+      "sprite": "look_m05",
+      "scale": 1.0,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "look_m06": {
+      "sprite": "look_m06",
+      "scale": 1.0,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "look_m07": {
+      "sprite": "look_m07",
+      "scale": 1.0,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "look_m08": {
+      "sprite": "look_m08",
+      "scale": 1.0,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "look_f01": {
+      "sprite": "look_f01",
+      "scale": 1.0,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "look_f02": {
+      "sprite": "look_f02",
+      "scale": 1.0,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "look_f03": {
+      "sprite": "look_f03",
+      "scale": 1.0,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "look_f04": {
+      "sprite": "look_f04",
+      "scale": 1.0,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "look_f05": {
+      "sprite": "look_f05",
+      "scale": 1.0,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "look_f06": {
+      "sprite": "look_f06",
+      "scale": 1.0,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "look_f07": {
+      "sprite": "look_f07",
+      "scale": 1.0,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "look_f08": {
+      "sprite": "look_f08",
+      "scale": 1.0,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "shaolin_m": {
+      "sprite": "shaolin_m",
+      "scale": 1.0,
+      "y_offset": 0,
+      "required": true,
+      "placeholder": false
+    },
+    "huashan_m": {
+      "sprite": "huashan_m",
+      "scale": 1.0,
+      "y_offset": 0,
+      "required": true,
+      "placeholder": false
+    },
+    "huashan_f": {
+      "sprite": "huashan_f",
+      "scale": 1.0,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "m_rabbit": {
+      "sprite": "m_rabbit",
+      "scale": 0.45,
+      "y_offset": 0,
+      "required": true,
+      "placeholder": false,
+      "body": "beast"
+    },
+    "m_bigrabbit": {
+      "sprite": "m_bigrabbit",
+      "scale": 0.65,
+      "y_offset": 0,
+      "required": true,
+      "placeholder": false,
+      "body": "beast"
+    },
+    "m_wolf": {
+      "sprite": "m_wolf",
+      "scale": 0.7,
+      "y_offset": 0,
+      "required": true,
+      "placeholder": false,
+      "body": "beast"
+    },
+    "m_boar": {
+      "sprite": "m_boar",
+      "scale": 0.7,
+      "y_offset": 0,
+      "required": true,
+      "placeholder": false,
+      "body": "beast"
+    },
+    "m_bandit": {
+      "sprite": "m_bandit",
+      "scale": 1.0,
+      "y_offset": 0,
+      "required": true,
+      "placeholder": false
+    },
+    "m_hs_trainee": {
+      "sprite": "m_hs_trainee",
+      "scale": 1.0,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "m_ghost": {
+      "sprite": "m_ghost",
+      "scale": 0.85,
+      "y_offset": -14,
+      "required": true,
+      "placeholder": false
+    },
+    "m_guiwang": {
+      "sprite": "m_guiwang",
+      "scale": 1.3,
+      "y_offset": 0,
+      "required": true,
+      "placeholder": false
+    },
+    "m_bandit_chief": {
+      "alias": "m_bandit"
+    },
+    "m_city_guard": {
+      "alias": "n_xx_guard"
+    },
+    "n_bandit_chief": {
+      "alias": "m_bandit_chief"
+    },
+    "n_ludayou": {
+      "alias": "m_hs_trainee"
+    },
+    "n_yuebuqun": {
+      "sprite": "n_yuebuqun",
+      "scale": 1,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "n_liangfa": {
+      "alias": "huashan_m"
+    },
+    "n_sl_zhike": {
+      "alias": "shaolin_m"
+    },
+    "n_sl_huizhen": {
+      "alias": "shaolin_m"
+    },
+    "n_sl_huixu": {
+      "alias": "shaolin_m"
+    },
+    "n_sl_huikong": {
+      "alias": "shaolin_m"
+    },
+    "n_sl_zhaiseng": {
+      "sprite": "n_sl_zhaiseng",
+      "scale": 1,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "n_yeerniang": {
+      "sprite": "n_yeerniang",
+      "scale": 1,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "n_shuanger": {
+      "sprite": "n_shuanger",
+      "scale": 1,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "n_guiwang": {
+      "alias": "m_guiwang"
+    },
+    "n_chenjialuo": {
+      "sprite": "n_chenjialuo",
+      "scale": 1,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "n_de_host": {
+      "sprite": "n_de_host",
+      "scale": 1,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "n_dl_bukuai": {
+      "sprite": "n_dl_bukuai",
+      "scale": 1,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "n_dl_grocer": {
+      "sprite": "n_dl_grocer",
+      "scale": 1,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "n_hf_teaman": {
+      "sprite": "n_hf_teaman",
+      "scale": 1,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "n_nanhai": {
+      "sprite": "n_nanhai",
+      "scale": 1,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "n_taoyun": {
+      "sprite": "n_taoyun",
+      "scale": 1,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "n_weixiaobao": {
+      "sprite": "n_weixiaobao",
+      "scale": 1,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "n_wujieshan": {
+      "sprite": "n_wujieshan",
+      "scale": 1,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "n_xe_miner": {
+      "sprite": "n_xe_miner",
+      "scale": 1,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "n_xw_fisher": {
+      "sprite": "n_xw_fisher",
+      "scale": 1,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "n_xw_woodcutter": {
+      "sprite": "n_xw_woodcutter",
+      "scale": 1,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "n_xx_cha": {
+      "sprite": "n_xx_cha",
+      "scale": 1,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "n_xx_cook": {
+      "sprite": "n_xx_cook",
+      "scale": 1,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "n_xx_guard": {
+      "sprite": "n_xx_guard",
+      "scale": 1,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "n_xx_innkeeper": {
+      "sprite": "n_xx_innkeeper",
+      "scale": 1,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "n_xx_pharmacist": {
+      "sprite": "n_xx_pharmacist",
+      "scale": 1,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "n_xx_smith": {
+      "sprite": "n_xx_smith",
+      "scale": 1,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "n_xx_station": {
+      "sprite": "n_xx_station",
+      "scale": 1,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "n_xx_wushi": {
+      "sprite": "n_xx_wushi",
+      "scale": 1,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "n_zhangwuji": {
+      "sprite": "n_zhangwuji",
+      "scale": 1,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "n_sl_cha": {
+      "alias": "n_xx_cha"
+    },
+    "n_hs_cha": {
+      "alias": "n_xx_cha"
+    },
+    "n_dl_cha": {
+      "alias": "n_xx_cha"
+    },
+    "n_dl_guard": {
+      "alias": "n_xx_guard"
+    },
+    "n_dl_cook": {
+      "alias": "n_xx_cook"
+    },
+    "n_dl_innkeeper": {
+      "alias": "n_xx_innkeeper"
+    },
+    "n_dl_station": {
+      "alias": "n_xx_station"
+    },
+    "n_dl_wushi": {
+      "alias": "n_xx_wushi"
+    },
+    "n_jc_wushi": {
+      "alias": "n_xx_wushi"
+    },
+    "n_sy_teaman": {
+      "alias": "n_hf_teaman"
+    },
+    "emei_f": {
+      "sprite": "emei_f",
+      "scale": 1,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "n_em_cha": {
+      "alias": "n_hs_cha",
+      "required": false,
+      "placeholder": false
+    },
+    "n_em_gatedizi": {
+      "alias": "huashan_f",
+      "required": false,
+      "placeholder": false
+    },
+    "n_em_miejue": {
+      "sprite": "n_em_miejue",
+      "scale": 1,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "n_em_jingjia": {
+      "sprite": "n_em_jingjia",
+      "scale": 1,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "n_em_spar": {
+      "alias": "huashan_f",
+      "required": false,
+      "placeholder": false
+    },
+    "n_em_jingzhao": {
+      "alias": "huashan_f",
+      "required": false,
+      "placeholder": false
+    },
+    "n_em_jingxuan": {
+      "alias": "huashan_f",
+      "required": false,
+      "placeholder": false
+    },
+    "n_em_beimianyi": {
+      "alias": "huashan_f",
+      "required": false,
+      "placeholder": false
+    },
+    "n_em_dingminjun": {
+      "alias": "huashan_f",
+      "required": false,
+      "placeholder": false
+    },
+    "n_em_zhouzhiruo": {
+      "alias": "huashan_f",
+      "required": false,
+      "placeholder": false
+    },
+    "n_em_jingguan": {
+      "alias": "huashan_f",
+      "required": false,
+      "placeholder": false
+    },
+    "n_em_lianxiang": {
+      "alias": "huashan_f",
+      "required": false,
+      "placeholder": false
+    },
+    "n_em_jinxiaomei": {
+      "alias": "huashan_f",
+      "required": false,
+      "placeholder": false
+    },
+    "n_em_nongfu": {
+      "alias": "n_taoyun",
+      "required": false,
+      "placeholder": false
+    },
+    "n_em_jailer": {
+      "alias": "huashan_f",
+      "required": false,
+      "placeholder": false
+    },
+    "n_em_jianchi": {
+      "alias": "n_xx_wushi",
+      "required": false,
+      "placeholder": false
+    },
+    "n_em_jixiaofu": {
+      "alias": "huashan_f",
+      "required": false,
+      "placeholder": false
+    },
+    "n_em_yingyueer": {
+      "alias": "huashan_f",
+      "required": false,
+      "placeholder": false
+    },
+    "n_em_teaman": {
+      "alias": "n_hf_teaman",
+      "required": false,
+      "placeholder": false
+    },
+    "m_em_dizi": {
+      "alias": "huashan_f",
+      "required": false,
+      "placeholder": false
+    },
+    "m_em_xunshan": {
+      "alias": "huashan_f",
+      "required": false,
+      "placeholder": false
+    },
+    "m_em_guard": {
+      "sprite": "m_em_guard",
+      "scale": 1,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "m_em_monkey": {
+      "sprite": "m_em_monkey",
+      "scale": 0.55,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false,
+      "body": "beast"
+    },
+    "m_em_mz_snake": {
+      "sprite": "m_em_mz_snake",
+      "scale": 0.5,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false,
+      "body": "beast"
+    },
+    "m_em_mz_ape": {
+      "sprite": "m_em_mz_ape",
+      "scale": 0.95,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false,
+      "body": "beast"
+    },
+    "gumu_f": {
+      "sprite": "gumu_f",
+      "scale": 1,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "n_gm_cha": {
+      "alias": "n_xx_cha",
+      "required": false,
+      "placeholder": false
+    },
+    "n_gm_sunpopo": {
+      "sprite": "n_gm_sunpopo",
+      "scale": 1,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "n_gm_zhangmen": {
+      "sprite": "n_gm_zhangmen",
+      "scale": 1,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "n_gm_yinlu": {
+      "alias": "n_shuanger",
+      "required": false,
+      "placeholder": false
+    },
+    "n_gm_xiaolongnu": {
+      "alias": "n_shuanger",
+      "required": false,
+      "placeholder": false
+    },
+    "n_gm_dashijie": {
+      "alias": "n_shuanger",
+      "required": false,
+      "placeholder": false
+    },
+    "n_gm_spar": {
+      "alias": "n_shuanger",
+      "required": false,
+      "placeholder": false
+    },
+    "n_gm_songfan": {
+      "alias": "n_sl_zhaiseng",
+      "required": false,
+      "placeholder": false
+    },
+    "n_gm_hanyu": {
+      "alias": "n_shuanger",
+      "required": false,
+      "placeholder": false
+    },
+    "n_gm_xiaomei": {
+      "alias": "n_shuanger",
+      "required": false,
+      "placeholder": false
+    },
+    "n_gm_jailer": {
+      "alias": "n_shuanger",
+      "required": false,
+      "placeholder": false
+    },
+    "m_gm_dizi": {
+      "alias": "m_hs_trainee",
+      "required": false,
+      "placeholder": false
+    },
+    "m_gm_guard": {
+      "sprite": "m_gm_guard",
+      "scale": 1,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "m_gm_bianfu": {
+      "sprite": "m_gm_bianfu",
+      "scale": 0.5,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false,
+      "body": "beast"
+    },
+    "m_gm_yufeng": {
+      "sprite": "m_gm_yufeng",
+      "scale": 0.35,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false,
+      "body": "beast"
+    },
+    "m_gm_daomu": {
+      "sprite": "m_gm_daomu",
+      "scale": 1,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "m_gm_hongningbo": {
+      "sprite": "m_gm_hongningbo",
+      "scale": 1,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "m_dl_limochou": {
+      "alias": "n_dl_limochou",
+      "required": false,
+      "placeholder": false
+    },
+    "hengshan_f": {
+      "sprite": "hengshan_f",
+      "scale": 1,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "n_hg_zhike": {
+      "alias": "huashan_f",
+      "required": false,
+      "placeholder": false
+    },
+    "n_hg_cha": {
+      "alias": "n_hs_cha",
+      "required": false,
+      "placeholder": false
+    },
+    "n_hg_yihe": {
+      "sprite": "n_hg_yihe",
+      "scale": 1,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "n_hg_spar": {
+      "alias": "huashan_f",
+      "required": false,
+      "placeholder": false
+    },
+    "n_hg_dingxian": {
+      "sprite": "n_hg_dingxian",
+      "scale": 1,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "n_hg_dingyi": {
+      "alias": "huashan_f",
+      "required": false,
+      "placeholder": false
+    },
+    "n_hg_dingjing": {
+      "alias": "huashan_f",
+      "required": false,
+      "placeholder": false
+    },
+    "n_hg_yizhen": {
+      "alias": "huashan_f",
+      "required": false,
+      "placeholder": false
+    },
+    "n_hg_yiwen": {
+      "alias": "huashan_f",
+      "required": false,
+      "placeholder": false
+    },
+    "n_hg_yusao": {
+      "alias": "player_f",
+      "required": false,
+      "placeholder": false
+    },
+    "n_hg_yizhi": {
+      "alias": "huashan_f",
+      "required": false,
+      "placeholder": false
+    },
+    "n_hg_heyue": {
+      "alias": "player_f",
+      "required": false,
+      "placeholder": false
+    },
+    "n_hg_chengwei": {
+      "alias": "player_f",
+      "required": false,
+      "placeholder": false
+    },
+    "n_hg_yilin": {
+      "alias": "huashan_f",
+      "required": false,
+      "placeholder": false
+    },
+    "m_hg_dizi": {
+      "alias": "m_hs_trainee",
+      "required": false,
+      "placeholder": false
+    },
+    "m_hg_guard": {
+      "sprite": "m_hg_guard",
+      "scale": 1,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "lingjiu_f": {
+      "sprite": "lingjiu_f",
+      "scale": 1,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "n_lj_tonglao": {
+      "sprite": "n_lj_tonglao",
+      "scale": 0.75,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "n_lj_cha": {
+      "alias": "n_xx_cha",
+      "required": false,
+      "placeholder": false
+    },
+    "n_lj_zhike": {
+      "alias": "huashan_f",
+      "required": false,
+      "placeholder": false
+    },
+    "n_lj_lanjian": {
+      "alias": "n_shuanger",
+      "required": false,
+      "placeholder": false
+    },
+    "n_lj_jujian": {
+      "alias": "n_shuanger",
+      "required": false,
+      "placeholder": false
+    },
+    "n_lj_spar": {
+      "alias": "huashan_f",
+      "required": false,
+      "placeholder": false
+    },
+    "n_lj_chengqingshuang": {
+      "alias": "n_shuanger",
+      "required": false,
+      "placeholder": false
+    },
+    "n_lj_fuminyi": {
+      "alias": "n_shuanger",
+      "required": false,
+      "placeholder": false
+    },
+    "n_lj_hunter": {
+      "alias": "n_xw_woodcutter",
+      "required": false,
+      "placeholder": false
+    },
+    "m_lj_dizi": {
+      "alias": "m_hs_trainee",
+      "required": false,
+      "placeholder": false
+    },
+    "m_lj_guard": {
+      "sprite": "m_lj_guard",
+      "scale": 1,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "m_lj_xuehu": {
+      "sprite": "m_lj_xuehu",
+      "scale": 0.55,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false,
+      "body": "beast"
+    },
+    "quanzhen_m": {
+      "sprite": "quanzhen_m",
+      "scale": 1,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "n_qz_cha": {
+      "alias": "n_xx_cha",
+      "required": false,
+      "placeholder": false
+    },
+    "n_qz_zhike": {
+      "alias": "n_yuebuqun",
+      "required": false,
+      "placeholder": false
+    },
+    "n_qz_qiuchuji": {
+      "sprite": "n_qz_qiuchuji",
+      "scale": 1,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "n_qz_majue": {
+      "alias": "n_yuebuqun",
+      "required": false,
+      "placeholder": false
+    },
+    "n_qz_tanchuduan": {
+      "alias": "n_yuebuqun",
+      "required": false,
+      "placeholder": false
+    },
+    "n_qz_wangchuyi": {
+      "alias": "n_yuebuqun",
+      "required": false,
+      "placeholder": false
+    },
+    "n_qz_liuchuxuan": {
+      "alias": "n_yuebuqun",
+      "required": false,
+      "placeholder": false
+    },
+    "n_qz_haodatong": {
+      "alias": "n_yuebuqun",
+      "required": false,
+      "placeholder": false
+    },
+    "n_qz_sunbuer": {
+      "alias": "huashan_f",
+      "required": false,
+      "placeholder": false
+    },
+    "n_qz_yinzhiping": {
+      "alias": "huashan_m",
+      "required": false,
+      "placeholder": false
+    },
+    "n_qz_yinshi": {
+      "alias": "n_xw_woodcutter",
+      "required": false,
+      "placeholder": false
+    },
+    "n_qz_qizhicheng": {
+      "alias": "huashan_m",
+      "required": false,
+      "placeholder": false
+    },
+    "n_qz_spar": {
+      "alias": "huashan_m",
+      "required": false,
+      "placeholder": false
+    },
+    "n_qz_lizhichang": {
+      "alias": "huashan_m",
+      "required": false,
+      "placeholder": false
+    },
+    "n_qz_xiazhicheng": {
+      "alias": "n_xx_cha",
+      "required": false,
+      "placeholder": false
+    },
+    "n_qz_luqingdu": {
+      "alias": "n_sl_zhaiseng",
+      "required": false,
+      "placeholder": false
+    },
+    "n_qz_zhangyao": {
+      "alias": "n_xx_pharmacist",
+      "required": false,
+      "placeholder": false
+    },
+    "n_qz_biye": {
+      "alias": "huashan_m",
+      "required": false,
+      "placeholder": false
+    },
+    "n_qz_huipai": {
+      "alias": "huashan_m",
+      "required": false,
+      "placeholder": false
+    },
+    "n_qz_dongkou": {
+      "alias": "huashan_m",
+      "required": false,
+      "placeholder": false
+    },
+    "n_qz_zhangyuan": {
+      "alias": "n_taoyun",
+      "required": false,
+      "placeholder": false
+    },
+    "n_qz_jailer": {
+      "alias": "huashan_m",
+      "required": false,
+      "placeholder": false
+    },
+    "n_qz_chendabao": {
+      "alias": "n_xe_miner",
+      "required": false,
+      "placeholder": false
+    },
+    "n_qz_chengfeng": {
+      "alias": "n_chenjialuo",
+      "required": false,
+      "placeholder": false
+    },
+    "m_qz_dizi": {
+      "alias": "huashan_m",
+      "required": false,
+      "placeholder": false
+    },
+    "m_qz_guard": {
+      "sprite": "m_qz_guard",
+      "scale": 1,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "m_qz_xunshan": {
+      "alias": "huashan_m",
+      "required": false,
+      "placeholder": false
+    },
+    "n_sl_luohan": {
+      "sprite": "n_sl_luohan",
+      "scale": 1,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "n_sl_xuanjing": {
+      "alias": "n_sl_huikong",
+      "required": false,
+      "placeholder": false
+    },
+    "n_sl_due": {
+      "alias": "n_sl_huizhen",
+      "required": false,
+      "placeholder": false
+    },
+    "n_sl_puzhi": {
+      "alias": "n_sl_zhike",
+      "required": false,
+      "placeholder": false
+    },
+    "m_sl_tongren_1": {
+      "sprite": "m_sl_tongren_1",
+      "scale": 1.05,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "m_sl_tongren_2": {
+      "alias": "shaolin_m",
+      "required": false,
+      "placeholder": false
+    },
+    "m_sl_tongren_3": {
+      "alias": "shaolin_m",
+      "required": false,
+      "placeholder": false
+    },
+    "wudang_m": {
+      "sprite": "wudang_m",
+      "scale": 1,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "n_wd_cha": {
+      "alias": "n_xx_cha",
+      "required": false,
+      "placeholder": false
+    },
+    "n_wd_zhike": {
+      "alias": "huashan_m",
+      "required": false,
+      "placeholder": false
+    },
+    "n_wd_beizhong": {
+      "alias": "huashan_m",
+      "required": false,
+      "placeholder": false
+    },
+    "n_wd_yinjian": {
+      "sprite": "n_wd_yinjian",
+      "scale": 1,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "n_wd_yudaiyan": {
+      "sprite": "n_wd_yudaiyan",
+      "scale": 1,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "n_wd_spar": {
+      "alias": "huashan_m",
+      "required": false,
+      "placeholder": false
+    },
+    "n_wd_zhongfei": {
+      "alias": "huashan_m",
+      "required": false,
+      "placeholder": false
+    },
+    "n_wd_nongfu": {
+      "alias": "n_taoyun",
+      "required": false,
+      "placeholder": false
+    },
+    "n_wd_nanyu": {
+      "alias": "huashan_m",
+      "required": false,
+      "placeholder": false
+    },
+    "n_wd_zhangsongxi": {
+      "alias": "n_yuebuqun",
+      "required": false,
+      "placeholder": false
+    },
+    "n_wd_xiyun": {
+      "alias": "huashan_m",
+      "required": false,
+      "placeholder": false
+    },
+    "n_wd_songyuanqiao": {
+      "alias": "n_yuebuqun",
+      "required": false,
+      "placeholder": false
+    },
+    "n_wd_songqingshu": {
+      "alias": "huashan_m",
+      "required": false,
+      "placeholder": false
+    },
+    "n_wd_yulianzhou": {
+      "alias": "n_yuebuqun",
+      "required": false,
+      "placeholder": false
+    },
+    "n_wd_yinliting": {
+      "alias": "huashan_m",
+      "required": false,
+      "placeholder": false
+    },
+    "n_wd_moshenggu": {
+      "alias": "huashan_m",
+      "required": false,
+      "placeholder": false
+    },
+    "n_wd_jailer": {
+      "alias": "n_sl_huizhen",
+      "required": false,
+      "placeholder": false
+    },
+    "n_wd_dongchao": {
+      "alias": "huashan_m",
+      "required": false,
+      "placeholder": false
+    },
+    "n_wd_zhangsanfeng": {
+      "sprite": "n_wd_zhangsanfeng",
+      "scale": 1,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "n_wd_dl_oldman": {
+      "alias": "n_taoyun",
+      "required": false,
+      "placeholder": false
+    },
+    "m_wd_dizi": {
+      "alias": "huashan_m",
+      "required": false,
+      "placeholder": false
+    },
+    "m_wd_guard": {
+      "sprite": "m_wd_guard",
+      "scale": 1,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "m_wd_buyi": {
+      "sprite": "m_wd_buyi",
+      "scale": 1,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "xingxiu_m": {
+      "sprite": "xingxiu_m",
+      "scale": 1,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "xingxiu_f": {
+      "sprite": "xingxiu_f",
+      "scale": 1,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "n_xh_dingchunqiu": {
+      "sprite": "n_xh_dingchunqiu",
+      "scale": 1,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "n_xh_cha": {
+      "alias": "n_xx_cha",
+      "required": false,
+      "placeholder": false
+    },
+    "n_xh_menren": {
+      "alias": "n_ludayou",
+      "required": false,
+      "placeholder": false
+    },
+    "n_xh_shihouzi": {
+      "alias": "n_liangfa",
+      "required": false,
+      "placeholder": false
+    },
+    "n_xh_chuchenzi": {
+      "alias": "n_liangfa",
+      "required": false,
+      "placeholder": false
+    },
+    "n_xh_spar": {
+      "alias": "n_ludayou",
+      "required": false,
+      "placeholder": false
+    },
+    "n_xh_canjizi": {
+      "alias": "n_hf_teaman",
+      "required": false,
+      "placeholder": false
+    },
+    "n_xh_shudouzi": {
+      "alias": "n_xw_woodcutter",
+      "required": false,
+      "placeholder": false
+    },
+    "n_xh_tianlangzi": {
+      "alias": "n_liangfa",
+      "required": false,
+      "placeholder": false
+    },
+    "m_xh_dizi": {
+      "alias": "m_hs_trainee",
+      "required": false,
+      "placeholder": false
+    },
+    "m_xh_guard": {
+      "sprite": "m_xh_guard",
+      "scale": 1,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "m_xh_snake": {
+      "sprite": "m_xh_snake",
+      "scale": 0.5,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false,
+      "body": "beast"
+    },
+    "m_xh_scorpion": {
+      "sprite": "m_xh_scorpion",
+      "scale": 0.4,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false,
+      "body": "beast"
+    },
+    "m_xh_toad": {
+      "sprite": "m_xh_toad",
+      "scale": 0.5,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false,
+      "body": "beast"
+    },
+    "xuedao_m": {
+      "sprite": "xuedao_m",
+      "scale": 1,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "n_xd_guard": {
+      "alias": "m_bandit",
+      "required": false,
+      "placeholder": false
+    },
+    "n_xd_cha": {
+      "alias": "n_hs_cha",
+      "required": false,
+      "placeholder": false
+    },
+    "n_xd_laozu": {
+      "sprite": "n_xd_laozu",
+      "scale": 1,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "n_xd_shengdi": {
+      "sprite": "n_xd_shengdi",
+      "scale": 1,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "n_xd_kuji": {
+      "alias": "n_sl_huizhen",
+      "required": false,
+      "placeholder": false
+    },
+    "n_xd_spar": {
+      "alias": "n_ludayou",
+      "required": false,
+      "placeholder": false
+    },
+    "n_xd_xuehai": {
+      "alias": "n_sl_huizhen",
+      "required": false,
+      "placeholder": false
+    },
+    "n_xd_shanyong": {
+      "alias": "n_sl_huizhen",
+      "required": false,
+      "placeholder": false
+    },
+    "n_xd_jingqi": {
+      "alias": "n_sl_zhaiseng",
+      "required": false,
+      "placeholder": false
+    },
+    "n_xd_aihui": {
+      "alias": "n_sl_huizhen",
+      "required": false,
+      "placeholder": false
+    },
+    "n_xd_buliu": {
+      "alias": "n_sl_huizhen",
+      "required": false,
+      "placeholder": false
+    },
+    "n_xd_buzou": {
+      "alias": "n_sl_huizhen",
+      "required": false,
+      "placeholder": false
+    },
+    "n_xd_herder": {
+      "alias": "n_de_host",
+      "required": false,
+      "placeholder": false
+    },
+    "m_xd_dizi": {
+      "alias": "m_hs_trainee",
+      "required": false,
+      "placeholder": false
+    },
+    "m_xd_guard": {
+      "sprite": "m_xd_guard",
+      "scale": 1.15,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "n_amb_etou_xe": {
+      "sprite": "n_amb_etou_xe",
+      "scale": 1.05,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "n_amb_etou_dlw": {
+      "sprite": "n_amb_etou_dlw",
+      "scale": 1.05,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "n_amb_etou_ss": {
+      "sprite": "n_amb_etou_ss",
+      "scale": 1.05,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "n_hn_teaman": {
+      "sprite": "n_hn_teaman",
+      "scale": 1.0,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "n_dl_cunmin": {
+      "sprite": "n_dl_cunmin",
+      "scale": 1.0,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "n_dlw_guiyi": {
+      "sprite": "n_dlw_guiyi",
+      "scale": 1.0,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "m_dl_mingjiao": {
+      "sprite": "m_dl_mingjiao",
+      "scale": 1.0,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "n_lf_lanfenghuang": {
+      "sprite": "n_lf_lanfenghuang",
+      "scale": 1.0,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "n_hs_lanyihan": {
+      "sprite": "n_hs_lanyihan",
+      "scale": 1.0,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "m_lf_wugong": {
+      "sprite": "m_lf_wugong",
+      "scale": 0.45,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false,
+      "body": "beast"
+    },
+    "m_lf_zhizhu": {
+      "sprite": "m_lf_zhizhu",
+      "scale": 0.35,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false,
+      "body": "beast"
+    },
+    "m_lf_qingshe": {
+      "sprite": "m_lf_qingshe",
+      "scale": 0.5,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false,
+      "body": "beast"
+    },
+    "m_lf_xiezi": {
+      "sprite": "m_lf_xiezi",
+      "scale": 0.4,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false,
+      "body": "beast"
+    },
+    "n_hn_liugongzi": {
+      "sprite": "n_hn_liugongzi",
+      "scale": 1.0,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "n_hn_dizi": {
+      "sprite": "n_hn_dizi",
+      "scale": 1.0,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "n_hn_moda": {
+      "sprite": "n_hn_moda",
+      "scale": 1.0,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "n_hn_lulianrong": {
+      "sprite": "n_hn_lulianrong",
+      "scale": 1.0,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "n_hn_mimike": {
+      "sprite": "n_hn_mimike",
+      "scale": 1.0,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "m_hn_mojiao": {
+      "sprite": "m_hn_mojiao",
+      "scale": 1.0,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "n_xx_zhangbao": {
+      "sprite": "n_xx_zhangbao",
+      "scale": 1.0,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "n_dl_wangbutou": {
+      "sprite": "n_dl_wangbutou",
+      "scale": 1.0,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "n_xx_laodenuo": {
+      "sprite": "n_xx_laodenuo",
+      "scale": 1.0,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "m_xx_laodenuo": {
+      "sprite": "m_xx_laodenuo",
+      "scale": 1.0,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false,
+      "body": "human"
+    },
+    "n_hs_linghuchong": {
+      "sprite": "n_hs_linghuchong",
+      "scale": 1.0,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "n_hs_chengbuyou": {
+      "sprite": "n_hs_chengbuyou",
+      "scale": 1.0,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "n_ym_lingzhi": {
+      "sprite": "n_ym_lingzhi",
+      "scale": 1.0,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "n_ym_qiangdao": {
+      "sprite": "n_ym_qiangdao",
+      "scale": 1.05,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "m_ym_qiangdao": {
+      "sprite": "m_ym_qiangdao",
+      "scale": 1.05,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false,
+      "body": "human"
+    },
+    "n_sl_daopin": {
+      "sprite": "n_sl_daopin",
+      "scale": 1.0,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "n_xx_xuzhu": {
+      "sprite": "n_xx_xuzhu",
+      "scale": 1.0,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "n_xx_palace_guard_l": {
+      "sprite": "n_xx_palace_guard_l",
+      "scale": 1.05,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "n_xx_palace_guard_r": {
+      "sprite": "n_xx_palace_guard_r",
+      "scale": 1.05,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "n_xx_ada": {
+      "sprite": "n_xx_ada",
+      "scale": 1.0,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "n_xx_yuner": {
+      "sprite": "n_xx_yuner",
+      "scale": 1.0,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "n_xx_litaian": {
+      "sprite": "n_xx_litaian",
+      "scale": 1.0,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "n_xx_abao": {
+      "sprite": "n_xx_abao",
+      "scale": 1.0,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "n_hn_longmen": {
+      "sprite": "n_hn_longmen",
+      "scale": 0.95,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "n_wd_yuanyin": {
+      "sprite": "n_wd_yuanyin",
+      "scale": 1.0,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "n_wd_yuanye": {
+      "sprite": "n_wd_yuanye",
+      "scale": 1.05,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "n_wd_zhaomin": {
+      "sprite": "n_wd_zhaomin",
+      "scale": 1.0,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "n_ym_hufei": {
+      "sprite": "n_ym_hufei",
+      "scale": 1.05,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "n_xx_qiaofeng": {
+      "sprite": "n_xx_qiaofeng",
+      "scale": 1.1,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "n_xx_azi": {
+      "sprite": "n_xx_azi",
+      "scale": 1.0,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "n_dl_limochou": {
+      "sprite": "n_dl_limochou",
+      "scale": 1.0,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "n_lj_baiyong": {
+      "sprite": "n_lj_baiyong",
+      "scale": 1.0,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "n_xd_pantu": {
+      "sprite": "n_xd_pantu",
+      "scale": 1.0,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "n_hg_lincai": {
+      "sprite": "n_hg_lincai",
+      "scale": 1.0,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "m_nanhai": {
+      "alias": "n_nanhai",
+      "required": false,
+      "placeholder": false
+    },
+    "m_yeerniang": {
+      "alias": "n_yeerniang",
+      "required": false,
+      "placeholder": false
+    },
+    "m_amb_etou": {
+      "alias": "n_bandit_chief",
+      "required": false,
+      "placeholder": false
+    },
+    "m_xx_palace_guard": {
+      "alias": "n_xx_guard",
+      "required": false,
+      "placeholder": false
+    },
+    "m_wd_ada": {
+      "alias": "n_xx_ada",
+      "required": false,
+      "placeholder": false
+    },
+    "m_wd_fengyi": {
+      "alias": "m_rabbit",
+      "required": false,
+      "placeholder": false
+    },
+    "m_wd_caie": {
+      "alias": "m_rabbit",
+      "required": false,
+      "placeholder": false
+    },
+    "m_wd_xiang": {
+      "alias": "m_boar",
+      "required": false,
+      "placeholder": false
+    },
+    "m_wd_elang": {
+      "alias": "m_wolf",
+      "required": false,
+      "placeholder": false
+    },
+    "m_wd_baiyuan": {
+      "alias": "m_wolf",
+      "required": false,
+      "placeholder": false
+    },
+    "m_wd_menghu": {
+      "alias": "m_wolf",
+      "required": false,
+      "placeholder": false
+    },
+    "m_wd_heixiong": {
+      "alias": "m_boar",
+      "required": false,
+      "placeholder": false
+    },
+    "m_wd_liebao": {
+      "alias": "m_wolf",
+      "required": false,
+      "placeholder": false
+    },
+    "m_wd_dadushe": {
+      "alias": "m_lf_qingshe",
+      "required": false,
+      "placeholder": false
+    },
+    "m_wd_zhangsongxi": {
+      "alias": "n_wd_zhangsongxi",
+      "required": false,
+      "placeholder": false
+    },
+    "m_wd_yulianzhou": {
+      "alias": "n_wd_yulianzhou",
+      "required": false,
+      "placeholder": false
+    },
+    "m_em_hufei": {
+      "alias": "n_ym_hufei",
+      "required": false,
+      "placeholder": false
+    },
+    "m_em_sharenwang": {
+      "alias": "m_bandit",
+      "required": false,
+      "placeholder": false
+    },
+    "m_em_tufei": {
+      "alias": "m_bandit",
+      "required": false,
+      "placeholder": false
+    },
+    "m_em_yinzei": {
+      "alias": "m_bandit",
+      "required": false,
+      "placeholder": false
+    },
+    "m_xd_pantu": {
+      "alias": "n_xd_pantu",
+      "required": false,
+      "placeholder": false
+    },
+    "m_xd_laozu_trial": {
+      "alias": "n_xd_laozu",
+      "required": false,
+      "placeholder": false
+    },
+    "m_gm_qinglv_nan": {
+      "alias": "huashan_m",
+      "required": false,
+      "placeholder": false
+    },
+    "m_gm_qinglv_nv": {
+      "alias": "huashan_f",
+      "required": false,
+      "placeholder": false
+    },
+    "n_dl_wangdafu": {
+      "alias": "n_dl_cunmin",
+      "required": false,
+      "placeholder": false
+    },
+    "n_dl_licaifeng": {
+      "alias": "n_dl_cunmin",
+      "required": false,
+      "placeholder": false
+    },
+    "n_qz_yangkang": {
+      "alias": "n_xx_qiaofeng",
+      "required": false,
+      "placeholder": false
+    },
+    "m_qz_yangkang": {
+      "alias": "n_xx_qiaofeng",
+      "required": false,
+      "placeholder": false
+    },
+    "m_cdb_zeitou": {
+      "alias": "m_bandit",
+      "required": false,
+      "placeholder": false
+    },
+    "m_cdb_louluo": {
+      "alias": "m_bandit",
+      "required": false,
+      "placeholder": false
+    },
+    "m_cdb_xiongbatian": {
+      "alias": "m_bandit",
+      "required": false,
+      "placeholder": false
+    },
+    "m_cdb_duyanren": {
+      "alias": "m_bandit",
+      "required": false,
+      "placeholder": false
+    },
+    "m_cdb_chendabao": {
+      "alias": "n_qz_chendabao",
+      "required": false,
+      "placeholder": false
+    },
+    "n_hn_maiyi": {
+      "alias": "n_dl_cunmin",
+      "required": false,
+      "placeholder": false
+    },
+    "n_dl_furen": {
+      "alias": "n_xx_yuner",
+      "required": false,
+      "placeholder": false
+    },
+    "n_em_qingwei": {
+      "alias": "n_sl_zhike",
+      "required": false,
+      "placeholder": false
+    },
+    "n_dl_cuisou": {
+      "alias": "n_dl_cunmin",
+      "required": false,
+      "placeholder": false
+    },
+    "m_dl_cuisou": {
+      "alias": "n_dl_cunmin",
+      "required": false,
+      "placeholder": false
+    },
+    "n_xx_zhugeyi": {
+      "alias": "m_bandit",
+      "required": false,
+      "placeholder": false
+    },
+    "m_xx_zhugeyi": {
+      "alias": "m_bandit",
+      "required": false,
+      "placeholder": false
+    },
+    "n_xx_zhuzhu": {
+      "alias": "n_xx_yuner",
+      "required": false,
+      "placeholder": false
+    },
+    "n_xx_buzhuang": {
+      "alias": "n_dl_cunmin",
+      "required": false,
+      "placeholder": false
+    },
+    "n_xx_caishang": {
+      "alias": "n_dl_cunmin",
+      "required": false,
+      "placeholder": false
+    },
+    "n_qz_jiangqingrui": {
+      "alias": "n_qz_zhike",
+      "required": false,
+      "placeholder": false
+    },
+    "n_ec_xx_banker": {
+      "alias": "n_xx_innkeeper",
+      "required": false,
+      "placeholder": false
+    },
+    "n_ec_xx_biaotou": {
+      "alias": "n_xx_wushi",
+      "required": false,
+      "placeholder": false
+    },
+    "n_ec_biaoche": {
+      "alias": "n_xx_station",
+      "required": false,
+      "placeholder": false
+    },
+    "gaibang_m": {
+      "sprite": "gaibang_m",
+      "scale": 1.0,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "gaibang_f": {
+      "sprite": "gaibang_f",
+      "scale": 1.0,
+      "y_offset": 0,
+      "required": false,
+      "placeholder": false
+    },
+    "n_gb_chen": {
+      "alias": "player_m",
+      "required": false,
+      "placeholder": false
+    },
+    "n_gb_chuangong": {
+      "alias": "player_m",
+      "required": false,
+      "placeholder": false
+    },
+    "n_gb_zhanggun": {
+      "alias": "player_m",
+      "required": false,
+      "placeholder": false
+    },
+    "n_gb_zhifa": {
+      "alias": "player_m",
+      "required": false,
+      "placeholder": false
+    },
+    "n_gb_jiang": {
+      "alias": "player_m",
+      "required": false,
+      "placeholder": false
+    },
+    "n_gb_youqiming": {
+      "alias": "player_m",
+      "required": false,
+      "placeholder": false
+    },
+    "n_gb_pan": {
+      "alias": "player_m",
+      "required": false,
+      "placeholder": false
+    },
+    "n_gb_shenyi": {
+      "alias": "n_xx_pharmacist",
+      "required": false,
+      "placeholder": false
+    },
+    "n_gb_jc_informant": {
+      "alias": "player_m",
+      "required": false,
+      "placeholder": false
+    },
+    "n_gb_huguo": {
+      "alias": "n_sl_huikong",
+      "required": false,
+      "placeholder": false
+    },
+    "n_gb_shafeng": {
+      "alias": "n_bandit_chief",
+      "required": false,
+      "placeholder": false
+    },
+    "m_gb_dizi": {
+      "alias": "m_hs_trainee",
+      "required": false,
+      "placeholder": false
+    },
+    "m_gb_xiaohuang": {
+      "alias": "m_wolf",
+      "required": false,
+      "placeholder": false
+    },
+    "m_gb_xiejiao": {
+      "alias": "m_bandit",
+      "required": false,
+      "placeholder": false
+    },
+    "m_gb_manbing": {
+      "alias": "m_bandit_chief",
+      "required": false,
+      "placeholder": false
+    },
+    "m_jcn_mazeitou": {
+      "alias": "m_bandit",
+      "required": false,
+      "placeholder": false
+    },
+    "m_jcn_edaotou": {
+      "alias": "m_bandit",
+      "required": false,
+      "placeholder": false
+    },
+    "m_jcn_daoren": {
+      "alias": "m_bandit",
+      "required": false,
+      "placeholder": false
+    },
+    "m_jcn_yinmian": {
+      "alias": "m_bandit",
+      "required": false,
+      "placeholder": false
+    },
+    "m_jcn_huguo": {
+      "alias": "m_bandit_chief",
+      "required": false,
+      "placeholder": false
+    },
+    "m_jcn_shafeng": {
+      "alias": "m_bandit_chief",
+      "required": false,
+      "placeholder": false
+    },
+    "n_tdh_chenjinnan": {
+      "alias": "n_chenjialuo",
+      "required": false,
+      "placeholder": false
+    },
+    "n_jc_jailer": {
+      "alias": "n_dl_bukuai",
+      "required": false,
+      "placeholder": false
+    },
+    "n_tdh_zhanggui": {
+      "alias": "n_xx_pharmacist",
+      "required": false,
+      "placeholder": false
+    },
+    "n_jc_bukuai": {
+      "alias": "n_dl_bukuai",
+      "required": false,
+      "placeholder": false
+    },
+    "n_jc_smith": {
+      "alias": "n_xx_smith",
+      "required": false,
+      "placeholder": false
+    },
+    "n_jc_pharmacist": {
+      "alias": "n_xx_pharmacist",
+      "required": false,
+      "placeholder": false
+    },
+    "n_jc_buzhuang": {
+      "alias": "n_xx_buzhuang",
+      "required": false,
+      "placeholder": false
+    },
+    "n_jc_tiejiang": {
+      "alias": "n_xx_smith",
+      "required": false,
+      "placeholder": false
+    },
+    "n_jc_zijin_guard": {
+      "alias": "n_xx_guard",
+      "required": false,
+      "placeholder": false
+    },
+    "n_jc_cha_n": {
+      "alias": "n_xx_cha",
+      "required": false,
+      "placeholder": false
+    },
+    "n_jc_guard_n": {
+      "alias": "n_xx_guard",
+      "required": false,
+      "placeholder": false
+    },
+    "n_tdh_shop": {
+      "alias": "n_xx_innkeeper",
+      "required": false,
+      "placeholder": false
+    },
+    "n_jc_lidashen": {
+      "alias": "n_dl_furen",
+      "required": false,
+      "placeholder": false
+    },
+    "n_jc_xiaobao": {
+      "alias": "n_dl_furen",
+      "required": false,
+      "placeholder": false
+    },
+    "n_jc_roubao": {
+      "alias": "n_dl_furen",
+      "required": false,
+      "placeholder": false
+    },
+    "n_jc_zhangyuanwai": {
+      "alias": "n_dl_wangdafu",
+      "required": false,
+      "placeholder": false
+    },
+    "m_jc_qigaitou": {
+      "alias": "m_bandit",
+      "required": false,
+      "placeholder": false
+    },
+    "m_jc_buliang": {
+      "alias": "m_bandit",
+      "required": false,
+      "placeholder": false
+    },
+    "n_jq_gongsunzhi": {
+      "alias": "n_yuebuqun",
+      "required": false,
+      "placeholder": false
+    },
+    "n_jq_lve": {
+      "alias": "n_shuanger",
+      "required": false,
+      "placeholder": false
+    },
+    "n_jq_qiuqianchi": {
+      "alias": "n_yeerniang",
+      "required": false,
+      "placeholder": false
+    },
+    "n_jq_liumei": {
+      "alias": "n_shuanger",
+      "required": false,
+      "placeholder": false
+    },
+    "n_jq_fanyiweng": {
+      "alias": "n_chenjialuo",
+      "required": false,
+      "placeholder": false
+    },
+    "m_jq_fanyiweng": {
+      "alias": "m_bandit_chief",
+      "required": false,
+      "placeholder": false
+    },
+    "m_jq_lvyi": {
+      "alias": "m_bandit",
+      "required": false,
+      "placeholder": false
+    },
+    "m_jq_eyu": {
+      "alias": "m_boar",
+      "required": false,
+      "placeholder": false
+    },
+    "m_jq_dilao_shuishe": {
+      "alias": "m_em_mz_snake",
+      "required": false,
+      "placeholder": false
+    },
+    "m_jq_dilao_qiutu": {
+      "alias": "m_bandit",
+      "required": false,
+      "placeholder": false
+    },
+    "n_xx_zhangtie": {
+      "alias": "n_xx_smith",
+      "required": false,
+      "placeholder": false
+    },
+    "n_ls_dl_zhujian": {
+      "alias": "n_xx_smith",
+      "required": false,
+      "placeholder": false
+    },
+    "n_ls_kuanggong": {
+      "alias": "n_xe_miner",
+      "required": false,
+      "placeholder": false
+    },
+    "n_ls_xx_fangzhi": {
+      "alias": "n_xx_buzhuang",
+      "required": false,
+      "placeholder": false
+    },
+    "n_ls_jc_mujiang": {
+      "alias": "n_xx_smith",
+      "required": false,
+      "placeholder": false
+    },
+    "m_hunt_yetu": {
+      "alias": "m_rabbit",
+      "required": false,
+      "placeholder": false
+    },
+    "m_hunt_dayetu": {
+      "alias": "m_bigrabbit",
+      "required": false,
+      "placeholder": false
+    },
+    "m_hunt_lang": {
+      "alias": "m_wolf",
+      "required": false,
+      "placeholder": false
+    },
+    "m_hunt_xuehu": {
+      "alias": "m_lj_xuehu",
+      "required": false,
+      "placeholder": false
+    },
+    "m_hunt_shanzhu": {
+      "alias": "m_boar",
+      "required": false,
+      "placeholder": false
+    },
+    "n_mj_fanyao": {
+      "alias": "n_xx_wushi",
+      "required": false,
+      "placeholder": false
+    },
+    "n_ym_miaorenfeng": {
+      "alias": "n_chenjialuo",
+      "required": false,
+      "placeholder": false
+    },
+    "n_ym_azhu": {
+      "alias": "emei_f",
+      "required": false,
+      "placeholder": false
+    },
+    "n_ym_keshi": {
+      "alias": "n_taoyun",
+      "required": false,
+      "placeholder": false
+    },
+    "n_gc_tuodui": {
+      "alias": "n_de_host",
+      "required": false,
+      "placeholder": false
+    },
+    "n_gc_xiangxiang": {
+      "alias": "n_em_yingyueer",
+      "required": false,
+      "placeholder": false
+    },
+    "n_gc_huoqingtong": {
+      "alias": "emei_f",
+      "required": false,
+      "placeholder": false
+    },
+    "n_gc_jilaoren": {
+      "alias": "n_taoyun",
+      "required": false,
+      "placeholder": false
+    },
+    "n_gc_liwenxiu": {
+      "alias": "n_em_jinxiaomei",
+      "required": false,
+      "placeholder": false
+    },
+    "m_mw_mazei": {
+      "alias": "m_bandit",
+      "required": false,
+      "placeholder": false
+    },
+    "m_mw_mawang": {
+      "alias": "n_bandit_chief",
+      "required": false,
+      "placeholder": false
+    },
+    "m_gc_jiguanren": {
+      "alias": "m_sl_tongren_3",
+      "required": false,
+      "placeholder": false
+    },
+    "m_gc_jiguanren2": {
+      "alias": "m_sl_tongren_3",
+      "required": false,
+      "placeholder": false
+    },
+    "m_gc_ezei": {
+      "alias": "m_bandit",
+      "required": false,
+      "placeholder": false
+    },
+    "n_sm_daoxiang": {
+      "alias": "n_sl_zhike",
+      "required": false,
+      "placeholder": false
+    },
+    "n_xh_chulizi": {
+      "alias": "n_xx_cha",
+      "required": false,
+      "placeholder": false
+    },
+    "n_xh_xianfengzi": {
+      "alias": "n_xx_cha",
+      "required": false,
+      "placeholder": false
+    },
+    "n_sm_wanglao": {
+      "alias": "n_wd_dl_oldman",
+      "required": false,
+      "placeholder": false
+    },
+    "n_sm_qiaofu_dl": {
+      "alias": "n_xe_miner",
+      "required": false,
+      "placeholder": false
+    },
+    "n_sm_qiaofu_xx": {
+      "alias": "n_xe_miner",
+      "required": false,
+      "placeholder": false
+    },
+    "n_sm_ahuo": {
+      "alias": "n_xe_miner",
+      "required": false,
+      "placeholder": false
+    },
+    "n_sm_kuangye": {
+      "alias": "n_dl_grocer",
+      "required": false,
+      "placeholder": false
+    },
+    "n_sm_ahong": {
+      "alias": "n_lj_hunter",
+      "required": false,
+      "placeholder": false
+    },
+    "n_sm_zhangqing": {
+      "alias": "n_em_yingyueer",
+      "required": false,
+      "placeholder": false
+    },
+    "n_sm_shangqiaofu": {
+      "alias": "n_xe_miner",
+      "required": false,
+      "placeholder": false
+    },
+    "n_sm_litong": {
+      "alias": "n_ludayou",
+      "required": false,
+      "placeholder": false
+    },
+    "m_sm_du_chixie": {
+      "alias": "m_xh_scorpion",
+      "required": false,
+      "placeholder": false
+    },
+    "m_sm_du_xiezi": {
+      "alias": "m_xh_scorpion",
+      "required": false,
+      "placeholder": false
+    },
+    "m_sm_du_wugong": {
+      "alias": "m_lf_wugong",
+      "required": false,
+      "placeholder": false
+    },
+    "m_sm_du_chanchu": {
+      "alias": "m_xh_toad",
+      "required": false,
+      "placeholder": false
+    },
+    "m_sm_du_qingshe": {
+      "alias": "m_lf_qingshe",
+      "required": false,
+      "placeholder": false
+    },
+    "m_sm_du_caizhu": {
+      "alias": "m_lf_zhizhu",
+      "required": false,
+      "placeholder": false
+    },
+    "m_sm_du_heizhu": {
+      "alias": "m_lf_zhizhu",
+      "required": false,
+      "placeholder": false
+    },
+    "n_gb_spar": {
+      "alias": "m_gb_dizi",
+      "required": false,
+      "placeholder": false
+    },
+    "m_npc_civilian": {
+      "alias": "n_dl_cunmin",
+      "required": false,
+      "placeholder": false
+    },
+    "m_npc_child": {
+      "alias": "n_hn_longmen",
+      "required": false,
+      "placeholder": false
+    },
+    "m_npc_animal": {
+      "alias": "m_wolf",
+      "required": false,
+      "placeholder": false
+    },
+    "m_npc_worker": {
+      "alias": "n_xe_miner",
+      "required": false,
+      "placeholder": false
+    },
+    "m_npc_wushi": {
+      "alias": "n_xx_wushi",
+      "required": false,
+      "placeholder": false
+    },
+    "m_npc_villain": {
+      "alias": "n_bandit_chief",
+      "required": false,
+      "placeholder": false
+    },
+    "m_npc_sl_wuseng": {
+      "alias": "n_sl_zhike",
+      "required": false,
+      "placeholder": false
+    },
+    "m_npc_sunpopo": {
+      "alias": "n_gm_sunpopo",
+      "required": false,
+      "placeholder": false
+    },
+    "m_npc_gm_dizi": {
+      "alias": "m_gm_guard",
+      "required": false,
+      "placeholder": false
+    },
+    "m_npc_wd_hushan": {
+      "alias": "m_wd_guard",
+      "required": false,
+      "placeholder": false
+    },
+    "m_npc_huanggou": {
+      "alias": "m_wolf",
+      "required": false,
+      "placeholder": false
+    },
+    "m_npc_qz_gate": {
+      "alias": "m_qz_guard",
+      "required": false,
+      "placeholder": false
+    },
+    "m_npc_hg_gate": {
+      "alias": "m_hg_guard",
+      "required": false,
+      "placeholder": false
+    },
+    "m_npc_em_gate": {
+      "alias": "m_em_guard",
+      "required": false,
+      "placeholder": false
+    },
+    "m_npc_lj_gate": {
+      "alias": "m_lj_guard",
+      "required": false,
+      "placeholder": false
+    },
+    "m_npc_xh_gate": {
+      "alias": "m_xh_guard",
+      "required": false,
+      "placeholder": false
+    },
+    "m_npc_xd_gate": {
+      "alias": "m_xd_guard",
+      "required": false,
+      "placeholder": false
+    },
+    "m_npc_dingchunqiu": {
+      "alias": "n_xh_dingchunqiu",
+      "required": false,
+      "placeholder": false
+    },
+    "m_npc_xd_laozu": {
+      "alias": "n_xd_laozu",
+      "required": false,
+      "placeholder": false
+    },
+    "n_na_xx_huanggou": {
+      "alias": "m_wolf",
+      "required": false,
+      "placeholder": false
+    },
+    "n_na_xw_yang": {
+      "alias": "m_boar",
+      "required": false,
+      "placeholder": false
+    },
+    "n_na_dl_xiaohai": {
+      "alias": "n_hn_longmen",
+      "required": false,
+      "placeholder": false
+    },
+    "n_na_xx_jumin": {
+      "alias": "n_dl_cunmin",
+      "required": false,
+      "placeholder": false
+    },
+    "n_na_xe_kuangshi": {
+      "alias": "n_xe_miner",
+      "required": false,
+      "placeholder": false
+    },
+    "n_na_xx_eba": {
+      "alias": "n_bandit_chief",
+      "required": false,
+      "placeholder": false
+    }
+  },
+  "player_fallback": {
+    "m": "player_m",
+    "f": "player_f"
+  },
+  "backgrounds": {
+    "xixia_wild": {
+      "bg": "xixia_wild",
+      "required": true,
+      "placeholder": false
+    },
+    "jingcheng_wild": {
+      "bg": "jingcheng_wild",
+      "required": true,
+      "placeholder": false
+    },
+    "dali_wild": {
+      "bg": "dali_wild",
+      "required": true,
+      "placeholder": false
+    },
+    "guiwang": {
+      "bg": "guiwang",
+      "required": true,
+      "placeholder": false
+    },
+    "huashan": {
+      "bg": "huashan",
+      "required": true,
+      "placeholder": false
+    },
+    "shaolin": {
+      "bg": "shaolin",
+      "required": true,
+      "placeholder": false
+    },
+    "xixia": {
+      "alias": "xixia_wild"
+    },
+    "jingcheng": {
+      "alias": "jingcheng_wild"
+    },
+    "dali": {
+      "alias": "dali_wild"
+    },
+    "xixia_north": {
+      "bg": "xixia_north",
+      "required": false,
+      "placeholder": false
+    },
+    "xixia_east": {
+      "bg": "xixia_east",
+      "required": false,
+      "placeholder": false
+    },
+    "xixia_south": {
+      "bg": "xixia_south",
+      "required": false,
+      "placeholder": false
+    },
+    "desert_edge": {
+      "bg": "desert_edge",
+      "required": false,
+      "placeholder": false
+    },
+    "river_road": {
+      "bg": "river_road",
+      "required": false,
+      "placeholder": false
+    },
+    "hengshan_foot": {
+      "bg": "hengshan_foot",
+      "required": false,
+      "placeholder": false
+    },
+    "huayin_road": {
+      "bg": "huayin_road",
+      "required": false,
+      "placeholder": false
+    },
+    "songshan_road": {
+      "bg": "songshan_road",
+      "required": false,
+      "placeholder": false
+    },
+    "emei": {
+      "bg": "emei",
+      "required": false,
+      "placeholder": false
+    },
+    "emei_road": {
+      "bg": "emei_road",
+      "required": false,
+      "placeholder": false
+    },
+    "emei_maze": {
+      "bg": "emei_maze",
+      "required": false,
+      "placeholder": false
+    },
+    "gumu": {
+      "bg": "gumu",
+      "required": false,
+      "placeholder": false
+    },
+    "gumu_maze": {
+      "bg": "gumu_maze",
+      "required": false,
+      "placeholder": false
+    },
+    "hengshan": {
+      "bg": "hengshan",
+      "required": false,
+      "placeholder": false
+    },
+    "lingjiu": {
+      "bg": "lingjiu",
+      "required": false,
+      "placeholder": false
+    },
+    "tianshan_road": {
+      "bg": "tianshan_road",
+      "required": false,
+      "placeholder": false
+    },
+    "quanzhen": {
+      "bg": "quanzhen",
+      "required": false,
+      "placeholder": false
+    },
+    "zhongnan_foot": {
+      "bg": "zhongnan_foot",
+      "required": false,
+      "placeholder": false
+    },
+    "wudang": {
+      "bg": "wudang",
+      "required": false,
+      "placeholder": false
+    },
+    "wudang_foot": {
+      "bg": "wudang_foot",
+      "required": false,
+      "placeholder": false
+    },
+    "xingxiu": {
+      "bg": "xingxiu",
+      "required": false,
+      "placeholder": false
+    },
+    "xingxiu_road": {
+      "bg": "xingxiu_road",
+      "required": false,
+      "placeholder": false
+    },
+    "xuedao": {
+      "bg": "xuedao",
+      "required": false,
+      "placeholder": false
+    },
+    "xuedao_road": {
+      "bg": "xuedao_road",
+      "required": false,
+      "placeholder": false
+    },
+    "hengshan_s_road": {
+      "bg": "hengshan_s_road",
+      "required": false,
+      "placeholder": false
+    },
+    "hengshan_s": {
+      "bg": "hengshan_s",
+      "required": false,
+      "placeholder": false
+    },
+    "yanmen": {
+      "bg": "yanmen",
+      "required": false,
+      "placeholder": false
+    },
+    "gaibang": {
+      "alias": "shaolin",
+      "required": false,
+      "placeholder": false
+    },
+    "jingcheng_north": {
+      "alias": "jingcheng_wild",
+      "required": false,
+      "placeholder": false
+    },
+    "jueqinggu": {
+      "alias": "gumu",
+      "required": false,
+      "placeholder": false
+    },
+    "jueqinggu_dilao": {
+      "alias": "gumu_maze",
+      "required": false,
+      "placeholder": false
+    },
+    "mawang": {
+      "alias": "guiwang",
+      "required": false,
+      "placeholder": false
+    },
+    "gaochang_road": {
+      "alias": "desert_edge",
+      "required": false,
+      "placeholder": false
+    },
+    "gaochang": {
+      "alias": "desert_edge",
+      "required": false,
+      "placeholder": false
+    },
+    "gaochang_maze": {
+      "alias": "guiwang",
+      "required": false,
+      "placeholder": false
+    }
+  },
+  "bg_default": "jingcheng_wild",
+  "fx": {
+    "hit": {
+      "file": "fx_hit",
+      "required": false,
+      "placeholder": true
+    },
+    "slash": {
+      "file": "fx_slash",
+      "required": false,
+      "placeholder": true
+    },
+    "palm": {
+      "file": "fx_palm",
+      "required": false,
+      "placeholder": true
+    },
+    "tile_escape": {
+      "file": "tile_escape",
+      "required": false,
+      "placeholder": true
+    }
+  },
+  "map": {
+    "world_base": {
+      "file": "map_world_base",
+      "required": false,
+      "placeholder": true
+    },
+    "region_bg": {
+      "file": "map_region_bg",
+      "required": false,
+      "placeholder": true
+    },
+    "node_room": {
+      "file": "map_node_room",
+      "required": false,
+      "placeholder": true
+    },
+    "node_current": {
+      "file": "map_node_current",
+      "required": false,
+      "placeholder": true
+    },
+    "node_fog": {
+      "file": "map_node_fog",
+      "required": false,
+      "placeholder": true
+    },
+    "marker_here": {
+      "file": "map_marker_here",
+      "required": false,
+      "placeholder": true
+    },
+    "compass": {
+      "file": "map_compass",
+      "required": false,
+      "placeholder": true
+    },
+    "frame_title": {
+      "file": "map_frame_title",
+      "required": false,
+      "placeholder": true
+    }
+  },
+  "map_icons": {
+    "city": {
+      "file": "map_icon_city",
+      "required": false,
+      "placeholder": true
+    },
+    "sect": {
+      "file": "map_icon_sect",
+      "required": false,
+      "placeholder": true
+    },
+    "cave": {
+      "file": "map_icon_cave",
+      "required": false,
+      "placeholder": true
+    },
+    "wild": {
+      "file": "map_icon_wild",
+      "required": false,
+      "placeholder": true
+    },
+    "station": {
+      "file": "map_icon_station",
+      "required": false,
+      "placeholder": true
+    },
+    "inn": {
+      "file": "map_icon_inn",
+      "required": false,
+      "placeholder": true
+    },
+    "shop": {
+      "file": "map_icon_shop",
+      "required": false,
+      "placeholder": true
+    },
+    "master": {
+      "file": "map_icon_master",
+      "required": false,
+      "placeholder": true
+    },
+    "record": {
+      "file": "map_icon_record",
+      "required": false,
+      "placeholder": true
+    },
+    "field": {
+      "file": "map_icon_field",
+      "required": false,
+      "placeholder": true
+    },
+    "wood": {
+      "file": "map_icon_wood",
+      "required": false,
+      "placeholder": true
+    },
+    "water": {
+      "file": "map_icon_water",
+      "required": false,
+      "placeholder": true
+    },
+    "stove": {
+      "file": "map_icon_stove",
+      "required": false,
+      "placeholder": true
+    },
+    "danger": {
+      "file": "map_icon_danger",
+      "required": false,
+      "placeholder": true
+    },
+    "quest": {
+      "file": "map_icon_quest",
+      "required": false,
+      "placeholder": true
+    },
+    "exit": {
+      "file": "map_icon_exit",
+      "required": false,
+      "placeholder": true
+    }
+  },
+  "weapon_fx": {
+    "sword": {
+      "file": "fx_weapon_sword",
+      "required": false,
+      "placeholder": false
+    },
+    "blade": {
+      "file": "fx_weapon_blade",
+      "required": false,
+      "placeholder": false
+    },
+    "staff": {
+      "file": "fx_weapon_staff",
+      "required": false,
+      "placeholder": false
+    },
+    "whip": {
+      "file": "fx_weapon_whip",
+      "required": false,
+      "placeholder": false
+    },
+    "fist": {
+      "file": "fx_weapon_fist",
+      "required": false,
+      "placeholder": false
+    },
+    "claw": {
+      "file": "fx_weapon_claw",
+      "required": false,
+      "placeholder": false
+    },
+    "stab": {
+      "file": "fx_weapon_stab",
+      "required": false,
+      "placeholder": false
+    },
+    "hidden": {
+      "file": "fx_weapon_hidden",
+      "required": false,
+      "placeholder": false
+    },
+    "inner": {
+      "file": "fx_skill_inner",
+      "required": false,
+      "placeholder": false
+    },
+    "poison": {
+      "file": "fx_skill_poison",
+      "required": false,
+      "placeholder": false
+    },
+    "medic": {
+      "file": "fx_skill_medic",
+      "required": false,
+      "placeholder": false
+    },
+    "formation": {
+      "file": "fx_skill_formation",
+      "required": false,
+      "placeholder": false
+    }
+  },
+  "weapon_icons": {
+    "sword": {
+      "file": "icon_weapon_sword",
+      "required": false,
+      "placeholder": false
+    },
+    "blade": {
+      "file": "icon_weapon_blade",
+      "required": false,
+      "placeholder": false
+    },
+    "staff": {
+      "file": "icon_weapon_staff",
+      "required": false,
+      "placeholder": false
+    },
+    "whip": {
+      "file": "icon_weapon_whip",
+      "required": false,
+      "placeholder": false
+    },
+    "claw": {
+      "file": "icon_weapon_claw",
+      "required": false,
+      "placeholder": false
+    },
+    "fist": {
+      "file": "icon_weapon_fist",
+      "required": false,
+      "placeholder": false
+    }
+  }
+}

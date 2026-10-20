@@ -1,0 +1,12 @@
+{
+  "table": "attributes", "version": 1,
+  "rows": [
+    { "id": "str",  "name": "臂力", "roll_cap": 25, "desc": "影響攻擊力與負重上限。", "era": "1.0A", "src": "verified" },
+    { "id": "guts", "name": "膽識", "roll_cap": 25, "desc": "提高爆擊機率，但會稍微降低防禦。", "era": "1.0A", "src": "verified" },
+    { "id": "wit",  "name": "悟性", "roll_cap": 25, "desc": "影響學武時精的消耗與每次增加的熟練度；影響讀書和自修。", "era": "1.0A", "src": "verified" },
+    { "id": "luck", "name": "福緣", "roll_cap": 25, "desc": "冥冥中的機緣，影響奇遇與部分任務。", "era": "1.0A", "src": "verified" },
+    { "id": "cal",  "name": "定力", "roll_cap": 25, "desc": "影響神的上限、傷害浮動與反擊機率。", "era": "1.0A", "src": "verified" },
+    { "id": "agi",  "name": "機敏", "roll_cap": 25, "desc": "影響出手速度與命中、閃躲。", "era": "1.0A", "src": "verified" },
+    { "id": "con",  "name": "根骨", "roll_cap": 25, "desc": "影響氣的上限、防禦力、負重與爆擊威力。", "era": "1.0A", "src": "verified" }
+  ]
+}

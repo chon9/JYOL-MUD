@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://cyo50ohrvcyx4"
+path="res://.godot/imported/江湖路 田野風光.mp3-c2c97cff5edbfacc92216de7aa22b776.mp3str"
+
+[deps]
+
+source_file="res://assets/bgm/江湖路 田野風光.mp3"
+dest_files=["res://.godot/imported/江湖路 田野風光.mp3-c2c97cff5edbfacc92216de7aa22b776.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

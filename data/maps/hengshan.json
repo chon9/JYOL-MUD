@@ -1,0 +1,34 @@
+{
+  "region_id": "hengshan",
+  "era": "1.0A",
+  "src": "proposal",
+  "desc": "北嶽恆山，峰巒疊翠，恆山派的尼庵建在半山腰上，庵中多是女尼與帶髮修行的弟子。",
+  "escape_tiles_hint": 2,
+  "rooms": [
+    { "id": "hg_gate", "name": "恆山山門", "desc": "山道盡頭立著一座石牌坊，上書「恆山派」三字，一名素衣女弟子在門前迎客。牌坊旁的老先生正在簿子上記事，往南下山回到山道。",
+      "exits": [{"dir": "S", "to": "hg_shandao"}, {"dir": "N", "to": "hg_square"}], "npcs": ["n_hg_zhike", "n_hg_cha"],
+      "features": [], "requires": [] },
+    { "id": "hg_square", "name": "恆山練劍坪", "desc": "庵前一片平整的青石坪，女弟子們排成數列練劍，劍光如雪。北面是大殿，西邊一間小屋飄出藥香，東邊是灶房。",
+      "exits": [
+        {"dir": "S", "to": "hg_gate"},
+        {"dir": "N", "to": "hg_hall"},
+        {"dir": "W", "to": "hg_first"},
+        {"dir": "E", "to": "hg_kitchen"}
+      ],
+      "npcs": ["n_hg_yihe", "n_hg_spar"], "features": [], "requires": [] },
+    { "id": "hg_hall", "name": "恆山大殿", "desc": "殿中供著觀音大士，香煙繚繞，木魚聲聲。掌門師太在此接見求師的女子，早晚課也在這裡做。",
+      "exits": [{"dir": "S", "to": "hg_square"}, {"dir": "N", "to": "hg_houshan"}],
+      "npcs": ["n_hg_dingxian", "n_hg_dingyi", "n_hg_yizhi"], "features": [], "requires": [] },
+    {"id": "hg_first", "name": "第一間屋", "desc": "練劍坪西側的第一間屋子，靠牆擺滿藥櫃與晒乾的草藥。儀真師姊守在這裡，教弟子辨識藥材。", "exits": [{"dir": "E", "to": "hg_square"}], "npcs": ["n_hg_yizhen", "n_hg_lincai"], "features": [], "requires": []},
+    { "id": "hg_kitchen", "name": "恆山灶房", "desc": "灶上蒸著素包子，于嫂一面揉麵一面唸佛。往北有一間柴房。",
+      "exits": [{"dir": "W", "to": "hg_square"}, {"dir": "N", "to": "hg_woodshed"}], "npcs": ["n_hg_yusao"],
+      "features": ["STOVE"], "requires": [] },
+    { "id": "hg_woodshed", "name": "柴房", "desc": "屋後堆著一捆捆劈好的木柴，屋旁林子裡有砍不完的枯枝。",
+      "exits": [{"dir": "S", "to": "hg_kitchen"}], "npcs": ["n_hg_heyue"], "features": ["WOOD"], "requires": [] },
+    { "id": "hg_houshan", "name": "恆山後山", "desc": "大殿後的山坡松柏蒼翠，山勢陡峭，弟子們在此打坐修定，也在峭壁間縱躍練輕功。西邊坡下開了幾畝菜田。",
+      "exits": [{"dir": "S", "to": "hg_hall"}, {"dir": "W", "to": "hg_field"}],
+      "npcs": ["n_hg_dingjing", "n_hg_yiwen"], "features": [], "requires": [] },
+    { "id": "hg_field", "name": "後山菜田", "desc": "坡下開墾出的幾畝薄田，今年收成不好，菜葉稀稀落落。",
+      "exits": [{"dir": "E", "to": "hg_houshan"}], "npcs": ["n_hg_chengwei"], "features": ["FIELD"], "requires": [] }
+  ]
+}

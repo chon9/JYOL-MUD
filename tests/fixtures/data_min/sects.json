@@ -1,0 +1,7 @@
+{ "table": "sects", "version": 1, "rows": [
+  { "id": "shaolin", "name": "少林", "era": "1.0A",
+    "join_requires": [ { "type": "morality_min", "value": -99 } ],
+    "sect_skill_effect": { "trigger": "on_defend", "effect": "def_up", "value": 0.3 },
+    "expel_rules": [ { "type": "killing_intent_over", "value": 2000 } ] },
+  { "id": "gaibang", "name": "丐幫", "era": "1.0B", "join_requires": [], "expel_rules": [] }
+] }

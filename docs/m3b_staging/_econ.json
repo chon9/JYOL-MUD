@@ -1,0 +1,1080 @@
+{
+ "fragment": "_econ",
+ "version": 1,
+ "author": "WP-ECON",
+ "extra_rooms": {
+  "xixia": [
+   {
+    "id": "xx_bank",
+    "name": "西夏錢莊",
+    "desc": "櫃檯後的掌櫃撥著算盤，牆上掛著「童叟無欺」的匾額。存在這裡的銀兩與物品，到大理、京城的錢莊也領得到。",
+    "exits": [
+     {
+      "dir": "NE",
+      "to": "xx_square"
+     }
+    ],
+    "npcs": [],
+    "features": [],
+    "requires": [],
+    "era": "1.0A",
+    "src": "proposal",
+    "src_note": "M3B_PLAN §3.2；官方鏢局／錢莊頁只寫三城都有（研究 經濟），房間位置與描述【設計提案】"
+   },
+   {
+    "id": "xx_biaoju",
+    "name": "西夏鏢局",
+    "desc": "院子裡停著幾輛插著鏢旗的鏢車，趟子手正在餵馬。托鏢、取貨、押鏢的生意都在這裡談。",
+    "exits": [
+     {
+      "dir": "SW",
+      "to": "xx_square"
+     }
+    ],
+    "npcs": [],
+    "features": [],
+    "requires": [],
+    "era": "1.0A",
+    "src": "proposal",
+    "src_note": "M3B_PLAN §3.2；官方鏢局／錢莊頁只寫三城都有（研究 經濟），房間位置與描述【設計提案】"
+   }
+  ],
+  "dali": [
+   {
+    "id": "dl_bank",
+    "name": "大理錢莊",
+    "desc": "小小的錢莊收拾得一塵不染，掌櫃戴著老花眼鏡核對帳簿。三城的錢莊帳目相通。",
+    "exits": [
+     {
+      "dir": "SE",
+      "to": "dl_square"
+     }
+    ],
+    "npcs": [],
+    "features": [],
+    "requires": [],
+    "era": "1.0A",
+    "src": "proposal",
+    "src_note": "M3B_PLAN §3.2；官方鏢局／錢莊頁只寫三城都有（研究 經濟），房間位置與描述【設計提案】"
+   },
+   {
+    "id": "dl_biaoju",
+    "name": "大理鏢局",
+    "desc": "鏢局大門敞開，門口立著一對石獅子，院裡堆著等著上路的貨箱。",
+    "exits": [
+     {
+      "dir": "SW",
+      "to": "dl_square"
+     }
+    ],
+    "npcs": [],
+    "features": [],
+    "requires": [],
+    "era": "1.0A",
+    "src": "proposal",
+    "src_note": "M3B_PLAN §3.2；官方鏢局／錢莊頁只寫三城都有（研究 經濟），房間位置與描述【設計提案】"
+   }
+  ]
+ },
+ "exit_patches": [
+  {
+   "room": "xx_square",
+   "add_exits": [
+    {
+     "dir": "SW",
+     "to": "xx_bank"
+    },
+    {
+     "dir": "NE",
+     "to": "xx_biaoju"
+    }
+   ],
+   "desc": "西夏城中心的廣場，黃土地面被往來的駱駝商隊踩得結實。東邊是城門，北邊是客棧，南邊是驛站，西邊通往熱鬧的西大街，西北是衙門；西南有錢莊，東北是鏢局。"
+  },
+  {
+   "room": "dl_square",
+   "add_exits": [
+    {
+     "dir": "NW",
+     "to": "dl_bank"
+    },
+    {
+     "dir": "NE",
+     "to": "dl_biaoju"
+    }
+   ],
+   "desc": "五華樓高聳入雲，樓前廣場人來人往。西邊是驛站，北邊是城門，東邊是客棧，南邊是衙門；西南有武館，東南有雜貨鋪，西北是錢莊，東北是鏢局。"
+  }
+ ],
+ "npcs": [
+  {
+   "id": "n_ec_xx_banker",
+   "name": "錢莊掌櫃",
+   "kind": "FUNC",
+   "region": "xixia",
+   "room": "xx_bank",
+   "alignment": "NEUTRAL",
+   "talk": "talk_n_ec_xx_banker",
+   "services": [
+    "BANK"
+   ],
+   "night_closed": false,
+   "desc": "精明的中年掌櫃，一手算盤打得飛快。",
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "錢莊三城通用（官方錢莊頁；O15 共用帳戶【待考證】）"
+  },
+  {
+   "id": "n_ec_dl_banker",
+   "name": "錢莊掌櫃",
+   "kind": "FUNC",
+   "region": "dali",
+   "room": "dl_bank",
+   "alignment": "NEUTRAL",
+   "talk": "talk_n_ec_dl_banker",
+   "services": [
+    "BANK"
+   ],
+   "night_closed": false,
+   "desc": "戴著老花眼鏡的老掌櫃，說話慢條斯理。",
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "同上"
+  },
+  {
+   "id": "n_ec_jc_banker",
+   "name": "錢莊大掌櫃",
+   "kind": "FUNC",
+   "region": "jingcheng",
+   "room": "jc_bank",
+   "alignment": "NEUTRAL",
+   "talk": "talk_n_ec_jc_banker",
+   "services": [
+    "BANK"
+   ],
+   "night_closed": false,
+   "desc": "京城錢莊的大掌櫃，衣著體面，見慣了大筆銀兩。",
+   "era": "1.0B",
+   "src": "proposal",
+   "src_note": "京城錢莊（1.0B 京城；房間在 jingcheng 碎片）"
+  },
+  {
+   "id": "n_ec_xx_biaotou",
+   "name": "鏢頭",
+   "kind": "FUNC",
+   "region": "xixia",
+   "room": "xx_biaoju",
+   "alignment": "NEUTRAL",
+   "talk": "talk_n_ec_xx_biaotou",
+   "services": [
+    "ESCORT",
+    "QUEST"
+   ],
+   "night_closed": false,
+   "desc": "虎背熊腰的鏢頭，腰間掛著一柄厚背刀。",
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "官方鏢局頁三功能：托鏢寄物、拿取貨品、保鏢",
+   "escort": {
+    "city": "xixia"
+   },
+   "quests": [
+    "q_ec_biao_xx_dl"
+   ]
+  },
+  {
+   "id": "n_ec_dl_biaotou",
+   "name": "鏢頭",
+   "kind": "FUNC",
+   "region": "dali",
+   "room": "dl_biaoju",
+   "alignment": "NEUTRAL",
+   "talk": "talk_n_ec_dl_biaotou",
+   "services": [
+    "ESCORT",
+    "QUEST"
+   ],
+   "night_closed": false,
+   "desc": "皮膚黝黑的鏢頭，走過不少南北的路。",
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "同上",
+   "escort": {
+    "city": "dali"
+   },
+   "quests": [
+    "q_ec_biao_dl_xx"
+   ]
+  },
+  {
+   "id": "n_ec_jc_biaotou",
+   "name": "中華鏢局總鏢頭",
+   "kind": "FUNC",
+   "region": "jingcheng",
+   "room": "jc_biaoju",
+   "alignment": "NEUTRAL",
+   "talk": "talk_n_ec_jc_biaotou",
+   "services": [
+    "ESCORT",
+    "QUEST"
+   ],
+   "night_closed": false,
+   "desc": "中華鏢局的總鏢頭，鬢角斑白，目光如電。",
+   "era": "1.0B",
+   "src": "proposal",
+   "src_note": "中華鏢局名稱【已證實】（研究 京城與範圍）；房間在 jingcheng 碎片",
+   "escort": {
+    "city": "jingcheng"
+   },
+   "quests": [
+    "q_ec_biao_jc_xx",
+    "q_ec_biao_jc_dl"
+   ]
+  },
+  {
+   "id": "n_ec_xx_tangzi",
+   "name": "趟子手",
+   "kind": "QUEST",
+   "region": "xixia",
+   "room": "xx_biaoju",
+   "alignment": "NEUTRAL",
+   "talk": "talk_n_ec_xx_tangzi",
+   "services": [
+    "QUEST"
+   ],
+   "night_closed": false,
+   "desc": "年輕的趟子手，正把鏢旗插上車，嚷著要走京城線。",
+   "era": "1.0B",
+   "src": "proposal",
+   "src_note": "M3B_PLAN 缺漏：1.0A 的鏢頭不能在 quests 列 1.0B 任務（1.0A 閉包的參照檢查會斷），京城線改由 1.0B 的趟子手發【設計提案】",
+   "quests": [
+    "q_ec_biao_xx_jc"
+   ]
+  },
+  {
+   "id": "n_ec_dl_tangzi",
+   "name": "趟子手",
+   "kind": "QUEST",
+   "region": "dali",
+   "room": "dl_biaoju",
+   "alignment": "NEUTRAL",
+   "talk": "talk_n_ec_dl_tangzi",
+   "services": [
+    "QUEST"
+   ],
+   "night_closed": false,
+   "desc": "精瘦的趟子手，背著乾糧袋，等著跑京城的長路。",
+   "era": "1.0B",
+   "src": "proposal",
+   "src_note": "同上",
+   "quests": [
+    "q_ec_biao_dl_jc"
+   ]
+  },
+  {
+   "id": "n_ec_biaoche",
+   "name": "鏢車",
+   "kind": "STORY",
+   "region": "xixia",
+   "room": "",
+   "alignment": "NEUTRAL",
+   "talk": "talk_n_ec_biaoche",
+   "services": [],
+   "night_closed": false,
+   "desc": "兩匹騾子拉著的鏢車，車上插著鏢旗，箱子用油布蓋得嚴嚴實實。",
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "M3B_PLAN §4.9：只供護送，不放在任何房間"
+  }
+ ],
+ "escort_routes": [
+  {
+   "id": "er_xx_dl",
+   "from_city": "xixia",
+   "to_city": "dali",
+   "consign_delay_shichen": 4,
+   "job_quest": "q_ec_biao_xx_dl",
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "官方鏢局頁：托鏢寄物、拿取貨品、保鏢（研究 經濟）；城際送達時辰【設計提案】（M3B_PLAN §10）"
+  },
+  {
+   "id": "er_dl_xx",
+   "from_city": "dali",
+   "to_city": "xixia",
+   "consign_delay_shichen": 4,
+   "job_quest": "q_ec_biao_dl_xx",
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "官方鏢局頁：托鏢寄物、拿取貨品、保鏢（研究 經濟）；城際送達時辰【設計提案】（M3B_PLAN §10）"
+  },
+  {
+   "id": "er_xx_jc",
+   "from_city": "xixia",
+   "to_city": "jingcheng",
+   "consign_delay_shichen": 3,
+   "job_quest": "q_ec_biao_xx_jc",
+   "era": "1.0B",
+   "src": "proposal",
+   "src_note": "官方鏢局頁：托鏢寄物、拿取貨品、保鏢（研究 經濟）；城際送達時辰【設計提案】（M3B_PLAN §10）"
+  },
+  {
+   "id": "er_jc_xx",
+   "from_city": "jingcheng",
+   "to_city": "xixia",
+   "consign_delay_shichen": 3,
+   "job_quest": "q_ec_biao_jc_xx",
+   "era": "1.0B",
+   "src": "proposal",
+   "src_note": "官方鏢局頁：托鏢寄物、拿取貨品、保鏢（研究 經濟）；城際送達時辰【設計提案】（M3B_PLAN §10）"
+  },
+  {
+   "id": "er_dl_jc",
+   "from_city": "dali",
+   "to_city": "jingcheng",
+   "consign_delay_shichen": 5,
+   "job_quest": "q_ec_biao_dl_jc",
+   "era": "1.0B",
+   "src": "proposal",
+   "src_note": "官方鏢局頁：托鏢寄物、拿取貨品、保鏢（研究 經濟）；城際送達時辰【設計提案】（M3B_PLAN §10）"
+  },
+  {
+   "id": "er_jc_dl",
+   "from_city": "jingcheng",
+   "to_city": "dali",
+   "consign_delay_shichen": 5,
+   "job_quest": "q_ec_biao_jc_dl",
+   "era": "1.0B",
+   "src": "proposal",
+   "src_note": "官方鏢局頁：托鏢寄物、拿取貨品、保鏢（研究 經濟）；城際送達時辰【設計提案】（M3B_PLAN §10）"
+  }
+ ],
+ "quests": [
+  {
+   "id": "q_ec_biao_xx_dl",
+   "name": "保鏢：西夏往大理",
+   "chapter": "鏢局・保鏢",
+   "group": "_econ",
+   "giver": "n_ec_xx_biaotou",
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "官方鏢局頁：保鏢與驛站送信皆能提升名聲值（研究 經濟）；丐幫不能運鏢（2001 多篇，O17）；路線、酬勞、冷卻【設計提案】（M3B_PLAN §5.2.3、§10）",
+   "text": "西夏的鏢局有一趟鏢要送往大理，缺個武藝過得去的人押車。把鏢車平平安安護送到大理的鏢局，就有酬勞。",
+   "requires": [
+    {
+     "type": "sect_not",
+     "sect": "gaibang"
+    }
+   ],
+   "give_items": [],
+   "repeat": {
+    "max": 0,
+    "cooldown_days": 1
+   },
+   "abandon": true,
+   "party_credit": true,
+   "start": "s_go",
+   "stages": [
+    {
+     "id": "s_go",
+     "title": "押鏢到大理",
+     "log": "鏢車跟在你身後，別走散了。出西夏東門到東門外官道，往東上荒草坡，往南經小溪邊、南坡，西南到溪口淺灘，再一路往南穿過大漠邊緣，東南經綠洲、河川上游，順著河川古道過河灣、過河石橋，到城北河畔往南進大理北門，五華樓前往東北就是大理鏢局。",
+     "hint_room": "dl_biaoju",
+     "on_enter": [
+      {
+       "do": "escort_start",
+       "npc": "n_ec_biaoche"
+      }
+     ],
+     "objectives": [
+      {
+       "id": "o_go",
+       "type": "ESCORT",
+       "npc": "n_ec_biaoche",
+       "to_room": "dl_biaoju",
+       "text": "把鏢車護送到大理的鏢局"
+      }
+     ],
+     "on_complete": [
+      {
+       "do": "escort_end",
+       "npc": "n_ec_biaoche"
+      }
+     ],
+     "next": "END"
+    }
+   ],
+   "outcomes": {
+    "default": {
+     "label": "鏢已送達",
+     "rewards": {
+      "money": 150,
+      "fame": 3
+     },
+     "src": "proposal",
+     "src_note": "「保鏢提升名聲」【已證實】；銀兩與名聲數值【設計提案】"
+    }
+   },
+   "test_plan": [
+    {
+     "quest": "q_ec_biao_xx_dl",
+     "outcome": "default",
+     "setup": {
+      "sect": ""
+     },
+     "path": [
+      "walk@xx_biaoju",
+      "accept@n_ec_xx_biaotou",
+      "walk@dl_biaoju"
+     ],
+     "expect": {
+      "money_gain": 150,
+      "fame_gain": 3,
+      "repeat_cooldown": true
+     }
+    }
+   ]
+  },
+  {
+   "id": "q_ec_biao_dl_xx",
+   "name": "保鏢：大理往西夏",
+   "chapter": "鏢局・保鏢",
+   "group": "_econ",
+   "giver": "n_ec_dl_biaotou",
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "官方鏢局頁：保鏢與驛站送信皆能提升名聲值（研究 經濟）；丐幫不能運鏢（2001 多篇，O17）；路線、酬勞、冷卻【設計提案】（M3B_PLAN §5.2.3、§10）",
+   "text": "大理的鏢局有一趟鏢要送往西夏，缺個武藝過得去的人押車。把鏢車平平安安護送到西夏的鏢局，就有酬勞。",
+   "requires": [
+    {
+     "type": "sect_not",
+     "sect": "gaibang"
+    }
+   ],
+   "give_items": [],
+   "repeat": {
+    "max": 0,
+    "cooldown_days": 1
+   },
+   "abandon": true,
+   "party_credit": true,
+   "start": "s_go",
+   "stages": [
+    {
+     "id": "s_go",
+     "title": "押鏢到西夏",
+     "log": "鏢車跟在你身後，別走散了。出大理北門往北到城北河畔，西北過河石橋，順著河川古道往北、西北經河川上游到綠洲，再往北穿過大漠邊緣到溪口淺灘，東北上南坡，往北經小溪邊到荒草坡，往西是東門外官道，進西夏東門到廣場，往東北就是西夏鏢局。",
+     "hint_room": "xx_biaoju",
+     "on_enter": [
+      {
+       "do": "escort_start",
+       "npc": "n_ec_biaoche"
+      }
+     ],
+     "objectives": [
+      {
+       "id": "o_go",
+       "type": "ESCORT",
+       "npc": "n_ec_biaoche",
+       "to_room": "xx_biaoju",
+       "text": "把鏢車護送到西夏的鏢局"
+      }
+     ],
+     "on_complete": [
+      {
+       "do": "escort_end",
+       "npc": "n_ec_biaoche"
+      }
+     ],
+     "next": "END"
+    }
+   ],
+   "outcomes": {
+    "default": {
+     "label": "鏢已送達",
+     "rewards": {
+      "money": 150,
+      "fame": 3
+     },
+     "src": "proposal",
+     "src_note": "「保鏢提升名聲」【已證實】；銀兩與名聲數值【設計提案】"
+    }
+   },
+   "test_plan": [
+    {
+     "quest": "q_ec_biao_dl_xx",
+     "outcome": "default",
+     "setup": {
+      "sect": ""
+     },
+     "path": [
+      "walk@dl_biaoju",
+      "accept@n_ec_dl_biaotou",
+      "walk@xx_biaoju"
+     ],
+     "expect": {
+      "money_gain": 150,
+      "fame_gain": 3,
+      "repeat_cooldown": true
+     }
+    }
+   ]
+  },
+  {
+   "id": "q_ec_biao_xx_jc",
+   "name": "保鏢：西夏往京城",
+   "chapter": "鏢局・保鏢",
+   "group": "_econ",
+   "giver": "n_ec_xx_tangzi",
+   "era": "1.0B",
+   "src": "proposal",
+   "src_note": "官方鏢局頁：保鏢與驛站送信皆能提升名聲值（研究 經濟）；丐幫不能運鏢（2001 多篇，O17）；路線、酬勞、冷卻【設計提案】（M3B_PLAN §5.2.3、§10）",
+   "text": "西夏的鏢局有一趟鏢要送往京城，缺個武藝過得去的人押車。把鏢車平平安安護送到京城的鏢局，就有酬勞。",
+   "requires": [
+    {
+     "type": "sect_not",
+     "sect": "gaibang"
+    }
+   ],
+   "give_items": [],
+   "repeat": {
+    "max": 0,
+    "cooldown_days": 1
+   },
+   "abandon": true,
+   "party_credit": true,
+   "start": "s_go",
+   "stages": [
+    {
+     "id": "s_go",
+     "title": "押鏢到京城",
+     "log": "鏢車跟在你身後，別走散了。出西夏東門到東門外官道，往東北上東北官道，往東經礦區、黑龍潭到潭東河岸，東南到恆山外稻田，往東經路邊茶棚、恆山岸邊到恆山岔路，東南下華陰道，往東到華山腳下，東北上華山古道，往東到南郊岔路，往北進京城南門，經京城大街往東到京城廣場，再往東就是中華鏢局。",
+     "hint_room": "jc_biaoju",
+     "on_enter": [
+      {
+       "do": "escort_start",
+       "npc": "n_ec_biaoche"
+      }
+     ],
+     "objectives": [
+      {
+       "id": "o_go",
+       "type": "ESCORT",
+       "npc": "n_ec_biaoche",
+       "to_room": "jc_biaoju",
+       "text": "把鏢車護送到京城的鏢局"
+      }
+     ],
+     "on_complete": [
+      {
+       "do": "escort_end",
+       "npc": "n_ec_biaoche"
+      }
+     ],
+     "next": "END"
+    }
+   ],
+   "outcomes": {
+    "default": {
+     "label": "鏢已送達",
+     "rewards": {
+      "money": 200,
+      "fame": 4
+     },
+     "src": "proposal",
+     "src_note": "「保鏢提升名聲」【已證實】；銀兩與名聲數值【設計提案】"
+    }
+   },
+   "test_plan": [
+    {
+     "quest": "q_ec_biao_xx_jc",
+     "outcome": "default",
+     "setup": {
+      "sect": ""
+     },
+     "path": [
+      "walk@xx_biaoju",
+      "accept@n_ec_xx_tangzi",
+      "walk@jc_biaoju"
+     ],
+     "expect": {
+      "money_gain": 200,
+      "fame_gain": 4,
+      "repeat_cooldown": true
+     }
+    }
+   ]
+  },
+  {
+   "id": "q_ec_biao_jc_xx",
+   "name": "保鏢：京城往西夏",
+   "chapter": "鏢局・保鏢",
+   "group": "_econ",
+   "giver": "n_ec_jc_biaotou",
+   "era": "1.0B",
+   "src": "proposal",
+   "src_note": "官方鏢局頁：保鏢與驛站送信皆能提升名聲值（研究 經濟）；丐幫不能運鏢（2001 多篇，O17）；路線、酬勞、冷卻【設計提案】（M3B_PLAN §5.2.3、§10）",
+   "text": "京城的鏢局有一趟鏢要送往西夏，缺個武藝過得去的人押車。把鏢車平平安安護送到西夏的鏢局，就有酬勞。",
+   "requires": [
+    {
+     "type": "sect_not",
+     "sect": "gaibang"
+    }
+   ],
+   "give_items": [],
+   "repeat": {
+    "max": 0,
+    "cooldown_days": 1
+   },
+   "abandon": true,
+   "party_credit": true,
+   "start": "s_go",
+   "stages": [
+    {
+     "id": "s_go",
+     "title": "押鏢到西夏",
+     "log": "鏢車跟在你身後，別走散了。出中華鏢局往西到京城廣場，往西經京城大街出南門到南郊岔路，往西下華山古道，西南到華山腳下，往西是華陰道，西北上恆山岔路，往西經恆山岸邊、路邊茶棚到恆山外稻田，西北到潭東河岸，往西經黑龍潭、礦區到東北官道，西南下東門外官道，進西夏東門到廣場，往東北就是西夏鏢局。",
+     "hint_room": "xx_biaoju",
+     "on_enter": [
+      {
+       "do": "escort_start",
+       "npc": "n_ec_biaoche"
+      }
+     ],
+     "objectives": [
+      {
+       "id": "o_go",
+       "type": "ESCORT",
+       "npc": "n_ec_biaoche",
+       "to_room": "xx_biaoju",
+       "text": "把鏢車護送到西夏的鏢局"
+      }
+     ],
+     "on_complete": [
+      {
+       "do": "escort_end",
+       "npc": "n_ec_biaoche"
+      }
+     ],
+     "next": "END"
+    }
+   ],
+   "outcomes": {
+    "default": {
+     "label": "鏢已送達",
+     "rewards": {
+      "money": 200,
+      "fame": 4
+     },
+     "src": "proposal",
+     "src_note": "「保鏢提升名聲」【已證實】；銀兩與名聲數值【設計提案】"
+    }
+   },
+   "test_plan": [
+    {
+     "quest": "q_ec_biao_jc_xx",
+     "outcome": "default",
+     "setup": {
+      "sect": ""
+     },
+     "path": [
+      "walk@jc_biaoju",
+      "accept@n_ec_jc_biaotou",
+      "walk@xx_biaoju"
+     ],
+     "expect": {
+      "money_gain": 200,
+      "fame_gain": 4,
+      "repeat_cooldown": true
+     }
+    }
+   ]
+  },
+  {
+   "id": "q_ec_biao_dl_jc",
+   "name": "保鏢：大理往京城",
+   "chapter": "鏢局・保鏢",
+   "group": "_econ",
+   "giver": "n_ec_dl_tangzi",
+   "era": "1.0B",
+   "src": "proposal",
+   "src_note": "官方鏢局頁：保鏢與驛站送信皆能提升名聲值（研究 經濟）；丐幫不能運鏢（2001 多篇，O17）；路線、酬勞、冷卻【設計提案】（M3B_PLAN §5.2.3、§10）",
+   "text": "大理的鏢局有一趟鏢要送往京城，缺個武藝過得去的人押車。把鏢車平平安安護送到京城的鏢局，就有酬勞。",
+   "requires": [
+    {
+     "type": "sect_not",
+     "sect": "gaibang"
+    }
+   ],
+   "give_items": [],
+   "repeat": {
+    "max": 0,
+    "cooldown_days": 1
+   },
+   "abandon": true,
+   "party_credit": true,
+   "start": "s_go",
+   "stages": [
+    {
+     "id": "s_go",
+     "title": "押鏢到京城",
+     "log": "鏢車跟在你身後，別走散了。出大理北門往北，往東經陶耘稻田、東邊樹林到崆峒道口，東北過崆峒橋，往東經竹林山徑、峨嵋茶棚、清音閣山道，東北到峨嵋西林，往東經峨嵋山腳、終南山道口、終南山麓，東北經終南山腳、終南東麓到武當山下，往北經古道南岔、武當岔路，往東經嵩陽茶棚到嵩山松林，往北上嵩山古道，往西到南郊岔路，往北進京城南門，經京城大街往東到京城廣場，再往東就是中華鏢局。",
+     "hint_room": "jc_biaoju",
+     "on_enter": [
+      {
+       "do": "escort_start",
+       "npc": "n_ec_biaoche"
+      }
+     ],
+     "objectives": [
+      {
+       "id": "o_go",
+       "type": "ESCORT",
+       "npc": "n_ec_biaoche",
+       "to_room": "jc_biaoju",
+       "text": "把鏢車護送到京城的鏢局"
+      }
+     ],
+     "on_complete": [
+      {
+       "do": "escort_end",
+       "npc": "n_ec_biaoche"
+      }
+     ],
+     "next": "END"
+    }
+   ],
+   "outcomes": {
+    "default": {
+     "label": "鏢已送達",
+     "rewards": {
+      "money": 200,
+      "fame": 4
+     },
+     "src": "proposal",
+     "src_note": "「保鏢提升名聲」【已證實】；銀兩與名聲數值【設計提案】"
+    }
+   },
+   "test_plan": [
+    {
+     "quest": "q_ec_biao_dl_jc",
+     "outcome": "default",
+     "setup": {
+      "sect": ""
+     },
+     "path": [
+      "walk@dl_biaoju",
+      "accept@n_ec_dl_tangzi",
+      "walk@jc_biaoju"
+     ],
+     "expect": {
+      "money_gain": 200,
+      "fame_gain": 4,
+      "repeat_cooldown": true
+     }
+    }
+   ]
+  },
+  {
+   "id": "q_ec_biao_jc_dl",
+   "name": "保鏢：京城往大理",
+   "chapter": "鏢局・保鏢",
+   "group": "_econ",
+   "giver": "n_ec_jc_biaotou",
+   "era": "1.0B",
+   "src": "proposal",
+   "src_note": "官方鏢局頁：保鏢與驛站送信皆能提升名聲值（研究 經濟）；丐幫不能運鏢（2001 多篇，O17）；路線、酬勞、冷卻【設計提案】（M3B_PLAN §5.2.3、§10）",
+   "text": "京城的鏢局有一趟鏢要送往大理，缺個武藝過得去的人押車。把鏢車平平安安護送到大理的鏢局，就有酬勞。",
+   "requires": [
+    {
+     "type": "sect_not",
+     "sect": "gaibang"
+    }
+   ],
+   "give_items": [],
+   "repeat": {
+    "max": 0,
+    "cooldown_days": 1
+   },
+   "abandon": true,
+   "party_credit": true,
+   "start": "s_go",
+   "stages": [
+    {
+     "id": "s_go",
+     "title": "押鏢到大理",
+     "log": "鏢車跟在你身後，別走散了。出中華鏢局往西到京城廣場，往西經京城大街出南門到南郊岔路，往東接嵩山古道，往南下嵩山松林，往西經嵩陽茶棚到武當岔路，往南經古道南岔到武當山下，西南經終南東麓、終南山腳、終南山麓、終南山道口、峨嵋山腳到峨嵋西林，西南下清音閣山道，往西經峨嵋茶棚、竹林山徑，西南過崆峒橋到崆峒道口，往西經東邊樹林、陶耘稻田到北門外大道，往南進大理北門到五華樓前，往東北就是大理鏢局。",
+     "hint_room": "dl_biaoju",
+     "on_enter": [
+      {
+       "do": "escort_start",
+       "npc": "n_ec_biaoche"
+      }
+     ],
+     "objectives": [
+      {
+       "id": "o_go",
+       "type": "ESCORT",
+       "npc": "n_ec_biaoche",
+       "to_room": "dl_biaoju",
+       "text": "把鏢車護送到大理的鏢局"
+      }
+     ],
+     "on_complete": [
+      {
+       "do": "escort_end",
+       "npc": "n_ec_biaoche"
+      }
+     ],
+     "next": "END"
+    }
+   ],
+   "outcomes": {
+    "default": {
+     "label": "鏢已送達",
+     "rewards": {
+      "money": 200,
+      "fame": 4
+     },
+     "src": "proposal",
+     "src_note": "「保鏢提升名聲」【已證實】；銀兩與名聲數值【設計提案】"
+    }
+   },
+   "test_plan": [
+    {
+     "quest": "q_ec_biao_jc_dl",
+     "outcome": "default",
+     "setup": {
+      "sect": ""
+     },
+     "path": [
+      "walk@jc_biaoju",
+      "accept@n_ec_jc_biaotou",
+      "walk@dl_biaoju"
+     ],
+     "expect": {
+      "money_gain": 200,
+      "fame_gain": 4,
+      "repeat_cooldown": true
+     }
+    }
+   ]
+  }
+ ],
+ "text_templates": [
+  {
+   "id": "talk_n_ec_xx_banker",
+   "era": "1.0A",
+   "self": "錢莊掌櫃抬起頭：「客官要存錢還是存東西？本號在大理、京城都有分號，帳目相通。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_ec_dl_banker",
+   "era": "1.0A",
+   "self": "錢莊掌櫃推了推眼鏡：「存在西夏的東西，這裡一樣領得到。任務的東西、身上穿戴的，可不收。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_ec_jc_banker",
+   "era": "1.0B",
+   "self": "錢莊大掌櫃拱手：「京城錢莊，信譽第一。存放分文不取，東西放多久都跟剛存進來一樣。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_ec_xx_biaotou",
+   "era": "1.0A",
+   "self": "鏢頭拍了拍鏢車：「要托鏢寄東西給朋友，還是想跟著押一趟鏢賺點銀子？丐幫的兄弟就免了，規矩如此。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_ec_dl_biaotou",
+   "era": "1.0A",
+   "self": "鏢頭笑道：「往西夏的路上要過大漠，貨交給我們最穩當。押鏢的人手也一直缺。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_ec_jc_biaotou",
+   "era": "1.0B",
+   "self": "總鏢頭沉聲道：「中華鏢局走遍南北，從沒丟過一趟鏢。你要寄貨，還是要押鏢？」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_ec_xx_tangzi",
+   "era": "1.0B",
+   "self": "趟子手興沖沖地說：「京城那條線剛開，路是遠了點，酬勞可比跑大理多！」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_ec_dl_tangzi",
+   "era": "1.0B",
+   "self": "趟子手嘆口氣：「從大理到京城得翻好幾座山，有人押車就安心多了。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_ec_biaoche",
+   "era": "1.0A",
+   "self": "鏢車的騾子打了個響鼻，車輪吱呀作響。",
+   "src": "proposal"
+  },
+  {
+   "id": "bank_put",
+   "era": "1.0A",
+   "self": "你把{item_name} ×{n}交給{npc_name}存進錢莊。",
+   "src": "proposal"
+  },
+  {
+   "id": "bank_take",
+   "era": "1.0A",
+   "self": "{npc_name}從庫房取出{item_name} ×{n}交給你。",
+   "src": "proposal"
+  },
+  {
+   "id": "bank_money",
+   "era": "1.0A",
+   "self": "你在錢莊{verb}了 {amount} 兩銀子，存款還有 {bank_money} 兩。",
+   "src": "proposal"
+  },
+  {
+   "id": "consign_sent",
+   "era": "1.0A",
+   "self": "鏢局收下了你的貨，運費 {fee} 兩，{delay_text}後送到{city_name}，由{to_name}到當地鏢局領取。",
+   "src": "proposal"
+  },
+  {
+   "id": "consign_arrived",
+   "era": "1.0A",
+   "self": "鏢局捎來消息：{from_name}托的貨已經送到{city_name}的鏢局，請去領取。",
+   "src": "proposal"
+  },
+  {
+   "id": "consign_taken",
+   "era": "1.0A",
+   "self": "你在{city_name}的鏢局領走了托鏢的貨（{n} 樣、銀兩 {money} 兩）。",
+   "src": "proposal"
+  },
+  {
+   "id": "consign_returned",
+   "era": "1.0A",
+   "self": "你寄給{to_name}的貨一直沒人領，已經退回{city_name}的鏢局。",
+   "src": "proposal"
+  },
+  {
+   "id": "hunt_start",
+   "era": "1.0A",
+   "self": "你在附近搜尋獵物，一隻{monster_name}竄了出來！",
+   "src": "proposal"
+  },
+  {
+   "id": "e_work_ok",
+   "era": "1.0A",
+   "self": "你施展{skill_name}忙了一陣，得到{item_name} ×{n}。（{skill_name}熟練度 +{prof}）",
+   "src": "proposal",
+   "src_note": "生活技能沒有自己的 work_ok_<技能> 模板時的通用文字（LifeSystem）"
+  },
+  {
+   "id": "e_work_fail",
+   "era": "1.0A",
+   "self": "你忙了半天，{skill_name}卻沒有什麼成果。（{skill_name}熟練度 +{prof}）",
+   "src": "proposal",
+   "src_note": "同上 work_fail"
+  },
+  {
+   "id": "err_not_at_bank",
+   "era": "1.0A",
+   "self": "【系統】這裡沒有錢莊掌櫃。",
+   "src": "proposal"
+  },
+  {
+   "id": "err_not_bankable",
+   "era": "1.0A",
+   "self": "【系統】這樣東西不能存放或托運（任務物品、不收的東西）。",
+   "src": "proposal"
+  },
+  {
+   "id": "err_bank_full",
+   "era": "1.0A",
+   "self": "【系統】錢莊已經存滿了，先取些東西出來吧。",
+   "src": "proposal"
+  },
+  {
+   "id": "err_equipped_item",
+   "era": "1.0A",
+   "self": "【系統】身上穿戴著的東西要先卸下。",
+   "src": "proposal"
+  },
+  {
+   "id": "err_no_such_item",
+   "era": "1.0A",
+   "self": "【系統】找不到這樣東西。",
+   "src": "proposal"
+  },
+  {
+   "id": "err_too_heavy",
+   "era": "1.0A",
+   "self": "【系統】你拿不動了，先把身上的東西放下一些。",
+   "src": "proposal"
+  },
+  {
+   "id": "err_too_many",
+   "era": "1.0A",
+   "self": "【系統】東西太多了（身上最多 300 件，一次托運最多 10 樣）。",
+   "src": "proposal"
+  },
+  {
+   "id": "err_bank_money_cap",
+   "era": "1.0A",
+   "self": "【系統】存款已達上限，錢莊不再收了。",
+   "src": "proposal"
+  },
+  {
+   "id": "err_not_enough_bank_money",
+   "era": "1.0A",
+   "self": "【系統】你的存款不夠。",
+   "src": "proposal"
+  },
+  {
+   "id": "err_self_target",
+   "era": "1.0A",
+   "self": "【系統】不能寄給自己。",
+   "src": "proposal"
+  },
+  {
+   "id": "err_bad_amount",
+   "era": "1.0A",
+   "self": "【系統】數目不對。",
+   "src": "proposal"
+  }
+ ],
+ "art_requests": {
+  "units": [
+   {
+    "id": "n_ec_xx_banker",
+    "alias": "n_xx_innkeeper",
+    "prompt": "錢莊掌櫃：中年商人，綢緞長衫、瓜皮帽，手按算盤。"
+   },
+   {
+    "id": "n_ec_xx_biaotou",
+    "alias": "n_xx_wushi",
+    "prompt": "鏢頭：虎背熊腰的中年漢子，短打勁裝、腰掛厚背刀，身後插著鏢旗。"
+   },
+   {
+    "id": "n_ec_biaoche",
+    "alias": "n_xx_station",
+    "prompt": "鏢車：兩匹騾子拉的木車，車上箱籠蓋油布，插三角鏢旗（之後才需要，ART_REQUEST §8.5）。"
+   }
+  ],
+  "backgrounds": []
+ },
+ "test_plan": [],
+ "todo_verify": [
+  "錢莊三城是否共用一個帳戶（O15 預設共用）",
+  "托鏢運費、送達時間、劫鏢（O16 預設不劫）",
+  "保鏢酬勞數值（§10）"
+ ],
+ "owner_decisions": [
+  "O15",
+  "O16",
+  "O17"
+ ],
+ "notes": "WP-ECON 碎片：西夏／大理錢莊與鏢局房間（§3.2 #56 #57 #60 #61）、錢莊與鏢頭 NPC、鏢車、6 條城際路線與 6 條保鏢任務、經濟事件與錯誤模板。京城的錢莊、鏢局房間（jc_bank、jc_biaoju）在 jingcheng 碎片；本檔 NPC 的 room 指向它們，WP-MERGE 依 npcs[].room 放入。京城線保鏢任務由 1.0B 的趟子手（n_ec_xx_tangzi、n_ec_dl_tangzi）發，避免 1.0A 閉包裡鏢頭的 quests 參照斷掉。err_* 只寫錢莊／鏢局專屬的原因碼；若 _sect.json 也寫了同 id，以 _sect 為準（字母序先到）。"
+}

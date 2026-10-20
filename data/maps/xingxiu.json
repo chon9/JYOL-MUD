@@ -1,0 +1,28 @@
+{
+  "region_id": "xingxiu",
+  "era": "1.0A",
+  "src": "proposal",
+  "desc": "星宿海畔的星宿派，木屋架在水上，弟子們整天把「星宿老仙」掛在嘴邊。",
+  "escape_tiles_hint": 2,
+  "rooms": [
+    { "id": "xh_gate", "name": "星宿海外景", "desc": "湖面上架著木棧道和一排高腳木屋，岸邊停著小船，一尊巨大的海蛇石像昂首對著湖心。廣場北邊就是星宿派大殿。",
+      "exits": [{"dir": "E", "to": "xh_road2"}, {"dir": "N", "to": "xh_hall"}], "npcs": ["n_xh_cha", "n_xh_menren"],
+      "features": ["WATER"], "requires": [] },
+    { "id": "xh_hall", "name": "星宿大殿", "desc": "殿中鋪著長長的紅地毯，四個角落都靠著木梯。一位鶴髮童顏的老者坐在殿上，左右弟子不停地歌功頌德。",
+      "exits": [
+        {"dir": "S", "to": "xh_gate"},
+        {"dir": "W", "to": "xh_left"},
+        {"dir": "E", "to": "xh_right"},
+        {"dir": "N", "to": "xh_mid1"}
+      ],
+      "npcs": ["n_xh_dingchunqiu"], "features": [], "requires": [] },
+    {"id": "xh_left", "name": "左房", "desc": "房裡掛滿了歌頌星宿老仙的條幅，一個大嗓門的弟子正在教師弟們怎麼拍馬屁。", "exits": [{"dir": "E", "to": "xh_hall"}], "npcs": ["n_xh_shihouzi", "n_xh_chulizi"], "features": [], "requires": [{"type": "sect", "sect": "xingxiu"}]},
+    {"id": "xh_right", "name": "右房", "desc": "架上擺滿裝毒蟲的瓦罐，空地上星宿弟子正互相拆招練掌。", "exits": [{"dir": "W", "to": "xh_hall"}], "npcs": ["n_xh_chuchenzi", "n_xh_spar", "n_xh_xianfengzi"], "features": [], "requires": [{"type": "sect", "sect": "xingxiu"}]},
+    { "id": "xh_mid1", "name": "中房一樓", "desc": "這裡是弟子們打點雜務的地方，牆邊堆著獵具和暗器匣。角落的木梯通往二樓。",
+      "exits": [{"dir": "S", "to": "xh_hall"}, {"dir": "U", "to": "xh_mid2"}],
+      "npcs": ["n_xh_canjizi", "n_xh_shudouzi"], "features": [], "requires": [{"type": "sect", "sect": "xingxiu"}] },
+    { "id": "xh_mid2", "name": "中房二樓", "desc": "二樓窗外就是星宿海，屋裡擺著幾只小木鼎，鼎中藥汁冒著五顏六色的煙。",
+      "exits": [{"dir": "D", "to": "xh_mid1"}], "npcs": ["n_xh_tianlangzi"], "features": [],
+      "requires": [{"type": "sect", "sect": "xingxiu"}] }
+  ]
+}

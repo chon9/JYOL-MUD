@@ -1,0 +1,2214 @@
+{
+ "fragment": "jueqinggu",
+ "version": 1,
+ "author": "WP-C-jueqinggu",
+ "regions": [
+  {
+   "id": "jueqinggu",
+   "name": "絕情谷",
+   "type": "WILD",
+   "city": "jingcheng",
+   "map": "res://data/maps/jueqinggu.json",
+   "world_pos": [
+    905,
+    232
+   ],
+   "suggested_xp": [
+    0,
+    80000
+   ],
+   "pk_allowed": true,
+   "birth_allowed": false,
+   "birth_room": "",
+   "night_closed": [],
+   "era": "1.0B",
+   "src": "verified",
+   "src_note": "絕情谷是官方「第二片資料片」（神鵰大俠）內容【已證實】（index_jy1-2-6-1、1-2-6-2；17173 DIAO/2-2 預告）；位置「鄰近京城」出自 GDD，座標 [905,232]＝M3B_PLAN §3.1【設計提案】，原作位置【待考證】"
+  },
+  {
+   "id": "jueqinggu_dilao",
+   "name": "絕情谷地牢",
+   "type": "DUNGEON",
+   "city": "jingcheng",
+   "map": "res://data/maps/jueqinggu_dilao.json",
+   "world_pos": [
+    910,
+    240
+   ],
+   "suggested_xp": [
+    60000,
+    150000
+   ],
+   "pk_allowed": true,
+   "birth_allowed": false,
+   "birth_room": "",
+   "night_closed": [],
+   "era": "1.0B",
+   "src": "verified",
+   "src_note": "官方 1.0B 頁「隱藏地牢有怪」、DIAO/2-2「公孫谷主關裘千尺的鱷魚池地底迷宮」【已證實】；實戰級距 6–15 萬與房間配置【設計提案】"
+  }
+ ],
+ "maps": {
+  "jueqinggu": {
+   "region_id": "jueqinggu",
+   "era": "1.0B",
+   "src": "proposal",
+   "desc": "京城東南的深山幽谷，谷中遍植情花，花色嬌豔，花刺卻含劇毒；谷主公孫止在谷底石屋隱居，少與外人往來。",
+   "escape_tiles_hint": 2,
+   "rooms": [
+    {
+     "id": "jq_road1",
+     "name": "谷外山道",
+     "desc": "一條碎石小路從南郊岔路鑽進兩山之間，越走越窄，兩旁古木森森。往東隱約聞到一股甜香，往西北回南郊岔路。",
+     "exits": [
+      {
+       "dir": "NW",
+       "to": "jcw_crossroad"
+      },
+      {
+       "dir": "E",
+       "to": "jq_gukou"
+      }
+     ],
+     "npcs": [],
+     "features": [],
+     "requires": [],
+     "encounter": {
+      "rate": 0.1,
+      "table": [
+       {
+        "monster": "m_rabbit",
+        "w": 60,
+        "count": [
+         1,
+         1
+        ]
+       },
+       {
+        "monster": "m_bigrabbit",
+        "w": 25,
+        "count": [
+         1,
+         1
+        ]
+       },
+       {
+        "monster": "m_wolf",
+        "w": 15,
+        "count": [
+         1,
+         1
+        ]
+       }
+      ]
+     }
+    },
+    {
+     "id": "jq_gukou",
+     "name": "絕情谷口",
+     "desc": "兩壁峭崖夾著一道窄窄的谷口，崖下立著一塊青石，刻著「絕情谷」三個大字。一個矮小老者拄著鋼杖守在石旁，長鬚幾乎拖到地上。往東進谷，往西出谷。",
+     "exits": [
+      {
+       "dir": "W",
+       "to": "jq_road1"
+      },
+      {
+       "dir": "E",
+       "to": "jq_qinghua"
+      }
+     ],
+     "npcs": [],
+     "features": [],
+     "requires": [],
+     "encounter": {
+      "rate": 0.08,
+      "table": [
+       {
+        "monster": "m_rabbit",
+        "w": 70,
+        "count": [
+         1,
+         1
+        ]
+       },
+       {
+        "monster": "m_wolf",
+        "w": 30,
+        "count": [
+         1,
+         1
+        ]
+       }
+      ]
+     }
+    },
+    {
+     "id": "jq_qinghua",
+     "name": "情花林",
+     "desc": "滿谷都是情花，花瓣或紅或白，香氣甜得醉人；枝上卻密生小刺，一不留神便刺破肌膚，痛入心脾。往東穿過花林是谷主的石屋，往西回谷口。",
+     "exits": [
+      {
+       "dir": "W",
+       "to": "jq_gukou"
+      },
+      {
+       "dir": "E",
+       "to": "jq_shiwu"
+      }
+     ],
+     "npcs": [],
+     "features": [],
+     "requires": [],
+     "encounter": {
+      "rate": 0.15,
+      "table": [
+       {
+        "monster": "m_jq_lvyi",
+        "w": 70,
+        "count": [
+         1,
+         2
+        ]
+       },
+       {
+        "monster": "m_wolf",
+        "w": 30,
+        "count": [
+         1,
+         1
+        ]
+       }
+      ]
+     },
+     "on_enter_status": {
+      "status": "qinghua",
+      "level": 1,
+      "chance": 0.5,
+      "unless": [
+       {
+        "type": "has_item",
+        "item": "c_jq_juequingdan"
+       }
+      ]
+     }
+    },
+    {
+     "id": "jq_shiwu",
+     "name": "石屋大廳",
+     "desc": "依山鑿出的一座石屋，大廳寬敞，陳設簡樸，桌上擺著幾碟素菜、一壺清水，谷中規矩不沾葷腥。北邊是丹房，東北是書房，東南是劍房，往東出後門可到斷腸崖，往西回情花林。",
+     "exits": [
+      {
+       "dir": "W",
+       "to": "jq_qinghua"
+      },
+      {
+       "dir": "N",
+       "to": "jq_danfang"
+      },
+      {
+       "dir": "NE",
+       "to": "jq_shufang"
+      },
+      {
+       "dir": "SE",
+       "to": "jq_jianfang"
+      },
+      {
+       "dir": "E",
+       "to": "jq_duanchang"
+      }
+     ],
+     "npcs": [],
+     "features": [],
+     "requires": []
+    },
+    {
+     "id": "jq_danfang",
+     "name": "丹房",
+     "desc": "石室裡爐火終年不熄，架上一排排瓷瓶貼著朱紅簽條，藥香中夾著一股苦澀。往南回大廳。",
+     "exits": [
+      {
+       "dir": "S",
+       "to": "jq_shiwu"
+      }
+     ],
+     "npcs": [],
+     "features": [],
+     "requires": []
+    },
+    {
+     "id": "jq_shufang",
+     "name": "書房",
+     "desc": "四壁都是書架，堆滿線裝古籍，窗下一張琴桌，香爐裡的檀香早已燒冷。靠北那排書架擺得有些歪斜。往西南回大廳。",
+     "exits": [
+      {
+       "dir": "SW",
+       "to": "jq_shiwu"
+      },
+      {
+       "dir": "N",
+       "to": "jq_dilao1"
+      }
+     ],
+     "npcs": [],
+     "features": [],
+     "requires": []
+    },
+    {
+     "id": "jq_jianfang",
+     "name": "劍房",
+     "desc": "壁上掛滿刀劍，寒光森森，正中的檀木架上並排橫著一長一短兩柄黑黝黝的劍，劍鞘上分刻「君子」「淑女」二字。往西北回大廳。",
+     "exits": [
+      {
+       "dir": "NW",
+       "to": "jq_shiwu"
+      }
+     ],
+     "npcs": [],
+     "features": [],
+     "requires": []
+    },
+    {
+     "id": "jq_duanchang",
+     "name": "斷腸崖",
+     "desc": "石屋後一條小徑通到崖邊，崖下雲霧翻湧，深不見底，崖石上刻著「斷腸崖」三字，字跡被風雨磨得模糊。往西回石屋。",
+     "exits": [
+      {
+       "dir": "W",
+       "to": "jq_shiwu"
+      }
+     ],
+     "npcs": [],
+     "features": [],
+     "requires": [],
+     "encounter": {
+      "rate": 0.1,
+      "table": [
+       {
+        "monster": "m_jq_lvyi",
+        "w": 100,
+        "count": [
+         1,
+         1
+        ]
+       }
+      ]
+     }
+    }
+   ]
+  },
+  "jueqinggu_dilao": {
+   "region_id": "jueqinggu_dilao",
+   "era": "1.0B",
+   "src": "proposal",
+   "desc": "書房暗門底下的地牢與地底石窟，陰濕不見天日，深處是一口養著鱷魚的寒潭，谷中人人不敢提起。",
+   "escape_tiles_hint": 2,
+   "rooms": [
+    {
+     "id": "jq_dilao1",
+     "name": "地牢石階",
+     "desc": "暗門後一道石階盤旋而下，石壁滲著水珠，寒氣直透骨髓。往南回書房，往北越走越深。",
+     "exits": [
+      {
+       "dir": "S",
+       "to": "jq_shufang"
+      },
+      {
+       "dir": "N",
+       "to": "jq_dilao2"
+      }
+     ],
+     "npcs": [],
+     "features": [],
+     "requires": [
+      {
+       "type": "any_of",
+       "options": [
+        [
+         {
+          "type": "quest_stage",
+          "quest": "q_jq_liumei",
+          "stage": [
+           "s_eyu",
+           "s_qiu",
+           "s_back"
+          ]
+         }
+        ],
+        [
+         {
+          "type": "quest_done",
+          "quest": "q_jq_liumei"
+         }
+        ]
+       ]
+      }
+     ],
+     "encounter": {
+      "rate": 0.3,
+      "table": [
+       {
+        "monster": "m_jq_dilao_shuishe",
+        "w": 60,
+        "count": [
+         1,
+         1
+        ]
+       },
+       {
+        "monster": "m_jq_dilao_qiutu",
+        "w": 40,
+        "count": [
+         1,
+         1
+        ]
+       }
+      ]
+     }
+    },
+    {
+     "id": "jq_dilao2",
+     "name": "地牢甬道",
+     "desc": "甬道兩旁是一間間鐵柵牢房，有的空著，有的關著蓬頭垢面的囚徒，對著你嘿嘿怪笑。往北傳來嘩嘩水聲。",
+     "exits": [
+      {
+       "dir": "S",
+       "to": "jq_dilao1"
+      },
+      {
+       "dir": "N",
+       "to": "jq_eyuchi"
+      }
+     ],
+     "npcs": [],
+     "features": [],
+     "requires": [],
+     "encounter": {
+      "rate": 0.3,
+      "table": [
+       {
+        "monster": "m_jq_dilao_shuishe",
+        "w": 40,
+        "count": [
+         1,
+         1
+        ]
+       },
+       {
+        "monster": "m_jq_dilao_qiutu",
+        "w": 60,
+        "count": [
+         1,
+         1
+        ]
+       }
+      ]
+     }
+    },
+    {
+     "id": "jq_eyuchi",
+     "name": "鱷魚池",
+     "desc": "一口黑沉沉的寒潭橫在石窟中間，水面上浮著幾截「枯木」，細看卻是鱷魚的背脊。往東涉過淺灘有個石洞，往南回甬道。",
+     "exits": [
+      {
+       "dir": "S",
+       "to": "jq_dilao2"
+      },
+      {
+       "dir": "E",
+       "to": "jq_dilao3"
+      }
+     ],
+     "npcs": [],
+     "features": [],
+     "requires": [],
+     "encounter": {
+      "rate": 0.3,
+      "table": [
+       {
+        "monster": "m_jq_eyu",
+        "w": 70,
+        "count": [
+         1,
+         1
+        ]
+       },
+       {
+        "monster": "m_jq_dilao_shuishe",
+        "w": 30,
+        "count": [
+         1,
+         1
+        ]
+       }
+      ]
+     }
+    },
+    {
+     "id": "jq_dilao3",
+     "name": "地底石窟",
+     "desc": "潭邊一個天然石洞，洞頂有個小孔漏下一線天光，孔下長著一株棗樹，地上散著棗核。一個禿頭老婦盤坐在洞底。往西回鱷魚池。",
+     "exits": [
+      {
+       "dir": "W",
+       "to": "jq_eyuchi"
+      }
+     ],
+     "npcs": [],
+     "features": [],
+     "requires": []
+    }
+   ]
+  }
+ },
+ "exit_patches": [
+  {
+   "room": "jcw_crossroad",
+   "add_exits": [
+    {
+     "dir": "SE",
+     "to": "jq_road1"
+    }
+   ],
+   "desc": "幾條古道在此交會。往西下山到華山腳下，往東接嵩山古道去少林；東南有條小路鑽進山谷，谷口隱約可見花樹。"
+  }
+ ],
+ "status_effects": [
+  {
+   "id": "qinghua",
+   "name": "情花毒",
+   "kind": "DEBUFF",
+   "glyph": "情",
+   "color": "#d0508a",
+   "duration_actions": 6,
+   "stack": "LEVEL_MAX",
+   "blocks": [],
+   "skip_actions": false,
+   "random_action": false,
+   "atk_mult": 1.0,
+   "def_mult": 1.0,
+   "gauge_mult": 1.0,
+   "qi_pct_per_action": 0.01,
+   "qi_pct_per_level": 0.0,
+   "qi_pct_per_move": 0.0,
+   "resist_by": [],
+   "cure_by": [
+    "ANTIDOTE"
+   ],
+   "persists": true,
+   "persist_tick_real_s": 600,
+   "persist_ticks_per_level": 12,
+   "persist_qi_pct": 0.03,
+   "since": "",
+   "desc": "被情花刺傷，十二個時辰之內不能動相思之念，否則心口如萬針攢刺；離開戰鬥後每隔一陣發作一次。只有絕情谷的絕情丹解得了。",
+   "era": "1.0B",
+   "src": "verified",
+   "src_note": "存在、「十二個時辰之內不能動相思之念」：17173 DIAO/2-2【已證實】；只有絕情丹能解：官方 1.0B 頁【已證實】；12 次×600 秒、每次 3% 氣、戰鬥中每行動 1%＝M3B_PLAN §4.10【設計提案】"
+  }
+ ],
+ "items": [
+  {
+   "id": "c_jq_juequingdan",
+   "name": "絕情丹",
+   "tab": "OTHER",
+   "slot": "",
+   "atk": 0,
+   "def": 0,
+   "weight": 0,
+   "price": 0,
+   "stack": 1,
+   "spoil_days": 0,
+   "effects": [
+    {
+     "type": "cure",
+     "status": "qinghua",
+     "max_level": 99
+    }
+   ],
+   "usable": true,
+   "usable_in_battle": true,
+   "no_sell": true,
+   "quest_item": false,
+   "bankable": false,
+   "unique_per_char": true,
+   "desc": "絕情谷秘製的丹藥，龍眼大小，色作深黑，入口極苦；專解情花之毒，谷中看管甚嚴，一人只給一顆。帶在身上走過情花林便不怕花刺。",
+   "era": "1.0B",
+   "src": "verified",
+   "src_note": "絕情丹解情花毒、一人一顆：官方 1.0B 頁【已證實】；原作另有「9 元／39 元點卡附贈」的發放方式（研究，本輪未重查）→ 本作改由公孫綠萼在 q_jq_liumei 第一階段給予【設計提案】；帶在身上免中毒（on_enter_status.unless）【設計提案】"
+  },
+  {
+   "id": "w_jq_junzijian",
+   "name": "君子劍",
+   "tab": "WEAPON",
+   "slot": "WEAPON",
+   "weapon_type": "SWORD",
+   "atk": 30,
+   "def": 10,
+   "weight": 3,
+   "price": 0,
+   "stack": 1,
+   "spoil_days": 0,
+   "effects": [],
+   "usable": false,
+   "usable_in_battle": false,
+   "no_sell": true,
+   "quest_item": false,
+   "bankable": false,
+   "desc": "絕情谷劍房所藏的長劍，劍身黝黑無光，削鐵如泥，鞘上刻「君子」二字。（陳設，不可取得）",
+   "era": "1.0B",
+   "src": "verified",
+   "src_note": "DIAO/2-2「谷主房間裡的君子劍淑女劍」、官方 1.0B 頁「劍房（君子淑女劍）」【已證實】；不可取得、數值只供顯示＝M3B_PLAN §8.3【設計提案】（避免 1.0B 早期出神兵）"
+  },
+  {
+   "id": "w_jq_shunvjian",
+   "name": "淑女劍",
+   "tab": "WEAPON",
+   "slot": "WEAPON",
+   "weapon_type": "SWORD",
+   "atk": 28,
+   "def": 12,
+   "weight": 2,
+   "price": 0,
+   "stack": 1,
+   "spoil_days": 0,
+   "effects": [],
+   "usable": false,
+   "usable_in_battle": false,
+   "no_sell": true,
+   "quest_item": false,
+   "bankable": false,
+   "desc": "與君子劍同爐鑄成的短劍，劍身同樣黝黑，鞘上刻「淑女」二字。（陳設，不可取得）",
+   "era": "1.0B",
+   "src": "verified",
+   "src_note": "同 w_jq_junzijian"
+  }
+ ],
+ "martial_arts": [
+  {
+   "id": "jq_mon_fanyiweng",
+   "name": "鋼杖長鬚",
+   "sect_id": "",
+   "category": "STAFF",
+   "base_skill": "basic_staff",
+   "difficulty": 0.9,
+   "tier": "BASIC",
+   "self_study_until": 0,
+   "self_study_cap": 0,
+   "party_size": 0,
+   "monster_only": true,
+   "requires": [],
+   "desc": "樊一翁的怪異功夫：一手沉重鋼杖，一部長鬚甩起來如同軟鞭（《神鵰俠侶》）。（僅限怪物）",
+   "era": "1.0B",
+   "src": "proposal",
+   "src_note": "具名人物專用招式（比照 mon_eyujian 審查規則）；鋼杖與長鬚典出《神鵰俠侶》；威力比照同級 ELITE",
+   "moves": [
+    {
+     "id": "jq_mon_fanyiweng_1",
+     "name": "鋼杖撐天",
+     "unlock_level": 1,
+     "power": 26,
+     "range": 1,
+     "aoe": "SINGLE",
+     "cost_inner": 0,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "move_staff_fan",
+     "src": "proposal"
+    },
+    {
+     "id": "jq_mon_fanyiweng_2",
+     "name": "長鬚捲打",
+     "unlock_level": 30,
+     "power": 22,
+     "range": 2,
+     "aoe": "SINGLE",
+     "cost_inner": 0,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "move_jq_huxu",
+     "src": "proposal"
+    }
+   ]
+  },
+  {
+   "id": "jq_mon_yuwang",
+   "name": "漁網陣",
+   "sect_id": "",
+   "category": "WHIP",
+   "base_skill": "basic_whip",
+   "difficulty": 0.9,
+   "tier": "BASIC",
+   "self_study_until": 0,
+   "self_study_cap": 0,
+   "party_size": 0,
+   "monster_only": true,
+   "requires": [],
+   "desc": "絕情谷綠衣弟子張開漁網兜頭罩人的陣法（《神鵰俠侶》）。（僅限怪物）",
+   "era": "1.0B",
+   "src": "proposal",
+   "src_note": "漁網陣典出《神鵰俠侶》；本作只做單體招式【設計提案】",
+   "moves": [
+    {
+     "id": "jq_mon_yuwang_1",
+     "name": "漁網罩頂",
+     "unlock_level": 1,
+     "power": 20,
+     "range": 2,
+     "aoe": "SINGLE",
+     "cost_inner": 0,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "move_jq_yuwang",
+     "src": "proposal"
+    }
+   ]
+  },
+  {
+   "id": "jq_mon_eyu",
+   "name": "鱷吻",
+   "sect_id": "",
+   "category": "FIST",
+   "base_skill": "basic_fist",
+   "difficulty": 0.9,
+   "tier": "BASIC",
+   "self_study_until": 0,
+   "self_study_cap": 0,
+   "party_size": 0,
+   "monster_only": true,
+   "requires": [],
+   "desc": "寒潭鱷魚的巨吻與粗尾。（僅限怪物）",
+   "era": "1.0B",
+   "src": "proposal",
+   "moves": [
+    {
+     "id": "jq_mon_eyu_1",
+     "name": "巨吻撕咬",
+     "unlock_level": 1,
+     "power": 30,
+     "range": 1,
+     "aoe": "SINGLE",
+     "cost_inner": 0,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "move_bite",
+     "src": "proposal"
+    },
+    {
+     "id": "jq_mon_eyu_2",
+     "name": "鱷尾橫掃",
+     "unlock_level": 40,
+     "power": 26,
+     "range": 1,
+     "aoe": "FAN",
+     "cost_inner": 0,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "move_jq_eyuwei",
+     "src": "proposal"
+    }
+   ]
+  },
+  {
+   "id": "jq_mon_kuangquan",
+   "name": "瘋囚亂拳",
+   "sect_id": "",
+   "category": "FIST",
+   "base_skill": "basic_fist",
+   "difficulty": 0.9,
+   "tier": "BASIC",
+   "self_study_until": 0,
+   "self_study_cap": 0,
+   "party_size": 0,
+   "monster_only": true,
+   "requires": [],
+   "desc": "關得太久、早已瘋癲的囚徒毫無章法的亂拳，力道卻大得出奇。（僅限怪物）",
+   "era": "1.0B",
+   "src": "proposal",
+   "moves": [
+    {
+     "id": "jq_mon_kuangquan_1",
+     "name": "亂拳打瘋狗",
+     "unlock_level": 1,
+     "power": 28,
+     "range": 1,
+     "aoe": "SINGLE",
+     "cost_inner": 0,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "move_fist_basic",
+     "src": "proposal"
+    }
+   ]
+  }
+ ],
+ "monsters": [
+  {
+   "id": "m_jq_lvyi",
+   "name": "綠衣弟子",
+   "short": "綠衣",
+   "kind": "EVIL_NPC",
+   "alignment": "NEUTRAL",
+   "desc": "身穿綠衫的絕情谷弟子，奉谷主之命巡谷，見了外人便張開漁網兜頭罩來。（谷中弟子：已證實「公孫止、綠萼、樊一翁」同谷；綠衣弟子與數值：設計提案）",
+   "stats": {
+    "qi": 1200,
+    "neili": 200,
+    "jing": 350,
+    "str": 24,
+    "guts": 24,
+    "wit": 18,
+    "luck": 16,
+    "cal": 22,
+    "agi": 26,
+    "con": 23
+   },
+   "skills": {
+    "basic_dodge": 44,
+    "basic_parry": 42,
+    "basic_inner": 30,
+    "basic_whip": 44
+   },
+   "arts": [
+    {
+     "art": "jq_mon_yuwang",
+     "level": 44
+    }
+   ],
+   "weapon_type": "WHIP",
+   "weapon_power": 18,
+   "armor_power": 38,
+   "combat_xp_ref": 12000,
+   "combat_xp": 110,
+   "learn_points": 40,
+   "drops": [],
+   "money": {
+    "min": 30,
+    "max": 90
+   },
+   "morality_on_kill": 0,
+   "killing_intent_on_kill": 0,
+   "ai": "melee_basic",
+   "no_rewards": false,
+   "era": "1.0B",
+   "src": "proposal",
+   "src_note": "M3B_PLAN §8.3 固定 id；《神鵰俠侶》綠衫弟子結漁網陣；級距 12000（jq_qinghua 起才出現，§3.4 第 5 條）【設計提案】"
+  },
+  {
+   "id": "m_jq_fanyiweng",
+   "name": "樊一翁",
+   "short": "樊一翁",
+   "kind": "ELITE",
+   "alignment": "NEUTRAL",
+   "desc": "公孫止的大弟子，身材矮小、長鬚垂地，一根鋼杖使得虎虎生風，長鬚一甩也能傷人。（存在：已證實 官方 1.0B 頁；數值：設計提案）",
+   "stats": {
+    "qi": 1600,
+    "neili": 400,
+    "jing": 600,
+    "str": 28,
+    "guts": 27,
+    "wit": 22,
+    "luck": 20,
+    "cal": 26,
+    "agi": 24,
+    "con": 27
+   },
+   "skills": {
+    "basic_dodge": 55,
+    "basic_parry": 58,
+    "basic_inner": 50,
+    "basic_staff": 58
+   },
+   "arts": [
+    {
+     "art": "jq_mon_fanyiweng",
+     "level": 55
+    }
+   ],
+   "weapon_type": "STAFF",
+   "weapon_power": 16,
+   "armor_power": 42,
+   "combat_xp_ref": 40000,
+   "combat_xp": 300,
+   "learn_points": 90,
+   "drops": [],
+   "money": {
+    "min": 80,
+    "max": 200
+   },
+   "morality_on_kill": 0,
+   "killing_intent_on_kill": 0,
+   "ai": "melee_basic",
+   "no_rewards": false,
+   "era": "1.0B",
+   "src": "proposal",
+   "src_note": "官方 1.0B 頁列樊一翁【已證實】；谷口攔路戰 WIN_OR_FLEE＝M3B_PLAN §8.3；級距比照楊康 40000【設計提案】"
+  },
+  {
+   "id": "m_jq_eyu",
+   "name": "鱷魚",
+   "short": "鱷魚",
+   "kind": "MONSTER",
+   "alignment": "NEUTRAL",
+   "desc": "寒潭裡養的大鱷魚，身長丈餘，皮甲刀劍難入，伏在水面一動不動，一口咬下便不鬆開。（鱷魚池：已證實 DIAO/2-2；數值：設計提案）",
+   "stats": {
+    "qi": 4000,
+    "neili": 200,
+    "jing": 800,
+    "str": 36,
+    "guts": 30,
+    "wit": 8,
+    "luck": 15,
+    "cal": 20,
+    "agi": 18,
+    "con": 38
+   },
+   "skills": {
+    "basic_dodge": 60,
+    "basic_parry": 80,
+    "basic_inner": 60,
+    "basic_fist": 90
+   },
+   "arts": [
+    {
+     "art": "jq_mon_eyu",
+     "level": 90
+    }
+   ],
+   "weapon_type": "FIST",
+   "weapon_power": 30,
+   "armor_power": 65,
+   "combat_xp_ref": 90000,
+   "combat_xp": 420,
+   "learn_points": 160,
+   "drops": [
+    {
+     "item": "c_qiyao",
+     "chance": 0.2,
+     "min": 1,
+     "max": 1
+    }
+   ],
+   "money": {
+    "min": 0,
+    "max": 0
+   },
+   "morality_on_kill": 0,
+   "killing_intent_on_kill": 0,
+   "ai": "melee_basic",
+   "no_rewards": false,
+   "era": "1.0B",
+   "src": "proposal",
+   "src_note": "地牢級距 6–15 萬中段【設計提案】；balance_sim 建議案例 jq_eyu：實戰 9 萬單人勝率 40–80%"
+  },
+  {
+   "id": "m_jq_dilao_shuishe",
+   "name": "潭底水蛇",
+   "short": "水蛇",
+   "kind": "MONSTER",
+   "alignment": "NEUTRAL",
+   "desc": "盤在地牢濕石縫裡的黑鱗水蛇，粗如兒臂，毒牙帶勾。（隱藏地牢有怪：已證實；種類與數值：設計提案）",
+   "stats": {
+    "qi": 2600,
+    "neili": 200,
+    "jing": 700,
+    "str": 26,
+    "guts": 28,
+    "wit": 14,
+    "luck": 18,
+    "cal": 24,
+    "agi": 36,
+    "con": 28
+   },
+   "skills": {
+    "basic_dodge": 75,
+    "basic_parry": 60,
+    "basic_inner": 55,
+    "basic_fist": 80
+   },
+   "arts": [
+    {
+     "art": "xh_mon_venom",
+     "level": 80
+    }
+   ],
+   "weapon_type": "FIST",
+   "weapon_power": 20,
+   "armor_power": 50,
+   "combat_xp_ref": 70000,
+   "combat_xp": 330,
+   "learn_points": 130,
+   "drops": [
+    {
+     "item": "c_qiyao",
+     "chance": 0.1,
+     "min": 1,
+     "max": 1
+    }
+   ],
+   "money": {
+    "min": 0,
+    "max": 0
+   },
+   "morality_on_kill": 0,
+   "killing_intent_on_kill": 0,
+   "ai": "melee_basic",
+   "no_rewards": false,
+   "era": "1.0B",
+   "src": "proposal",
+   "src_note": "研究：官方 1.0B 頁「隱藏地牢有怪」，怪物種類未記載【待考證】"
+  },
+  {
+   "id": "m_jq_dilao_qiutu",
+   "name": "瘋癲囚徒",
+   "short": "囚徒",
+   "kind": "EVIL_NPC",
+   "alignment": "NEUTRAL",
+   "desc": "被公孫止關進地牢多年的江湖人，神智早已不清，見了活人便撲上來亂打。（隱藏地牢有怪：已證實；種類與數值：設計提案）",
+   "stats": {
+    "qi": 3600,
+    "neili": 500,
+    "jing": 800,
+    "str": 34,
+    "guts": 30,
+    "wit": 12,
+    "luck": 18,
+    "cal": 26,
+    "agi": 28,
+    "con": 32
+   },
+   "skills": {
+    "basic_dodge": 80,
+    "basic_parry": 85,
+    "basic_inner": 70,
+    "basic_fist": 90
+   },
+   "arts": [
+    {
+     "art": "jq_mon_kuangquan",
+     "level": 90
+    }
+   ],
+   "weapon_type": "FIST",
+   "weapon_power": 30,
+   "armor_power": 58,
+   "combat_xp_ref": 100000,
+   "combat_xp": 480,
+   "learn_points": 170,
+   "drops": [
+    {
+     "item": "c_qiyao",
+     "chance": 0.3,
+     "min": 1,
+     "max": 1
+    }
+   ],
+   "money": {
+    "min": 20,
+    "max": 80
+   },
+   "morality_on_kill": 0,
+   "killing_intent_on_kill": 0,
+   "ai": "melee_basic",
+   "no_rewards": false,
+   "era": "1.0B",
+   "src": "proposal",
+   "src_note": "同 m_jq_dilao_shuishe【待考證】"
+  }
+ ],
+ "npcs": [
+  {
+   "id": "n_jq_gongsunzhi",
+   "name": "公孫止",
+   "kind": "STORY",
+   "region": "jueqinggu",
+   "room": "jq_shiwu",
+   "alignment": "EVIL",
+   "talk": "talk_n_jq_gongsunzhi",
+   "services": [
+    "QUEST"
+   ],
+   "quests": [
+    "q_jq_liumei"
+   ],
+   "night_closed": false,
+   "desc": "絕情谷谷主，年約五旬，面目清瘦，舉止溫文，一雙眼睛卻冷冷的叫人看不透。近日正張羅著與柳姑娘成親。",
+   "era": "1.0B",
+   "src": "verified",
+   "src_note": "官方 1.0B 頁（公孫止、公孫綠萼、樊一翁）、DIAO/2-2「被公孫止逼婚的柳姑娘」、17173 古墓目錄「絕情谷主公孫止」【已證實】；外貌依《神鵰俠侶》；當 q_jq_liumei 的給予者＝【設計提案】"
+  },
+  {
+   "id": "n_jq_lve",
+   "name": "公孫綠萼",
+   "kind": "STORY",
+   "region": "jueqinggu",
+   "room": "jq_danfang",
+   "alignment": "GOOD",
+   "talk": "talk_n_jq_lve",
+   "services": [],
+   "night_closed": false,
+   "desc": "谷主的獨生女兒，一身淡綠衫子，眉目溫柔，常在丹房替父親看守爐火，對谷中的事似乎另有心思。",
+   "era": "1.0B",
+   "src": "verified",
+   "src_note": "官方 1.0B 頁【已證實】；在丹房、暗中給絕情丹＝M3B_PLAN §8.3【設計提案】"
+  },
+  {
+   "id": "n_jq_fanyiweng",
+   "name": "樊一翁",
+   "kind": "STORY",
+   "region": "jueqinggu",
+   "room": "jq_gukou",
+   "alignment": "NEUTRAL",
+   "talk": "talk_n_jq_fanyiweng",
+   "services": [
+    "FIGHT",
+    "QUEST"
+   ],
+   "quests": [
+    "q_jq_duanchang"
+   ],
+   "fight": {
+    "monster": "m_jq_fanyiweng",
+    "requires": []
+   },
+   "night_closed": false,
+   "desc": "公孫止的大弟子，身材矮小，長鬚垂地，拄著一根鋼杖守在谷口，對來客總是愛理不理。",
+   "era": "1.0B",
+   "src": "verified",
+   "src_note": "官方 1.0B 頁【已證實】；守谷口、可切磋（FIGHT）、q_jq_duanchang 給予者＝【設計提案】"
+  },
+  {
+   "id": "n_jq_qiuqianchi",
+   "name": "裘千尺",
+   "kind": "STORY",
+   "region": "jueqinggu_dilao",
+   "room": "jq_dilao3",
+   "alignment": "NEUTRAL",
+   "talk": "talk_n_jq_qiuqianchi",
+   "services": [],
+   "night_closed": false,
+   "desc": "禿頭老婦，手足筋脈早被挑斷，只能盤坐在地；身上衣衫破爛，一雙眼睛卻精光四射，說起公孫止便咬牙切齒。",
+   "era": "1.0B",
+   "src": "verified",
+   "src_note": "DIAO/2-2「公孫谷主關裘千尺的鱷魚池地底迷宮」【已證實】；外貌與以棗為食依《神鵰俠侶》"
+  },
+  {
+   "id": "n_jq_liumei",
+   "name": "柳姑娘",
+   "kind": "STORY",
+   "region": "jueqinggu",
+   "room": "jq_shufang",
+   "alignment": "GOOD",
+   "talk": "talk_n_jq_liumei",
+   "services": [],
+   "night_closed": false,
+   "appear": {
+    "hours": [],
+    "requires": [
+     {
+      "type": "quest_active",
+      "quest": "q_jq_liumei"
+     }
+    ]
+   },
+   "desc": "一身白衣的少女，容色清麗絕俗，神情卻冷冷淡淡，像是心裡空了一塊。谷主口口聲聲叫她「柳妹」。",
+   "era": "1.0B",
+   "src": "verified",
+   "src_note": "DIAO/2-2「救被公孫止逼婚的柳姑娘」、古墓目錄「救了一個少女，名喚柳妹」【已證實】（後者本輪未重查）；原著「柳妹」是小龍女化名，本作是否點明【待考證】；只在任務進行中出現（appear）＝【設計提案】"
+  }
+ ],
+ "quests": [
+  {
+   "id": "q_jq_liumei",
+   "name": "救柳姑娘",
+   "chapter": "京城・絕情谷",
+   "group": "jueqinggu",
+   "giver": "n_jq_gongsunzhi",
+   "era": "1.0B",
+   "src": "verified",
+   "dialogue_src": "proposal",
+   "src_note": "17173 DIAO/2-2 預告「救被公孫止逼婚的柳姑娘」與官方 1.0B 頁（石屋丹房書房劍房、地牢、情花毒、絕情丹）【已證實】；步驟、對白、獎勵（名聲 40、歷練 60）全部【設計提案】（M3B_PLAN §8.3）。順序調整：§11.3 驗收要「丹房取絕情丹」是第一個階段，所以由公孫止留客（接任務）開始，樊一翁攔路改在護送出谷時",
+   "text": "絕情谷主公孫止要娶一位姓柳的姑娘。可那位姑娘，似乎並不情願。",
+   "requires": [],
+   "give_items": [],
+   "repeat": {
+    "max": 1,
+    "cooldown_days": 0
+   },
+   "abandon": true,
+   "party_credit": true,
+   "start": "s_dan",
+   "offer": "d_offer",
+   "stages": [
+    {
+     "id": "s_dan",
+     "title": "丹房取絕情丹",
+     "log": "公孫止留你在谷中作客。石屋大廳往北就是丹房，谷主的女兒公孫綠萼守在爐邊。若在情花林被花刺刺傷了，問問她有沒有解藥。",
+     "hint_room": "jq_danfang",
+     "objectives": [
+      {
+       "id": "o_dan",
+       "type": "TALK",
+       "npc": "n_jq_lve",
+       "dialogue": "d_dan",
+       "text": "到丹房找公孫綠萼"
+      }
+     ],
+     "next": "s_liumei"
+    },
+    {
+     "id": "s_liumei",
+     "title": "書房裡的柳姑娘",
+     "log": "綠萼說柳姑娘被關在書房裡。從丹房往南回到石屋大廳，再往東北就是書房。",
+     "hint_room": "jq_shufang",
+     "objectives": [
+      {
+       "id": "o_liumei",
+       "type": "TALK",
+       "npc": "n_jq_liumei",
+       "dialogue": "d_liumei",
+       "text": "到書房見柳姑娘"
+      }
+     ],
+     "next": "s_eyu"
+    },
+    {
+     "id": "s_eyu",
+     "title": "暗門下的鱷魚池",
+     "log": "書房北邊的書架後有道暗門。往北走下地牢石階，經地牢甬道再往北，就到了一口養著鱷魚的寒潭。地牢裡有水蛇和瘋癲的囚徒，實戰沒有六萬以上最好結伴同行。在潭邊「涉水過潭」，打退攔路的鱷魚。",
+     "hint_room": "jq_eyuchi",
+     "objectives": [
+      {
+       "id": "o_eyu",
+       "type": "FIGHT",
+       "win": "WIN",
+       "text": "在鱷魚池打退鱷魚"
+      }
+     ],
+     "room_actions": [
+      {
+       "id": "a_guochi",
+       "room": "jq_eyuchi",
+       "label": "涉水過潭",
+       "hours": [],
+       "requires": [],
+       "repeat": true,
+       "do": [
+        {
+         "do": "tell",
+         "key": "tell_q_jq_liumei_guochi"
+        },
+        {
+         "do": "fight",
+         "monsters": [
+          "m_jq_eyu"
+         ],
+         "no_flee": false,
+         "solo": false,
+         "obj": "o_eyu"
+        }
+       ]
+      }
+     ],
+     "next": "s_qiu"
+    },
+    {
+     "id": "s_qiu",
+     "title": "石窟裡的老婦",
+     "log": "鱷魚退回了深水。從鱷魚池往東涉過淺灘，石洞裡有人在說話。",
+     "hint_room": "jq_dilao3",
+     "objectives": [
+      {
+       "id": "o_qiu",
+       "type": "TALK",
+       "npc": "n_jq_qiuqianchi",
+       "dialogue": "d_qiu",
+       "text": "到地底石窟見那位老婦"
+      }
+     ],
+     "next": "s_back"
+    },
+    {
+     "id": "s_back",
+     "title": "回書房帶柳姑娘",
+     "log": "照裘千尺說的谷底秘道走：從地底石窟往西回鱷魚池，往南經地牢甬道、地牢石階，推開暗門回到書房，叫柳姑娘跟你走。",
+     "hint_room": "jq_shufang",
+     "objectives": [
+      {
+       "id": "o_back",
+       "type": "TALK",
+       "npc": "n_jq_liumei",
+       "dialogue": "d_go",
+       "text": "回書房叫柳姑娘跟你走"
+      }
+     ],
+     "next": "s_escort"
+    },
+    {
+     "id": "s_escort",
+     "title": "穿過情花林",
+     "log": "帶著柳姑娘出書房往西南到石屋大廳，往西穿過情花林，到絕情谷口。別讓她走散了。",
+     "hint_room": "jq_gukou",
+     "objectives": [
+      {
+       "id": "o_escort",
+       "type": "ESCORT",
+       "npc": "n_jq_liumei",
+       "to_room": "jq_gukou",
+       "text": "護送柳姑娘到絕情谷口"
+      }
+     ],
+     "next": "s_fan"
+    },
+    {
+     "id": "s_fan",
+     "title": "谷口樊一翁攔路",
+     "log": "樊一翁橫著鋼杖擋在谷口。在谷口「闖過谷口」跟他動手——打贏或是脫身都行，只要護著柳姑娘出去。",
+     "hint_room": "jq_gukou",
+     "on_enter": [
+      {
+       "do": "tell",
+       "key": "tell_q_jq_liumei_fan"
+      }
+     ],
+     "objectives": [
+      {
+       "id": "o_fan",
+       "type": "FIGHT",
+       "win": "WIN_OR_FLEE",
+       "text": "闖過樊一翁（打贏或逃走都算）"
+      }
+     ],
+     "room_actions": [
+      {
+       "id": "a_chuang",
+       "room": "jq_gukou",
+       "label": "闖過谷口",
+       "hours": [],
+       "requires": [],
+       "repeat": true,
+       "do": [
+        {
+         "do": "fight",
+         "monsters": [
+          "m_jq_fanyiweng"
+         ],
+         "no_flee": false,
+         "solo": false,
+         "obj": "o_fan",
+         "npc": "n_jq_fanyiweng"
+        }
+       ]
+      }
+     ],
+     "next": "s_out"
+    },
+    {
+     "id": "s_out",
+     "title": "出谷",
+     "log": "樊一翁再也攔不住了。帶著柳姑娘往西走出谷口，到谷外山道。",
+     "hint_room": "jq_road1",
+     "objectives": [
+      {
+       "id": "o_out",
+       "type": "ESCORT",
+       "npc": "n_jq_liumei",
+       "to_room": "jq_road1",
+       "text": "護送柳姑娘到谷外山道"
+      }
+     ],
+     "on_complete": [
+      {
+       "do": "escort_end",
+       "npc": "n_jq_liumei"
+      },
+      {
+       "do": "tell",
+       "key": "tell_q_jq_liumei_farewell"
+      }
+     ],
+     "next": "END"
+    }
+   ],
+   "dialogues": {
+    "d_offer": {
+     "start": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "（一個面目清瘦的中年人起身拱手）在下公孫止，忝為本谷谷主。敝谷僻處深山，難得有客人到來。閣下一路穿過情花林，可曾被花刺刺著了？",
+       "choices": [
+        {
+         "id": "c_ask",
+         "label": "聽說谷主近日要辦喜事？",
+         "goto": "n1"
+        },
+        {
+         "id": "c_stay",
+         "label": "多謝谷主，在下就叨擾幾日。",
+         "do": [
+          {
+           "do": "accept"
+          }
+         ],
+         "goto": "n_accept"
+        },
+        {
+         "id": "c_no",
+         "label": "誤闖寶地，這就告辭。",
+         "goto": "n_no"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "（公孫止撚鬚微笑）閣下消息倒也靈通。前些日子我在谷外救了一位姑娘，她姓柳，我叫她柳妹。過幾日便要與她拜堂成親。",
+       "choices": [
+        {
+         "id": "c_object",
+         "label": "那位柳姑娘……可是心甘情願？",
+         "goto": "n2"
+        },
+        {
+         "id": "c_stay",
+         "label": "恭喜谷主。在下就叨擾幾日，喝杯喜酒。",
+         "do": [
+          {
+           "do": "accept"
+          }
+         ],
+         "goto": "n_accept"
+        }
+       ]
+      },
+      "n2": {
+       "speaker": "npc",
+       "text": "（公孫止臉色一沉，隨即又和顏悅色）她親口答應過的，閣下多慮了。這是敝谷的家事，客人只管安心作客便是。",
+       "goto": "n3"
+      },
+      "n3": {
+       "speaker": "npc",
+       "text": "敝谷規矩，不沾葷腥、不動相思之念，閣下記著些。小女綠萼在丹房看爐，有什麼需要，可以去找她。",
+       "choices": [
+        {
+         "id": "c_stay",
+         "label": "（暫且留下，再作打算）多謝谷主。",
+         "do": [
+          {
+           "do": "accept"
+          }
+         ],
+         "goto": "n_accept"
+        },
+        {
+         "id": "c_no",
+         "label": "既是家事，在下告辭。",
+         "goto": "n_no"
+        }
+       ]
+      },
+      "n_accept": {
+       "speaker": "npc",
+       "text": "好。情花林的花刺有毒，十二個時辰之內莫動相思之念，否則痛入心脾。閣下在谷中走動，可別碰了不該碰的東西。",
+       "goto": "END"
+      },
+      "n_no": {
+       "speaker": "npc",
+       "text": "（公孫止淡淡一笑）請便。樊一翁，送客。",
+       "goto": "END"
+      }
+     }
+    },
+    "d_dan": {
+     "start": "n0",
+     "resume": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "（綠衫少女從爐邊抬起頭）你是爹爹新留的客人？丹房裡都是藥，你別亂碰。",
+       "choices": [
+        {
+         "id": "c_ask",
+         "label": "公孫姑娘，那位要和谷主成親的柳姑娘，人在哪裡？",
+         "goto": "n1"
+        },
+        {
+         "id": "c_bye",
+         "label": "打擾了。",
+         "goto": "END"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "（綠萼看了看門外，壓低聲音）柳姑娘被爹爹關在書房裡，說是讓她安心待嫁。可我瞧她一天到晚望著窗外，飯也不吃，哪裡像個要做新娘子的人。",
+       "goto": "n2"
+      },
+      "n2": {
+       "speaker": "npc",
+       "text": "你身上帶著情花的刺傷吧？這是本谷的絕情丹，專解情花之毒。爹爹看得極緊，一人只能給一顆，你收好了，帶在身上，往後走過花林便不怕了。",
+       "choices": [
+        {
+         "id": "c_take",
+         "label": "多謝姑娘。",
+         "do": [
+          {
+           "do": "give",
+           "item": "c_jq_juequingdan",
+           "n": 1
+          },
+          {
+           "do": "complete",
+           "obj": "o_dan"
+          }
+         ],
+         "goto": "n3"
+        }
+       ]
+      },
+      "n3": {
+       "speaker": "npc",
+       "text": "書房在大廳東北邊。你去看看柳姑娘吧……千萬別讓爹爹知道是我給的丹藥。",
+       "choices": [
+        {
+         "id": "c_ok",
+         "label": "姑娘放心。",
+         "goto": "END"
+        }
+       ]
+      }
+     }
+    },
+    "d_liumei": {
+     "start": "n0",
+     "resume": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "（白衣少女背對著門，聲音冷冷淡淡）你是誰？谷主讓你來的？",
+       "choices": [
+        {
+         "id": "c_who",
+         "label": "是公孫姑娘讓我來看妳的。妳……真想嫁給谷主？",
+         "goto": "n1"
+        },
+        {
+         "id": "c_leave",
+         "label": "走錯房間了，告辭。",
+         "goto": "END"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "我姓柳。那日我昏倒在谷外，是谷主救了我。他要我嫁他，我……我心灰意冷，便答應了。",
+       "goto": "n2"
+      },
+      "n2": {
+       "speaker": "npc",
+       "text": "可我心裡，一直記著一個人。他若知道了，不知會有多傷心。（她轉過頭去，不再說下去）",
+       "goto": "n3"
+      },
+      "n3": {
+       "speaker": "npc",
+       "text": "前幾夜我聽見北邊書架後頭，有人在地底下又哭又罵，聲音蒼老淒厲。那書架後有道暗門，谷主從不許人碰。你若真要幫我，先下去看看——那人或許知道怎麼對付谷主。",
+       "choices": [
+        {
+         "id": "c_go",
+         "label": "好，我下去看看，妳等我回來。",
+         "do": [
+          {
+           "do": "complete",
+           "obj": "o_liumei"
+          }
+         ],
+         "goto": "END"
+        }
+       ]
+      }
+     }
+    },
+    "d_qiu": {
+     "start": "n0",
+     "resume": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "（禿頭老婦猛地抬起頭，雙目精光四射）誰？是公孫止那狗賊派你來害老婆子的？",
+       "choices": [
+        {
+         "id": "c_no",
+         "label": "前輩誤會了。我是來救書房裡那位柳姑娘的。",
+         "goto": "n1"
+        },
+        {
+         "id": "c_leave",
+         "label": "（悄悄退出石洞）",
+         "goto": "END"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "柳姑娘？嘿嘿，嘿嘿……那狗賊又要娶新人了？老婆子是他的原配妻子裘千尺！當年他與賤婢私通，被我撞破，他便暗算我，挑斷我手足筋脈，把我丟進這鱷魚潭裡。",
+       "goto": "n2"
+      },
+      "n2": {
+       "speaker": "npc",
+       "text": "我命大，沒餵了鱷魚，靠著洞頂落下來的棗子，硬是活到今天。他手上那點絕情丹，配方還是我裘家的！他道我早死了，哪知老婆子天天在這底下數著日子。",
+       "goto": "n3"
+      },
+      "n3": {
+       "speaker": "npc",
+       "text": "你聽好：這石洞有條谷底秘道，沿著潭邊往回走，在暗門底下有個機括，從下面一推便開，那狗賊每天這時辰在劍房練劍，聽不見書房的動靜。你快帶那姑娘出谷，莫要被他瞧見！",
+       "choices": [
+        {
+         "id": "c_thanks",
+         "label": "多謝前輩指點。",
+         "do": [
+          {
+           "do": "var",
+           "name": "mitao",
+           "value": true
+          },
+          {
+           "do": "complete",
+           "obj": "o_qiu"
+          }
+         ],
+         "goto": "n4"
+        }
+       ]
+      },
+      "n4": {
+       "speaker": "npc",
+       "text": "出了谷，替老婆子在江湖上傳一句話——公孫止，你的報應就要到了！",
+       "goto": "END"
+      }
+     }
+    },
+    "d_go": {
+     "start": "n0",
+     "resume": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "（柳姑娘見你從暗門爬上來，微微一怔）你回來了。底下那人……是誰？",
+       "choices": [
+        {
+         "id": "c_go",
+         "label": "說來話長。柳姑娘，跟我走，現在就出谷！",
+         "do": [
+          {
+           "do": "escort_start",
+           "npc": "n_jq_liumei"
+          },
+          {
+           "do": "complete",
+           "obj": "o_back"
+          }
+         ],
+         "goto": "n1"
+        },
+        {
+         "id": "c_wait",
+         "label": "（先等一等，準備好再走）",
+         "goto": "END"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "（她沉默片刻，輕輕點頭）……好。我本就不該留在這裡。",
+       "goto": "END"
+      }
+     }
+    }
+   },
+   "outcomes": {
+    "default": {
+     "label": "救出了柳姑娘",
+     "rewards": {
+      "fame": 40,
+      "lilian": 60
+     },
+     "src": "proposal",
+     "src_note": "名聲 +40、歷練 +60＝M3B_PLAN §8.3【設計提案】"
+    }
+   },
+   "rumors": {
+    "first": "rmr_q_jq_liumei_first",
+    "foreshadow": "rmr_q_jq_liumei_foreshadow"
+   }
+  },
+  {
+   "id": "q_jq_duanchang",
+   "name": "斷腸崖",
+   "chapter": "京城・絕情谷",
+   "group": "jueqinggu",
+   "giver": "n_jq_fanyiweng",
+   "era": "1.0B",
+   "src": "verified",
+   "dialogue_src": "proposal",
+   "src_note": "DIAO/2-2 預告「跳斷腸崖……是否又會發生小龍女當年的奇遇呢？」【已證實】；本作只做房間動作「望崖」、對白與一句傳聞，跳崖奇遇留 M3c（M3B_PLAN §8.3）；給予者樊一翁【設計提案】",
+   "text": "絕情谷石屋後的斷腸崖深不見底，谷裡的人說，跳下去的從沒有回來過。",
+   "requires": [],
+   "give_items": [],
+   "repeat": {
+    "max": 1,
+    "cooldown_days": 0
+   },
+   "abandon": true,
+   "party_credit": false,
+   "start": "s_cliff",
+   "offer": "d_offer",
+   "stages": [
+    {
+     "id": "s_cliff",
+     "title": "望崖",
+     "log": "從谷口往東穿過情花林到石屋大廳，再往東出後門就是斷腸崖。在崖邊「望崖」。",
+     "hint_room": "jq_duanchang",
+     "objectives": [
+      {
+       "id": "o_wang",
+       "type": "STATE",
+       "requires": [
+        {
+         "type": "quest_var",
+         "quest": "q_jq_duanchang",
+         "var": "looked",
+         "value": true
+        }
+       ],
+       "text": "在斷腸崖邊「望崖」"
+      }
+     ],
+     "room_actions": [
+      {
+       "id": "a_wangya",
+       "room": "jq_duanchang",
+       "label": "望崖",
+       "hours": [],
+       "requires": [],
+       "repeat": false,
+       "do": [
+        {
+         "do": "tell",
+         "key": "tell_q_jq_duanchang_wangya"
+        },
+        {
+         "do": "rumor",
+         "key": "rmr_q_jq_duanchang_wangya",
+         "scope": "REGION"
+        },
+        {
+         "do": "var",
+         "name": "looked",
+         "value": true
+        },
+        {
+         "do": "complete",
+         "obj": "o_wang"
+        }
+       ]
+      }
+     ],
+     "next": "END"
+    }
+   ],
+   "dialogues": {
+    "d_offer": {
+     "start": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "（長鬚老者斜眼看你）又是個不知天高地厚的。谷裡的地方，哪兒都能去，就是石屋後頭那座崖，少去為妙。",
+       "choices": [
+        {
+         "id": "c_ask",
+         "label": "那座崖有什麼古怪？",
+         "goto": "n1"
+        },
+        {
+         "id": "c_bye",
+         "label": "多謝老丈提醒。",
+         "goto": "END"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "那叫斷腸崖。崖底雲霧終年不散，谷裡傳了好幾代的話：心裡有放不下的人，站在崖邊望一眼，腸子都要斷了。",
+       "goto": "n2"
+      },
+      "n2": {
+       "speaker": "npc",
+       "text": "也有人說崖底另有天地，跳下去的人……哼，跳下去的，老夫可從沒見誰回來過。",
+       "choices": [
+        {
+         "id": "c_accept",
+         "label": "我倒想去看一看。",
+         "do": [
+          {
+           "do": "accept"
+          }
+         ],
+         "goto": "n3"
+        },
+        {
+         "id": "c_bye",
+         "label": "那還是算了。",
+         "goto": "END"
+        }
+       ]
+      },
+      "n3": {
+       "speaker": "npc",
+       "text": "要看便去看，只是站穩了腳。摔下去了，可別說老夫沒提醒你。",
+       "goto": "END"
+      }
+     }
+    }
+   },
+   "outcomes": {
+    "default": {
+     "label": "在斷腸崖邊望了一眼",
+     "src": "proposal",
+     "src_note": "只給對白與傳聞，沒有獎勵（M3B_PLAN §8.3）；跳崖奇遇 M3c"
+    }
+   },
+   "rumors": {
+    "foreshadow": "rmr_q_jq_duanchang_foreshadow"
+   }
+  }
+ ],
+ "text_templates": [
+  {
+   "id": "talk_n_jq_gongsunzhi",
+   "era": "1.0B",
+   "self": "{npc_name}拱了拱手：「敝谷規矩，不沾葷腥，不動相思。客人既來了，便守著些。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_jq_gongsunzhi@NIGHT",
+   "era": "1.0B",
+   "self": "{npc_name}獨自坐在大廳裡飲茶，燈影下面色陰晴不定：「夜深了，客人早些歇息，谷中夜路難行。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_jq_lve",
+   "era": "1.0B",
+   "self": "{npc_name}撥了撥爐火，輕聲道：「爹爹說情花好看，可它的刺……碰上了就忘不掉。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_jq_lve@NIGHT",
+   "era": "1.0B",
+   "self": "{npc_name}倚著藥架打盹，聽見腳步聲忙站起來：「這麼晚了，丹房不留客的。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_jq_fanyiweng",
+   "era": "1.0B",
+   "self": "{npc_name}拄著鋼杖，長鬚一抖：「谷主有令，客人進谷，老老實實走路，莫要東張西望。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_jq_fanyiweng@NIGHT",
+   "era": "1.0B",
+   "self": "{npc_name}抱著鋼杖靠在青石上，眼睛卻沒閉：「天黑了還往谷裡闖？哼，走夜路當心花刺。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_jq_qiuqianchi",
+   "era": "1.0B",
+   "self": "{npc_name}嘿嘿冷笑：「公孫止啊公孫止，你道我死了？老婆子就算只剩一口氣，也要看著你遭報應！」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_jq_liumei",
+   "era": "1.0B",
+   "self": "{npc_name}望著窗外，淡淡地道：「你走吧。我的事，誰也幫不了。」",
+   "src": "proposal"
+  },
+  {
+   "id": "tell_q_jq_liumei_guochi",
+   "era": "1.0B",
+   "self": "你踏進冰冷的潭水，水面上那幾截「枯木」忽然動了，一張血盆大口朝你直衝過來！",
+   "src": "proposal"
+  },
+  {
+   "id": "tell_q_jq_liumei_fan",
+   "era": "1.0B",
+   "self": "谷口青石旁，樊一翁橫過鋼杖攔住去路：「好大的膽子，竟敢拐帶谷主的新娘！留下人來！」",
+   "src": "proposal"
+  },
+  {
+   "id": "tell_q_jq_liumei_farewell",
+   "era": "1.0B",
+   "self": "出了谷，柳姑娘回頭望了一眼滿谷情花，向你斂衽一禮：「多謝你。我要去找一個人……江湖路遠，後會有期。」說罷白衣一閃，轉過山坳便不見了。",
+   "src": "proposal"
+  },
+  {
+   "id": "tell_q_jq_duanchang_wangya",
+   "era": "1.0B",
+   "self": "你站在崖邊往下望，雲霧翻湧，深不見底，山風颳得衣袂獵獵作響。不知怎地，心頭一酸，竟想起許多舊事來。崖底隱隱傳來流水聲，彷彿另有天地。",
+   "src": "proposal"
+  },
+  {
+   "id": "tell_jq_qinghua_sting",
+   "era": "1.0B",
+   "self": "你穿過花林時，衣袖被情花刺勾了一下，指尖一陣刺痛，跟著心口隱隱作疼。",
+   "src": "proposal"
+  },
+  {
+   "id": "rmr_q_jq_liumei_first",
+   "era": "1.0B",
+   "self": "聽說{name}闖進京城東南的絕情谷，從谷主公孫止手裡救走了將要成親的柳姑娘。谷底地牢裡還有個老婦人放話：公孫止的報應就要到了。",
+   "src": "proposal"
+  },
+  {
+   "id": "rmr_q_jq_liumei_foreshadow",
+   "era": "1.0B",
+   "self": "聽說京城東南有座絕情谷，谷主公孫止近日要娶一位姓柳的姑娘。有人在谷口聽見那姑娘在哭。",
+   "src": "proposal"
+  },
+  {
+   "id": "rmr_q_jq_duanchang_wangya",
+   "era": "1.0B",
+   "self": "有人在絕情谷斷腸崖邊站了半晌，說崖底隱隱有流水聲。崖底下，難道真有人活著？",
+   "src": "proposal"
+  },
+  {
+   "id": "rmr_q_jq_duanchang_foreshadow",
+   "era": "1.0B",
+   "self": "聽說絕情谷石屋後有座斷腸崖，跳下去的人從沒回來過。可也有人說，當年有人跳下去，反倒得了一場奇遇。",
+   "src": "proposal"
+  },
+  {
+   "id": "amb_jq_qinghua",
+   "era": "1.0B",
+   "self": "一陣風過，滿林情花簌簌搖動，甜香撲面而來，叫人有些頭暈。",
+   "src": "proposal"
+  },
+  {
+   "id": "amb_jq_jianfang",
+   "era": "1.0B",
+   "self": "劍架上那兩柄黑劍靜靜橫著，劍鞘上「君子」「淑女」四字在燈下若隱若現。",
+   "src": "proposal"
+  },
+  {
+   "id": "amb_jq_eyuchi_night",
+   "era": "1.0B",
+   "self": "黑漆漆的潭水上咕嘟冒起一串水泡，有什麼東西緩緩沉了下去。",
+   "src": "proposal"
+  },
+  {
+   "id": "amb_jq_shiwu_wedding",
+   "era": "1.0B",
+   "self": "兩個綠衣弟子捧著紅綢從大廳穿過，低聲說著：「……谷主的喜事，就在這幾天了。」",
+   "src": "proposal"
+  },
+  {
+   "id": "move_jq_huxu",
+   "era": "1.0B",
+   "self": "你把長鬚一甩，{art}「{move}」如軟鞭般抽中{def}的{part}！（-{dmg}）",
+   "target": "{atk}長鬚一甩，{art}「{move}」如軟鞭般抽中你的{part}！（-{dmg}）",
+   "other": "{atk}長鬚一甩，{art}「{move}」抽中{def}的{part}！",
+   "src": "proposal"
+  },
+  {
+   "id": "move_jq_yuwang",
+   "era": "1.0B",
+   "self": "你張開漁網，{art}「{move}」兜頭罩向{def}，網墜打中{def}的{part}！（-{dmg}）",
+   "target": "{atk}張開漁網，{art}「{move}」兜頭罩來，網墜打中你的{part}！（-{dmg}）",
+   "other": "{atk}張開漁網，{art}「{move}」罩住{def}，打中{def}的{part}！",
+   "src": "proposal"
+  },
+  {
+   "id": "move_jq_eyuwei",
+   "era": "1.0B",
+   "self": "你粗尾一擺，「{move}」掃中{def}的{part}！（-{dmg}）",
+   "target": "{atk}粗尾一擺，「{move}」掃中你的{part}！（-{dmg}）",
+   "other": "{atk}粗尾一擺，「{move}」掃中{def}的{part}！",
+   "src": "proposal"
+  }
+ ],
+ "rumors": [
+  {
+   "id": "rmr_row_q_jq_liumei",
+   "kind": "FORESHADOW",
+   "quest": "q_jq_liumei",
+   "text": "rmr_q_jq_liumei_foreshadow",
+   "requires_world": {
+    "not_first": "q_jq_liumei"
+   },
+   "hours": [],
+   "weight": 1,
+   "era": "1.0B",
+   "src": "proposal",
+   "src_note": "系統傳聞【設計提案・非原作】；內容依 DIAO/2-2 預告"
+  },
+  {
+   "id": "rmr_row_q_jq_duanchang",
+   "kind": "FORESHADOW",
+   "quest": "q_jq_duanchang",
+   "text": "rmr_q_jq_duanchang_foreshadow",
+   "requires_world": {
+    "not_first": "q_jq_duanchang"
+   },
+   "hours": [],
+   "weight": 1,
+   "era": "1.0B",
+   "src": "proposal",
+   "src_note": "系統傳聞【設計提案・非原作】；「小龍女當年的奇遇」依 DIAO/2-2 預告"
+  }
+ ],
+ "ambient": [
+  {
+   "id": "amb_jq_qinghua",
+   "room": "jq_qinghua",
+   "periods": [
+    "DAY",
+    "DUSK"
+   ],
+   "requires": [],
+   "weight": 1,
+   "text": "amb_jq_qinghua",
+   "era": "1.0B",
+   "src": "proposal",
+   "src_note": "環境句【設計提案・非原作】"
+  },
+  {
+   "id": "amb_jq_jianfang",
+   "room": "jq_jianfang",
+   "periods": [],
+   "requires": [],
+   "weight": 1,
+   "text": "amb_jq_jianfang",
+   "era": "1.0B",
+   "src": "proposal",
+   "src_note": "環境句【設計提案・非原作】；君子淑女劍【已證實】"
+  },
+  {
+   "id": "amb_jq_eyuchi_night",
+   "room": "jq_eyuchi",
+   "periods": [
+    "NIGHT"
+   ],
+   "requires": [],
+   "weight": 1,
+   "text": "amb_jq_eyuchi_night",
+   "era": "1.0B",
+   "src": "proposal",
+   "src_note": "環境句【設計提案・非原作】"
+  },
+  {
+   "id": "amb_jq_shiwu_wedding",
+   "room": "jq_shiwu",
+   "periods": [
+    "DAY"
+   ],
+   "requires": [],
+   "weight": 1,
+   "text": "amb_jq_shiwu_wedding",
+   "era": "1.0B",
+   "src": "proposal",
+   "src_note": "環境句【設計提案・非原作】；只要任務還沒有人完成也照常出現（沒有「未完成」條件型別）"
+  }
+ ],
+ "art_requests": {
+  "units": [
+   {
+    "id": "n_jq_gongsunzhi",
+    "alias": "n_yuebuqun",
+    "prompt": "Gongsun Zhi (公孫止), master of Passionless Valley: lean, refined man about fifty in a plain grey-green scholar robe, neatly trimmed beard, courteous smile but cold calculating eyes; wuxia RPG NPC portrait/sprite."
+   },
+   {
+    "id": "n_jq_lve",
+    "alias": "n_shuanger",
+    "prompt": "Gongsun Lü'e (公孫綠萼): gentle young woman in a pale green silk dress, hair in a simple bun with a jade pin, standing beside an alchemy furnace with medicine bottles; wuxia RPG NPC sprite."
+   },
+   {
+    "id": "n_jq_qiuqianchi",
+    "alias": "n_yeerniang",
+    "prompt": "Qiu Qianchi (裘千尺): bald, gaunt old woman with crippled limbs sitting cross-legged on a cave floor in ragged clothes, fierce glittering eyes, a jujube tree under a shaft of light behind her; wuxia RPG NPC portrait."
+   },
+   {
+    "id": "n_jq_liumei",
+    "alias": "n_shuanger",
+    "prompt": "Miss Liu (柳姑娘): ethereally beautiful young woman in flowing pure white robes, long black hair, cool aloof melancholy expression, looking out of a study window; wuxia RPG NPC sprite."
+   },
+   {
+    "id": "n_jq_fanyiweng",
+    "alias": "n_chenjialuo",
+    "prompt": "Fan Yiweng (樊一翁): very short old man with an absurdly long grey beard reaching the ground, leaning on a heavy steel staff, grumpy expression, guarding a rocky valley entrance; wuxia RPG NPC sprite."
+   },
+   {
+    "id": "m_jq_fanyiweng",
+    "alias": "m_bandit_chief",
+    "prompt": "Same Fan Yiweng in battle stance: steel staff raised, long beard whipping through the air like a lash; wuxia RPG battle sprite."
+   },
+   {
+    "id": "m_jq_lvyi",
+    "alias": "m_bandit",
+    "prompt": "Passionless Valley disciple in a green tunic holding one corner of a weighted fishing net, ready to throw; wuxia RPG battle sprite."
+   },
+   {
+    "id": "m_jq_eyu",
+    "alias": "m_boar",
+    "prompt": "Huge dark crocodile emerging from a black underground pool, jaws wide open, wet armoured scales; wuxia RPG battle sprite."
+   },
+   {
+    "id": "m_jq_dilao_shuishe",
+    "alias": "m_em_mz_snake",
+    "prompt": "Thick black-scaled water snake coiled on wet dungeon stones, hooked fangs bared; wuxia RPG battle sprite."
+   },
+   {
+    "id": "m_jq_dilao_qiutu",
+    "alias": "m_bandit",
+    "prompt": "Insane long-imprisoned prisoner with matted hair and broken shackles on his wrists, lunging with wild fists in a dark dungeon; wuxia RPG battle sprite."
+   }
+  ],
+  "backgrounds": [
+   {
+    "id": "jueqinggu",
+    "alias": "gumu",
+    "prompt": "Passionless Valley (絕情谷): a deep secluded mountain valley filled with blooming passion-flower bushes (red and white blossoms on thorny branches), a stone house carved into the cliff in the distance, mist and steep cliffs; wuxia RPG battle background, painterly."
+   },
+   {
+    "id": "jueqinggu_dilao",
+    "alias": "gumu_maze",
+    "prompt": "Underground dungeon beneath Passionless Valley: damp stone stairs and iron-barred cells leading to a black cold pool with crocodile backs breaking the surface, a single shaft of light falling on a jujube tree; wuxia RPG battle background, dark and humid."
+   }
+  ]
+ },
+ "test_plan": [
+  {
+   "quest": "q_jq_liumei",
+   "outcome": "default",
+   "save_reload_at": "s_eyu",
+   "setup": {
+    "combat_xp": 90000,
+    "fame": 0
+   },
+   "path": [
+    "walk@jq_shiwu",
+    "accept@n_jq_gongsunzhi",
+    "choose@n_jq_gongsunzhi:n0:c_ask",
+    "choose@n_jq_gongsunzhi:n1:c_object",
+    "choose@n_jq_gongsunzhi:n3:c_stay",
+    "walk@jq_danfang",
+    "talk@n_jq_lve",
+    "choose@n_jq_lve:n0:c_ask",
+    "choose@n_jq_lve:n2:c_take",
+    "choose@n_jq_lve:n3:c_ok",
+    "walk@jq_shufang",
+    "talk@n_jq_liumei",
+    "choose@n_jq_liumei:n0:c_who",
+    "choose@n_jq_liumei:n3:c_go",
+    "walk@jq_eyuchi",
+    "act@q_jq_liumei:a_guochi",
+    "fight:WIN",
+    "walk@jq_dilao3",
+    "talk@n_jq_qiuqianchi",
+    "choose@n_jq_qiuqianchi:n0:c_no",
+    "choose@n_jq_qiuqianchi:n3:c_thanks",
+    "walk@jq_shufang",
+    "talk@n_jq_liumei",
+    "choose@n_jq_liumei:n0:c_go",
+    "walk@jq_gukou",
+    "act@q_jq_liumei:a_chuang",
+    "fight:FLEE",
+    "walk@jq_road1"
+   ],
+   "expect": {
+    "outcome": "default",
+    "fame": 40,
+    "lilian": 60,
+    "items": {
+     "c_jq_juequingdan": 1
+    },
+    "rumor": "rmr_q_jq_liumei_first"
+   }
+  },
+  {
+   "quest": "q_jq_liumei",
+   "outcome": "default",
+   "note": "§11.3 jueqinggu 劇本前半：新角色只走到取丹並解毒；不完成任務",
+   "setup": {
+    "combat_xp": 0
+   },
+   "path": [
+    "walk@jq_gukou",
+    "walk@jq_qinghua",
+    "walk@jq_shiwu",
+    "talk@n_jq_gongsunzhi",
+    "accept@n_jq_gongsunzhi",
+    "choose@n_jq_gongsunzhi:n0:c_stay",
+    "walk@jq_danfang",
+    "talk@n_jq_lve",
+    "choose@n_jq_lve:n0:c_ask",
+    "choose@n_jq_lve:n2:c_take",
+    "choose@n_jq_lve:n3:c_ok",
+    "use@c_jq_juequingdan"
+   ],
+   "expect": {
+    "stage": "s_liumei",
+    "items": {
+     "c_jq_juequingdan": 0
+    },
+    "conditions_absent": [
+     "qinghua"
+    ]
+   }
+  },
+  {
+   "quest": "q_jq_duanchang",
+   "outcome": "default",
+   "setup": {},
+   "path": [
+    "walk@jq_gukou",
+    "accept@n_jq_fanyiweng",
+    "choose@n_jq_fanyiweng:n0:c_ask",
+    "choose@n_jq_fanyiweng:n2:c_accept",
+    "walk@jq_duanchang",
+    "act@q_jq_duanchang:a_wangya"
+   ],
+   "expect": {
+    "outcome": "default"
+   }
+  }
+ ],
+ "todo_verify": [
+  "【待考證】絕情谷在 2001 大地圖上的實際位置與入口：只有 GDD「鄰近京城」；world_pos [905,232] 與「南郊岔路東南小路」是 M3B_PLAN §3.1【設計提案】。",
+  "【待考證】原作絕情谷各房間（谷口、情花林、石屋丹房書房劍房、斷腸崖）的實際配置與描述；官方頁只列名稱。",
+  "【待考證】救柳姑娘的實際任務步驟、對白、門檻與獎勵：研究只有 DIAO/2-2 預告一句；本碎片整條【設計提案】。",
+  "【待考證】「柳妹」在原作是否就是小龍女化名（原著如此；古墓目錄「救了一個少女，名喚柳妹」本輪未重查）。本碎片不點名，只以白衣、心裡記著一個人暗示；n_gm_xiaolongnu（古墓）同時存在。",
+  "【待考證】絕情丹的取得方式：原作是 9 元／39 元點卡附贈虛擬物（研究，本輪未重查）；本作改由公孫綠萼在任務中給一顆。",
+  "【待考證】情花毒的數值（持續、扣氣、戰鬥中效果）與中毒機率；只有「十二個時辰」【已證實】。",
+  "【待考證】隱藏地牢的怪物種類與強度（官方頁只寫「隱藏地牢有怪」）；水蛇、瘋癲囚徒、鱷魚數值全部【設計提案】。",
+  "【待考證】樊一翁、綠衣弟子在原作是否可戰鬥、強度多少。",
+  "【待考證】跳斷腸崖的奇遇內容（預告「小龍女當年的奇遇」）；本包只做望崖，奇遇 M3c。",
+  "【待考證】原作公孫止是否可戰鬥、谷主房間（君子淑女劍所在）是否就是劍房；DIAO 寫「谷主房間」，官方頁寫「劍房」，本碎片放劍房。"
+ ],
+ "owner_decisions": [
+  "M3B_PLAN §3.1／§3.2 #26–37：地區、房間 id、出口方向照表；#26 只用 exit_patches 加在 jcw_crossroad，desc 照 §3.3 原文。",
+  "§3.4 第 5 條：jq_road1、jq_gukou 只有野兔、大野兔、野狼；強怪從 jq_qinghua 起；地牢 DUNGEON 6–15 萬。",
+  "§4.10：qinghua 狀態與 c_jq_juequingdan 照表（id 拼法 juequingdan 照契約）；on_enter_status 放 jq_qinghua，身上帶絕情丹免中毒。",
+  "§8.3：君子劍、淑女劍不可取得（no_sell、沒有任何掉落或商店），只出現在劍房描述、環境句。",
+  "新預設：q_jq_liumei 由公孫止留客（接任務）開始，第一階段＝丹房向綠萼取絕情丹（配合 §11.3 驗收「丹房取絕情丹＝第一個階段」）；樊一翁攔路戰移到護送出谷時（WIN_OR_FLEE），其餘步驟照 §8.3 順序。",
+  "新預設：拒婚對話放在公孫止的接任務對話（問柳姑娘是否情願 → 公孫止沉臉）；不接也能在谷中自由走動，谷口不擋路。",
+  "新預設：柳姑娘只在任務進行中出現（appear quest_active），救出後離開。",
+  "新預設：地牢入口 jq_dilao1 的 requires：任務在 s_eyu／s_qiu／s_back 階段，或任務完成後（之後當練功地）。",
+  "新預設：「谷底秘道」＝裘千尺告知暗門機括（任務變數 mitao），實際路線仍走 §3.2 的房間；不加新出口。",
+  "新預設：樊一翁平時可切磋（FIGHT 服務），也是 q_jq_duanchang 的給予者；q_jq_duanchang 沒有獎勵、只有一則 REGION 傳聞。",
+  "新預設：新增怪物招式 jq_mon_fanyiweng、jq_mon_yuwang、jq_mon_eyu、jq_mon_kuangquan 與招式文字 move_jq_huxu、move_jq_yuwang、move_jq_eyuwei（具名人物不共用招式的既有審查規則）。",
+  "新預設：獎勵名聲 40、歷練 60（§8.3），任務一次、可組隊同完成。"
+ ],
+ "notes": "M3B_PLAN 缺漏／給整合者：(1) §11.3 jueqinggu 劇本寫「丹房取絕情丹（q_jq_liumei 的第一個階段）」而 §8.3 寫樊一翁攔路在前，兩者衝突；本碎片以驗收為準，接任務＝在 jq_shiwu 與公孫止交談（offer），第一階段在丹房（test_plan 第 2 條即驗收前半）。(2) on_enter_status 契約沒有訊息欄位；本碎片另給模板 tell_jq_qinghua_sting，WP-SECT 若要中毒提示可直接用（不在房間列裡加未定義欄位）。(3) 絕情丹 unique_per_char：綠萼 give 時身上已有則不給（§5.4），任務照樣推進。(4) 柳姑娘是有房間的 NPC 兼護送目標（比照 q_xuzhu 的虛竹）；escort_end 在 s_out 完成時。任務完成後她因 appear 條件消失。(5) test_plan 用了 setup、use@item、expect.stage、expect.conditions_absent、note 這幾個 §7.1 語彙之外的鍵，是給 m3b_bot 的延伸；不支援可忽略第 2 條，只跑第 1、3 條。(6) 新怪物 balance_sim 建議案例：walk_jc_jq（新角色南門→谷口存活 ≥ 90%）、jq_eyu（實戰 9 萬單人勝率 40–80%）、jq_fanyiweng（實戰 4 萬單人勝率 40–80%）。(7) 所有 NPC 的房間 npcs 陣列沒寫，請 WP-MERGE 依 npcs[].room 補上；jcw_crossroad 的 SE 出口在地圖合併之後加（§3.2）。"
+}

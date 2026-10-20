@@ -1,0 +1,4 @@
+{ "table": "regions", "version": 1, "rows": [
+  { "id": "r_a", "name": "甲地", "suggested_xp": [0, 2000], "era": "1.0A" },
+  { "id": "r_b", "name": "乙地", "suggested_xp": [100, 5000], "era": "1.0B" }
+] }

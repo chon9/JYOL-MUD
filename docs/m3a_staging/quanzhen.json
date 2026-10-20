@@ -1,0 +1,3547 @@
+{
+ "fragment": "quanzhen",
+ "version": 1,
+ "author": "WP-SECT-quanzhen",
+ "sect": {
+  "id": "quanzhen",
+  "name": "全真",
+  "home_city": "dali",
+  "gate_region": "quanzhen",
+  "prefix": "qz",
+  "gate_room": "qz_gate",
+  "head_npc": "n_qz_qiuchuji",
+  "gender": [
+   "M"
+  ],
+  "join_requires": [
+   {
+    "type": "morality_min",
+    "value": 0
+   },
+   {
+    "type": "no_sect"
+   },
+   {
+    "type": "not_enemy_of",
+    "sect": "quanzhen"
+   },
+   {
+    "type": "not_enemy_of",
+    "sect": "gumu"
+   },
+   {
+    "type": "unmarried"
+   }
+  ],
+  "teach_requires": [
+   {
+    "type": "morality_min",
+    "value": 0
+   },
+   {
+    "type": "pk_max",
+    "value": 0
+   },
+   {
+    "type": "killing_intent_max",
+    "value": 1000
+   }
+  ],
+  "sect_skill": "yangsheng",
+  "sect_skill_name": "養生",
+  "sect_skill_effect": {
+   "effect": "REST"
+  },
+  "sect_skill_cost": [
+   "jing",
+   "shen"
+  ],
+  "sect_skill_cap": 100,
+  "sect_skill_limits_arts": true,
+  "sect_art_cap_bonus": 10,
+  "sect_skill_gain": [],
+  "sect_skill_penalties": [
+   {
+    "trigger": "ENTER_REGION",
+    "region": "gumu",
+    "levels": 1
+   }
+  ],
+  "forbid_meat": false,
+  "personal_master": true,
+  "enforcer": true,
+  "enforcers": [
+   "n_qz_qiuchuji",
+   "n_qz_majue",
+   "n_qz_tanchuduan",
+   "n_qz_liuchuxuan",
+   "n_qz_wangchuyi",
+   "n_qz_haodatong",
+   "n_qz_sunbuer"
+  ],
+  "jail_room": "qz_siguo",
+  "hostile_entry": [
+   {
+    "if": [
+     {
+      "type": "enemy_of",
+      "sect": "quanzhen"
+     }
+    ],
+    "rooms": "ALL",
+    "monster": "m_qz_guard",
+    "count": [
+     1,
+     2
+    ],
+    "chance": 1.0,
+    "no_flee": true,
+    "capture": true
+   },
+   {
+    "if": [
+     {
+      "type": "morality_max",
+      "value": -500
+     }
+    ],
+    "rooms": "INNER",
+    "monster": "m_qz_xunshan",
+    "count": [
+     1,
+     2
+    ],
+    "chance": 0.4,
+    "no_flee": false,
+    "capture": false
+   }
+  ],
+  "visitors": "OPEN",
+  "meal_npc": "n_qz_luqingdu",
+  "src_note": "研究 全真教：入派（17173 mengpai/6：善惡不低於初始數值、無門派、男性、非全真／古墓公敵、未婚）；養生＝休息，機率回復氣與內力、耗精與神（官方 index_jy2-25）；七子各收徒、只能跟自己師父學（mengpai/6）；門規不得進古墓、進古墓減養生；敵對入山：善惡 < −500 弟子攻擊（2001-08-08）、公敵全終南 NPC 攻擊；執法者＝全真七子（官方 jy2-22）。停止傳功的 PK 與殺氣門檻、敵對入山機率 0.4、守衛數量＝【設計提案】",
+  "era": "1.0A",
+  "src": "verified"
+ },
+ "sect_rules": [
+  {
+   "id": "qz_r_morality",
+   "sect": "quanzhen",
+   "tier": "BREACH",
+   "kind": "STATE",
+   "ok_if": [
+    {
+     "type": "morality_min",
+     "value": -299
+    }
+   ],
+   "text": "rule_qz_morality",
+   "era": "1.0A",
+   "src": "verified",
+   "src_note": "news 141（2001-08-07）全真叛派條件 善惡 < −299"
+  },
+  {
+   "id": "qz_r_pk",
+   "sect": "quanzhen",
+   "tier": "BREACH",
+   "kind": "STATE",
+   "ok_if": [
+    {
+     "type": "pk_max",
+     "value": 10
+    }
+   ],
+   "text": "rule_qz_pk",
+   "era": "1.0A",
+   "src": "verified",
+   "src_note": "news 141（2001-08-07）全真叛派條件 PK > 10"
+  },
+  {
+   "id": "qz_r_kill_same",
+   "sect": "quanzhen",
+   "tier": "BREACH",
+   "kind": "EVENT",
+   "event": "KILL_SAME_SECT",
+   "text": "rule_qz_kill_same",
+   "era": "1.0A",
+   "src": "verified",
+   "src_note": "news 141 同門相殘"
+  },
+  {
+   "id": "qz_r_gumu",
+   "sect": "quanzhen",
+   "tier": "BREACH",
+   "kind": "EVENT",
+   "event": "ENTER_REGION",
+   "event_arg": "gumu",
+   "text": "rule_qz_gumu",
+   "era": "1.0A",
+   "src": "verified",
+   "src_note": "mengpai/6 門規第 3 條「不得進入古墓」；違反後果依 sect_violation_mode"
+  }
+ ],
+ "regions": [
+  {
+   "id": "zhongnan_foot",
+   "name": "終南山下",
+   "type": "WILD",
+   "city": "dali",
+   "map": "res://data/maps/zhongnan_foot.json",
+   "world_pos": [
+    700,
+    505
+   ],
+   "suggested_xp": [
+    0,
+    2000
+   ],
+   "pk_allowed": true,
+   "birth_allowed": false,
+   "birth_room": "",
+   "night_closed": [],
+   "era": "1.0A",
+   "src": "proposal"
+  },
+  {
+   "id": "quanzhen",
+   "name": "全真教",
+   "type": "SECT",
+   "city": "dali",
+   "map": "res://data/maps/quanzhen.json",
+   "world_pos": [
+    735,
+    458
+   ],
+   "suggested_xp": [
+    0,
+    0
+   ],
+   "pk_allowed": false,
+   "birth_allowed": false,
+   "birth_room": "",
+   "night_closed": [],
+   "era": "1.0A",
+   "src": "verified"
+  }
+ ],
+ "maps": {
+  "zhongnan_foot": {
+   "region_id": "zhongnan_foot",
+   "era": "1.0A",
+   "src": "proposal",
+   "desc": "終南山下的山路，西接峨嵋山腳，東北翻過山脊可到武當，後山深處便是古墓。",
+   "escape_tiles_hint": 2,
+   "rooms": [
+    {
+     "id": "zn_road1",
+     "name": "終南山道口",
+     "desc": "從峨嵋山腳往東的山路，兩旁是茂密的松林。一個醉醺醺的浪子靠在路邊的大石上，逢人就問終南山怎麼走。",
+     "exits": [
+      {
+       "dir": "W",
+       "to": "em_foot"
+      },
+      {
+       "dir": "E",
+       "to": "zn_road2"
+      }
+     ],
+     "npcs": [
+      "n_qz_chengfeng"
+     ],
+     "features": [],
+     "requires": [],
+     "encounter": {
+      "rate": 0.1,
+      "table": [
+       {
+        "monster": "m_bigrabbit",
+        "w": 50,
+        "count": [
+         1,
+         1
+        ]
+       },
+       {
+        "monster": "m_rabbit",
+        "w": 20,
+        "count": [
+         1,
+         1
+        ]
+       },
+       {
+        "monster": "m_wolf",
+        "w": 20,
+        "count": [
+         1,
+         1
+        ]
+       },
+       {
+        "monster": "m_boar",
+        "w": 10,
+        "count": [
+         1,
+         1
+        ]
+       }
+      ]
+     }
+    },
+    {
+     "id": "zn_road2",
+     "name": "終南山麓",
+     "desc": "山路沿著溪谷蜿蜒而上，遠處終南山的主峰隱在雲霧裡。往北有條小徑通到河邊，往東北上山。",
+     "exits": [
+      {
+       "dir": "W",
+       "to": "zn_road1"
+      },
+      {
+       "dir": "NE",
+       "to": "zn_foot"
+      },
+      {
+       "dir": "N",
+       "to": "zn_river"
+      }
+     ],
+     "npcs": [],
+     "features": [],
+     "requires": [],
+     "encounter": {
+      "rate": 0.1,
+      "table": [
+       {
+        "monster": "m_bigrabbit",
+        "w": 50,
+        "count": [
+         1,
+         1
+        ]
+       },
+       {
+        "monster": "m_rabbit",
+        "w": 20,
+        "count": [
+         1,
+         1
+        ]
+       },
+       {
+        "monster": "m_wolf",
+        "w": 20,
+        "count": [
+         1,
+         1
+        ]
+       },
+       {
+        "monster": "m_boar",
+        "w": 10,
+        "count": [
+         1,
+         1
+        ]
+       }
+      ]
+     }
+    },
+    {
+     "id": "zn_river",
+     "name": "終南山左上方河邊",
+     "desc": "河水湍急，岸邊的蘆葦長得比人還高。有個年輕人蹲在河邊唉聲嘆氣，林子裡不時傳來野獸的低吼。",
+     "exits": [
+      {
+       "dir": "S",
+       "to": "zn_road2"
+      }
+     ],
+     "npcs": [
+      "n_qz_chendabao"
+     ],
+     "features": [
+      "WATER"
+     ],
+     "requires": [],
+     "encounter": {
+      "rate": 0.12,
+      "table": [
+       {
+        "monster": "m_wolf",
+        "w": 40,
+        "count": [
+         1,
+         1
+        ]
+       },
+       {
+        "monster": "m_boar",
+        "w": 30,
+        "count": [
+         1,
+         1
+        ]
+       },
+       {
+        "monster": "m_bigrabbit",
+        "w": 20,
+        "count": [
+         1,
+         1
+        ]
+       },
+       {
+        "monster": "m_bandit",
+        "w": 10,
+        "count": [
+         1,
+         1
+        ]
+       }
+      ]
+     }
+    },
+    {
+     "id": "zn_foot",
+     "name": "終南山腳",
+     "desc": "終南山腳下的岔路口，北邊石階直通全真教山門，常有道童挑水上山。往東是後山，往東北的山路通往武當。",
+     "exits": [
+      {
+       "dir": "SW",
+       "to": "zn_road2"
+      },
+      {
+       "dir": "N",
+       "to": "qz_gate"
+      },
+      {
+       "dir": "E",
+       "to": "zn_backhill"
+      },
+      {
+       "dir": "NE",
+       "to": "zn_east"
+      }
+     ],
+     "npcs": [],
+     "features": [],
+     "requires": [],
+     "encounter": {
+      "rate": 0.08,
+      "table": [
+       {
+        "monster": "m_rabbit",
+        "w": 60,
+        "count": [
+         1,
+         1
+        ]
+       },
+       {
+        "monster": "m_bigrabbit",
+        "w": 40,
+        "count": [
+         1,
+         1
+        ]
+       }
+      ]
+     }
+    },
+    {
+     "id": "zn_east",
+     "name": "終南東麓",
+     "desc": "終南山東側的山坳，一條踩出來的小路翻過山脊往東北去，聽說走到底就是武當山腳。",
+     "exits": [
+      {
+       "dir": "SW",
+       "to": "zn_foot"
+      },
+      {
+       "dir": "NE",
+       "to": "wd_road2"
+      }
+     ],
+     "npcs": [],
+     "features": [],
+     "requires": [],
+     "encounter": {
+      "rate": 0.1,
+      "table": [
+       {
+        "monster": "m_bigrabbit",
+        "w": 50,
+        "count": [
+         1,
+         1
+        ]
+       },
+       {
+        "monster": "m_rabbit",
+        "w": 20,
+        "count": [
+         1,
+         1
+        ]
+       },
+       {
+        "monster": "m_wolf",
+        "w": 25,
+        "count": [
+         1,
+         1
+        ]
+       },
+       {
+        "monster": "m_boar",
+        "w": 5,
+        "count": [
+         1,
+         1
+        ]
+       }
+      ]
+     }
+    },
+    {
+     "id": "zn_backhill",
+     "name": "終南後山",
+     "desc": "後山林木幽深，人跡罕至。往東的林子深處立著一塊刻有「活死人墓」的石碑，全真弟子都知道那裡去不得。",
+     "exits": [
+      {
+       "dir": "W",
+       "to": "zn_foot"
+      },
+      {
+       "dir": "E",
+       "to": "gm_entrance"
+      }
+     ],
+     "npcs": [],
+     "features": [
+      "WOOD"
+     ],
+     "requires": [],
+     "encounter": {
+      "rate": 0.08,
+      "table": [
+       {
+        "monster": "m_rabbit",
+        "w": 50,
+        "count": [
+         1,
+         1
+        ]
+       },
+       {
+        "monster": "m_bigrabbit",
+        "w": 50,
+        "count": [
+         1,
+         1
+        ]
+       }
+      ]
+     }
+    }
+   ]
+  },
+  "quanzhen": {
+   "region_id": "quanzhen",
+   "era": "1.0A",
+   "src": "proposal",
+   "desc": "終南山上的重陽宮，全真教的根本重地。",
+   "escape_tiles_hint": 2,
+   "rooms": [
+    {
+     "id": "qz_gate",
+     "name": "全真教山門",
+     "desc": "山門前立著「全真教」石坊，一位白鬍子的知客道長守在門口打量來人。一旁的老先生正在簿子上記事，往南下山是終南山腳。",
+     "exits": [
+      {
+       "dir": "S",
+       "to": "zn_foot"
+      },
+      {
+       "dir": "N",
+       "to": "qz_road"
+      }
+     ],
+     "npcs": [
+      "n_qz_zhike",
+      "n_qz_cha"
+     ],
+     "features": [],
+     "requires": []
+    },
+    {
+     "id": "qz_road",
+     "name": "重陽宮山道",
+     "desc": "青石山道在這裡分岔，往西是供奉三清的大殿，往北是全真大廣場。山風吹來，隱約聽得到道士誦經的聲音。",
+     "exits": [
+      {
+       "dir": "S",
+       "to": "qz_gate"
+      },
+      {
+       "dir": "W",
+       "to": "qz_sanqing"
+      },
+      {
+       "dir": "N",
+       "to": "qz_square"
+      }
+     ],
+     "npcs": [],
+     "features": [],
+     "requires": []
+    },
+    {
+     "id": "qz_sanqing",
+     "name": "三清殿",
+     "desc": "殿上供奉三清道祖，香煙裊裊。全真七子分坐兩旁，想拜入全真教的人，便在這裡向其中一位真人叩頭拜師。",
+     "exits": [
+      {
+       "dir": "E",
+       "to": "qz_road"
+      }
+     ],
+     "npcs": [
+      "n_qz_qiuchuji",
+      "n_qz_majue",
+      "n_qz_tanchuduan",
+      "n_qz_liuchuxuan",
+      "n_qz_wangchuyi",
+      "n_qz_haodatong",
+      "n_qz_sunbuer"
+     ],
+     "features": [],
+     "requires": []
+    },
+    {
+     "id": "qz_square",
+     "name": "全真大廣場",
+     "desc": "寬闊的廣場上，數十名道士排成陣勢練劍，劍光映著日頭。三代弟子在一旁陪新進師弟拆招，一位中年道士負責傳授基本功夫。",
+     "exits": [
+      {
+       "dir": "S",
+       "to": "qz_road"
+      },
+      {
+       "dir": "N",
+       "to": "qz_chongyang"
+      },
+      {
+       "dir": "E",
+       "to": "qz_reading"
+      }
+     ],
+     "npcs": [
+      "n_qz_qizhicheng",
+      "n_qz_spar",
+      "n_qz_lizhichang"
+     ],
+     "features": [],
+     "requires": []
+    },
+    {
+     "id": "qz_reading",
+     "name": "丘初級屋子",
+     "desc": "一間簡樸的書房，架上擺滿道經與蒙學書冊。夏志誠在這裡教新入門的弟子讀書識字。",
+     "exits": [
+      {
+       "dir": "W",
+       "to": "qz_square"
+      }
+     ],
+     "npcs": [
+      "n_qz_xiazhicheng"
+     ],
+     "features": [],
+     "requires": [
+      {
+       "type": "sect",
+       "sect": "quanzhen"
+      }
+     ]
+    },
+    {
+     "id": "qz_chongyang",
+     "name": "重陽宮",
+     "desc": "重陽宮是全真教的正殿，供著祖師王重陽的畫像。殿側擺著長桌，卯、午、酉時鹿清篤在這裡分發齋飯，掌藥的師兄守著藥櫃。",
+     "exits": [
+      {
+       "dir": "S",
+       "to": "qz_square"
+      },
+      {
+       "dir": "N",
+       "to": "qz_houshan"
+      }
+     ],
+     "npcs": [
+      "n_qz_luqingdu",
+      "n_qz_zhangyao",
+      "n_qz_biye",
+      "n_qz_huipai"
+     ],
+     "features": [
+      "STOVE"
+     ],
+     "requires": []
+    },
+    {
+     "id": "qz_houshan",
+     "name": "重陽宮後山",
+     "desc": "宮後的山坡清幽寂靜，幾位道人盤膝吐納。尹志平常在這裡指點弟子調息養生；往東是閉關的山洞，往西是思過處。",
+     "exits": [
+      {
+       "dir": "S",
+       "to": "qz_chongyang"
+      },
+      {
+       "dir": "E",
+       "to": "qz_cave"
+      },
+      {
+       "dir": "W",
+       "to": "qz_siguo"
+      },
+      {
+       "dir": "N",
+       "to": "qz_garden"
+      }
+     ],
+     "npcs": [
+      "n_qz_yinzhiping",
+      "n_qz_yinshi"
+     ],
+     "features": [
+      "WOOD"
+     ],
+     "requires": []
+    },
+    {
+     "id": "qz_cave",
+     "name": "閉關山洞",
+     "desc": "山洞裡陰涼安靜，石壁上刻著祖師留下的口訣。在這裡打坐修練內力，事半功倍。",
+     "exits": [
+      {
+       "dir": "W",
+       "to": "qz_houshan"
+      }
+     ],
+     "npcs": [
+      "n_qz_dongkou"
+     ],
+     "features": [],
+     "requires": [
+      {
+       "type": "sect",
+       "sect": "quanzhen"
+      }
+     ],
+     "meditate": {
+      "mult": 1.3,
+      "drain_pct": 0.0
+     }
+    },
+    {
+     "id": "qz_garden",
+     "name": "後山菜園",
+     "desc": "道觀自種的菜園，一畦畦青菜長得整整齊齊。掌園道長拄著鋤頭，正在發愁今年的收成。",
+     "exits": [
+      {
+       "dir": "S",
+       "to": "qz_houshan"
+      }
+     ],
+     "npcs": [
+      "n_qz_zhangyuan"
+     ],
+     "features": [
+      "FIELD"
+     ],
+     "requires": []
+    },
+    {
+     "id": "qz_siguo",
+     "name": "思過崖",
+     "desc": "崖邊一間石屋，屋裡只有一張蒲團。觸犯門規的弟子被押到這裡面壁思過，期滿之前不得下山。",
+     "exits": [
+      {
+       "dir": "E",
+       "to": "qz_houshan"
+      }
+     ],
+     "npcs": [
+      "n_qz_jailer"
+     ],
+     "features": [],
+     "requires": [
+      {
+       "type": "sect",
+       "sect": "quanzhen"
+      }
+     ],
+     "jail": true
+    }
+   ]
+  }
+ },
+ "extra_rooms": {},
+ "exit_patches": [],
+ "npcs": [
+  {
+   "id": "n_qz_cha",
+   "name": "查小鏞",
+   "kind": "FUNC",
+   "region": "quanzhen",
+   "room": "qz_gate",
+   "alignment": "GOOD",
+   "talk": "talk_n_qz_cha",
+   "services": [
+    "RESPAWN"
+   ],
+   "night_closed": false,
+   "desc": "在全真山門替江湖人記錄落腳處的老先生。",
+   "era": "1.0A",
+   "src": "later"
+  },
+  {
+   "id": "n_qz_zhike",
+   "name": "知客道長",
+   "kind": "GUARD",
+   "region": "quanzhen",
+   "room": "qz_gate",
+   "alignment": "GOOD",
+   "talk": "talk_n_qz_zhike",
+   "services": [],
+   "night_closed": false,
+   "desc": "守在山門口的老道士，負責接待香客、打量想入教的人；心術不正的人他一眼就看得出來。（2001 氣 5000）",
+   "era": "1.0A",
+   "src": "verified"
+  },
+  {
+   "id": "n_qz_qiuchuji",
+   "name": "丘處機",
+   "kind": "MASTER",
+   "region": "quanzhen",
+   "room": "qz_sanqing",
+   "alignment": "GOOD",
+   "talk": "talk_n_qz_qiuchuji",
+   "services": [
+    "JOIN",
+    "TEACH",
+    "BETRAY"
+   ],
+   "night_closed": false,
+   "join_sect": "quanzhen",
+   "desc": "長春子丘處機，全真七子中武功最高，性如烈火，嫉惡如仇。（2001 氣 12500）",
+   "era": "1.0A",
+   "src": "verified"
+  },
+  {
+   "id": "n_qz_majue",
+   "name": "馬鈺",
+   "kind": "MASTER",
+   "region": "quanzhen",
+   "room": "qz_sanqing",
+   "alignment": "GOOD",
+   "talk": "talk_n_qz_majue",
+   "services": [
+    "JOIN",
+    "TEACH"
+   ],
+   "night_closed": false,
+   "join_sect": "quanzhen",
+   "desc": "丹陽子馬鈺，全真七子之首，性情溫和，內功修為深厚。（2001 氣 12000）",
+   "era": "1.0A",
+   "src": "verified"
+  },
+  {
+   "id": "n_qz_tanchuduan",
+   "name": "譚處端",
+   "kind": "MASTER",
+   "region": "quanzhen",
+   "room": "qz_sanqing",
+   "alignment": "GOOD",
+   "talk": "talk_n_qz_tanchuduan",
+   "services": [
+    "JOIN",
+    "TEACH"
+   ],
+   "night_closed": false,
+   "join_sect": "quanzhen",
+   "desc": "長真子譚處端，身材魁梧，說話聲如洪鐘。（2001 氣 11500）",
+   "era": "1.0A",
+   "src": "verified"
+  },
+  {
+   "id": "n_qz_wangchuyi",
+   "name": "王處一",
+   "kind": "MASTER",
+   "region": "quanzhen",
+   "room": "qz_sanqing",
+   "alignment": "GOOD",
+   "talk": "talk_n_qz_wangchuyi",
+   "services": [
+    "JOIN",
+    "TEACH"
+   ],
+   "night_closed": false,
+   "join_sect": "quanzhen",
+   "desc": "玉陽子王處一，曾一足跂立憑臨萬丈深谷，人稱「鐵腳仙」。（2001 氣 11001）",
+   "era": "1.0A",
+   "src": "verified"
+  },
+  {
+   "id": "n_qz_liuchuxuan",
+   "name": "劉處玄",
+   "kind": "MASTER",
+   "region": "quanzhen",
+   "room": "qz_sanqing",
+   "alignment": "GOOD",
+   "talk": "talk_n_qz_liuchuxuan",
+   "services": [
+    "JOIN",
+    "TEACH"
+   ],
+   "night_closed": false,
+   "join_sect": "quanzhen",
+   "desc": "長生子劉處玄，身形瘦小，沉默寡言。（2001 氣 11000）",
+   "era": "1.0A",
+   "src": "verified"
+  },
+  {
+   "id": "n_qz_haodatong",
+   "name": "郝大通",
+   "kind": "MASTER",
+   "region": "quanzhen",
+   "room": "qz_sanqing",
+   "alignment": "GOOD",
+   "talk": "talk_n_qz_haodatong",
+   "services": [
+    "JOIN",
+    "TEACH"
+   ],
+   "night_closed": false,
+   "join_sect": "quanzhen",
+   "desc": "廣寧子郝大通，精研易理，掌法沉穩。（2001 氣 10500）",
+   "era": "1.0A",
+   "src": "verified"
+  },
+  {
+   "id": "n_qz_sunbuer",
+   "name": "孫不二",
+   "kind": "MASTER",
+   "region": "quanzhen",
+   "room": "qz_sanqing",
+   "alignment": "GOOD",
+   "talk": "talk_n_qz_sunbuer",
+   "services": [
+    "JOIN",
+    "TEACH"
+   ],
+   "night_closed": false,
+   "join_sect": "quanzhen",
+   "desc": "清淨散人孫不二，七子中唯一的女冠，手持拂塵，神情端凝。（2001 氣 9500）",
+   "era": "1.0A",
+   "src": "verified"
+  },
+  {
+   "id": "n_qz_yinzhiping",
+   "name": "尹志平",
+   "kind": "MASTER",
+   "region": "quanzhen",
+   "room": "qz_houshan",
+   "alignment": "GOOD",
+   "talk": "talk_n_qz_yinzhiping",
+   "services": [
+    "TEACH"
+   ],
+   "night_closed": false,
+   "desc": "清和道人尹志平，丘處機的大弟子，負責傳授本門養生之道。（2001 氣 9500）",
+   "era": "1.0A",
+   "src": "verified"
+  },
+  {
+   "id": "n_qz_yinshi",
+   "name": "養生隱士",
+   "kind": "MASTER",
+   "region": "quanzhen",
+   "room": "qz_houshan",
+   "alignment": "GOOD",
+   "talk": "talk_n_qz_yinshi",
+   "services": [
+    "TEACH"
+   ],
+   "night_closed": false,
+   "desc": "在後山結廬的隱士，養生功夫極深，肯指點的人要先付些香油錢。",
+   "era": "1.0A",
+   "src": "later"
+  },
+  {
+   "id": "n_qz_qizhicheng",
+   "name": "祁志誠",
+   "kind": "MASTER",
+   "region": "quanzhen",
+   "room": "qz_square",
+   "alignment": "GOOD",
+   "talk": "talk_n_qz_qizhicheng",
+   "services": [
+    "TEACH"
+   ],
+   "night_closed": false,
+   "desc": "全真三代弟子，負責教新入門的師弟基本武學。",
+   "era": "1.0A",
+   "src": "later"
+  },
+  {
+   "id": "n_qz_spar",
+   "name": "趙志敬",
+   "kind": "FUNC",
+   "region": "quanzhen",
+   "room": "qz_square",
+   "alignment": "GOOD",
+   "talk": "talk_n_qz_spar",
+   "services": [
+    "FIGHT"
+   ],
+   "night_closed": false,
+   "fight": {
+    "monster": "m_qz_dizi",
+    "requires": [
+     {
+      "type": "sect",
+      "sect": "quanzhen"
+     }
+    ]
+   },
+   "desc": "全真三代弟子，奉命陪新進弟子切磋外功，出手從不留情。（2001 氣 9500）",
+   "era": "1.0A",
+   "src": "verified"
+  },
+  {
+   "id": "n_qz_lizhichang",
+   "name": "李志常",
+   "kind": "STORY",
+   "region": "quanzhen",
+   "room": "qz_square",
+   "alignment": "GOOD",
+   "talk": "talk_n_qz_lizhichang",
+   "services": [],
+   "night_closed": false,
+   "desc": "全真三代弟子，性子沉穩，常在廣場一角練劍。（2001 氣 9000）",
+   "era": "1.0A",
+   "src": "verified"
+  },
+  {
+   "id": "n_qz_xiazhicheng",
+   "name": "夏志誠",
+   "kind": "MASTER",
+   "region": "quanzhen",
+   "room": "qz_reading",
+   "alignment": "GOOD",
+   "talk": "talk_n_qz_xiazhicheng",
+   "services": [
+    "TEACH"
+   ],
+   "night_closed": false,
+   "desc": "全真弟子，在丘初級屋子裡教人讀書識字。（2001 氣 5200）",
+   "era": "1.0A",
+   "src": "verified"
+  },
+  {
+   "id": "n_qz_luqingdu",
+   "name": "鹿清篤",
+   "kind": "FUNC",
+   "region": "quanzhen",
+   "room": "qz_chongyang",
+   "alignment": "GOOD",
+   "talk": "talk_n_qz_luqingdu",
+   "services": [
+    "MEAL"
+   ],
+   "night_closed": false,
+   "meal": {
+    "food": 40,
+    "water": 40,
+    "hours": [
+     "卯",
+     "午",
+     "酉"
+    ],
+    "requires": [
+     {
+      "type": "sect",
+      "sect": "quanzhen"
+     }
+    ]
+   },
+   "desc": "胖乎乎的四代弟子，負責分發重陽宮的齋飯，只給本門弟子，每人一份。（2001 氣 8000）",
+   "era": "1.0A",
+   "src": "verified"
+  },
+  {
+   "id": "n_qz_zhangyao",
+   "name": "掌藥大師兄",
+   "kind": "SHOP",
+   "region": "quanzhen",
+   "room": "qz_chongyang",
+   "alignment": "NEUTRAL",
+   "talk": "talk_n_qz_zhangyao",
+   "services": [
+    "SHOP"
+   ],
+   "night_closed": false,
+   "shop": {
+    "items": [
+     "c_jingyao",
+     "c_qiyao",
+     "c_jieduyao"
+    ]
+   },
+   "desc": "掌管重陽宮藥櫃的師兄，渾身藥草味。",
+   "era": "1.0A",
+   "src": "verified"
+  },
+  {
+   "id": "n_qz_biye",
+   "name": "掌畢業師兄",
+   "kind": "STORY",
+   "region": "quanzhen",
+   "room": "qz_chongyang",
+   "alignment": "GOOD",
+   "talk": "talk_n_qz_biye",
+   "services": [],
+   "night_closed": false,
+   "desc": "主持弟子出師的師兄。（出師屬 M9，現在只能說話）",
+   "era": "1.0A",
+   "src": "later"
+  },
+  {
+   "id": "n_qz_huipai",
+   "name": "畢業後回派師兄",
+   "kind": "STORY",
+   "region": "quanzhen",
+   "room": "qz_chongyang",
+   "alignment": "GOOD",
+   "talk": "talk_n_qz_huipai",
+   "services": [],
+   "night_closed": false,
+   "desc": "替出師後想回山的弟子辦手續的師兄。（M9）",
+   "era": "1.0A",
+   "src": "later"
+  },
+  {
+   "id": "n_qz_dongkou",
+   "name": "洞口道士",
+   "kind": "STORY",
+   "region": "quanzhen",
+   "room": "qz_cave",
+   "alignment": "GOOD",
+   "talk": "talk_n_qz_dongkou",
+   "services": [],
+   "night_closed": false,
+   "desc": "守在閉關山洞口的道士，據說子時有緣人能在洞裡見到祖師遺像。",
+   "era": "1.0A",
+   "src": "verified"
+  },
+  {
+   "id": "n_qz_zhangyuan",
+   "name": "掌園道長",
+   "kind": "STORY",
+   "region": "quanzhen",
+   "room": "qz_garden",
+   "alignment": "GOOD",
+   "talk": "talk_n_qz_zhangyuan",
+   "services": [],
+   "night_closed": false,
+   "desc": "掌管後山菜園的道長，總在為菜蟲和收成發愁。",
+   "era": "1.0A",
+   "src": "later"
+  },
+  {
+   "id": "n_qz_jailer",
+   "name": "申志凡",
+   "kind": "FUNC",
+   "region": "quanzhen",
+   "room": "qz_siguo",
+   "alignment": "GOOD",
+   "talk": "talk_n_qz_jailer",
+   "services": [
+    "JAIL"
+   ],
+   "night_closed": false,
+   "desc": "全真三代弟子，奉七子之命看守思過崖。（2001 氣 8500；看守人身分＝設計提案）",
+   "era": "1.0A",
+   "src": "proposal"
+  },
+  {
+   "id": "n_qz_chendabao",
+   "name": "陳大寶",
+   "kind": "STORY",
+   "region": "zhongnan_foot",
+   "room": "zn_river",
+   "alignment": "GOOD",
+   "talk": "talk_n_qz_chendabao",
+   "services": [],
+   "night_closed": false,
+   "desc": "在河邊唉聲嘆氣的年輕人，似乎遇上了什麼麻煩。（2001-07-26「幫助陳大寶」）",
+   "era": "1.0A",
+   "src": "verified"
+  },
+  {
+   "id": "n_qz_chengfeng",
+   "name": "程風",
+   "kind": "STORY",
+   "region": "zhongnan_foot",
+   "room": "zn_road1",
+   "alignment": "NEUTRAL",
+   "talk": "talk_n_qz_chengfeng",
+   "services": [],
+   "night_closed": false,
+   "desc": "人稱浪子的程風，一身酒氣，到處打聽終南山在哪裡。（2001「終南山在哪裡？」）",
+   "era": "1.0A",
+   "src": "verified"
+  }
+ ],
+ "masters": [
+  {
+   "id": "ms_qz_qiuchuji_xinfa",
+   "npc_id": "n_qz_qiuchuji",
+   "skill_id": "qz_xinfa",
+   "cap": 100,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "quanzhen"
+    },
+    {
+     "type": "sect_master",
+     "npc": "n_qz_qiuchuji"
+    }
+   ],
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "七子皆教（mengpai/6）；上限 100＝【設計提案】（先天氣功要全心 90）"
+  },
+  {
+   "id": "ms_qz_qiuchuji_jinyan",
+   "npc_id": "n_qz_qiuchuji",
+   "skill_id": "qz_jinyan",
+   "cap": 100,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "quanzhen"
+    },
+    {
+     "type": "sect_master",
+     "npc": "n_qz_qiuchuji"
+    }
+   ],
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "七子皆教（mengpai/6）；上限 100＝【設計提案】（先天氣功要全心 90）"
+  },
+  {
+   "id": "ms_qz_qiuchuji_jianfa",
+   "npc_id": "n_qz_qiuchuji",
+   "skill_id": "qz_jianfa",
+   "cap": 100,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "quanzhen"
+    },
+    {
+     "type": "sect_master",
+     "npc": "n_qz_qiuchuji"
+    }
+   ],
+   "era": "1.0A",
+   "src": "later",
+   "src_note": "上限照 2002-05-07 各師父表【後期版】"
+  },
+  {
+   "id": "ms_qz_qiuchuji_haotian",
+   "npc_id": "n_qz_qiuchuji",
+   "skill_id": "qz_haotian",
+   "cap": 80,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "quanzhen"
+    },
+    {
+     "type": "sect_master",
+     "npc": "n_qz_qiuchuji"
+    }
+   ],
+   "era": "1.0A",
+   "src": "later",
+   "src_note": "上限照 2002-05-07 各師父表【後期版】"
+  },
+  {
+   "id": "ms_qz_qiuchuji_tiangang",
+   "npc_id": "n_qz_qiuchuji",
+   "skill_id": "qz_tiangang",
+   "cap": 80,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "quanzhen"
+    },
+    {
+     "type": "sect_master",
+     "npc": "n_qz_qiuchuji"
+    }
+   ],
+   "era": "1.0A",
+   "src": "later",
+   "src_note": "上限照 2002-05-07 各師父表【後期版】"
+  },
+  {
+   "id": "ms_qz_qiuchuji_sanhua",
+   "npc_id": "n_qz_qiuchuji",
+   "skill_id": "qz_sanhua",
+   "cap": 80,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "quanzhen"
+    },
+    {
+     "type": "sect_master",
+     "npc": "n_qz_qiuchuji"
+    }
+   ],
+   "era": "1.0A",
+   "src": "later",
+   "src_note": "上限照 2002-05-07 各師父表【後期版】"
+  },
+  {
+   "id": "ms_qz_majue_xinfa",
+   "npc_id": "n_qz_majue",
+   "skill_id": "qz_xinfa",
+   "cap": 100,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "quanzhen"
+    },
+    {
+     "type": "sect_master",
+     "npc": "n_qz_majue"
+    }
+   ],
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "七子皆教（mengpai/6）；上限 100＝【設計提案】（先天氣功要全心 90）"
+  },
+  {
+   "id": "ms_qz_majue_jinyan",
+   "npc_id": "n_qz_majue",
+   "skill_id": "qz_jinyan",
+   "cap": 100,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "quanzhen"
+    },
+    {
+     "type": "sect_master",
+     "npc": "n_qz_majue"
+    }
+   ],
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "七子皆教（mengpai/6）；上限 100＝【設計提案】（先天氣功要全心 90）"
+  },
+  {
+   "id": "ms_qz_majue_jianfa",
+   "npc_id": "n_qz_majue",
+   "skill_id": "qz_jianfa",
+   "cap": 80,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "quanzhen"
+    },
+    {
+     "type": "sect_master",
+     "npc": "n_qz_majue"
+    }
+   ],
+   "era": "1.0A",
+   "src": "later",
+   "src_note": "上限照 2002-05-07 各師父表【後期版】"
+  },
+  {
+   "id": "ms_qz_majue_haotian",
+   "npc_id": "n_qz_majue",
+   "skill_id": "qz_haotian",
+   "cap": 80,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "quanzhen"
+    },
+    {
+     "type": "sect_master",
+     "npc": "n_qz_majue"
+    }
+   ],
+   "era": "1.0A",
+   "src": "later",
+   "src_note": "上限照 2002-05-07 各師父表【後期版】"
+  },
+  {
+   "id": "ms_qz_majue_tiangang",
+   "npc_id": "n_qz_majue",
+   "skill_id": "qz_tiangang",
+   "cap": 80,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "quanzhen"
+    },
+    {
+     "type": "sect_master",
+     "npc": "n_qz_majue"
+    }
+   ],
+   "era": "1.0A",
+   "src": "later",
+   "src_note": "上限照 2002-05-07 各師父表【後期版】"
+  },
+  {
+   "id": "ms_qz_majue_xiantian",
+   "npc_id": "n_qz_majue",
+   "skill_id": "qz_xiantian",
+   "cap": 80,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "quanzhen"
+    },
+    {
+     "type": "sect_master",
+     "npc": "n_qz_majue"
+    }
+   ],
+   "era": "1.0A",
+   "src": "later",
+   "src_note": "上限照 2002-05-07 各師父表【後期版】"
+  },
+  {
+   "id": "ms_qz_tanchuduan_xinfa",
+   "npc_id": "n_qz_tanchuduan",
+   "skill_id": "qz_xinfa",
+   "cap": 100,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "quanzhen"
+    },
+    {
+     "type": "sect_master",
+     "npc": "n_qz_tanchuduan"
+    }
+   ],
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "七子皆教（mengpai/6）；上限 100＝【設計提案】（先天氣功要全心 90）"
+  },
+  {
+   "id": "ms_qz_tanchuduan_jinyan",
+   "npc_id": "n_qz_tanchuduan",
+   "skill_id": "qz_jinyan",
+   "cap": 100,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "quanzhen"
+    },
+    {
+     "type": "sect_master",
+     "npc": "n_qz_tanchuduan"
+    }
+   ],
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "七子皆教（mengpai/6）；上限 100＝【設計提案】（先天氣功要全心 90）"
+  },
+  {
+   "id": "ms_qz_tanchuduan_jianfa",
+   "npc_id": "n_qz_tanchuduan",
+   "skill_id": "qz_jianfa",
+   "cap": 80,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "quanzhen"
+    },
+    {
+     "type": "sect_master",
+     "npc": "n_qz_tanchuduan"
+    }
+   ],
+   "era": "1.0A",
+   "src": "later",
+   "src_note": "上限照 2002-05-07 各師父表【後期版】"
+  },
+  {
+   "id": "ms_qz_tanchuduan_haotian",
+   "npc_id": "n_qz_tanchuduan",
+   "skill_id": "qz_haotian",
+   "cap": 80,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "quanzhen"
+    },
+    {
+     "type": "sect_master",
+     "npc": "n_qz_tanchuduan"
+    }
+   ],
+   "era": "1.0A",
+   "src": "later",
+   "src_note": "上限照 2002-05-07 各師父表【後期版】"
+  },
+  {
+   "id": "ms_qz_tanchuduan_tiangang",
+   "npc_id": "n_qz_tanchuduan",
+   "skill_id": "qz_tiangang",
+   "cap": 80,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "quanzhen"
+    },
+    {
+     "type": "sect_master",
+     "npc": "n_qz_tanchuduan"
+    }
+   ],
+   "era": "1.0A",
+   "src": "later",
+   "src_note": "上限照 2002-05-07 各師父表【後期版】"
+  },
+  {
+   "id": "ms_qz_tanchuduan_tonggui",
+   "npc_id": "n_qz_tanchuduan",
+   "skill_id": "qz_tonggui",
+   "cap": 90,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "quanzhen"
+    },
+    {
+     "type": "sect_master",
+     "npc": "n_qz_tanchuduan"
+    }
+   ],
+   "era": "1.0A",
+   "src": "later",
+   "src_note": "上限照 2002-05-07 各師父表【後期版】"
+  },
+  {
+   "id": "ms_qz_wangchuyi_xinfa",
+   "npc_id": "n_qz_wangchuyi",
+   "skill_id": "qz_xinfa",
+   "cap": 100,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "quanzhen"
+    },
+    {
+     "type": "sect_master",
+     "npc": "n_qz_wangchuyi"
+    }
+   ],
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "七子皆教（mengpai/6）；上限 100＝【設計提案】（先天氣功要全心 90）"
+  },
+  {
+   "id": "ms_qz_wangchuyi_jinyan",
+   "npc_id": "n_qz_wangchuyi",
+   "skill_id": "qz_jinyan",
+   "cap": 100,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "quanzhen"
+    },
+    {
+     "type": "sect_master",
+     "npc": "n_qz_wangchuyi"
+    }
+   ],
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "七子皆教（mengpai/6）；上限 100＝【設計提案】（先天氣功要全心 90）"
+  },
+  {
+   "id": "ms_qz_wangchuyi_jianfa",
+   "npc_id": "n_qz_wangchuyi",
+   "skill_id": "qz_jianfa",
+   "cap": 80,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "quanzhen"
+    },
+    {
+     "type": "sect_master",
+     "npc": "n_qz_wangchuyi"
+    }
+   ],
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "教授分派 mengpai/6；上限 80＝【設計提案】（2002 表未列）"
+  },
+  {
+   "id": "ms_qz_wangchuyi_haotian",
+   "npc_id": "n_qz_wangchuyi",
+   "skill_id": "qz_haotian",
+   "cap": 80,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "quanzhen"
+    },
+    {
+     "type": "sect_master",
+     "npc": "n_qz_wangchuyi"
+    }
+   ],
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "教授分派 mengpai/6；上限 80＝【設計提案】（2002 表未列）"
+  },
+  {
+   "id": "ms_qz_wangchuyi_tiangang",
+   "npc_id": "n_qz_wangchuyi",
+   "skill_id": "qz_tiangang",
+   "cap": 80,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "quanzhen"
+    },
+    {
+     "type": "sect_master",
+     "npc": "n_qz_wangchuyi"
+    }
+   ],
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "教授分派 mengpai/6；上限 80＝【設計提案】（2002 表未列）"
+  },
+  {
+   "id": "ms_qz_wangchuyi_tonggui",
+   "npc_id": "n_qz_wangchuyi",
+   "skill_id": "qz_tonggui",
+   "cap": 80,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "quanzhen"
+    },
+    {
+     "type": "sect_master",
+     "npc": "n_qz_wangchuyi"
+    }
+   ],
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "教授分派 mengpai/6；上限 80＝【設計提案】（2002 表未列）"
+  },
+  {
+   "id": "ms_qz_liuchuxuan_xinfa",
+   "npc_id": "n_qz_liuchuxuan",
+   "skill_id": "qz_xinfa",
+   "cap": 100,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "quanzhen"
+    },
+    {
+     "type": "sect_master",
+     "npc": "n_qz_liuchuxuan"
+    }
+   ],
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "七子皆教（mengpai/6）；上限 100＝【設計提案】（先天氣功要全心 90）"
+  },
+  {
+   "id": "ms_qz_liuchuxuan_jinyan",
+   "npc_id": "n_qz_liuchuxuan",
+   "skill_id": "qz_jinyan",
+   "cap": 100,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "quanzhen"
+    },
+    {
+     "type": "sect_master",
+     "npc": "n_qz_liuchuxuan"
+    }
+   ],
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "七子皆教（mengpai/6）；上限 100＝【設計提案】（先天氣功要全心 90）"
+  },
+  {
+   "id": "ms_qz_liuchuxuan_jianfa",
+   "npc_id": "n_qz_liuchuxuan",
+   "skill_id": "qz_jianfa",
+   "cap": 80,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "quanzhen"
+    },
+    {
+     "type": "sect_master",
+     "npc": "n_qz_liuchuxuan"
+    }
+   ],
+   "era": "1.0A",
+   "src": "later",
+   "src_note": "上限照 2002-05-07 各師父表【後期版】"
+  },
+  {
+   "id": "ms_qz_liuchuxuan_haotian",
+   "npc_id": "n_qz_liuchuxuan",
+   "skill_id": "qz_haotian",
+   "cap": 70,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "quanzhen"
+    },
+    {
+     "type": "sect_master",
+     "npc": "n_qz_liuchuxuan"
+    }
+   ],
+   "era": "1.0A",
+   "src": "later",
+   "src_note": "上限照 2002-05-07 各師父表【後期版】"
+  },
+  {
+   "id": "ms_qz_liuchuxuan_tiangang",
+   "npc_id": "n_qz_liuchuxuan",
+   "skill_id": "qz_tiangang",
+   "cap": 80,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "quanzhen"
+    },
+    {
+     "type": "sect_master",
+     "npc": "n_qz_liuchuxuan"
+    }
+   ],
+   "era": "1.0A",
+   "src": "later",
+   "src_note": "上限照 2002-05-07 各師父表【後期版】"
+  },
+  {
+   "id": "ms_qz_liuchuxuan_xiantian",
+   "npc_id": "n_qz_liuchuxuan",
+   "skill_id": "qz_xiantian",
+   "cap": 70,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "quanzhen"
+    },
+    {
+     "type": "sect_master",
+     "npc": "n_qz_liuchuxuan"
+    }
+   ],
+   "era": "1.0A",
+   "src": "later",
+   "src_note": "上限照 2002-05-07 各師父表【後期版】"
+  },
+  {
+   "id": "ms_qz_haodatong_xinfa",
+   "npc_id": "n_qz_haodatong",
+   "skill_id": "qz_xinfa",
+   "cap": 100,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "quanzhen"
+    },
+    {
+     "type": "sect_master",
+     "npc": "n_qz_haodatong"
+    }
+   ],
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "七子皆教（mengpai/6）；上限 100＝【設計提案】（先天氣功要全心 90）"
+  },
+  {
+   "id": "ms_qz_haodatong_jinyan",
+   "npc_id": "n_qz_haodatong",
+   "skill_id": "qz_jinyan",
+   "cap": 100,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "quanzhen"
+    },
+    {
+     "type": "sect_master",
+     "npc": "n_qz_haodatong"
+    }
+   ],
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "七子皆教（mengpai/6）；上限 100＝【設計提案】（先天氣功要全心 90）"
+  },
+  {
+   "id": "ms_qz_haodatong_jianfa",
+   "npc_id": "n_qz_haodatong",
+   "skill_id": "qz_jianfa",
+   "cap": 80,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "quanzhen"
+    },
+    {
+     "type": "sect_master",
+     "npc": "n_qz_haodatong"
+    }
+   ],
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "教授分派 mengpai/6；上限 80＝【設計提案】（2002 表未列）"
+  },
+  {
+   "id": "ms_qz_haodatong_haotian",
+   "npc_id": "n_qz_haodatong",
+   "skill_id": "qz_haotian",
+   "cap": 80,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "quanzhen"
+    },
+    {
+     "type": "sect_master",
+     "npc": "n_qz_haodatong"
+    }
+   ],
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "教授分派 mengpai/6；上限 80＝【設計提案】（2002 表未列）"
+  },
+  {
+   "id": "ms_qz_haodatong_tiangang",
+   "npc_id": "n_qz_haodatong",
+   "skill_id": "qz_tiangang",
+   "cap": 80,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "quanzhen"
+    },
+    {
+     "type": "sect_master",
+     "npc": "n_qz_haodatong"
+    }
+   ],
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "教授分派 mengpai/6；上限 80＝【設計提案】（2002 表未列）"
+  },
+  {
+   "id": "ms_qz_haodatong_sanhua",
+   "npc_id": "n_qz_haodatong",
+   "skill_id": "qz_sanhua",
+   "cap": 80,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "quanzhen"
+    },
+    {
+     "type": "sect_master",
+     "npc": "n_qz_haodatong"
+    }
+   ],
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "教授分派 mengpai/6；上限 80＝【設計提案】（2002 表未列）"
+  },
+  {
+   "id": "ms_qz_sunbuer_xinfa",
+   "npc_id": "n_qz_sunbuer",
+   "skill_id": "qz_xinfa",
+   "cap": 100,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "quanzhen"
+    },
+    {
+     "type": "sect_master",
+     "npc": "n_qz_sunbuer"
+    }
+   ],
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "七子皆教（mengpai/6）；上限 100＝【設計提案】（先天氣功要全心 90）"
+  },
+  {
+   "id": "ms_qz_sunbuer_jinyan",
+   "npc_id": "n_qz_sunbuer",
+   "skill_id": "qz_jinyan",
+   "cap": 100,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "quanzhen"
+    },
+    {
+     "type": "sect_master",
+     "npc": "n_qz_sunbuer"
+    }
+   ],
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "七子皆教（mengpai/6）；上限 100＝【設計提案】（先天氣功要全心 90）"
+  },
+  {
+   "id": "ms_qz_sunbuer_jianfa",
+   "npc_id": "n_qz_sunbuer",
+   "skill_id": "qz_jianfa",
+   "cap": 80,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "quanzhen"
+    },
+    {
+     "type": "sect_master",
+     "npc": "n_qz_sunbuer"
+    }
+   ],
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "教授分派 mengpai/6；上限 80＝【設計提案】（2002 表未列）"
+  },
+  {
+   "id": "ms_qz_sunbuer_haotian",
+   "npc_id": "n_qz_sunbuer",
+   "skill_id": "qz_haotian",
+   "cap": 80,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "quanzhen"
+    },
+    {
+     "type": "sect_master",
+     "npc": "n_qz_sunbuer"
+    }
+   ],
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "教授分派 mengpai/6；上限 80＝【設計提案】（2002 表未列）"
+  },
+  {
+   "id": "ms_qz_sunbuer_tiangang",
+   "npc_id": "n_qz_sunbuer",
+   "skill_id": "qz_tiangang",
+   "cap": 80,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "quanzhen"
+    },
+    {
+     "type": "sect_master",
+     "npc": "n_qz_sunbuer"
+    }
+   ],
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "教授分派 mengpai/6；上限 80＝【設計提案】（2002 表未列）"
+  },
+  {
+   "id": "ms_qz_sunbuer_tonggui",
+   "npc_id": "n_qz_sunbuer",
+   "skill_id": "qz_tonggui",
+   "cap": 80,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "quanzhen"
+    },
+    {
+     "type": "sect_master",
+     "npc": "n_qz_sunbuer"
+    }
+   ],
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "教授分派 mengpai/6；上限 80＝【設計提案】（2002 表未列）"
+  },
+  {
+   "id": "ms_qz_yinzhiping_yangsheng",
+   "npc_id": "n_qz_yinzhiping",
+   "skill_id": "yangsheng",
+   "cap": 50,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "quanzhen"
+    }
+   ],
+   "era": "1.0A",
+   "src": "verified",
+   "src_note": "官方 index_jy2-25：養生由清和道人尹志平傳授；上限 50 照 M3A_PLAN 3.2"
+  },
+  {
+   "id": "ms_qz_yinshi_yangsheng",
+   "npc_id": "n_qz_yinshi",
+   "skill_id": "yangsheng",
+   "cap": 100,
+   "price": 10,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "quanzhen"
+    },
+    {
+     "type": "skill_min",
+     "skill": "yangsheng",
+     "value": 50
+    }
+   ],
+   "era": "1.0A",
+   "src": "later",
+   "src_note": "steamxo：養生隱士（付費）；從 50 教到 100、價格＝【設計提案】【待考證】"
+  },
+  {
+   "id": "ms_qz_qizhicheng_inner",
+   "npc_id": "n_qz_qizhicheng",
+   "skill_id": "basic_inner",
+   "cap": 140,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "quanzhen"
+    }
+   ],
+   "era": "1.0A",
+   "src": "later",
+   "src_note": "steamxo：祁志誠教基本武學；上限 140【後期版】"
+  },
+  {
+   "id": "ms_qz_qizhicheng_parry",
+   "npc_id": "n_qz_qizhicheng",
+   "skill_id": "basic_parry",
+   "cap": 140,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "quanzhen"
+    }
+   ],
+   "era": "1.0A",
+   "src": "later",
+   "src_note": "steamxo：祁志誠教基本武學；上限 140【後期版】"
+  },
+  {
+   "id": "ms_qz_qizhicheng_dodge",
+   "npc_id": "n_qz_qizhicheng",
+   "skill_id": "basic_dodge",
+   "cap": 140,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "quanzhen"
+    }
+   ],
+   "era": "1.0A",
+   "src": "later",
+   "src_note": "steamxo：祁志誠教基本武學；上限 140【後期版】"
+  },
+  {
+   "id": "ms_qz_qizhicheng_body",
+   "npc_id": "n_qz_qizhicheng",
+   "skill_id": "basic_body",
+   "cap": 140,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "quanzhen"
+    }
+   ],
+   "era": "1.0A",
+   "src": "later",
+   "src_note": "steamxo：祁志誠教基本武學；上限 140【後期版】"
+  },
+  {
+   "id": "ms_qz_qizhicheng_sword",
+   "npc_id": "n_qz_qizhicheng",
+   "skill_id": "basic_sword",
+   "cap": 140,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "quanzhen"
+    }
+   ],
+   "era": "1.0A",
+   "src": "later",
+   "src_note": "steamxo：祁志誠教基本武學；上限 140【後期版】"
+  },
+  {
+   "id": "ms_qz_qizhicheng_fist",
+   "npc_id": "n_qz_qizhicheng",
+   "skill_id": "basic_fist",
+   "cap": 140,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "quanzhen"
+    }
+   ],
+   "era": "1.0A",
+   "src": "later",
+   "src_note": "steamxo：祁志誠教基本武學；上限 140【後期版】"
+  },
+  {
+   "id": "ms_qz_qizhicheng_formation",
+   "npc_id": "n_qz_qizhicheng",
+   "skill_id": "basic_formation",
+   "cap": 100,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "quanzhen"
+    }
+   ],
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "天罡北斗陣需要基本陣法；教者與上限＝【設計提案】"
+  },
+  {
+   "id": "ms_qz_xiazhicheng_literacy",
+   "npc_id": "n_qz_xiazhicheng",
+   "skill_id": "basic_literacy",
+   "cap": 61,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "quanzhen"
+    }
+   ],
+   "era": "1.0A",
+   "src": "verified",
+   "src_note": "jb136：夏志誠在丘初級屋子教讀書識字，上限 61（更新後 71）"
+  }
+ ],
+ "martial_arts": [
+  {
+   "id": "qz_xinfa",
+   "name": "全真心法",
+   "sect_id": "quanzhen",
+   "category": "INNER",
+   "base_skill": "basic_inner",
+   "difficulty": 0.8,
+   "tier": "BASIC",
+   "self_study_until": 0,
+   "self_study_cap": 0,
+   "party_size": 0,
+   "monster_only": false,
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "quanzhen"
+    }
+   ],
+   "desc": "全真教內功根基，以清靜無為養氣，運功療傷的效果比他派強。",
+   "inner": {
+    "heal_mult": 1.0,
+    "expel_mult": 1.0
+   },
+   "era": "1.0A",
+   "src": "verified",
+   "src_note": "研究 全真教：基本武功（官方 index_jy2-18）；係數 0.8（2002）",
+   "moves": []
+  },
+  {
+   "id": "qz_jianfa",
+   "name": "全真劍法",
+   "sect_id": "quanzhen",
+   "category": "SWORD",
+   "base_skill": "basic_sword",
+   "difficulty": 0.74,
+   "tier": "BASIC",
+   "self_study_until": 0,
+   "self_study_cap": 0,
+   "party_size": 0,
+   "monster_only": false,
+   "requires": [
+    {
+     "type": "any_of",
+     "options": [
+      [
+       {
+        "type": "sect",
+        "sect": "quanzhen"
+       }
+      ],
+      [
+       {
+        "type": "sect",
+        "sect": "gumu"
+       }
+      ]
+     ]
+    }
+   ],
+   "desc": "全真教入門劍法，劍招連綿，一招打出劍風籠罩前方一片。古墓派也傳這套劍法。",
+   "era": "1.0A",
+   "src": "verified",
+   "src_note": "研究 全真教：七子皆教；形狀小十字【後期版 blog】；係數 0.74（2002）；古墓 2001 官方頁也列全真劍法（共用此 id）",
+   "moves": [
+    {
+     "id": "qz_jf_1",
+     "name": "定陽針",
+     "unlock_level": 1,
+     "power": 18,
+     "range": 1,
+     "aoe": "CROSS",
+     "cost_inner": 0,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "move_sword_cross",
+     "src": "proposal"
+    },
+    {
+     "id": "qz_jf_2",
+     "name": "探海斬蛟",
+     "unlock_level": 30,
+     "power": 25,
+     "range": 1,
+     "aoe": "CROSS",
+     "cost_inner": 5,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "move_sword_cross",
+     "src": "proposal"
+    },
+    {
+     "id": "qz_jf_3",
+     "name": "七星聚會",
+     "unlock_level": 60,
+     "power": 34,
+     "range": 1,
+     "aoe": "CROSS",
+     "cost_inner": 10,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "move_sword_cross",
+     "src": "proposal"
+    }
+   ]
+  },
+  {
+   "id": "qz_haotian",
+   "name": "昊天掌",
+   "sect_id": "quanzhen",
+   "category": "FIST",
+   "base_skill": "basic_fist",
+   "difficulty": 0.95,
+   "tier": "BASIC",
+   "self_study_until": 0,
+   "self_study_cap": 0,
+   "party_size": 0,
+   "monster_only": false,
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "quanzhen"
+    }
+   ],
+   "desc": "全真教的掌法，掌力渾厚，出手比劍法更快，掌風四面八方掃開。",
+   "era": "1.0A",
+   "src": "verified",
+   "src_note": "研究 全真教：七子皆教；形狀大十字【後期版 blog】；係數 0.95（2002）",
+   "moves": [
+    {
+     "id": "qz_ht_1",
+     "name": "昊天正氣",
+     "unlock_level": 1,
+     "power": 18,
+     "range": 1,
+     "aoe": "CROSS_L",
+     "cost_inner": 0,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "move_qz_palm_wide",
+     "src": "proposal"
+    },
+    {
+     "id": "qz_ht_2",
+     "name": "天外飛雲",
+     "unlock_level": 30,
+     "power": 27,
+     "range": 1,
+     "aoe": "CROSS_L",
+     "cost_inner": 6,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "move_qz_palm_wide",
+     "src": "proposal"
+    },
+    {
+     "id": "qz_ht_3",
+     "name": "九天落掌",
+     "unlock_level": 60,
+     "power": 36,
+     "range": 1,
+     "aoe": "CROSS_L",
+     "cost_inner": 12,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "move_qz_palm_wide",
+     "src": "proposal"
+    }
+   ]
+  },
+  {
+   "id": "qz_jinyan",
+   "name": "金雁功",
+   "sect_id": "quanzhen",
+   "category": "LIGHTNESS",
+   "base_skill": "basic_body",
+   "difficulty": 0.9,
+   "tier": "BASIC",
+   "self_study_until": 0,
+   "self_study_cap": 0,
+   "party_size": 0,
+   "monster_only": false,
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "quanzhen"
+    }
+   ],
+   "desc": "全真教輕功，身似金雁橫空，增加戰鬥中的移動距離。",
+   "era": "1.0A",
+   "src": "verified",
+   "src_note": "研究 全真教：七子皆教；「增加戰鬥中的移動距離」（2002）；係數【待考證】",
+   "moves": []
+  },
+  {
+   "id": "qz_tiangang",
+   "name": "天罡北斗陣",
+   "sect_id": "quanzhen",
+   "category": "FORMATION",
+   "base_skill": "basic_formation",
+   "difficulty": 1.0,
+   "tier": "ADVANCED",
+   "self_study_until": 0,
+   "self_study_cap": 0,
+   "party_size": 0,
+   "monster_only": false,
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "quanzhen"
+    },
+    {
+     "type": "gender",
+     "value": "M"
+    },
+    {
+     "type": "skill_min",
+     "skill": "qz_xinfa",
+     "value": 80
+    },
+    {
+     "type": "skill_min",
+     "skill": "qz_jianfa",
+     "value": 70
+    },
+    {
+     "type": "skill_min",
+     "skill": "yangsheng",
+     "value": 90
+    },
+    {
+     "type": "skill_min",
+     "skill": "basic_inner",
+     "value": 70
+    },
+    {
+     "type": "skill_min",
+     "skill": "basic_sword",
+     "value": 60
+    },
+    {
+     "type": "skill_min",
+     "skill": "basic_formation",
+     "value": 1
+    }
+   ],
+   "desc": "全真教鎮教陣法，須七名男弟子依北斗七星方位站定，由一人佈陣。陣勢範圍極大、守禦堅固，有一人倒下陣便破了。",
+   "formation": {
+    "party_size": 7,
+    "stations": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      0
+     ],
+     [
+      2,
+      1
+     ],
+     [
+      3,
+      1
+     ],
+     [
+      3,
+      2
+     ],
+     [
+      4,
+      2
+     ],
+     [
+      4,
+      1
+     ]
+    ],
+    "gender": "M",
+    "atk_bonus": 0.15,
+    "def_bonus": 0.35,
+    "per_avg_level": 0.003
+   },
+   "era": "1.0A",
+   "src": "verified",
+   "src_note": "研究 全真教：1.0A 有此武功（mengpai/6）；門檻與係數＝2002-05-07 大陸 1.0B 數字【後期版】；7 人、全男、一人倒下即破（blog、mengpai/6）；陣法威力最強（2002）；加成數值與站位＝【設計提案】",
+   "moves": [
+    {
+     "id": "qz_tg_1",
+     "name": "北斗七星",
+     "unlock_level": 1,
+     "power": 30,
+     "range": 1,
+     "aoe": "SINGLE",
+     "cost_inner": 10,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "move_sword_basic",
+     "src": "proposal"
+    },
+    {
+     "id": "qz_tg_2",
+     "name": "天罡合璧",
+     "unlock_level": 60,
+     "power": 50,
+     "range": 1,
+     "aoe": "SINGLE",
+     "cost_inner": 20,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "move_sword_basic",
+     "src": "proposal"
+    }
+   ]
+  },
+  {
+   "id": "qz_xiantian",
+   "name": "先天氣功",
+   "sect_id": "quanzhen",
+   "category": "INNER",
+   "base_skill": "basic_inner",
+   "difficulty": 1.2,
+   "tier": "ADVANCED",
+   "self_study_until": 0,
+   "self_study_cap": 0,
+   "party_size": 0,
+   "monster_only": false,
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "quanzhen"
+    },
+    {
+     "type": "skill_min",
+     "skill": "qz_xinfa",
+     "value": 90
+    },
+    {
+     "type": "skill_min",
+     "skill": "yangsheng",
+     "value": 100
+    },
+    {
+     "type": "skill_min",
+     "skill": "basic_inner",
+     "value": 80
+    }
+   ],
+   "desc": "全真教上乘內功，返本還原、歸於先天，療傷逼毒都勝過全真心法。",
+   "inner": {
+    "heal_mult": 1.3,
+    "expel_mult": 1.3
+   },
+   "era": "1.0A",
+   "src": "verified",
+   "src_note": "研究 全真教：1.0A 有此武功（mengpai/6）；門檻與係數＝2002-05-07 大陸 1.0B 數字【後期版】；只有馬鈺、劉處玄教（mengpai/6）；係數 1.2【待考證】",
+   "moves": []
+  },
+  {
+   "id": "qz_tonggui",
+   "name": "同歸劍法",
+   "sect_id": "quanzhen",
+   "category": "SWORD",
+   "base_skill": "basic_sword",
+   "difficulty": 1.0,
+   "tier": "ADVANCED",
+   "self_study_until": 0,
+   "self_study_cap": 0,
+   "party_size": 0,
+   "monster_only": false,
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "quanzhen"
+    },
+    {
+     "type": "skill_min",
+     "skill": "qz_xinfa",
+     "value": 60
+    },
+    {
+     "type": "skill_min",
+     "skill": "qz_jianfa",
+     "value": 50
+    },
+    {
+     "type": "skill_min",
+     "skill": "yangsheng",
+     "value": 70
+    },
+    {
+     "type": "skill_min",
+     "skill": "basic_inner",
+     "value": 50
+    },
+    {
+     "type": "skill_min",
+     "skill": "basic_sword",
+     "value": 40
+    }
+   ],
+   "desc": "招招拚命、與敵偕亡的劍法，劍勢呈扇形向前橫掃。",
+   "era": "1.0A",
+   "src": "verified",
+   "src_note": "研究 全真教：1.0A 有此武功（mengpai/6）；門檻與係數＝2002-05-07 大陸 1.0B 數字【後期版】（係數 1）；王處一、譚處端、孫不二教（mengpai/6）；形狀半米字【後期版 blog】",
+   "moves": [
+    {
+     "id": "qz_tg2_1",
+     "name": "同歸於盡",
+     "unlock_level": 1,
+     "power": 30,
+     "range": 2,
+     "aoe": "FAN",
+     "cost_inner": 8,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "move_qz_sword_fan",
+     "src": "proposal"
+    },
+    {
+     "id": "qz_tg2_2",
+     "name": "玉石俱焚",
+     "unlock_level": 40,
+     "power": 42,
+     "range": 2,
+     "aoe": "FAN",
+     "cost_inner": 14,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "move_qz_sword_fan",
+     "src": "proposal"
+    },
+    {
+     "id": "qz_tg2_3",
+     "name": "捨身取義",
+     "unlock_level": 70,
+     "power": 51,
+     "range": 2,
+     "aoe": "FAN",
+     "cost_inner": 22,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "move_qz_sword_fan",
+     "src": "proposal"
+    }
+   ]
+  },
+  {
+   "id": "qz_sanhua",
+   "name": "三花聚頂掌",
+   "sect_id": "quanzhen",
+   "category": "FIST",
+   "base_skill": "basic_fist",
+   "difficulty": 1.25,
+   "tier": "ADVANCED",
+   "self_study_until": 0,
+   "self_study_cap": 0,
+   "party_size": 0,
+   "monster_only": false,
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "quanzhen"
+    },
+    {
+     "type": "skill_min",
+     "skill": "qz_haotian",
+     "value": 70
+    },
+    {
+     "type": "skill_min",
+     "skill": "qz_xinfa",
+     "value": 70
+    },
+    {
+     "type": "skill_min",
+     "skill": "basic_inner",
+     "value": 60
+    },
+    {
+     "type": "skill_min",
+     "skill": "basic_fist",
+     "value": 60
+    }
+   ],
+   "desc": "精、氣、神三花聚於頂門，掌力向前呈扇形推出，中者氣血翻湧。",
+   "era": "1.0A",
+   "src": "verified",
+   "src_note": "研究 全真教：1.0A 有此武功（mengpai/6）；門檻與係數＝2002-05-07 大陸 1.0B 數字【後期版】（係數 1.25）；丘處機、郝大通教（mengpai/6）；形狀半米字【後期版 blog】",
+   "moves": [
+    {
+     "id": "qz_sh_1",
+     "name": "精花初綻",
+     "unlock_level": 1,
+     "power": 33,
+     "range": 2,
+     "aoe": "FAN",
+     "cost_inner": 8,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "move_qz_palm_fan",
+     "src": "proposal"
+    },
+    {
+     "id": "qz_sh_2",
+     "name": "氣貫三關",
+     "unlock_level": 40,
+     "power": 45,
+     "range": 2,
+     "aoe": "FAN",
+     "cost_inner": 16,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "move_qz_palm_fan",
+     "src": "proposal"
+    },
+    {
+     "id": "qz_sh_3",
+     "name": "三花聚頂",
+     "unlock_level": 70,
+     "power": 52,
+     "range": 2,
+     "aoe": "FAN",
+     "cost_inner": 24,
+     "cost_jing": 0,
+     "status": "inner_wound",
+     "status_chance": 0.1,
+     "flavor": "move_qz_palm_fan",
+     "src": "proposal"
+    }
+   ]
+  },
+  {
+   "id": "qz_chongyang",
+   "name": "重陽劍法",
+   "sect_id": "quanzhen",
+   "category": "SWORD",
+   "base_skill": "basic_sword",
+   "difficulty": 2.25,
+   "tier": "QUEST",
+   "self_study_until": 0,
+   "self_study_cap": 0,
+   "party_size": 0,
+   "monster_only": false,
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "quanzhen"
+    },
+    {
+     "type": "quest_flag",
+     "flag": "qz_chongyang_jian"
+    },
+    {
+     "type": "skill_min",
+     "skill": "qz_xinfa",
+     "value": 70
+    },
+    {
+     "type": "skill_min",
+     "skill": "basic_sword",
+     "value": 60
+    },
+    {
+     "type": "skill_min",
+     "skill": "basic_inner",
+     "value": 60
+    },
+    {
+     "type": "skill_min",
+     "skill": "yangsheng",
+     "value": 80
+    }
+   ],
+   "desc": "祖師王重陽所傳的七星七絕劍，要循著百花谷、漱流隱士、雲遊道士一路求得劍譜才能修習（M3b 任務）。",
+   "era": "1.0A",
+   "src": "later",
+   "src_note": "研究 全真教：官方特殊武功；任務鏈與門檻（2002，係數 2.25）【後期版】；射程形狀【待考證】",
+   "moves": [
+    {
+     "id": "qz_cy_1",
+     "name": "七星聚首",
+     "unlock_level": 1,
+     "power": 40,
+     "range": 2,
+     "aoe": "SINGLE",
+     "cost_inner": 10,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "move_sword_basic",
+     "src": "proposal"
+    },
+    {
+     "id": "qz_cy_2",
+     "name": "北斗回旋",
+     "unlock_level": 30,
+     "power": 55,
+     "range": 2,
+     "aoe": "SINGLE",
+     "cost_inner": 18,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "move_sword_basic",
+     "src": "proposal"
+    },
+    {
+     "id": "qz_cy_3",
+     "name": "重陽歸真",
+     "unlock_level": 60,
+     "power": 70,
+     "range": 2,
+     "aoe": "SINGLE",
+     "cost_inner": 28,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "move_sword_basic",
+     "src": "proposal"
+    }
+   ]
+  },
+  {
+   "id": "qz_kongming",
+   "name": "空明拳",
+   "sect_id": "quanzhen",
+   "category": "FIST",
+   "base_skill": "basic_fist",
+   "difficulty": 2.0,
+   "tier": "QUEST",
+   "self_study_until": 0,
+   "self_study_cap": 0,
+   "party_size": 0,
+   "monster_only": false,
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "quanzhen"
+    },
+    {
+     "type": "quest_flag",
+     "flag": "qz_kongming"
+    },
+    {
+     "type": "skill_min",
+     "skill": "qz_haotian",
+     "value": 70
+    },
+    {
+     "type": "skill_min",
+     "skill": "basic_fist",
+     "value": 80
+    },
+    {
+     "type": "skill_min",
+     "skill": "qz_xinfa",
+     "value": 80
+    },
+    {
+     "type": "skill_min",
+     "skill": "yangsheng",
+     "value": 90
+    },
+    {
+     "type": "attr_min",
+     "attr": "luck",
+     "value": 32
+    },
+    {
+     "type": "morality_min",
+     "value": 1000
+    }
+   ],
+   "desc": "以柔克剛、以空擊實的拳法，傳授者是誰江湖上說法不一（M3b 任務）。",
+   "era": "1.0A",
+   "src": "later",
+   "src_note": "研究 全真教：官方 自宮 列表有空明拳；門檻 2002（福 32、善 1000、係數 2）；教者 周伯通／王志謹 衝突【待考證】",
+   "moves": [
+    {
+     "id": "qz_km_1",
+     "name": "空碗盛飯",
+     "unlock_level": 1,
+     "power": 38,
+     "range": 1,
+     "aoe": "SINGLE",
+     "cost_inner": 8,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "move_fist_basic",
+     "src": "proposal"
+    },
+    {
+     "id": "qz_km_2",
+     "name": "空屋住人",
+     "unlock_level": 30,
+     "power": 52,
+     "range": 1,
+     "aoe": "SINGLE",
+     "cost_inner": 16,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "move_fist_basic",
+     "src": "proposal"
+    },
+    {
+     "id": "qz_km_3",
+     "name": "虛懷若谷",
+     "unlock_level": 60,
+     "power": 66,
+     "range": 1,
+     "aoe": "SINGLE",
+     "cost_inner": 26,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "move_fist_basic",
+     "src": "proposal"
+    }
+   ]
+  }
+ ],
+ "monsters": [
+  {
+   "id": "m_qz_dizi",
+   "name": "全真弟子",
+   "short": "弟子",
+   "kind": "MONSTER",
+   "alignment": "GOOD",
+   "desc": "趙志敬手下的全真弟子，奉命與你切磋外功。（切磋存在：已證實；數值：設計提案）",
+   "stats": {
+    "qi": 230,
+    "neili": 25,
+    "jing": 120,
+    "str": 14,
+    "guts": 15,
+    "wit": 18,
+    "luck": 15,
+    "cal": 16,
+    "agi": 18,
+    "con": 16
+   },
+   "skills": {
+    "basic_dodge": 8,
+    "basic_parry": 8,
+    "basic_inner": 5,
+    "basic_sword": 8
+   },
+   "arts": [
+    {
+     "art": "qz_jianfa",
+     "level": 8
+    }
+   ],
+   "weapon_type": "SWORD",
+   "weapon_power": 4,
+   "armor_power": 6,
+   "combat_xp_ref": 300,
+   "combat_xp": 0,
+   "learn_points": 0,
+   "drops": [],
+   "money": {
+    "min": 0,
+    "max": 0
+   },
+   "morality_on_kill": 0,
+   "killing_intent_on_kill": 0,
+   "ai": "melee_basic",
+   "no_rewards": true,
+   "sect": "quanzhen",
+   "era": "1.0A",
+   "src": "proposal"
+  },
+  {
+   "id": "m_qz_guard",
+   "name": "全真執法道士",
+   "short": "執法",
+   "kind": "ELITE",
+   "alignment": "GOOD",
+   "desc": "奉全真七子之命捉拿本教公敵的道士，劍掌齊施，新手絕非對手。（執法存在：已證實；數值：設計提案）",
+   "stats": {
+    "qi": 3000,
+    "neili": 400,
+    "jing": 600,
+    "str": 28,
+    "guts": 30,
+    "wit": 25,
+    "luck": 20,
+    "cal": 30,
+    "agi": 28,
+    "con": 30
+   },
+   "skills": {
+    "basic_dodge": 80,
+    "basic_parry": 80,
+    "basic_inner": 70,
+    "basic_sword": 80,
+    "basic_fist": 70
+   },
+   "arts": [
+    {
+     "art": "qz_jianfa",
+     "level": 80
+    },
+    {
+     "art": "qz_haotian",
+     "level": 70
+    }
+   ],
+   "weapon_type": "SWORD",
+   "weapon_power": 40,
+   "armor_power": 60,
+   "combat_xp_ref": 60000,
+   "combat_xp": 0,
+   "learn_points": 0,
+   "drops": [],
+   "money": {},
+   "morality_on_kill": 0,
+   "killing_intent_on_kill": 0,
+   "ai": "melee_basic",
+   "no_rewards": true,
+   "sect": "quanzhen",
+   "era": "1.0A",
+   "src": "proposal"
+  },
+  {
+   "id": "m_qz_xunshan",
+   "name": "全真巡山弟子",
+   "short": "巡山",
+   "kind": "MONSTER",
+   "alignment": "GOOD",
+   "desc": "在終南山上巡邏的全真弟子，見到惡名昭彰的人便拔劍上前。（善惡 < −500 被攻擊：已證實 2001-08-08；數值：設計提案，對應 2002「實戰 10 萬／特武 40」練功點）",
+   "stats": {
+    "qi": 1400,
+    "neili": 250,
+    "jing": 400,
+    "str": 22,
+    "guts": 22,
+    "wit": 20,
+    "luck": 15,
+    "cal": 22,
+    "agi": 24,
+    "con": 24
+   },
+   "skills": {
+    "basic_dodge": 50,
+    "basic_parry": 50,
+    "basic_inner": 45,
+    "basic_sword": 50,
+    "basic_fist": 40
+   },
+   "arts": [
+    {
+     "art": "qz_jianfa",
+     "level": 40
+    },
+    {
+     "art": "qz_haotian",
+     "level": 35
+    }
+   ],
+   "weapon_type": "SWORD",
+   "weapon_power": 15,
+   "armor_power": 40,
+   "combat_xp_ref": 100000,
+   "combat_xp": 150,
+   "learn_points": 60,
+   "drops": [
+    {
+     "item": "c_qiyao",
+     "chance": 0.2,
+     "min": 1,
+     "max": 1
+    }
+   ],
+   "money": {
+    "min": 20,
+    "max": 60
+   },
+   "morality_on_kill": -5,
+   "killing_intent_on_kill": 5,
+   "ai": "melee_basic",
+   "no_rewards": false,
+   "sect": "quanzhen",
+   "era": "1.0A",
+   "src": "proposal"
+  }
+ ],
+ "items": [],
+ "quests": [],
+ "text_templates": [
+  {
+   "id": "talk_n_qz_cha",
+   "era": "1.0A",
+   "self": "{npc_name}抬頭笑道：「終南山路長，在山門記個落腳處，回來時就不必從山腳爬起了。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_qz_zhike",
+   "era": "1.0A",
+   "self": "{npc_name}捋著白鬍子：「無量壽佛。想入我全真教，須是品行端正、未曾婚配的男子。到西邊三清殿拜見七位真人，拜了哪一位，往後便只跟那一位師父學藝。心術不正的人，老道可不放你上山。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_qz_qiuchuji",
+   "era": "1.0A",
+   "self": "{npc_name}聲若洪鐘：「好小子，要拜我丘處機為師？我門下規矩嚴：不許濫殺、不許飲酒、不許成親，更不許踏進後山古墓一步！犯了規，七子一齊拿你到思過崖。真要叛教，也得先過我這一關。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_qz_majue",
+   "era": "1.0A",
+   "self": "{npc_name}溫言道：「修道先修心。跟著我，先把全真心法、養生的根基打穩，日後再傳你先天氣功。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_qz_tanchuduan",
+   "era": "1.0A",
+   "self": "{npc_name}朗聲道：「我門下弟子，劍法要練得紮實。等你心法、劍法、養生都有了火候，再傳你同歸劍法。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_qz_wangchuyi",
+   "era": "1.0A",
+   "self": "{npc_name}點了點頭：「全真武功以內功為本。你若拜我為師，劍掌之外，同歸劍法也可傳你。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_qz_liuchuxuan",
+   "era": "1.0A",
+   "self": "{npc_name}只淡淡說了一句：「多練，少說。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_qz_haodatong",
+   "era": "1.0A",
+   "self": "{npc_name}撚著卦籤：「掌法講究剛柔相濟。昊天掌練到七十級，我再教你三花聚頂掌。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_qz_sunbuer",
+   "era": "1.0A",
+   "self": "{npc_name}拂塵一擺：「本教只收男弟子，不過在我門下一樣要守清規。同歸劍法講究心定，心不定的人學不來。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_qz_yinzhiping",
+   "era": "1.0A",
+   "self": "{npc_name}說：「養生是本教根本，調息得法，打鬥中休息時便能多回些氣與內力。記住：養生和內功別同時練，小心走火入魔；喝酒、闖古墓都會折損養生。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_qz_yinshi",
+   "era": "1.0A",
+   "self": "{npc_name}閉著眼睛：「養生練到五十級以後，尹道長那裡就教不了你了。留下些香油錢，老夫再指點你幾手。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_qz_qizhicheng",
+   "era": "1.0A",
+   "self": "{npc_name}說：「新來的師弟，先在我這裡把基本功打好。拳、劍、內功、身法，樣樣都不能偷懶。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_qz_spar",
+   "era": "1.0A",
+   "self": "{npc_name}斜眼瞧你：「師父吩咐我陪新人練外功。來吧，讓我手下的師弟先試試你的斤兩！」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_qz_lizhichang",
+   "era": "1.0A",
+   "self": "{npc_name}收劍說道：「三代弟子輪流陪新人切磋，外功就是這樣一招一招磨出來的。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_qz_xiazhicheng",
+   "era": "1.0A",
+   "self": "{npc_name}放下書卷：「道藏經典，總得識字才讀得懂。坐下吧，從認字開始。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_qz_luqingdu",
+   "era": "1.0A",
+   "self": "{npc_name}拍著肚皮：「卯、午、酉三個時辰開飯，本門弟子一人一份，外人可沒有。來晚了就等下一頓！」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_qz_zhangyao",
+   "era": "1.0A",
+   "self": "{npc_name}說：「重陽宮自製的傷藥，比山下藥鋪便宜不到哪去，可貨真價實。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_qz_biye",
+   "era": "1.0A",
+   "self": "{npc_name}說：「等你全真心法練到五十級，實戰也夠了，再來找我談出師的事。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_qz_huipai",
+   "era": "1.0A",
+   "self": "{npc_name}說：「出了師還想回山的弟子，到我這裡登記就行。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_qz_dongkou",
+   "era": "1.0A",
+   "self": "{npc_name}壓低聲音：「子時夜深，有緣的人會在洞裡見到祖師的遺像，對內功大有好處。能不能見著，就看你的造化了。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_qz_zhangyuan",
+   "era": "1.0A",
+   "self": "{npc_name}嘆氣：「今年菜蟲特別多，收成怕是不好。哪天你閒了，來幫我鋤鋤地吧。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_qz_jailer",
+   "era": "1.0A",
+   "self": "{npc_name}板著臉：「這裡是思過崖，犯了門規的人在這裡面壁。期滿自然放你下山，要不就請人拿十萬兩來贖。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_qz_chendabao",
+   "era": "1.0A",
+   "self": "{npc_name}愁眉苦臉：「唉，這可怎麼辦才好……沒事，沒事，你忙你的吧。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_qz_chengfeng",
+   "era": "1.0A",
+   "self": "{npc_name}打了個酒嗝：「終、終南山在哪裡？你知道嗎？……什麼，往東北走就到了？嘿，我早就知道！」",
+   "src": "proposal"
+  },
+  {
+   "id": "rule_qz_morality",
+   "era": "1.0A",
+   "self": "你的善惡跌破了 −299，違反全真門規「善惡不得低於中立」。",
+   "src": "verified"
+  },
+  {
+   "id": "rule_qz_pk",
+   "era": "1.0A",
+   "self": "你的 PK 值超過 10，違反全真門規「不得有 PK 值」。",
+   "src": "verified"
+  },
+  {
+   "id": "rule_qz_kill_same",
+   "era": "1.0A",
+   "self": "你殺害同門師兄弟，犯了全真教同門相殘的大忌。",
+   "src": "verified"
+  },
+  {
+   "id": "rule_qz_gumu",
+   "era": "1.0A",
+   "self": "你踏進了古墓，違反全真門規「不得進入古墓」。",
+   "src": "verified"
+  },
+  {
+   "id": "move_qz_sword_fan",
+   "era": "1.0A",
+   "self": "你一招{art}「{move}」（{tenths}成力），劍光扇形掃出，刺中{def}的{part}！（-{dmg}）",
+   "target": "{atk}一招{art}「{move}」，劍光扇形掃來，刺中你的{part}！（-{dmg}）",
+   "other": "{atk}一招{art}「{move}」，劍光扇形掃出，刺中{def}的{part}！",
+   "src": "proposal"
+  },
+  {
+   "id": "move_qz_palm_wide",
+   "era": "1.0A",
+   "self": "你雙掌一錯，{art}「{move}」（{tenths}成力）掌風四面掃開，拍中{def}的{part}！（-{dmg}）",
+   "target": "{atk}雙掌一錯，{art}「{move}」掌風四面掃來，拍中你的{part}！（-{dmg}）",
+   "other": "{atk}雙掌一錯，{art}「{move}」掌風四面掃開，拍中{def}的{part}！",
+   "src": "proposal"
+  },
+  {
+   "id": "move_qz_palm_fan",
+   "era": "1.0A",
+   "self": "你氣聚頂門，{art}「{move}」（{tenths}成力）掌力向前推出，正中{def}的{part}！（-{dmg}）",
+   "target": "{atk}氣聚頂門，{art}「{move}」掌力推來，正中你的{part}！（-{dmg}）",
+   "other": "{atk}氣聚頂門，{art}「{move}」掌力推出，正中{def}的{part}！",
+   "src": "proposal"
+  }
+ ],
+ "art_requests": {
+  "units": [
+   {
+    "id": "quanzhen_m",
+    "alias": "huashan_m",
+    "prompt": "全真教男弟子：灰藍道袍、頭挽道髻插木簪、背負長劍、白布綁腿，神情肅穆。"
+   },
+   {
+    "id": "n_qz_cha",
+    "alias": "n_xx_cha",
+    "prompt": "查小鏞：拿著簿子的白髮老先生，布衣長衫。"
+   },
+   {
+    "id": "n_qz_zhike",
+    "alias": "n_yuebuqun",
+    "prompt": "全真知客道長：白鬚老道士，灰色道袍，手持拂塵站在山門前。"
+   },
+   {
+    "id": "n_qz_qiuchuji",
+    "alias": "n_yuebuqun",
+    "prompt": "丘處機：五十多歲、身材高大、濃眉長鬚的道士，杏黃道袍，腰懸長劍，神情剛烈。"
+   },
+   {
+    "id": "n_qz_majue",
+    "alias": "n_yuebuqun",
+    "prompt": "馬鈺：慈眉善目的老道士，白鬚，素色道袍，手持拂塵。"
+   },
+   {
+    "id": "n_qz_tanchuduan",
+    "alias": "n_yuebuqun",
+    "prompt": "譚處端：身材魁梧的道士，黑鬚，青色道袍。"
+   },
+   {
+    "id": "n_qz_wangchuyi",
+    "alias": "n_yuebuqun",
+    "prompt": "王處一：清瘦挺拔的道士，三綹長鬚，道袍飄飄，人稱鐵腳仙。"
+   },
+   {
+    "id": "n_qz_liuchuxuan",
+    "alias": "n_yuebuqun",
+    "prompt": "劉處玄：身形瘦小、沉默寡言的道士，灰色道袍。"
+   },
+   {
+    "id": "n_qz_haodatong",
+    "alias": "n_yuebuqun",
+    "prompt": "郝大通：體格厚實的道士，手持卦籤，褐色道袍。"
+   },
+   {
+    "id": "n_qz_sunbuer",
+    "alias": "huashan_f",
+    "prompt": "孫不二：中年女冠，素白道袍，手持拂塵，神情端凝。"
+   },
+   {
+    "id": "n_qz_yinzhiping",
+    "alias": "huashan_m",
+    "prompt": "尹志平：三十來歲、面目清秀的道士，青色道袍，神情有些憂鬱。"
+   },
+   {
+    "id": "n_qz_yinshi",
+    "alias": "n_xw_woodcutter",
+    "prompt": "養生隱士：鬚髮皆白、仙風道骨的隱士，粗布長袍，拄著竹杖。"
+   },
+   {
+    "id": "n_qz_qizhicheng",
+    "alias": "huashan_m",
+    "prompt": "祁志誠：中年全真道士，道袍袖子捲起，正在示範拳腳。"
+   },
+   {
+    "id": "n_qz_spar",
+    "alias": "huashan_m",
+    "prompt": "趙志敬：神情傲慢的中年道士，持劍。"
+   },
+   {
+    "id": "n_qz_lizhichang",
+    "alias": "huashan_m",
+    "prompt": "李志常：沉穩的年輕道士，持劍。"
+   },
+   {
+    "id": "n_qz_xiazhicheng",
+    "alias": "n_xx_cha",
+    "prompt": "夏志誠：手捧書卷的文弱道士。"
+   },
+   {
+    "id": "n_qz_luqingdu",
+    "alias": "n_sl_zhaiseng",
+    "prompt": "鹿清篤：胖乎乎的年輕道士，手拿大飯勺。"
+   },
+   {
+    "id": "n_qz_zhangyao",
+    "alias": "n_xx_pharmacist",
+    "prompt": "掌藥大師兄：揹著藥箱的道士，袖口沾著藥漬。"
+   },
+   {
+    "id": "n_qz_biye",
+    "alias": "huashan_m",
+    "prompt": "掌畢業師兄：拿著名冊的中年道士。"
+   },
+   {
+    "id": "n_qz_huipai",
+    "alias": "huashan_m",
+    "prompt": "畢業後回派師兄：笑容和善的中年道士。"
+   },
+   {
+    "id": "n_qz_dongkou",
+    "alias": "huashan_m",
+    "prompt": "洞口道士：坐在山洞口打坐的老道士。"
+   },
+   {
+    "id": "n_qz_zhangyuan",
+    "alias": "n_taoyun",
+    "prompt": "掌園道長：拄著鋤頭、褲腳捲起的老道士。"
+   },
+   {
+    "id": "n_qz_jailer",
+    "alias": "huashan_m",
+    "prompt": "申志凡：板著臉、雙手抱劍守在石屋前的道士。"
+   },
+   {
+    "id": "n_qz_chendabao",
+    "alias": "n_xe_miner",
+    "prompt": "陳大寶：愁眉苦臉蹲在河邊的年輕村民。"
+   },
+   {
+    "id": "n_qz_chengfeng",
+    "alias": "n_chenjialuo",
+    "prompt": "浪子程風：衣衫不整、提著酒葫蘆的落拓青年。"
+   },
+   {
+    "id": "m_qz_dizi",
+    "alias": "huashan_m",
+    "prompt": "全真弟子：灰藍道袍、持木劍的年輕道士。"
+   },
+   {
+    "id": "m_qz_guard",
+    "alias": "m_city_guard",
+    "prompt": "全真執法道士：神情冷峻的中年道士，杏黃道袍、長劍出鞘。"
+   },
+   {
+    "id": "m_qz_xunshan",
+    "alias": "huashan_m",
+    "prompt": "全真巡山弟子：揹劍提燈的道士。"
+   }
+  ],
+  "backgrounds": [
+   {
+    "id": "quanzhen",
+    "alias": "huashan",
+    "prompt": "終南山重陽宮：青瓦道觀依山而建，石階、松柏、香爐，遠處雲霧繚繞的山峰。"
+   },
+   {
+    "id": "zhongnan_foot",
+    "alias": "songshan_road",
+    "prompt": "終南山下的松林山路，溪谷蜿蜒，遠處山峰隱在雲裡。"
+   }
+  ]
+ },
+ "todo_verify": [
+  "養生每級的觸發數值、各武功的養生門檻（limits_arts 用通用的 養生+10）【待考證】",
+  "招式名稱全部是設計提案（原作沒有招式名單）",
+  "1.0A 各師父的武功上限：只有丘處機／馬鈺／譚處端／劉處玄有 2002（1.0B 大陸）數字，其餘用 80【待考證】",
+  "全真心法、金雁功的上限 100、金雁功係數 0.9、先天氣功係數 1.2、天罡北斗陣係數 1.0【待考證】",
+  "1.0A 門規的數字（停止傳功：PK 0、殺氣 1000 是設計提案）；+300 才能上山的規定是否存在於 2001【待考證】",
+  "2001 年終南山的房間配置；本碎片的房間名除三清殿、重陽宮、丘初級屋子、後山、閉關山洞外都是自訂【待考證】",
+  "女性入派：2001 只收男；女性途徑是免費版，不做【待考證】",
+  "「丘初級屋子」的意思（推測為丘處機門下初級弟子的書房）【待考證】",
+  "讀書識字上限 61（更新後 71）：採 61【待考證：哪一次更新】",
+  "養生隱士（付費）能教到幾級、收多少錢：設計提案 50→100、每點 10 兩【待考證】",
+  "空明拳的教者（周伯通 vs 王志謹），重陽劍法任務鏈各階段（M3b）【待考證】",
+  "重陽劍法、空明拳、先天氣功、天罡北斗陣的射程形狀【待考證】；全真劍法 小十字、昊天掌 大十字、同歸／三花 半米字只有後期 blog【待考證】",
+  "天罡北斗陣的站位（北斗七星形）與加成數值【待考證】",
+  "敵對入山：善惡 ≤ −500 的觸發機率 0.4、每次 1–2 名巡山弟子（研究：山上共 17 名弟子會攻擊）【待考證】",
+  "知客道長拒絕惡人上山（2001-08-08「看門老頭」）、要隊友帶進山：M3a 無此機制，visitors 設 OPEN【待考證】",
+  "飲酒降養生、養生與內功同時練會走火入魔：M3a 沒有飲酒與走火機制，只寫在對話【待考證】",
+  "思過崖看守人是申志凡（設計提案）；官方只說執法者是全真七子【待考證】",
+  "鹿清篤齋飯「只限弟子」：meal.requires 是本碎片新加的欄位（M3A_PLAN 缺漏），若 WP-RULES 不支援則改由房間限制"
+ ],
+ "notes": "全真碎片（WP-SECT-quanzhen）。personal_master：七子都有 JOIN，拜誰為師就只能跟誰學（masters 列帶 sect_master 條件）；BETRAY 只在丘處機（head_npc）。qz_jianfa 的 requires 用 any_of 讓古墓弟子也能學（古墓碎片直接引用 qz_jianfa；M3A_PLAN 4.3）。跨碎片出口：zn_road1 W→em_foot（峨嵋碎片寫反向 E）、zn_east NE→wd_road2（武當碎片寫反向 SW）、zn_backhill E→gm_entrance（古墓碎片寫反向 W）。本碎片沒有 exit_patches（沒有改到既有地圖）。門派技能 yangsheng 的 basic_skills／技能列由 WP-MERGE 依 sects.sect_skill 建立（同少林 foxa）。掌藥大師兄賣 c_jieduyao（_cmd.json 提供）。2001 任務（王處一之傷、鹿清篤買菜、陳志益採礦、全真切磋事件、小教／大教）屬 M3b，只放 NPC 與對話。天罡北斗陣需要 7 名男性玩家，好友小服可能湊不齊，照原作保留。"
+}

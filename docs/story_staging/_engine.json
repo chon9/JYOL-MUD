@@ -1,0 +1,176 @@
+{
+  "fragment": "_engine",
+  "version": 1,
+  "author": "WP-ENGINE",
+  "quests": [],
+  "npcs": [],
+  "npc_links": [],
+  "shop_patches": [],
+  "art_patches": [],
+  "items": [],
+  "monsters": [],
+  "martial_arts": [],
+  "masters": [],
+  "text_templates": [
+    {
+      "id": "fail_dialogue_none",
+      "era": "1.0A",
+      "self": "【系統】對方現在沒有要和你談的事。",
+      "src": "proposal"
+    },
+    {
+      "id": "fail_dialogue_stale",
+      "era": "1.0A",
+      "self": "【系統】這段對話已經結束了，請重新和對方交談。",
+      "src": "proposal"
+    },
+    {
+      "id": "fail_choice_locked",
+      "era": "1.0A",
+      "self": "【系統】你現在還不能這麼說。",
+      "src": "proposal"
+    },
+    {
+      "id": "fail_quest_cooldown",
+      "era": "1.0A",
+      "self": "【任務】這件事才剛辦過，過些時候再來吧。",
+      "src": "proposal"
+    },
+    {
+      "id": "fail_quest_not_now",
+      "era": "1.0A",
+      "self": "【任務】時候不對，現在辦不了這件事。",
+      "src": "proposal"
+    },
+    {
+      "id": "fail_act_unknown",
+      "era": "1.0A",
+      "self": "【系統】這裡沒有這件事可做。",
+      "src": "proposal"
+    },
+    {
+      "id": "fail_act_not_here",
+      "era": "1.0A",
+      "self": "【系統】這件事不是在這裡做的。",
+      "src": "proposal"
+    },
+    {
+      "id": "fail_villain_none",
+      "era": "1.0A",
+      "self": "【系統】眼下沒有惡人盯上你。",
+      "src": "proposal"
+    },
+    {
+      "id": "fail_npc_refuse",
+      "era": "1.0A",
+      "self": "【系統】對方不肯做你的生意。",
+      "src": "proposal"
+    },
+    {
+      "id": "fail_escort_lost",
+      "era": "1.0A",
+      "self": "【任務】你護送的人在混亂中走散了，回去重新把人找回來吧。",
+      "src": "proposal"
+    },
+    {
+      "id": "err_dialogue_none",
+      "era": "1.0A",
+      "self": "【系統】對方現在沒有要和你談的事。",
+      "src": "proposal"
+    },
+    {
+      "id": "err_dialogue_stale",
+      "era": "1.0A",
+      "self": "【系統】這段對話已經結束了，請重新和對方交談。",
+      "src": "proposal"
+    },
+    {
+      "id": "err_choice_locked",
+      "era": "1.0A",
+      "self": "【系統】你現在還不能這麼說。",
+      "src": "proposal"
+    },
+    {
+      "id": "err_quest_cooldown",
+      "era": "1.0A",
+      "self": "【任務】這件事才剛辦過，過些時候再來吧。",
+      "src": "proposal"
+    },
+    {
+      "id": "err_quest_not_now",
+      "era": "1.0A",
+      "self": "【任務】時候不對，現在辦不了這件事。",
+      "src": "proposal"
+    },
+    {
+      "id": "err_act_unknown",
+      "era": "1.0A",
+      "self": "【系統】這裡沒有這件事可做。",
+      "src": "proposal"
+    },
+    {
+      "id": "err_act_not_here",
+      "era": "1.0A",
+      "self": "【系統】這件事不是在這裡做的。",
+      "src": "proposal"
+    },
+    {
+      "id": "err_villain_none",
+      "era": "1.0A",
+      "self": "【系統】眼下沒有惡人盯上你。",
+      "src": "proposal"
+    },
+    {
+      "id": "err_npc_refuse",
+      "era": "1.0A",
+      "self": "【系統】對方不肯做你的生意。",
+      "src": "proposal"
+    },
+    {
+      "id": "err_escort_lost",
+      "era": "1.0A",
+      "self": "【任務】你護送的人在混亂中走散了，回去重新把人找回來吧。",
+      "src": "proposal"
+    },
+    {
+      "id": "quest_stage",
+      "era": "1.0A",
+      "self": "【任務】{quest_name}：{stage_title}",
+      "src": "proposal"
+    },
+    {
+      "id": "e_quest_stage",
+      "era": "1.0A",
+      "self": "【任務】{quest_name}：{stage_title}",
+      "src": "proposal"
+    },
+    {
+      "id": "quest_fail",
+      "era": "1.0A",
+      "self": "【任務】「{quest_name}」失敗了。{reason_text}",
+      "src": "proposal"
+    },
+    {
+      "id": "e_quest_fail",
+      "era": "1.0A",
+      "self": "【任務】「{quest_name}」失敗了。{reason_text}",
+      "src": "proposal"
+    },
+    {
+      "id": "e_dialogue_close",
+      "era": "1.0A",
+      "self": "【系統】你結束了和{npc_name}的談話。",
+      "src": "proposal"
+    }
+  ],
+  "rumors": [],
+  "ambient": [],
+  "art_requests": {
+    "units": [],
+    "backgrounds": []
+  },
+  "test_plan": [],
+  "todo_verify": [],
+  "owner_decisions": [],
+  "notes": "STORY_PLAN §7.3 _engine：§4.14 原因碼的 fail_<code> 模板（另附同文的 err_<code>，讓既有介面照 err_<reason> 的慣例顯示 intent 失敗）、quest_stage／quest_fail 事件模板（e_ 前綴的同文版本照 §7.3 命名）。dialogue、dialogue_close 是 ui 事件（UI_ONLY），不需要模板；e_dialogue_close 給想顯示「結束談話」的介面用。全部【設計提案】。reward 事件 payload 多了 lilian、killing_intent（{reward_list} 由介面組字）。"
+}

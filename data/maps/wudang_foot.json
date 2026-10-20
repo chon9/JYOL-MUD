@@ -1,0 +1,24 @@
+{
+  "region_id": "wudang_foot",
+  "era": "1.0A",
+  "src": "proposal",
+  "desc": "嵩山古道往南分出的山路，穿過幾片密林便到武當山腳。林子深處常有山賊出沒，武當弟子常在這裡剿匪。",
+  "escape_tiles_hint": 2,
+  "rooms": [
+    {"id": "wd_road1", "name": "古道南岔", "desc": "從嵩山古道岔出來的山路，崩落的巨石推到了路邊，石階上偶有道童往來。往西有條小徑鑽進樹林，往南就是武當山腳，往東南的衡陽古道通往衡山。", "exits": [{"dir": "N", "to": "sy_wdfork"}, {"dir": "S", "to": "wd_road2"}, {"dir": "W", "to": "wd_woods"}, {"dir": "SE", "to": "hn_road1"}], "npcs": [], "features": [], "requires": [], "encounter": {"rate": 0.1, "table": [{"monster": "m_bigrabbit", "w": 50, "count": [1, 1]}, {"monster": "m_rabbit", "w": 20, "count": [1, 1]}, {"monster": "m_wolf", "w": 20, "count": [1, 1]}, {"monster": "m_boar", "w": 10, "count": [1, 1]}]}},
+    { "id": "wd_woods", "name": "武當山下樹林", "desc": "林木參天，地上滿是被踩爛的落葉，樹幹上還有刀砍的痕跡。這裡是山賊的窩，武當弟子奉命剿匪多半來這裡。",
+      "exits": [{"dir": "E", "to": "wd_road1"}], "npcs": [], "features": ["WOOD"], "requires": [],
+      "encounter": { "rate": 0.15,
+        "table": [
+          {"monster": "m_bandit", "w": 60, "count": [1, 1]},
+          {"monster": "m_wolf", "w": 20, "count": [1, 1]},
+          {"monster": "m_wd_buyi", "w": 10, "count": [1, 1]},
+          {"monster": "m_bigrabbit", "w": 10, "count": [1, 1]}
+        ] } },
+    { "id": "wd_road2", "name": "武當山下", "desc": "山腳下的石牌坊刻著「武當山」三個大字，一位書生模樣的人在牌坊下等著替人引薦。往南的石階直上山門，西南有條小路通往終南山。",
+      "exits": [{"dir": "N", "to": "wd_road1"}, {"dir": "S", "to": "wd_gate"}, {"dir": "SW", "to": "zn_east"}],
+      "npcs": ["n_wd_yinjian"], "features": [], "requires": [],
+      "encounter": { "rate": 0.1,
+        "table": [{"monster": "m_rabbit", "w": 60, "count": [1, 1]}, {"monster": "m_bigrabbit", "w": 40, "count": [1, 1]}] } }
+  ]
+}

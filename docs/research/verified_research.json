@@ -1,0 +1,983 @@
+[
+  {
+    "topic": "門派系統 (sect system) in 金庸群俠傳Online 1.0: fact-check of sects, joining, sect skills, rules, betrayal, graduation, ranks, masters",
+    "verified": [
+      {
+        "claim": "The paid version had 11 NPC sects: 少林, 武當, 峨嵋, 華山, 恆山, 全真, 古墓, 靈鷲宮, 星宿, 血刀門, 丐幫. 明教, 桃花島 and others came only in later versions.",
+        "detail": "Confirmed for the 11-sect list. I re-downloaded the official pages and decoded them from Big5. index_jy2-25 lists exactly 11 sects. index_jy2-29-5 says 「目前遊戲內的十一個門派，如少林、武當、古墓、星宿等」. These pages carry a 15th-expansion (五嶽劍派) footer, so the paid version still had 11 sects years after launch. The jy2001.net version table gives: 收費版(上海) 2001.6.28 with 11 sects; 收費版(北京) 2020.7.23 with 11; 免費版 2006.3.30 with 14 (+明教, 桃花島, and 逍遙 added 2025.8); 懷舊版 2008.7.2 with 13 (+明教, 桃花島; 逍遙 planned); 至尊版 2018.9.19 with 16 (+大理段氏 2023.12.16, +五毒 2025.7). Correction: 逍遙派 is not 至尊-only. It also reached the 免費版 in 2025.8. Also, 2001.6.28 is the date jy2001 gives for the Shanghai paid server.",
+        "verdict": "corrected",
+        "note": "The core 11-sect list is solid and backed by official pages. The fix is small: which later versions added 逍遙.",
+        "sources": [
+          "https://jy.chinesegamer.net/index_jy2-25.asp",
+          "https://jy.chinesegamer.net/index_jy2-29-5.asp",
+          "https://www.jy2001.net/welcome"
+        ]
+      },
+      {
+        "claim": "10 sects at launch (2001-06-28). 丐幫 was added 2001-09-28 with 神鵰大俠. Plus the later milestone dates.",
+        "detail": "The chronicle confirms these dates: 2001-06-28 公測; 2001-09-28 神雕大俠 (丐幫, 絕情谷, 京城); 2002-01-23 決戰光明頂 (七傷拳, 九陽神功, 乾坤大挪移, 光明頂/崑崙山 areas); 2002-06-06 勇闖俠客島 (俠客島/桃花島/揚州 as maps); 2002-09-18 葵花寶典 (自創武功, 同門比武, 黑木崖 and 五毒教 as areas); 2003-01-15 喬峰傳奇 (自創門派); 2003-11-12 郭靖大侠, with 1.5 即時戰鬥版 servers opening the same day. 智冠 held its product launch event on 2001-06-26 (大紀元). The launch set of 10 is still only inferred as 11 minus 丐幫, and no source lists it explicitly. jy2001 is a mainland-oriented site. The Taiwan-side dates may differ slightly, but the 2001-06-26 智冠 event supports a late-June 2001 launch.",
+        "verdict": "confirmed",
+        "note": "Dates are confirmed. The 10-sect launch roster is a reasonable inference that no source states directly. 五毒教 appeared as a map area in 2002, not as a sect.",
+        "sources": [
+          "https://www.jy2001.net/t/243.html",
+          "https://www.epochtimes.com/b5/1/6/26/n103344.htm"
+        ]
+      },
+      {
+        "claim": "Each sect has one sect skill with a combat proc. The official table covers all 11.",
+        "detail": "Verified verbatim from the decoded official page. 少林 佛法: 防禦, 精+內力. 武當 俠義: 抗技 (poison/paralysis/confusion), 精+內力. 峨嵋 斷惡: 閃避, 精+神. 華山 儒風: 回復 氣/神, 精+內力. 恆山 慈悲: 反擊, 精+內力. 全真 養生: 休息 (restores 氣/內力), 精+神. 古墓 清心: 痲痺, 精+神. 靈鷲 定性: 混亂, 精+神. 星宿 諂媚: 分心 (lowers enemy attack), 精+神. 血刀 威嚇: 重擊, 精+內力. 丐幫 乞討: 毒牙 (poisons enemy), 精+神. The fan guides support the gating role. Shaolin requires 佛法10 to become a disciple of the entry masters 慧真, 慧虛 and 慧空. Tier-2 skills require 佛法30, the tier-1 skill at 35, and 少林心法35. 丐幫 乞討30 stops 小黃 from chasing you, and 乞討 caps how far 丐幫 skills can be trained. The official page does not state the max of 100.",
+        "verdict": "confirmed",
+        "note": "The official page also gives an effect-category label for each skill (防禦/抗技/閃避/回復/反擊/休息/痲痺/混亂/分心/重擊/毒牙). These would work well as enum names in the remake.",
+        "sources": [
+          "https://jy.chinesegamer.net/index_jy2-25.asp",
+          "http://jyfreeonline.blogspot.com/2012/10/shaolin.html",
+          "http://jyfreeonline.blogspot.com/2012/11/gaibang.html"
+        ]
+      },
+      {
+        "claim": "Official 門規 per sect. A violation means 1 day of jail, counted in online time.",
+        "detail": "Verified verbatim, and every listed item matches. Missing nuances: for both 華山 and 恆山 the enforcer is listed as 「無（因為進不了華山/恆山）」, so no enforcer exists for those sects. 星宿 and 丐幫 also have no enforcer. For 血刀 the page says 「無（因為不會被蓄意開除）」. The same page states the betrayal penalty: all skills, including basics, are halved and 門派技能屬性歸零. Caveat: the page as served today is the late-era version (15th-expansion footer), so it reflects post-2001-11-15 rules.",
+        "verdict": "confirmed",
+        "note": "The rules are accurate for the paid version. It is unknown whether the exact thresholds were identical on day one in 2001.",
+        "sources": [
+          "https://jy.chinesegamer.net/index_jy2-22.asp"
+        ]
+      },
+      {
+        "claim": "Betrayal: since 2001-11-15, choosing 叛教 halves all skills and makes you 公敵, with 3 days of jail if caught. Accidental violations became 1 day of jail with no skill deduction.",
+        "detail": "Verified verbatim on index_jy2-23, which is stamped 「2004/2/16補充」. One correction: the jail durations are stated in 遊戲時間 (game time), counted as accumulated online time. The 門規 page says 累計遊戲上線時間. Also confirmed from 2-29-5 (喬峰傳奇 era): 叛派 halves everything, 清除所有的畢業記錄 and gives a fresh graduation chance. Expulsion with no graduation chances left costs 1/5 of all martial arts. The cross-sect 公敵 entry requirements are fan-sourced. The Wudang fan page lists 「星宿, 血刀, 少林公敵」 ambiguously, and a commenter questioned it.",
+        "verdict": "confirmed",
+        "note": "The pre-2001-11-15 deduction ('扣武功等級') is implied, but its amount is undocumented.",
+        "sources": [
+          "https://jy.chinesegamer.net/index_jy2-23.asp",
+          "https://jy.chinesegamer.net/index_jy2-29-5.asp",
+          "http://jyfreeonline.blogspot.com/2012/11/wudangpai.html"
+        ]
+      },
+      {
+        "claim": "Graduation came with 喬峰傳奇 (2003-01-15). Each sect requires 實戰100萬 + 基內50 + 拆招50 + one sect-specific skill at 50. Plus the per-sect NPCs, master and founding requirements.",
+        "detail": "The official index_jy2-29-3, read in full, corrects the 'one skill at 50' pattern. 武當: 俠義50, 張三豊 (rejoin: 知客道長 then 張三豊). 少林: 佛法50, 玄悲 (rejoin: 普知 then 玄悲). 華山: 基本劍法50, 華山派畢業弟子 (rejoin: 華山派回來弟子). 血刀: 基本刀法50, graduate via 畢業考官「不留», rejoin via 畢業回來「不走」. 古墓: 閃躲蹤躍50, 古墓派掌門人. 恆山: 基本醫術**40**, 掌管畢業師姐 (rejoin: 畢業後回派師兄). 全真: 全真心法50, 掌畢業師兄 (rejoin: 畢業後回派師兄). 靈鷲: 定性50, 穆雯青. 峨嵋: 基內50 + 拆招**80** with no extra skill, NPC 靜畢 (rejoin at the entrance before 滅絕's house). 星宿: 基本毒術**80**, 畢業子. 丐幫: 二袋弟子以上, 掌缽龍頭. The master and founding requirements are confirmed verbatim: master needs no NPC sect, 基內60, 基身/閃躲/拆招50, 名聲/歷練2000, 實戰500萬, 1 自創. Founding needs 實戰800萬, 500萬 money, 500h online, 名聲/歷練3000, four basics at 80, 支持度150 (max +10/day, so at least 15 game days, about 30 real hours), and 10 online disciples agreeing. The 3-real-day 見習生 period is confirmed. Graduation happens once or twice per lifetime, in four documented cases. Anyone who founded a sect or graduated twice cannot (re)enter an NPC sect.",
+        "verdict": "corrected",
+        "note": "The 'one skill at 50' pattern holds for only 7 of 11 sects. 恆山 needs 醫術40, 峨嵋 needs 拆招80, 星宿 needs 毒術80, and 丐幫 needs 二袋. The 2-29-4 page is stamped 2004/11/4新增, so some numbers may have been revised after 2003.",
+        "sources": [
+          "https://jy.chinesegamer.net/index_jy2-29-3.asp",
+          "https://jy.chinesegamer.net/index_jy2-29-4.asp",
+          "https://jy.chinesegamer.net/index_jy2-29-5.asp",
+          "https://jy.chinesegamer.net/index_jy2-29.asp"
+        ]
+      },
+      {
+        "claim": "Join requirements and gender restrictions per sect, compiled from fan and encyclopedia sources.",
+        "detail": "Partly confirmed and partly corrected. The newton encyclopedia mixes later versions: it covers 17 sects, including 崑崙, 大理 and 明教, and its infobox lists 武林浩蕩1.1. From newton: 少林 male only, 善惡-99以上. 武當 male (female special), 善惡≥-99, not expelled or 公敵. 峨嵋 female (male special), 善惡>-299. 靈鷲 female (male special), neutral, PK≤3. 古墓 female (male special), neutral, unmarried. 血刀 male-dominant (female extreme special), evil. 全真 male, 善惡≥0, PK<10, unmarried. 華山 善惡≥-299, 基內5, 讀書識字5, no PK, 岳不群's test. 恆山 female, 善惡≥0, no PK. 丐幫 not evil, no 叛徒 mark. 星宿 善惡 neutral or below. Corrections: newton does NOT contain the 歷練20000 thresholds. Those come only from the fan blog, which lists 歷練20000 for Wudang females. 星宿: the fan blog says -299 to -999, newton says 中立以下, and the official 門規 says skills cannot be learned if 善惡>-100. Treat ≤-100 as the officially evidenced bound. 靈鷲 males: the fan blog says 「不開放男子拜師」, newton says special conditions. This conflict is unresolved. The 武當 female traitor route is ambiguous in its own source.",
+        "verdict": "corrected",
+        "note": "The numbers are a cross-version mix. None of the gender-swap routes is confirmed for 2001 1.0. For the remake, treat these as design parameters.",
+        "sources": [
+          "https://www.newton.com.tw/wiki/%E9%87%91%E5%BA%B8%E7%BE%A4%E4%BF%A0%E5%82%B3ONLINE",
+          "https://jy.chinesegamer.net/index_jy2-22.asp",
+          "http://jyfreeonline.blogspot.com/2012/11/wudangpai.html",
+          "https://jyfreeonline.blogspot.com/2012/11/singshu.html",
+          "https://jyfreeonline.blogspot.com/2012/11/lingjiao.html"
+        ]
+      },
+      {
+        "claim": "Master NPC rosters and entry skills per sect (from fan guides of the free version).",
+        "detail": "Spot-checked against the fan pages. 少林: 慧真/慧虛/慧空 at map 2408 are confirmed, but each teaches a different set. 慧真 teaches 少林長拳, 羅漢拳, 心法, 身法, 拈花指, 一指禪, 普渡杖法, 韋陀棍法, 輕身術. 慧虛 teaches 風雲手, 如來千葉手, 慈悲刀法, 修羅刀法 and others. 慧空 teaches 擒拿十八打, 鷹爪功, 羅漢劍法, 達摩劍法 and others. Higher masters: 玄悲 (伏魔劍法), 玄淨 (日月鞭法), 玄痛 (龍爪功), 玄苦 (燃木刀法), 玄難 (伏魔禪杖), 渡厄 (金剛伏魔圈), 澄知 (大力金剛指), 澄明 (羅漢伏虎拳), 澄淨 (金剛般若掌), 清觀 (韋陀杵), 清無 (寂滅爪), 無色 (少林九陽功), 道象 (翻騰術). 靈鷲: 周婆婆 (basics), 天山童姥 (逍遙心法 80 cap, 月影舞步, 天羽奇劍, 如意刀法, 天山折梅手, 天山六陽掌), 蘭劍 (八荒六合唯我獨尊功), 李秋水 (白虹掌). 星宿: 丁春秋 (星宿心法, 身法, 抽髓掌, 三陰蜈蚣爪, 天山杖法, 放毒法 120 cap), 天狼子 (飛星術), 新武子 (星宿逍遙掌), 化功子 (化功大法). 丐幫: 傳功長老 (心法, 身法, 太祖長拳, 銅鎚手, 混天功...), 助功長老 (六合刀法, 太祖棍法...), 洪七公, 李長老, 孟長老/郭靖 (降龍十八缺三掌), 簡長老. Official 2-29-3 adds 血刀 NPCs 不留/不走 and 恆山/全真 graduation NPCs. Many of these skills (九陽, 化功, 降龍 quests) are post-launch expansion content.",
+        "verdict": "corrected",
+        "note": "The names check out. The rosters are from the later free version and include content from later expansions, so a strict 1.0 roster cannot be determined. The 'common pattern' of caps (100 entry / 80 advanced) has exceptions, e.g. 逍遙心法 is capped at 80 and 放毒法 at 120.",
+        "sources": [
+          "http://jyfreeonline.blogspot.com/2012/10/shaolin.html",
+          "https://jyfreeonline.blogspot.com/2012/11/lingjiao.html",
+          "https://jyfreeonline.blogspot.com/2012/11/singshu.html",
+          "http://jyfreeonline.blogspot.com/2012/11/gaibang.html",
+          "https://jy.chinesegamer.net/index_jy2-29-3.asp"
+        ]
+      },
+      {
+        "claim": "No general rank ladder in 1.0. Only 丐幫's 袋 system exists, plus 門派比武 top-3 titles whose introduction date is unknown.",
+        "detail": "The 袋 thresholds are confirmed (fan guide): 一袋 250, 二袋 500, 三袋 1300, 四袋 1700, 五袋 2500, 六袋 3500, 七袋 10000 (名聲/歷練). Correction: promotion is not only through 陳長老. 一袋 goes through a 陳長老 task, 二袋 through a 掌棒龍頭 task, and 三袋 through a beggar NPC in the 青城 ruined house, each followed by the 丐幫大會. Ranks 4–7 go through the 丐幫評定大會 with no quest. Each promotion has a two-hour cooldown. The title list is confirmed verbatim from qqnjy, but that page covers the 至尊陸版, where matches run on the first Saturday or Sunday of each month. On the date: the jy2001 chronicle lists 同門比武 as new in 葵花寶典 (2002-09-18). This strongly suggests intra-sect tournaments were not in the 2001 launch version.",
+        "verdict": "corrected",
+        "note": "The 門派比武 date gap is partially answered (2002-09-18 同門比武). The titles come from the 至尊 version.",
+        "sources": [
+          "http://jyfreeonline.blogspot.com/2012/11/gaibang.html",
+          "https://www.qqnjy.com/martialindex/contest",
+          "https://www.jy2001.net/t/243.html"
+        ]
+      },
+      {
+        "claim": "門派終身弟子 and 精要 conversion are later (free-version era) additions, not 1.0.",
+        "detail": "Not independently verified in this pass. The official paid-version pages I read (2-22, 2-23, 2-25, 2-29-x) do not mention 終身弟子 or 精要, which is consistent with it being later content. The specific requirements and NPC names come only from one fan blog.",
+        "verdict": "unverifiable",
+        "note": "Excluding it from a faithful 1.0 remake is safe either way.",
+        "sources": [
+          "https://jyfreeonline.blogspot.com/2012/10/blog-post_29.html"
+        ]
+      }
+    ],
+    "added": [
+      "The official chinesegamer pages as served today are late-era pages. They carry a 15th-expansion 五嶽劍派 footer and date stamps such as 2004/2/16補充 and 2004/11/4新增. They still say 十一個NPC門派, so the paid version never added sects beyond 11.",
+      "Jail and betrayal durations are in 遊戲時間 counted by accumulated online time, not real days.",
+      "In the official 門規, 華山 and 恆山 have no enforcer: 「無（因為進不了華山/恆山）」. 血刀 has none because it never deliberately expels. 星宿 and 靈鷲 have no enforcer either. Their 善惡 rule only blocks learning skills (星宿: 善惡>-100; 靈鷲: outside ±299).",
+      "Graduation and rejoin NPCs: 血刀 uses 畢業考官「不留」 and 「不走」. 全真 uses 掌畢業師兄 and 畢業後回派師兄. 恆山 uses 掌管畢業師姐 and 畢業後回派師兄. 峨嵋, 星宿 and 丐幫 rejoin happens by walking through a specific map entry point, with no NPC.",
+      "Player-sect details from the official pages: each master can take 5 disciples at first, +5 per 500 名聲, up to 30. Removing a member takes 3 warning letters plus a majority vote of online masters. Upkeep is 2萬 × members every half game-year (about 2 real weeks). The sect is dissolved if upkeep goes unpaid 3 times, if all members leave, or if it has under 10 members for a month. Dissolution costs every member 1/5 of all martial arts. Members can recall the 掌門 with a 2/3 vote and need 10 votes to elect a new one.",
+      "Self-created martial arts and 同門比武 date from 葵花寶典 (2002-09-18). 自創門派 and 拜師收徒 date from 喬峰傳奇 (2003-01-15). A strict 2001 launch build therefore had only NPC sects, 門規 jail and betrayal.",
+      "智冠 held the product launch event for 金庸群俠傳online on 2001-06-26 (大紀元), which is consistent with the 2001-06-28 public test date."
+    ]
+  },
+  {
+    "topic": "武功/技能系統 in 金庸群俠傳Online (aiming at the 1.0 / 2001 build): fact-check",
+    "verified": [
+      {
+        "claim": "Most detailed sources describe later live versions, not the 2001 launch build. Mainland 收費版 opened 2001-06-28 with 11 sects. 免費版 (2006) has 14, 懷舊版 (2008) 13, 至尊版 (2018) 16. The developer is 中華網龍.",
+        "detail": "jy2001.net lists these opening dates: 收費版 (上海) 2001.6.28, 免費版 2006.3.30, 懷舊版 2008.7.2, 至尊版 2018.9.19. It also lists a 收費版 (北京) server opened 2020.7.23. The 收費版 sect list is 少林, 武當, 丐幫, 峨嵋, 華山, 恆山, 全真, 靈鷲, 古墓, 血刀, 星宿 (11). 免費版 adds 明教 and 桃花島, and 逍遙派 in 2025.8. 至尊版 adds 明教, 桃花島 and 逍遙, then 大理段氏 (2023.12) and 五毒教 (2025.7). 商業周刊 (2002) says 中華網龍 launched the game in June 2001 and that 中華網龍 was spun off from 智冠's R&D team. So 'developer is 中華網龍' and 'related to 智冠' are both correct and do not conflict: 智冠 is the parent company. 17173 gives 2001-07-01 under operator 游龍在線, which is probably the public or paid launch date. The Bahamut table, edited 2004-10-23, lists exactly the 11 sects with their 門派技能. That supports the 11-sect list for the early era, but it is not proof of the launch-day roster.",
+        "verdict": "corrected",
+        "note": "Correction: 崑崙 appears in no version's sect list on jy2001.net, so drop it from the 'added later' list unless it is sourced. Correction: 中華網龍 versus 智冠 is not a conflict, because 中華網龍 is a 智冠 spin-off and subsidiary. The 2001-06-28 date is for the 上海 收費版 server; the national launch is reported as June or July 2001.",
+        "sources": [
+          "https://www.jy2001.net/welcome",
+          "https://www.businesstoday.com.tw/article/category/183015/post/200205160002/",
+          "https://news.17173.com/content/2012-04-07/20120407021440146,6.shtml",
+          "https://forum.gamer.com.tw/G2.php?bsn=2605&sn=228"
+        ]
+      },
+      {
+        "claim": "There is no character level and no 潛能. Progress comes from 實戰經驗 plus 學點 earned by killing monsters and spent on skills (消點/消武點). The 至尊版 cap is 65,200.",
+        "detail": "The Bahamut retrospective confirms there are no character levels. It says 實戰經驗 shows ability but does not directly make a character stronger, and that the slow 消武點 grind is a signature feature. The qqnjy newplayer guide confirms '學習點數一次最高只能累積65200點' and that 實戰 is 'like an alternative character level' used for rankings and requirements. It also says 精 is consumed when learning skills.",
+        "verdict": "confirmed",
+        "note": "'No 潛能' is still inferred from silence, but it is consistent across sources. The claim that 實戰 'raises defense' was not seen; Bahamut only says it does not directly strengthen the character.",
+        "sources": [
+          "https://home.gamer.com.tw/artwork.php?sn=5764896",
+          "https://www.qqnjy.com/news/newplayer"
+        ]
+      },
+      {
+        "claim": "Skill proficiency and level formulas: (level)^3 × 系數, 讀書 (N+3)^2 × 10, 基本內功 L^4 × 0.8, a 悟性 table, and reading at 悟性/4.8.",
+        "detail": "The blog text is 'N*N*N*難度系數=所需的熟練度' with N = skill level, so it is ambiguous whether N is the current or the next level. 系數 values: 血刀 1.6, 天山折梅手 1.25, 華山劍法 0.8, 玉女劍法 0.96, 神門十三劍 0.97, others about 0.9. 讀書 = (N+3)^2 × 10. 基內 = L^4 × 0.8. Per 學點 of reading = 悟性/4.8. The 悟性 table matches: 21 gives 11 proficiency for 10 精, 30 gives 15 for 5, 40 gives 20 for 2.",
+        "verdict": "confirmed",
+        "note": "These are fan estimates. The '(current level+1)^3' reading is an interpretation, not the blog's wording. I did not find the general-skill 0.84 coefficient or the points-per-level formula in this fetch.",
+        "sources": [
+          "http://jyfreeonline.blogspot.com/2013/03/blog-post_7.html"
+        ]
+      },
+      {
+        "claim": "Three ways to learn: 消點 at a master, 自修, and quest unlocks. 劈石破玉拳 needs 自修 to 10. 三仙劍 is taught in stages (衰不環 1-40, 劍隱 41-60, 劍坤 61-80). 自修 gives 悟性/4.",
+        "detail": "The jyfreeonline Huashan page confirms each part. For 劈石破玉拳: get the manual from the 桃谷六仙 quest, learn it from 岳不群, 自修 to 10, then 消點 with 高根明. For 三仙劍, 劍坤 requires killing the 馬王 and returning the 烈燄劍; 成不憂 can also teach straight to 80. 紫霞功 needs the 分宗 quest plus a 華山密函 chain, then 自修 to 10 and 消點 with 英白羅. 獨孤九劍 needs the 田伯光 poison quest for 基式, then 基式 at 50 and a fight. The jyfreeonline FAQ gives '悟性 / 4 = 自修熟練度'. jytzst says 自修 of 搏擊 and weapon skills is capped at 1.5 × the level, or 250 once fully learned (消滿).",
+        "verdict": "confirmed",
+        "note": "The claim says 自修 must reach 40 before the stages; the page says 衰不環 teaches to 40, and after 自修 to 40 he sends you onward. The 1.5× cap and 250 cap are from the later 懷舊 site.",
+        "sources": [
+          "http://jyfreeonline.blogspot.com/2012/10/huashan.html",
+          "http://jyfreeonline.blogspot.com/2013/03/blog-post_7.html",
+          "https://www.jytzst.cn/normal/detail/31"
+        ]
+      },
+      {
+        "claim": "基本武學 list. Caps are usually 140, with one or two per sect at 150 (華山: 基本劍法 and 搏擊格鬥 at 150).",
+        "detail": "The qqnjy Huashan page confirms: 基本內功 140, 搏擊格鬥 150, 拆招卸力 140, 閃躲縱躍 140, 基本刀法 140 (何不儀), 基本劍法 150, 基本身法 140, mostly taught by 梁發. Basic skills are taught by sect masters at different caps per sect, not only at a generic 武館. The skill list matches jytzst.",
+        "verdict": "corrected",
+        "note": "Correction: in Huashan two basic skills reach 150, not one. Caps are set per sect, and the learning location is the sect master (梁發), not only a 武館. Era: 至尊/免費 sites.",
+        "sources": [
+          "https://www.qqnjy.com/martialindex/martial/huashan",
+          "https://www.jytzst.cn/normal/detail/31"
+        ]
+      },
+      {
+        "claim": "Basic skills raise attributes per 10 levels: 基內 +1 根骨, 搏擊 +1 臂力, 閃躲 +1 機敏, 讀書 +1 悟性, with limits of 14, 15, 14 and 10. Sources disagree on 基內's per-level 內力 and 氣 (+8 or +40 氣).",
+        "detail": "Attribute gains and limits are confirmed. The FAQ also says 基內 gives +8 精 per 10 levels and 讀書 gives +8 神 per 10 levels. The '+8 vs +40' disagreement is resolved by the newplayer guide: '每升1級基本內功,可以修煉5次,每修煉1次,可以提升8點氣、1點內'. Five 修煉 sessions × (8 氣, 1 內) = 40 氣 and 5 內 per level, which matches its '每提升1級可以提升氣40點、內5點'. jytzst's '5 內力 and 8 氣血 per level' appears to quote the per-session 氣 value with the per-level 內 value.",
+        "verdict": "corrected",
+        "note": "Correction: there is no real conflict. Each 基內 level unlocks 5 修煉內力 sessions, each worth +8 氣 and +1 max 內, for a total of +40 氣 and +5 內 per level. The FAQ's '+8' is 精 per 10 levels, not 氣.",
+        "sources": [
+          "http://jyfreeonline.blogspot.com/2013/03/blog-post_7.html",
+          "https://www.qqnjy.com/news/newplayer",
+          "https://www.jytzst.cn/normal/detail/31"
+        ]
+      },
+      {
+        "claim": "Attributes: 7 core attributes plus 精, 氣, 神 and 內力, plus 負重, 殺氣, 善惡, PK值, a monthly birthday, and 5 free points at creation.",
+        "detail": "The newplayer guide confirms that creation involves setting a birthday and rolling attributes. It says rolling 悟性 to 25 gives 5 free points to allocate. 至尊版 gives a 完美屬性丹 for free respec. 善惡 gates such as 300, 500 and 1000 appear in Huashan requirements, and 殺氣 0 is a requirement for 混元掌.",
+        "verdict": "confirmed",
+        "note": "Partly verified. The 負重 formula, the ±0–2 monthly birthday change and the PK>3 guard threshold were not independently re-confirmed (newton wiki not re-fetched). The 5 free points and 完美屬性丹 are later 至尊-era details.",
+        "sources": [
+          "https://www.qqnjy.com/news/newplayer",
+          "https://www.qqnjy.com/martialindex/martial/huashan"
+        ]
+      },
+      {
+        "claim": "Sect skill tree, Shaolin and Huashan examples, with tiers, caps, masters and requirements.",
+        "detail": "Shaolin is confirmed: 初階 cap 100 with 佛法 10 (masters 慧真/慧虛/慧空). 二階 needs 35/35/30; 輕身術 is an exception with no 心法 needed. 三階 cap 80 needs 50/50/70, except 翻騰術 (cap 60, needs 十八銅人陣) and 九陽功 (cap 70). 四階 韋陀杵 (清觀) needs a 三階 skill at 82, 基內 80, 佛法 80, 根骨 and 臂力 25. 必殺技 寂滅爪 (清無) needs 韋陀杵 30, 基內 90, 佛法 90, 根骨 and 臂力 27; 自修 1-50, then master 50-80. 十八銅人陣 needs 實戰 60,000 and a 3-player party, and opens 藏經閣. 金剛伏魔圈 is a 3-player 陣法 (cap 100). Huashan corrections: 伏虎拳 is taught by 梁發, not 令狐沖, and needs 心法 35, 劈石 15 and 門派技能 20. 沖靈劍法 is from 令狐沖. 獨孤九劍基式 is cap 50, and full 獨孤九劍 (cap 80) needs 實戰 6M and 歷練 8000. 太岳三清峰 needs 實戰 3M and 福緣 27. There is also a 氣宗 palm, 混元掌 (cap 80, 高跟明). 華嶽劍髓 is cap 70 (商道文). 紫霞功 is cap 65 (英白羅).",
+        "verdict": "corrected",
+        "note": "Correction: 伏虎拳's master is 梁發, not 令狐沖. Add 混元掌 (氣宗) and 獨孤九劍基式 (cap 50). Treat 獨孤九劍 as the top sword art with a quest; the page does not label it 必殺技. 少林九陽功 is listed outside the 三階 table. The data is from the 至尊/免費 era.",
+        "sources": [
+          "https://www.qqnjy.com/martialindex/martial/shaolin",
+          "https://www.qqnjy.com/martialindex/martial/huashan"
+        ]
+      },
+      {
+        "claim": "The 11 門派技能 and their effects.",
+        "detail": "Bahamut (2004): 少林 佛法 (防禦: proc to raise defense; costs 精+內力). 武當 俠義 (抗技: resist poison, paralysis and confusion; 精+內). 峨嵋 斷惡 (閃避; 精+神). 華山 儒風 (回復: restore 氣 and 神; 精+內). 恆山 慈悲 (反擊; 精+內). 全真 養生 (休息: restore 氣 and 內力; 精+神). 古墓 清心 (痲痺; 精+神). 靈鷲 定性 (混亂; 精+神). 星宿 諂媚 (分心: lower enemy attack; 精+神). 血刀 威嚇 (重擊: stronger attack; 精+內). 丐幫 乞討 (毒牙: poison; 精+神).",
+        "verdict": "confirmed",
+        "note": "This is the earliest dated source found (2004), which makes it the best evidence for the original-era sect skills.",
+        "sources": [
+          "https://forum.gamer.com.tw/G2.php?bsn=2605&sn=228"
+        ]
+      },
+      {
+        "claim": "Combat uses command buttons (武, 內, 毒, 醫, 暗, 陣, 穴, 輕, 特, 休, later 絕), the 成 mechanic, and 刀 versus 掌 rules. The turn structure is unclear.",
+        "detail": "The FAQ says: '刀攻擊加劍一成.拆招卸力減1成' and '掌比劍少一成.拆招卸力多1成'. It also says that at 基劍 120 there is no difference between 1 成 and 10 成. Bahamut calls 1.0 combat '回合制戰棋式' and says 1.5 used 即時戰鬥制. The qqnjy 絕學 page's status descriptions say 內傷 blocks the 特, 休 and 絕 commands, that 凍傷 'slows the gauge', and that 重傷 drains 'per second'. That points to an ATB-style gauge in the version qqnjy describes.",
+        "verdict": "confirmed",
+        "note": "The 1.0 combat is turn-based and grid-based, with probably a speed or ATB gauge, at least in later builds. Footage is still needed to confirm exactly how turns work at launch.",
+        "sources": [
+          "http://jyfreeonline.blogspot.com/2013/03/blog-post_7.html",
+          "https://home.gamer.com.tw/artwork.php?sn=5764896",
+          "https://www.qqnjy.com/task/absolutely"
+        ]
+      },
+      {
+        "claim": "絕學 require 3000 online hours, the 絕學 cap is 300, 絕內 come in 12 kinds, and there is a list of 特技.",
+        "detail": "qqnjy quotes '上線時間須滿3000小時才可學習'. The full 絕學 list is: 野球拳, 降龍十八掌, 獨孤九劍奧義, 六脈神劍, 打狗棒法, 胡家刀法, 金剛伏魔鞭法, 黯然銷魂掌, 真˙辟邪劍法, 金蛇劍法, 西毒杖法, 楊家霸王槍, 火焰刀法, 冰蠶神掌, 苗家劍法, 大金剛掌, 白蟒鞭法 (CN) and 五毒金蛇鞭 (TW). Status effects include 內傷, 流血, 混亂, 麻痺, 封穴, 燒傷 and 凍傷. That page gives no cap of 300; comments mention 500 (天悟 swap) and 200 for full-screen attacks. It also has no 絕內 or 特技 list.",
+        "verdict": "corrected",
+        "note": "The 3000-hour rule is confirmed. The cap of 300 and '12 kinds of 絕內' could not be verified; mark them unverified. The 絕學 list is longer than claimed. All of this is almost certainly post-launch content (the 絕 command was added later).",
+        "sources": [
+          "https://www.qqnjy.com/task/absolutely",
+          "https://home.gamer.com.tw/artwork.php?sn=5764896"
+        ]
+      },
+      {
+        "claim": "Leaving a sect halves its skills (implied), and sects have gender and morality gates and graduation rules (Huashan: 實戰 1M, 基內, 拆招 and 基劍 at 50).",
+        "detail": "The FAQ wording is 'joining then leaving does not halve, because the skill is only level 1' (因為武功只有一級，所以不會減半), which strongly implies halving otherwise. Huashan entry is confirmed: '中立或正義（善惡值-299以上）', no sect, no PK, 基內 and 讀書 at 5. Huashan graduation is confirmed: 實戰 1,000,000, 基內 50, 拆招卸力 50, 基本劍法 50, by talking to the 畢業弟子 NPC; a 回門弟子 NPC lets you rejoin. Bahamut confirms the Shaolin meat punishment and penalties for betrayal and 滅派.",
+        "verdict": "confirmed",
+        "note": "Halving on leaving is still inferred. The gender gates for 峨嵋, 恆山, 古墓 and 靈鷲 were not independently re-verified.",
+        "sources": [
+          "http://jyfreeonline.blogspot.com/2013/03/blog-post_7.html",
+          "http://jyfreeonline.blogspot.com/2012/10/huashan.html",
+          "https://home.gamer.com.tw/artwork.php?sn=5764896"
+        ]
+      },
+      {
+        "claim": "Life skills (11 skills, each capped at 100, 400 combined) are documented from 至尊版 only.",
+        "detail": "Confirmed for 至尊版: 伐木, 採礦, 捕魚, 農夫, 工匠, 織布, 獵人, 裁縫, 打鐵, 鑄劍, 廚師. Each caps at 100 with 400 combined. Skill books start at 30 (covering 30-71 and 71-100), and 技能令 and 文曲周天丹 speed things up. The page says '在至尊版生活技能只有一階，沒有日月星冰', which implies other versions have tiered life skills (日/月/星/冰).",
+        "verdict": "confirmed",
+        "note": "Whether life skills existed in 1.0 at launch is still unconfirmed. Bahamut lists housing, marriage, children and sailing as later features.",
+        "sources": [
+          "https://www.qqnjy.com/news/life",
+          "https://home.gamer.com.tw/artwork.php?sn=5764896"
+        ]
+      }
+    ],
+    "added": [
+      "修煉內力 rule: each 基本內功 level unlocks 5 修煉 sessions, each worth +8 氣 and +1 max 內力, for a total of +40 氣 and +5 內 per level. Per 10 levels, 基內 also gives +1 根骨 and +8 精, and 讀書 gives +1 悟性 and +8 神 (qqnjy newplayer; jyfreeonline FAQ).",
+      "中華網龍 was spun off from 智冠's R&D team, and 智冠 is its parent company. Business Today (2002) puts the launch in June 2001 and reports 400,000 time cards sold in the first two months. That suggests the original paid model used prepaid time cards (點卡), which matters if the user wants the original feel.",
+      "Huashan has several 實戰 and 歷練 gates: 太岳三清峰 needs 實戰 3M, 獨孤九劍基式 needs 實戰 3M and 歷練 2000, and full 獨孤九劍 needs 實戰 6M and 歷練 8000. 歷練 is a separate progression stat that the findings did not list among the attributes.",
+      "Shaolin's 十八銅人陣 needs 實戰 60,000 and a 3-player party, and unlocks 藏經閣. 金剛伏魔圈 is a 3-player 陣法 (cap 100). This is a co-op gate worth keeping for a friends-focused remake.",
+      "Status effects in the 絕學 era (later): 內傷 blocks 特, 休 and 絕. 流血 drains HP over time. 混亂 makes you attack your own side. 麻痺 stops all action. 封穴 allows movement only, and 內力 can break it. 燒傷 drains 精 and 內. 凍傷 drains 精 and 神 and slows the action gauge, which is evidence of a gauge-based turn order.",
+      "jy2001.net shows 收費版 servers still running today with the 11-sect roster (上海 opened 2001.6.28, 北京 2020.7.23). These are the closest living reference for 1.0-era content and could be used to collect launch-era skill data.",
+      "Version branches 免費版, 經典版, 究極版 and 武林至尊版 do not share content (Bahamut). Fan-site skill tables should therefore be tagged with the branch they come from."
+    ]
+  },
+  {
+    "topic": "角色屬性 & 成長 in 金庸群俠傳Online 1.0 (character attributes, derived stats, progression, death, alignment)",
+    "verified": [
+      {
+        "claim": "There is NO character level in JY Online. Progression comes from 實戰經驗 plus 學習點數 spent on individual skills, and each skill has its own level.",
+        "detail": "Confirmed: there is no character level. The Bahamut retrospective says 「沒有角色等級」. The official 1.0 page defines 實戰經驗 and 學習點數 as described. The 17173 (2002) guide confirms new characters start with 100 學習點數 (「游戲一開始只有100點的學習點數」).\n\nOne part is wrong. The finding says more 實戰經驗 means more 學習點數 from fights. 17173 actually says 「實戰經驗關係學習點數的多寡，因為實戰少，賺到的學習點數多（所以之前在少林可消實戰的功能已經被改掉了）」. So a LOWER 實戰 earns MORE 學點 per fight, which suggests the gain is scaled by enemy strength relative to your 實戰. A Shaolin feature for reducing 實戰 existed early on and was removed.\n\nThe 65200 學點 cap comes from the modern 至尊陸版 guide on QQNJY. It is not a 1.0 rule.",
+        "verdict": "corrected",
+        "note": "Design: base 學點 gain on enemy strength relative to the player's 實戰. Do not make it grow with 實戰.",
+        "sources": [
+          "https://home.gamer.com.tw/artwork.php?sn=5764896",
+          "https://jyfree.chinesegamer.net/jy1_4_1.asp",
+          "http://jinyong.17173.com/content/2002-6-17/n950_866600.html",
+          "https://www.qqnjy.com/news/newplayer"
+        ]
+      },
+      {
+        "claim": "The official 1.0 page gives the full character sheet (性別…善惡度) with the listed descriptions.",
+        "detail": "I downloaded the page, decoded it from Big5 and read it. Every listed field and its description matches the wording: 精/氣/神/內力, 負重, 飽食度, 飲水度, 金錢 at most 600萬金庸幣, 臂力/定力/膽識/機敏/悟性/根骨/福緣, 名聲 (raised by 保鏢 and 驛站送信), 武器強度/防具強度 (depend on the item's grade), 殺氣 (raises attack, lowers defense), 學習點數, 實戰經驗, 配偶, 師承, 門派/位階/技能, 組織 (30 co-signers each with 名聲20, founder needs 聲望150), 組織位階 (set by the 幫主), PK值 >3 means city guards hunt you, 江湖歷練, and 善惡度 from -1000 to 1000.\n\nThe page has no 攻擊/防禦/命中/閃避 fields. The 內功功用 page confirms that 內功 adds random attack and defense bonuses, a bonus when you press 防禦, 逼毒, 衝穴, 治療內傷 (only outside combat), 傳力, 點穴, and 內傷 recoil.",
+        "verdict": "confirmed",
+        "note": "This is the most reliable 1.0 source. Its text is Big5-encoded, so automated fetches come back garbled. Use curl plus iconv to read it.",
+        "sources": [
+          "https://jyfree.chinesegamer.net/jy1_4_1.asp",
+          "https://jyfree.chinesegamer.net/jy1_4_4.asp"
+        ]
+      },
+      {
+        "claim": "Seven rollable attributes (臂力, 膽識, 悟性, 福緣, 定力, 機敏, 根骨). Creation rolls dice with a cap of about 25 per stat plus 5 free points. 4 birthplaces. Total budget is about 145.",
+        "detail": "Confirmed: the seven attribute names. Confirmed by 17173 (2002): 悟性 can be rolled to at most 25, plus 5 extra points for 30.\n\nThe four birthplaces (西夏/大理/京城/揚州) come from QQNJY, which covers the modern 至尊陸版. They are not confirmed for 1.0.\n\nThe ~145 total should be dropped. QQNJY's recommended spread has 悟性30 AND 根骨30. That is 10 points above a 25 cap, but only 5 free points exist. QQNJY's spreads assume the 至尊版 「完美屬性丹」, which lets you freely redistribute points, so they cannot tell us the 1.0 budget.\n\nThe 1.0 blog's builds are different again. Its 野球拳 builds total about 147 and 141 and already include pills and birthday bonuses. Whether the 25 cap applies to every stat (not just 悟性) is not confirmed.",
+        "verdict": "corrected",
+        "note": "Treat the 145 budget as unknown. Only '悟性 roll cap 25 + 5 free' has a 2002 source.",
+        "sources": [
+          "http://jinyong.17173.com/content/2002-6-17/n950_866600.html",
+          "https://www.qqnjy.com/news/attribute-2",
+          "https://www.qqnjy.com/news/newplayer",
+          "http://jyfreeonline.blogspot.com/2012/11/blog-post_1233.html"
+        ]
+      },
+      {
+        "claim": "Attributes grow through skill milestones (every 10 levels of 搏擊格鬥 gives +1 臂力, 閃躲縱躍 gives +1 機敏, 基本內功 gives +1 根骨, 讀書 gives +1 悟性), pills, equipment and birthdays.",
+        "detail": "The 2021 Bahamut post actually says 「臂力消搏擊格鬥每10級＋1點臂力，根骨消基本內功每10級＋1點根骨，機敏消閃躲縱躍每10級＋1點機敏」. The word 消 most likely means you get the attribute by ERASING (消武) 10 levels of the skill, not by raising it. The Bahamut retrospective confirms a 消武點 system exists. The post is about a modern server, and its pills come from 福袋 (lucky bags), which are cash-shop items. QQNJY (至尊陸版) phrases it as gaining by leveling.\n\nThe only 2002-era rule is 17173's 「讀書每10級加悟性1」, gained by leveling. 粗布道袍 悟性+2 is confirmed (2002).\n\nBirthday random attribute gains are confirmed by the 1.0 free-server blog (「等待生日碰碰運氣會加到」).\n\nThe attribute effects are confirmed from the blog: 膽識 gives a little crit rate and stronger bursts but lowers defense, 定力 makes attack more consistent, 根骨 gives a little defense and higher max crit, 機敏 helps dodging. The 野球拳 low-attribute requirements (臂40/膽30/福50/機45/根30) are confirmed.",
+        "verdict": "corrected",
+        "note": "Only 讀書→悟性 by leveling has a 1.0-era source. The 搏擊/閃躲/內功 conversions are probably a later 消武 mechanic.",
+        "sources": [
+          "https://forum.gamer.com.tw/C.php?bsn=2605&snA=14191",
+          "http://jinyong.17173.com/content/2002-6-17/n950_866600.html",
+          "http://jyfreeonline.blogspot.com/2012/11/blog-post_1233.html",
+          "https://home.gamer.com.tw/artwork.php?sn=5764896",
+          "https://www.qqnjy.com/news/newplayer"
+        ]
+      },
+      {
+        "claim": "內力上限 = 基本內功 × 5 (ZOL). Each level of 基本內功 adds +40 氣 and +5 內 (QQNJY). Sample 悟性 study numbers. Without 實戰 a skill can only reach level 5.",
+        "detail": "All four quotes check out. ZOL (dated 2006-12-30, no version stated) says 「基本内功 * 5 = 你的内力上限」 and 「内力值练到20以上可以以施展内力恢复15%的精或气或神其中一项」. It also says 「没有实经验只能到5」. ZOL lists recovery methods (吃藥/回客棧休息/用時間等待) and says you start with 5 精 potions.\n\nQQNJY's +40氣 and +5內 per 基本內功 level is for 至尊陸版. 17173 (2002) gives: at 悟性30 one study costs 精5 and gives 熟練+16, and at 悟性40 it costs 精1 and gives +20.\n\nNote that ZOL's article is from 2006, years after the 2001 launch.",
+        "verdict": "confirmed",
+        "note": "The quotes are verified, but none of these formulas is proven for the 2001 build. The 2006 ZOL ×5 rule is closer to 1.0 than QQNJY's +5/level.",
+        "sources": [
+          "https://m.zol.com.cn/article/489124.html",
+          "https://www.qqnjy.com/news/newplayer",
+          "http://jinyong.17173.com/content/2002-6-17/n950_866600.html"
+        ]
+      },
+      {
+        "claim": "Official death penalty: highest 特殊武功 -1 level, equipment drops on the 屍骨, respawn at the 記錄點 or birthplace, 10-minute owner-only pickup. 替身娃娃 added 7/26.",
+        "detail": "I read the decoded official page directly. Its wording: 「第一：玩家主角所學之最高等級的特殊武功降一級。第二：身上所有裝備會跟著屍骨掉在葬身之處，玩家重生後會回到最後一次的記錄點（無記錄點者就會在出生地），玩家只有10分鐘的時間可將裝備撿回。」\n\nAlso confirmed from the same page:\n- 替身娃娃 is for players who top up after noon on 7/26. Players can hold several as long as they have no more than 300 items, and the dolls can be given away or auctioned.\n- The 「屍體漂浮」 toggle and 「授權撿取屍體物品」 option exist.\n- 中毒 or 服藥過量 (氣血失調) drops 精/氣/神 to 1.\n- 「逃」 only works on the blue 逃 tiles.\n- Alt+F4 was a known escape trick.\n\nNewton wiki confirms that under 500 實戰 there is no loss, and that basic skills are exempt (「除基本武功外」).\n\nThe page says equipment (裝備), not everything in the bag. Whether bag items drop is not stated.",
+        "verdict": "confirmed",
+        "note": "The 替身娃娃 is a cash-shop item added after launch, so leave it out of a 1.0 recreation.",
+        "sources": [
+          "https://jy.chinesegamer.net/7-11-quick_news/web/news_4-2.htm",
+          "https://www.newton.com.tw/wiki/%E9%87%91%E5%BA%B8%E7%BE%A4%E4%BF%A0%E5%82%B3ONLINE"
+        ]
+      },
+      {
+        "claim": "善惡度 runs from -1000 to 1000 and gates sect entry and expulsion. 少林 thresholds as listed. 17173 lists 全真 -500, 武當 -1000, 峨嵋 negative.",
+        "detail": "The range and the kill rules for 善方/惡方 NPCs are confirmed on the official page.\n\n少林 is confirmed word for word:\n- Entry: 善惡 ≥ -99, no sect, male, not a 少林公敵.\n- Minor violations mean 受戒: 善惡 < -99, PK值 1–2, or high 殺氣.\n- Expulsion: 善惡 < -299, PK ≥ 3, 殺氣 > 2000, or killing a fellow disciple. Expulsion counts as 叛教: 本門武功減1/2, and you can never enter 少林 again.\n\nThe 全真/武當/峨嵋 numbers were misread. In 17173 they are not entry requirements. They are what you need to be ATTACKED by those sects' disciples, used as leveling spots: 「要挑戰峨嵋派，首先要讓善惡值變負值…進入峨嵋後點入口的峨嵋弟子就會進入戰鬥」, 「到全真教，但是善惡值要降到-500」, 「上武當前善惡值要-1000，在武當的大厅來回走動，會隨機遇到武當弟子」. So 'evil' players farm righteous sects.\n\nConfirmed on the official page: guards attack players with negative 善惡 or high PK, and bounty hunters chase players on the wanted list. Players with positive 善惡 get attacked when talking to 葉二娘 or entering 血刀門.\n\nPK decay of 1 per 30 real minutes is confirmed by Newton.\n\n殺氣 removal (100兩 per 10 points, near 大理) is confirmed by ZOL (2006).\n\nNot verified: Ctrl+click for forced PK, and about 6000 殺氣 consumed by 絕招.",
+        "verdict": "corrected",
+        "note": "Fix the sign question: negative 善惡 makes righteous sects HOSTILE so you can farm them. It is not a requirement for joining them.",
+        "sources": [
+          "https://jyfree.chinesegamer.net/jy1_4_1.asp",
+          "https://jyfree.chinesegamer.net/jy1_1_1.asp",
+          "https://jy.chinesegamer.net/7-11-quick_news/web/news_4-2.htm",
+          "http://jinyong.17173.com/content/2002-6-17/n950_866600.html",
+          "https://www.newton.com.tw/wiki/%E9%87%91%E5%BA%B8%E7%BE%A4%E4%BF%A0%E5%82%B3ONLINE",
+          "https://m.zol.com.cn/article/489124.html"
+        ]
+      },
+      {
+        "claim": "Recovery: 精/氣/神 regenerate and slow down at 飽食 0. 施展內功 restores 精. 修煉內力 restores 內力. Potions, inn and waiting. No explicit 打坐.",
+        "detail": "The official page confirms that recovery slows when 飽食度 is 0, that 施展內功 restores 精, and that 修煉內力 restores 內力.\n\nZOL says 施展內力 needs 內力 ≥ 20 and restores 15% of ONE of 精/氣/神, not only 精. ZOL also says you cannot recover at all when 飽食 or 口渴 is 0. That is stricter than the official 'slower', so the sources conflict here.\n\nThe 內功 functions are confirmed on the official 內功功用 page. I did not check the 自動休息 locations from the blog.",
+        "verdict": "confirmed",
+        "note": "Go with the official 'slower recovery when 飽食 is 0', and use 施展內功 restoring 15% of a chosen stat.",
+        "sources": [
+          "https://jyfree.chinesegamer.net/jy1_4_1.asp",
+          "https://jyfree.chinesegamer.net/jy1_4_4.asp",
+          "https://m.zol.com.cn/article/489124.html"
+        ]
+      },
+      {
+        "claim": "The official 1.0 skill list (17 武學屬性) plus life and sect skills. 輕功 details. Combat in 1.0 was turn-based tactical with a 光棒 gauge, and 1.5 made it real-time.",
+        "detail": "The 17 skills on the official 武學屬性 page are confirmed exactly (基本刀法…交易之道). 讀書識字 is required to learn from 秘笈.\n\nThe 輕功 page is confirmed: 基本身法 makes you move faster outside combat. 門派輕功 widens your movement range as it levels, its special effects cost 內力, and the 身法 button is disabled while the 光棒 is refilling.\n\nThe Bahamut retrospective calls combat 「回合制戰棋式」 and mentions a closed 「金庸1.5即時戰鬥制的版本」. Newton wiki calls it 「半即時戰鬥」 (semi-real-time). That fits a grid battlefield where actions are timed by an ATB-like 光棒 gauge, not strict alternating turns.\n\n少林 has a 佛法 skill that gates which sect arts you can learn.",
+        "verdict": "confirmed",
+        "note": "Describe 1.0 combat as 'semi-real-time grid tactics with an ATB gauge' rather than pure turn-based.",
+        "sources": [
+          "https://jyfree.chinesegamer.net/jy1_4_2.asp",
+          "https://jyfree.chinesegamer.net/jy1_4_3.asp",
+          "https://jyfree.chinesegamer.net/jy1_1_1.asp",
+          "https://home.gamer.com.tw/artwork.php?sn=5764896",
+          "https://www.newton.com.tw/wiki/%E9%87%91%E5%BA%B8%E7%BE%A4%E4%BF%A0%E5%82%B3ONLINE"
+        ]
+      },
+      {
+        "claim": "年齡 and 生日 exist on the sheet, but there is no documented age-based progression or penalty.",
+        "detail": "The official 1.0 page lists 生日 but NOT 年齡. I decoded the page and found no 年齡 entry, and the index_jy1-1-5 page also only shows 生日. Birthday random attribute boosts are confirmed by the 1.0 blog. QQNJY's advice to set the birthday on Jan 2 so the second birthday comes sooner, or in June after taking HP pills, is for 至尊陸版. The in-game time periods (卯時/午時/酉時) are confirmed by 少林's 齋食 schedule. The ratio of game time to real time was not found.",
+        "verdict": "corrected",
+        "note": "Drop 年齡 as a 1.0 field unless another source shows it. Keep birthdays as a periodic random attribute gain.",
+        "sources": [
+          "https://jyfree.chinesegamer.net/jy1_4_1.asp",
+          "https://jy.chinesegamer.net/index_jy1-1-5.asp",
+          "http://jyfreeonline.blogspot.com/2012/11/blog-post_1233.html",
+          "https://www.qqnjy.com/news/attribute-2",
+          "https://jyfree.chinesegamer.net/jy1_1_1.asp"
+        ]
+      }
+    ],
+    "added": [
+      "The official pages on jyfree.chinesegamer.net and jy.chinesegamer.net are Big5-encoded, and WebFetch returns them garbled. To read them reliably: curl -sL URL | iconv -f BIG5-HKSCS -t UTF-8 -c.",
+      "少林 rules in 1.0 (official): male only, no marriage unless you clear 木人巷 and become a 俗家弟子, must eat 齋食 (free meals at 卯/午/酉時, eating meat costs 1 level of 佛法), killing good NPCs or players lowers 佛法, and 佛法 level caps how far sect arts can be trained. 叛教 or expulsion halves sect skills. 少林 skills include 化緣 (once a day, only with no money on you) and 幫農.",
+      "2002 progression benchmarks (17173): around 1萬 實戰 go to 鬼王洞, around 4萬 實戰 with 特武 lv25 to the 峨嵋山 maze, 6萬 實戰 / 特武34 to 古墓, 特武38 to 峨嵋, 10萬 / 特武40 to 全真, 15萬 to 武當. These are useful for tuning an XP-free difficulty curve.",
+      "Official top death causes list 魔女 and 邪教弟子 as one-shotting anyone with 特殊武功 below lv30. NPCs known to be very strong: 武館武師, city guards, and 葉二娘 and 南海鱷神 in 西夏.",
+      "Newton wiki gives a 1.1 expansion name, 武林浩蕩1.1. Version boundaries (1.0 / 1.1 / 1.5 real-time) should be pinned down before deciding what counts as '1.0'.",
+      "ZOL and the official page disagree on hunger: the official page says recovery slows at 飽食 0, ZOL says it stops entirely. The official wording should win."
+    ]
+  },
+  {
+    "topic": "金庸群俠傳Online 1.0: combat and PK (fact-check)",
+    "verified": [
+      {
+        "claim": "Combat in v1.0 is semi-real-time (半即時), ATB-style, on a separate battle screen",
+        "detail": "17173 xinshou/14 says, word for word: 「本游戏采用半即时的战斗模式，结合即时制与回合制的优点」, with a 时间棒 compared to Final Fantasy. The 17173 v1.5 page says: 「ver1.5版最大的不同處，就在於半回合制改為即時制」. So v1.0 was 半回合制/半即時 with a screen change, and v1.5 was real-time.",
+        "verdict": "confirmed",
+        "note": "Neither source describes a 'tactical grid'. The grid comes from the separate FAQ on escape tiles and blocking.",
+        "sources": [
+          "http://jinyong.17173.com/xinshou/14.htm",
+          "http://jinyong.17173.com/v1.5/tese.htm"
+        ]
+      },
+      {
+        "claim": "Tile battlefield, units block each other, escape by standing on a marked tile and pressing 逃",
+        "detail": "17173 yinan/32 says: 「地上有个黄色的标记」 and 「再按下逃走的按钮」. The tile is yellow in the 2001-era source.",
+        "verdict": "confirmed",
+        "note": "I did not re-check the 輕 jump or 原地逃離 on jyfree. Treat them as later additions.",
+        "sources": [
+          "http://jinyong.17173.com/yinan/32.htm"
+        ]
+      },
+      {
+        "claim": "Battle command bar: 移 攻 武 特 防 休 裝 逃 毒 醫 暗 陣 內 輕 穴",
+        "detail": "Newton wiki lists exactly 「移 攻 武 特 防 休 裝 逃 毒 醫 暗 陣 內 輕 穴」. Some buttons need the matching skill first, for example 毒 needs 毒術 and 陣 needs 陣法.",
+        "verdict": "confirmed",
+        "note": "The 逼, 衝 and 傳力 commands come from the jyfree site, which is a later superset. Those pages are Big5 and come back garbled, so I could not re-verify them.",
+        "sources": [
+          "https://www.newton.com.tw/wiki/%E9%87%91%E5%BA%B8%E7%BE%A4%E4%BF%A0%E5%82%B3ONLINE"
+        ]
+      },
+      {
+        "claim": "Attribute effects: 機敏 speed/dodge, 定力 parry/counter, 臂力 damage, 根骨 defense/max HP, 胆識 attack bonus",
+        "detail": "17173 yinan/7 confirms all of these. 臂力 sets carry weight and damage. 胆識 gives a chance of attack bonuses and less 受驚. 定力 lets you read attacks and, when high, counter. 機敏 raises dodge rate and also affects speed. 根骨 sets the life cap. The 鐵心網 FAQ gives 「臂力影響攻擊、根骨影響防禦、機敏影響閃躲」 and 「負重=根骨*3+臂力*5」.",
+        "verdict": "confirmed",
+        "note": "There is still no ATB speed formula. The 身法 part was not re-verified.",
+        "sources": [
+          "http://jinyong.17173.com/yinan/7.htm",
+          "http://jkgame.com/iron/faq.htm"
+        ]
+      },
+      {
+        "claim": "v1.0 uses 踩地雷 random encounters plus fixed and chasing NPC triggers; click-to-fight is v1.5",
+        "detail": "17173 xinshou/13 lists the three trigger methods word for word. Bahamut snA=1558, floor 12: 「1.0是採地雷方式遇敵.1.5則是點怪遇敵」. The 鐵心網 FAQ confirms 守護者之煙: 5000兩, about 5 minutes, lowers world-map encounters, single use.",
+        "verdict": "confirmed",
+        "note": "",
+        "sources": [
+          "http://jinyong.17173.com/xinshou/13.htm",
+          "https://forum.gamer.com.tw/C.php?bsn=2605&snA=1558",
+          "http://jkgame.com/iron/faq.htm"
+        ]
+      },
+      {
+        "claim": "Parties share experience, late joiners can fight, and 陣形 works only in a party",
+        "detail": "17173 xinshou/14 confirms experience sharing for every party member who takes part. 17173 xinshou/3: 「除了组队之外，玩家是没有办法单独自己使用这个「阵形」的功能」.",
+        "verdict": "confirmed",
+        "note": "合體技 is post-launch and I did not re-verify it. The party cap is still unknown.",
+        "sources": [
+          "http://jinyong.17173.com/xinshou/14.htm",
+          "http://jinyong.17173.com/xinshou/3.htm"
+        ]
+      },
+      {
+        "claim": "Status effects list (點穴, 中毒, 內傷, 麻痺, 混亂, 流血, etc.) mapped to specific martial arts",
+        "detail": "The only source is the jyfree free-server pages, which describe a later version with expansions. I could not re-read them because of Big5 garbling. The 穴/毒/醫 buttons in the Newton command list support 點穴 and 毒 as original. I found no 2001-era source for 流血, 混亂 or 氣血失調.",
+        "verdict": "unverifiable",
+        "note": "Keep 點穴, 中毒 and 內傷 as core. Flag the per-skill mapping and the 流血/混亂 tier as later content.",
+        "sources": [
+          "https://jyfree.chinesegamer.net/jy3_24-3.asp",
+          "https://www.newton.com.tw/wiki/%E9%87%91%E5%BA%B8%E7%BE%A4%E4%BF%A0%E5%82%B3ONLINE"
+        ]
+      },
+      {
+        "claim": "PK rules: 叫戰 needs line of sight and can be toggled; forced PK needs a key (Ctrl) and gives +1 PK值 per kill; PK值>3 means guards chase you; PK值 drops 1 every 30 minutes",
+        "detail": "17173 xinshou/10 says: 「双方必须要在视线范围之内」, 「必须按连结键方可强迫开启战斗」, 「每杀一位玩家PK值将会加1」, and that this counts as 恶意PK. 17173 yinan/33 confirms the 接受叫战開關 in the system menu. Newton gives Ctrl, 「高於3時進出城會被守衛追殺」 and 「每真實時間30分鐘減1點」. The 鐵心網 FAQ confirms the name colours: evil blue, neutral yellow, good white.",
+        "verdict": "confirmed",
+        "note": "The 2001 source calls the key 連結鍵. Newton names it Ctrl. yinan/33 itself says nothing about PK值 or a victim log, so the 'logs victims' detail is unconfirmed.",
+        "sources": [
+          "http://jinyong.17173.com/xinshou/10.htm",
+          "http://jinyong.17173.com/yinan/33.htm",
+          "https://www.newton.com.tw/wiki/%E9%87%91%E5%BA%B8%E7%BE%A4%E4%BF%A0%E5%82%B3ONLINE",
+          "http://jkgame.com/iron/faq.htm"
+        ]
+      },
+      {
+        "claim": "Alignment -1000 to 1000; sect jail; leaving a sect halves martial arts; 衙門 bounty hunter licence",
+        "detail": "Newton confirms the 善惡 range of -1000 to 1000. 17173 yinan/30: 「武功等级会被降为原来的二分之一，同时会成为该派的叛徒」, and you cannot rejoin. The source does not say 'basic ones included'. The 鐵心網 FAQ confirms 「先要向捕快拿獎金獵人牌照,殺了懸紅的人就可以拿獎金」. The jyfree 門規 page is garbled but partly shows 少林 thresholds that match the claim: 善惡 ≤ -299, PK > 3, 殺氣 > 2000, 同門相殘.",
+        "verdict": "corrected",
+        "note": "Drop 'basic ones included' from the 叛派 penalty because the 2001 source does not say it. I could not re-confirm 'one day of accumulated online time' or the per-sect PK caps because the page is garbled.",
+        "sources": [
+          "https://www.newton.com.tw/wiki/%E9%87%91%E5%BA%B8%E7%BE%A4%E4%BF%A0%E5%82%B3ONLINE",
+          "http://jinyong.17173.com/yinan/30.htm",
+          "http://jkgame.com/iron/faq.htm",
+          "https://jyfree.chinesegamer.net/jy3_7.asp"
+        ]
+      },
+      {
+        "claim": "Death: corpse holds all items, all martial arts drop one level, respawn at 記錄點, protected window then public loot, PvP death passes 神兵利器 to the killer",
+        "detail": "17173 yinan/28: 「所有的武功会下降一级，并且所有的物品会留在尸体上…回到先前最后设定的记录点」. 17173 yinan/29: the corpse can be found within 30 minutes, and only you and players you designate can loot it during the first 10 minutes. After that anyone can loot it for the rest of the 30 minutes, so the windows are 10 minutes protected and 20 minutes public. The 'remaining 10' reading is an error. 17173 xinshou/11 confirms 神兵利器 「将自动跑到该玩家身上」. Newton confirms the later softening: no loss below 500 實戰, and only the highest non-basic art drops one level.",
+        "verdict": "corrected",
+        "note": "There is no inconsistency. The total window is 30 minutes: the first 10 are owner-only and the last 20 are open to anyone.",
+        "sources": [
+          "http://jinyong.17173.com/yinan/28.htm",
+          "http://jinyong.17173.com/yinan/29.htm",
+          "http://jinyong.17173.com/xinshou/11.htm",
+          "https://www.newton.com.tw/wiki/%E9%87%91%E5%BA%B8%E7%BE%A4%E4%BF%A0%E5%82%B3ONLINE"
+        ]
+      },
+      {
+        "claim": "Structured PvP (切磋, 門派比武, 武林大會) is likely post-launch",
+        "detail": "The jyfree 武林大會 page is garbled. It partly shows a 10-minute real-time match limit and an HP-based tiebreak, and its 18 rules were last revised 2018/11/09, which confirms it describes a later version. 17173 xinshou/14 confirms 「大门派之间的战斗系统，会另行设计」, meaning this was not in the launch version.",
+        "verdict": "confirmed",
+        "note": "I could not re-verify the monthly frequency, single elimination or prize weapons.",
+        "sources": [
+          "https://jyfree.chinesegamer.net/jy3_2_2.asp",
+          "http://jinyong.17173.com/xinshou/14.htm"
+        ]
+      },
+      {
+        "claim": "Versioning: v1.0 launched June or July 2001 by 中華網龍; v1.5 has real-time combat and levels with skill points",
+        "detail": "17173 v1.5 confirms that v1.5 dropped 打點自修 for levels and skill points. A 2002 news item says 中華網龍 launched it 'last June'. An Epoch Times report of 2001-06-26 covers a 金庸群俠傳online launch event held by 智冠, the parent company. Newton says 2001, developed by 中華網龍.",
+        "verdict": "confirmed",
+        "note": "Launch was June 2001 (launch event 2001-06-26). Commercial operation may have started in July.",
+        "sources": [
+          "http://jinyong.17173.com/v1.5/tese.htm",
+          "https://www.epochtimes.com/b5/1/6/26/n103344.htm",
+          "https://www.businesstoday.com.tw/article/category/183015/post/200205160002/"
+        ]
+      },
+      {
+        "claim": "Dungeon monsters and drops (馬王洞 7 馬王 drop 黃甲, 高昌 mechanical men hit for 200+); no drop tables",
+        "detail": "The 鐵心網 FAQ confirms both, word for word: 7 馬王 「會掉黃甲」, and 高昌 machine men hit for 200+ even when you defend.",
+        "verdict": "confirmed",
+        "note": "I did not re-verify the bones-on-death and 殺值 details.",
+        "sources": [
+          "http://jkgame.com/iron/faq.htm"
+        ]
+      }
+    ],
+    "added": [
+      "The corpse timing has a consistent reading (17173 yinan/29): 30 minutes in total, of which the first 10 are owner-only (plus players the owner designates) and the last 20 are open to anyone.",
+      "The 2001 17173 text names the forced-PK key 連結鍵. Ctrl comes from a later wiki. Make the key configurable.",
+      "The system menu has a special switch with name display, accept 叫戰 and accept party invites (17173 yinan/33). Build these as player toggles.",
+      "The 叛派 penalty in the 2001 source: you cannot rejoin the same sect, your martial arts are halved, and you become that sect's 叛徒, which former sect-mates may hunt.",
+      "The 2001 newbie guide says sect-vs-sect battles were planned but not yet designed (「會另行設計」), so sect wars are not part of launch 1.0.",
+      "Many jyfree.chinesegamer.net pages are Big5-encoded and come back garbled from automated fetches. Claims sourced only from them, such as status-effect mappings, 武林大會 details and 合體技, need a manual check in a browser."
+    ]
+  },
+  {
+    "topic": "金庸群俠傳Online 1.0 world, maps, NPCs, quests, items, economy, social, chat and UI: adversarial fact-check",
+    "verified": [
+      {
+        "claim": "'1.0' is the turn-based line running since 2001. 1.5 was a separate real-time version (2003-11 to 2013). 1.0 content kept growing through many expansions.",
+        "detail": "jy2001.net/t/243 confirms the following dates. 收費版 open beta 2001-06-28. 神鵰大俠 2001-09-28, 決戰光明頂 2002-01-23, 勇闖俠客島 2002-06-06, 葵花寶典 2002-09-18, 喬峰傳奇 2003-01-15, 小寶闖情關 2003-05-21, 郭靖大俠 2003-11-12 (the same day 1.5 opened). Later expansions: 書劍江山 2004-04-21, 冷月飛狐 2004-08-27, 碧血沙場 and 武林浩荡 both 2005-02-23, 浪子令狐沖 2006-01-18, 日月神教 2006-10-04, 五嶽劍派 2007-07-18. 1.5 opened 2003-11-12. Billing stopped 2013-08-16 and servers closed 2013-10-16. 免費版 opened 2006-03-30 and 懷舊版 2008-07-02. Developer 中華網龍 is confirmed by newton.com.tw. The separate commercial-launch date of about 2001-07-05 was not found in either source.",
+        "verdict": "confirmed",
+        "note": "Every date matches. Only the about-2001-07-05 commercial launch date is unverified. The official jyfree site that labels itself 'Online1.0' is the 2006+ free version, so data from it may include post-2001 content.",
+        "sources": [
+          "https://www.jy2001.net/t/243.html",
+          "https://www.newton.com.tw/wiki/%E9%87%91%E5%BA%B8%E7%BE%A4%E4%BF%A0%E5%82%B3ONLINE"
+        ]
+      },
+      {
+        "claim": "At launch only 西夏 and 大理 were cities. 京城 was the third city, added in 神鵰大俠. 揚州 came later. The later guide lists four birth towns with their nearby sects.",
+        "detail": "17173 yinan/35 says '現在只有西北方的西夏及西南方的大理城可以選擇'. 17173 DIAO/2-1 says '繼西夏城、大理城之後，第三座新增城市「京城」' and calls this expansion the '第二片資料片'. It also says the expansion opens 天地會's secret organization in 京城. The 懷舊-era jyhj guide says 4 birth towns and gives this mapping: 西夏 → 靈鷲, 星宿. 大理 → 血刀, 峨嵋, 全真, 古墓. 京城 → 少林, 武當, 丐幫, 華山, 恆山. 揚州 → 揚州碼頭.",
+        "verdict": "confirmed",
+        "note": "The town-to-sect mapping comes from a later 懷舊-era guide, not 2001. 天地會 is a 神鵰-era addition the findings left out.",
+        "sources": [
+          "https://jinyong.17173.com/yinan/35.htm",
+          "https://jinyong.17173.com/DIAO/2-1.htm",
+          "https://jinyong.17173.com/DIAO/diao.htm",
+          "http://jyhj.online-game.com.cn/jy2_3_1.html"
+        ]
+      },
+      {
+        "claim": "One continuous overworld with numeric coordinates such as 25038.17212. Story NPCs stand at fixed spots: 張無忌 on the second floor of the 西夏 inn, 韋小寶 and 雙兒 at the 大理 yamen, 胡斐 and 阿朱 at 雁門關, 陳家洛 outside 西夏.",
+        "detail": "17173 gaoshou/23 gives coordinates in 'x.y' form. Examples: 25038.17212 (石破天, on an island at 恆山/衡山), 6397.3527 (陳家洛, outside 西夏), 391.2005 (香香公主 and 霍青桐, outside 高昌迷宮), 20078.2310 (靈芝商人 at 雁門關), 24486.10206 (程灵素 at the 少林 foothill), 17461.8715 (令狐沖, at the pond between 華山 and 武當), 7423.1323 (明教 右使 范遥, on the hillside above 西夏), 13516.2926 (桃花島 銅屍鐵屍, in the snow area above 西夏). 胡斐 and 阿朱 are INSIDE 雁門關. 鬼王洞 is not on this page; it comes from the 2002 guide. 崆峒 appears only as a route note (the stretch between 大理 and 崆峒). The interior list comes from the official site, which is the 2006+ 免費版, so it may include later areas.",
+        "verdict": "corrected",
+        "note": "The core claim holds. Corrections: 胡斐 and 阿朱 are inside 雁門關. 鬼王洞 comes from a different source. The interior list cannot be dated to 2001. NPCs from later-sect factions (明教, 桃花島) already stood in the world as NPCs, not as joinable sects.",
+        "sources": [
+          "https://jinyong.17173.com/gaoshou/23.htm",
+          "https://jyfree.chinesegamer.net/jy1_2.asp"
+        ]
+      },
+      {
+        "claim": "Cities had a standard building set. 錢莊 doubled as the warehouse (cap raised from 1000 to 10000 in 2003). 鏢局 handled consignment, pickup and escort. 驛站 letter jobs raised 名聲. At night only the 武館, 鏢局, 驛站 and 客棧 stayed open. 查小鏞 set your respawn point.",
+        "detail": "Official jy1_2_3 lists three 鏢局 functions: 托鏢 (托運物品), 拿取托運給自己的貨品 and 保鏢. The official stats page says '保鏢與驛站送信皆能提升名聲值'. jy2001 lists the 錢莊 increase from 1000 to 10000 under 小寶闖情關 (2003). The jyhj newbie-notes page (in GBK) says only 武館, 鏢局, 驛站 and 客棧 operate at night, and that every city exit and sect has a 查-named NPC for the respawn point. The full building list and the 500兩 武館 fee were not checked independently.",
+        "verdict": "confirmed",
+        "note": "The building list and the 500兩 fee are not independently checked, but nothing contradicts them.",
+        "sources": [
+          "https://jyfree.chinesegamer.net/jy1_2_3.asp",
+          "https://jyfree.chinesegamer.net/jy1_4_1.asp",
+          "https://www.jy2001.net/t/243.html",
+          "http://jyhj.online-game.com.cn/jy2_3_7.html"
+        ]
+      },
+      {
+        "claim": "10 sects at launch, 丐幫 added in 神鵰 for 11. 明教, 桃花島, 逍遙, 大理段氏 and 五毒 came later. Gender limits as listed. Leaving a sect halves your skills.",
+        "detail": "The 17173 quest index lists exactly 10 sects without 丐幫 (武當, 峨嵋, 少林, 血刀, 古墓, 全真, 恆山, 星宿, 靈鷲, 華山). DIAO lists 丐幫 under 新增門派. The jyhj guide quote '開放拜師求藝的門派共有十一個' and its grouping are confirmed. So are the gender limits: male only 少林, 武當, 血刀, 全真. Female only 靈鷲, 峨嵋, 恆山. Both 古墓, 星宿, 華山, 丐幫. The leaving penalty is harsher than stated: ALL skills INCLUDING basic skills are halved, the sect-skill attribute resets to zero, you become a public enemy hunted by that sect's disciples, and you can never rejoin. Newton lists 16 sects in later versions: the 11 above plus 桃花島, 明教, 大理段氏, 崑崙 and 逍遙. 五毒 is NOT in that list, and 崑崙 is missing from the findings.",
+        "verdict": "corrected",
+        "note": "Replace 五毒 with 崑崙 (五毒 has not been shown to be a joinable sect). The leaving penalty also halves basic skills and resets sect-skill to zero. The '11' quote comes from a 懷舊-era guide, so applying it to the original paid version is an inference, although it agrees with 10 + 丐幫.",
+        "sources": [
+          "https://jinyong.17173.com/gonglue/gonglue.htm",
+          "https://jinyong.17173.com/DIAO/diao.htm",
+          "http://jyhj.online-game.com.cn/jy2_3_3.html",
+          "http://jyhj.online-game.com.cn/jy2_3_1.html",
+          "https://www.newton.com.tw/wiki/%E9%87%91%E5%BA%B8%E7%BE%A4%E4%BF%A0%E5%82%B3ONLINE"
+        ]
+      },
+      {
+        "claim": "No character levels. Progress came from 實戰經驗 and skill levels, and monster areas were tiered by 實戰經驗. The only HP figure is 150-200 HP for a newbie stage.",
+        "detail": "The official page defines 實戰經驗 as a measure that builds up from training, fighting and quests, and nowhere mentions a character level. That supports the no-levels claim. The jyhj newbie guide does give a number: '建議剛開始先打血在400以下的怪或是動物'. The tier details from the 2002 17173 guide (鬼王洞 at about 10k, the 峨嵋 maze at about 40k) were not re-fetched.",
+        "verdict": "corrected",
+        "note": "Add the 400-HP starting guideline. The 實戰經驗 tier thresholds were not re-checked.",
+        "sources": [
+          "https://jyfree.chinesegamer.net/jy1_4_1.asp",
+          "http://jyhj.online-game.com.cn/jy2_3_1.html"
+        ]
+      },
+      {
+        "claim": "Quests were 打工 errands, sect quests and novel events. 17173 logged new events weekly in 2001, including 劉二爺金盆洗手, 解救文泰來, 尋找楊康, 孤鴻子, 尋找虛竹, 華山內奸, 藍鳳凰, 金輪法王, 蕭峰鬥酒, 雁門關拓印 and 靈芝商人, plus 調戲紡織娘 at -100 善惡.",
+        "detail": "Dates on the 17173 tishi log. 2001-07-18: 劉二爺金盆洗手(上), 孤鴻子師伯的死因, 尋找虛竹, 藍鳳凰採收毒物, 雲兒小姐的煩惱 (the actual title of the 雲兒選丈夫 event) and 行俠仗義 (the 靈芝商人 story is inside it). 2001-07-26: 解救文泰來. 2001-08-10: 華山內奸 (勞德諾) and 藍鳳凰事件. 2001-08-17: 狩獵事件 (武介山 wants 大兔皮). 2001-08-31: 尋找楊康. 2001-12-07: 難纏的金輪法王. NOT on that page: 蕭峰鬥酒, 雁門關拓印 and 調戲紡織娘 -100. The jyhj guide gives newbie quest rewards: 西夏 武介山 大兔皮 pays 100兩 + 25 學點, and 大理 陶耘 rice farming pays 100兩 + 10 實戰 + 10 農夫 proficiency. So starter quests pay more than the 10-50兩 errand range.",
+        "verdict": "corrected",
+        "note": "Most events are confirmed with dates. 蕭峰鬥酒, 雁門關拓印 and the -100 調戲紡織娘 figure need another source. Use the real event titles.",
+        "sources": [
+          "https://jinyong.17173.com/gonglue/tishi.htm",
+          "http://jyhj.online-game.com.cn/jy2_3_1.html"
+        ]
+      },
+      {
+        "claim": "Items by weapon and armor slot. Four inventory tabs. Weight limits. Items spoil. Weapon stats such as 木刀 +4/4 up to 鐵鍊 +55/25. About 47 blades on 17173. New characters start with 傳家寶刀.",
+        "detail": "The official jy1_3_1 page confirms: 木刀 +4/4, 單刀 +10/6, 卜刀 +5/2, 柴刀 +5/6, 苗刀 +5/2, 鋼刀 +15/7, 青銅刀 +35/15, 天竺彎刀 +30/6, 雁翎刀 +25/6. 鐵鍊 +55/25 is NOT on that page. 17173 wupin/d lists 46 blades by name only, including 屠龍刀, 冷月寶刀, 鴛鴦刀 and 緬刀(血刀). 傳家寶刀 is not in that list, and no source was found for it as starting gear. The four tabs (武器/防具/其他/原料) are confirmed by jyhj. Spoilage is confirmed: '物品大部份都有時間性，放太久會腐爛'. Official: when 飲水 reaches 0 you cannot speak, and when 飽食 reaches 0 精/氣/神 regenerate more slowly.",
+        "verdict": "corrected",
+        "note": "The blade count is 46, not 47. 鐵鍊's stats and 傳家寶刀 as starting gear are unverified.",
+        "sources": [
+          "https://jyfree.chinesegamer.net/jy1_3_1.asp",
+          "https://jinyong.17173.com/wupin/d.htm",
+          "http://jyhj.online-game.com.cn/jy2_3_1.html",
+          "http://jyhj.online-game.com.cn/jy2_3_7.html",
+          "https://jyfree.chinesegamer.net/jy1_4_1.asp"
+        ]
+      },
+      {
+        "claim": "Money cap 6,000,000. 11 life-skill jobs. 安全交易. Player stalls were added in 2003.",
+        "detail": "Official: '最多可帶600萬金庸幣'. jyhj: '技能工作共有十一種，如：挖礦、打鐵、鑄劍、工匠、種田、織布、獵人、裁縫、釣魚、廚師、樵夫' and 'the top ten richest are mostly 技能師'. You learn a job by asking 紡織女, 樵夫, 廚師, farmers and miners in or around the city. jy2001 puts 商人擺地攤 under 小寶闖情關 (2003-05). 安全交易 was not independently checked.",
+        "verdict": "confirmed",
+        "note": "The 11-job list is from a later guide. 工匠 being a 神鵰 addition comes from the findings and was not re-checked.",
+        "sources": [
+          "https://jyfree.chinesegamer.net/jy1_4_1.asp",
+          "http://jyhj.online-game.com.cn/jy2_3_3.html",
+          "https://www.jy2001.net/t/243.html"
+        ]
+      },
+      {
+        "claim": "Social: parties, 組織 guilds, friends, pigeon mail and NPC 師承 at launch. Marriage, 總壇, 傭兵 and 監獄 came with 神鵰. No 結拜 and no player-to-player 師徒.",
+        "detail": "Official 組織 rule: '連署人30人以上，並且每人的名聲度達到20，幫主欲創幫，本人的聲望則需要達到150點'. The leader assigns ranks. 師承 = '該角色現在的師傅'. 17173 DIAO lists marriage, 傭兵, 監獄, five 總壇, bidding and siege rules under 神鵰 新增功能. Pigeon mail (飛鴿傳書) is confirmed: letters reach players whether or not they are online, and the icon flashes. Searches found no 結拜 or player 師徒 in the Online game, and newton mentions neither. Marriage specifics (rings, 2000 幣, 50 invitations) were not re-checked.",
+        "verdict": "confirmed",
+        "note": "Marriage cost details are still unverified.",
+        "sources": [
+          "https://jyfree.chinesegamer.net/jy1_4_1.asp",
+          "https://jinyong.17173.com/DIAO/diao.htm",
+          "http://jyhj.online-game.com.cn/jy2_3_7.html",
+          "https://www.newton.com.tw/wiki/%E9%87%91%E5%BA%B8%E7%BE%A4%E4%BF%A0%E5%82%B3ONLINE"
+        ]
+      },
+      {
+        "claim": "善惡 ranges from -1000 to 1000. PK count above 3 makes guards attack. Later death rules: under 500 實戰 you lose nothing, otherwise the highest special skill drops one level. The corpse lasts 30 minutes, and only you and players you name can loot it for the first 10.",
+        "detail": "Official: '範圍為-1000∼1000'. The PK rule reads '強制PK的次數，高於3時進出城會被守衛追殺', so guards attack when you enter or leave a city. Kill rules for good and evil NPCs are confirmed. The 2001 FAQ (17173 yinan/28) confirms all skills drop one level and all items stay on the corpse. Newton describes the later rule: at 500 實戰 or less you lose nothing. Above that, the highest special skill (basic skills excluded) drops one level and items stay on the corpse. You or a player you authorise must retrieve them within 10 MINUTES, after which anyone can take them. No 30-minute corpse timer was found. 少林 rules (official): a minor offence (善惡 < -99, PK 1-2 or heavy 殺氣) means penance at 初祖庵. Expulsion comes at 善惡 < -299, PK ≥ 3, 殺氣 > 2000 or killing a fellow disciple, and expulsion halves sect skills.",
+        "verdict": "corrected",
+        "note": "Drop the 30-minute corpse figure. Use a 10-minute owner-or-authorised window, then open looting. Note that guards act on city entry and exit.",
+        "sources": [
+          "https://jyfree.chinesegamer.net/jy1_4_1.asp",
+          "https://jinyong.17173.com/yinan/28.htm",
+          "https://www.newton.com.tw/wiki/%E9%87%91%E5%BA%B8%E7%BE%A4%E4%BF%A0%E5%82%B3ONLINE",
+          "https://jyfree.chinesegamer.net/jy1_1_1.asp"
+        ]
+      },
+      {
+        "claim": "2001 FAQ chat channels: 千里傳音, 傳音入密, 輕聲細語, 門派, 組織, 隊伍, 江湖謠言 (anonymous) and 天外飛仙 (GM only). The later guide's 8 modes, with the first six all costing water.",
+        "detail": "17173 yinan/15 confirms all 8 channels and their audiences. 江湖謠言 shows '(謠言)' in place of the sender's name. 天外飛仙 is GM-only, cannot be turned off and is used for system messages. That page states no water cost, apart from a joke that talking a lot makes you thirsty. In the 懷舊 guide's list, 千里傳音, 輕聲細語, 門派, 組織 and 隊伍 are marked 耗水. 傳音入密 is NOT marked, and neither are 好友交談 or 客服中心. Alt+Space toggles the chat-log display mode. The official site confirms that speaking uses 飲水 and that you cannot talk at 0.",
+        "verdict": "corrected",
+        "note": "傳音入密 (whisper) apparently did not cost water, so 'all six cost water' is wrong.",
+        "sources": [
+          "https://jinyong.17173.com/yinan/15.htm",
+          "http://jyhj.online-game.com.cn/jy2_3_1.html",
+          "https://jyfree.chinesegamer.net/jy1_4_1.asp"
+        ]
+      },
+      {
+        "claim": "UI: lantern menus Ctrl+1 to 5, bottom bar, command hotbar F1-F8 (9 pages), item hotbar Alt+1-8 (9 pages), four colored bars, pigeon icon. Combat on a separate grid with an ATB bar and buttons 移/攻/武/特/防/休/裝/逃/系/毒/醫/暗/陣/屬/內/輕/穴. Real-time autosave.",
+        "detail": "The jyhj guide confirms Ctrl+1 to 5 (武功, 屬性, 裝備, 指令, 系統), Esc to hide the lanterns, a 9-page command hotbar on F1-F8, a 9-page item hotbar on Alt+1-8, 7 attributes on the main bar, bar colors 精/氣/神/內, and a pigeon icon at the bottom right. The newbie-notes page confirms '即時自動存檔'. The official 輕功 page marks the 「輕」 combat button as 新增 (added later), along with in-place flee by 輕功. So the 17-button list mixes original and later buttons.",
+        "verdict": "corrected",
+        "note": "The combat button set is not all from 2001; at least 輕 was added later. Everything else is confirmed.",
+        "sources": [
+          "http://jyhj.online-game.com.cn/jy2_3_1.html",
+          "http://jyhj.online-game.com.cn/jy2_3_7.html",
+          "https://jyfree.chinesegamer.net/jy1_4_3.asp"
+        ]
+      },
+      {
+        "claim": "The stats schema from the official page. Base skill list. Max 16 special skills, later raised to 50 by an expansion.",
+        "detail": "Every listed stat is confirmed on the official 人物屬性 page, including '氣…當其呈現１時角色便會死亡', 負重 tied to 臂力, and 悟性 lowering the 學習點數 and 精 cost of learning. The official base-skill names are 基本刀法/劍法/鞭法/棍法/槍法, 基本內功, 基本刺術, 拆招卸力, 搏擊格鬥, 閃躲縱躍, 基本身法, 基本陣法, 基本毒術, 基本醫術, 基本暗器, 讀書識字 and 交易之道. Note the 基本 prefix on 毒術, 醫術 and 暗器. jyhj: '每個人都只能學習十六種特殊武功（基本功不算在內）… 透過闖王迷宮的寶藏，可將十六套上限提升為五十套', so the raise to 50 comes from the 闖王迷宮 treasure. 武館 skills are weaker than sect skills, per jyhj.",
+        "verdict": "confirmed",
+        "note": "Small refinements: the 基本 prefixes, and the raise to 50 comes from the 闖王迷宮 treasure, a later-content mechanic.",
+        "sources": [
+          "https://jyfree.chinesegamer.net/jy1_4_1.asp",
+          "https://jyfree.chinesegamer.net/jy1_4_2.asp",
+          "http://jyhj.online-game.com.cn/jy2_3_3.html"
+        ]
+      }
+    ],
+    "added": [
+      "Source dating caveat: jyfree.chinesegamer.net (the 'Online1.0' official site) and jyhj.online-game.com.cn (a 懷舊 mirror guide with 4 birth towns) describe the 2006+ free/懷舊 state, not the July 2001 launch. Use the 2001-dated 17173 pages (yinan/*, gonglue/tishi) as the launch baseline.",
+      "The 神鵰大俠 expansion also opened a secret 天地會 organization in 京城 (17173 DIAO/2-1).",
+      "Sect life on the official 少林 page can be copied directly as gameplay. Free vegetarian meals at 卯/午/酉 時, and eating meat lowers 佛法. Daily chores train life skills up to level 50: 化緣, 幫農, 挑水 (卯時), 砍柴, 讀經, 學佛, 煮飯. Higher skills are gated by 佛法. 木人巷 requires 少林心法/長拳/身法 at 50 or above and no equipment. 十八銅人陣 needs a 3-player party, 3 waves of 6, and unlocks 藏經閣 and 金剛伏魔圈. This is a strong template for co-op sect content.",
+      "Newbie guidance: fight monsters with under 400 HP first. Starter quests pay about 100兩 plus 學點 or 實戰.",
+      "Later sect count (newton): 16, adding 桃花島, 明教, 大理段氏, 崑崙 and 逍遙 to the 11.",
+      "Full expansion list after 2003 (jy2001): 書劍江山 2004-04, 冷月飛狐 2004-08, 碧血沙場 and 武林浩荡 2005-02, 浪子令狐沖 2006-01, 日月神教 2006-10, 五嶽劍派 2007-07.",
+      "Some items are time-limited and spoil if kept too long. The server saves automatically in real time, and maintenance warnings tell players to log out to avoid losing gear."
+    ]
+  },
+  {
+    "topic": "Version history and scope of 金庸群俠傳Online (網金): fact-check",
+    "verified": [
+      {
+        "claim": "Developer was 中華網龍 (Chinese Gamer International), spun off from 智冠's R&D, with 智冠 holding more than 62%. The mainland operator is 龍圖智庫.",
+        "detail": "Confirmed by Business Today (2002-05-16), which also says four 智冠 engineers with nine years at the company founded it with NT$150M, 王俊博 chaired both companies, 網路三國 (Apr 2000) failed, the game had 900k+ members, and about 400k time cards were used in two months. The mainland operator needs a correction. A 17173 retrospective says 游龍在線 launched the game in mainland China on 2001-07-01. A 2008 17173 article describes 龍圖智庫 as a wholly owned 中華網龍 subsidiary, so it is the later operator, not necessarily the 2001 one. Douban says 游龍 ran the 懷舊版. Caveat for downstream use: GNN's English rendering calls 中華網龍 'NetDragon', which is wrong. NetDragon (網龍, Fujian) is an unrelated company.",
+        "verdict": "corrected",
+        "note": "Mainland operator in 2001 was 游龍在線, not 龍圖智庫.",
+        "sources": [
+          "https://www.businesstoday.com.tw/article/category/80392/post/200205160002/",
+          "https://news.17173.com/content/2012-04-07/20120407021440146,6.shtml",
+          "https://news.17173.com/content/2008-06-27/20080627090311020,1.shtml",
+          "https://www.douban.com/game/10735021/"
+        ]
+      },
+      {
+        "claim": "Taiwan public beta was 2001-07-05 (June 2001 in some sources). The mainland 收費版(上海) opened 2001-06-28 at 1800 points/month or 21600/year.",
+        "detail": "Bahamut ACG lists the Taiwan public beta as 2001-07-05 and Douban agrees. Business Today says June 2001, and 17173 gives the mainland launch as 2001-07-01 (游龍在線). jy2001.net does list 收費版(上海) at 2001.6.28. However, the 1800/month or 21600/year price appears to belong to 懷舊版 (2008), not 上海 收費版. jy2001's table cells are misaligned, so the price-to-version mapping is uncertain. Also, 收費版(上海) is the name of a current server line, so its 2001.6.28 date probably marks the line's origin rather than describing today's ruleset.",
+        "verdict": "corrected",
+        "note": "Dates are right, but the billing figure is probably misattributed.",
+        "sources": [
+          "https://acg.gamer.com.tw/acgDetail.php?s=3152",
+          "https://www.jy2001.net/welcome",
+          "https://news.17173.com/content/2012-04-07/20120407021440146,6.shtml"
+        ]
+      },
+      {
+        "claim": "The 11 sects in 1.0 were 少林, 武當, 峨嵋, 華山, 恒山, 全真, 古墓, 靈鷲宮, 丐幫, 星宿 and 血刀門. 明教 and 桃花島 came later.",
+        "detail": "The 17173 sect page has detail pages for 10 sects (少林, 武當, 峨嵋 [masked], 血刀, 古墓, 華山, 全真, 恒山, 星宿, 丐幫). 靈鷲宮 appears only as a search label with no detail page. jy2001 confirms the same 11 base sects for 收費版. However, the 17173 article '更新後的明教進入方法' is dated 2001-08-14, about six weeks after launch. So 明教 was in the game, at least as an entry quest, by August 2001 and may count as early 1.0 content. 靈鷲宮 may have been partial or added soon after launch, given that it has no detail page.",
+        "verdict": "corrected",
+        "note": "The 11-sect list is right as the base set, but 明教 existed by Aug 2001, and 靈鷲宮's day-one status is unclear.",
+        "sources": [
+          "https://jinyong.17173.com/mengpai/mengpai.htm",
+          "https://www.jy2001.net/welcome"
+        ]
+      },
+      {
+        "claim": "Core mechanics: 7 dice-rolled attributes, semi-real-time battle screen, point-based self-training, 善惡, heavy death penalties, life skills.",
+        "detail": "The 17173 attribute page confirms dice rolls plus 5 bonus points to allocate (it advises spending them all) and the 7 attributes 臂力, 膽識, 悟性, 福緣, 定力, 機敏, 根骨 with the described effects. Bahamut ACG confirms semi-real-time combat on a separate battle view with a movable command UI, where attack speed comes from attribute recovery speed. The V1.5 page confirms that 1.0 used point-allocation self-training. I did not independently re-check the smzdm details on death penalties, corpse looting and poison.",
+        "verdict": "confirmed",
+        "note": "The smzdm penalty details remain secondary-source only.",
+        "sources": [
+          "https://jinyong.17173.com/gaoshou/1.htm",
+          "https://acg.gamer.com.tw/acgDetail.php?s=3152",
+          "https://jinyong.17173.com/v1.5/tese.htm"
+        ]
+      },
+      {
+        "claim": "Expansions after 1.0 in order: 神鵰大俠, 決戰光明頂, 勇闖俠客島, 葵花寶典, 喬峰傳奇, 小寶闖情關, 書劍江山, 冷月飛狐, 郭靖大俠, 碧血沙場. 2.0 is a completely different game.",
+        "detail": "Douban confirms this list and the '天壤之別' remark about 2.0. But 17173's 決戰光明頂 page says the online patch requires 'the original 金庸群俠傳Online 神鵰大俠 game' to be installed. That means 神鵰大俠 is most likely the base retail and launch client name, i.e. 1.0 itself, not a post-1.0 expansion. The real first expansion is 決戰光明頂, which went live 1月29日 (year not stated, probably 2002) as a mandatory client update. The fetched Sina page is garbled and does not list expansion names or an order, so the 'Sina confirms the first five' part is unverifiable.",
+        "verdict": "corrected",
+        "note": "神鵰大俠 = probably the 1.0 base edition. Sina's confirmation could not be reproduced.",
+        "sources": [
+          "https://www.douban.com/game/10735021/",
+          "https://jinyong.17173.com/juezhan/6.htm",
+          "https://games.sina.com.cn/z/hlj/jy/index.htm"
+        ]
+      },
+      {
+        "claim": "'V1.5 即時戰鬥版' proposed real-time combat, skill points, and new sects 明教, 星宿白駝 and 桃花島.",
+        "detail": "The 17173 v1.5 page confirms real-time combat with no screen switching, a level-up skill-point system that also covers individual moves (獨孤九劍 example), and life skills split into weapon forging, armor making and material synthesis that are also skill-point based. Its 10-sect list is 少林, 武當, 華山, 恒山, 古墓, 血刀, 丐幫, 明教, 星宿/白駝 and 桃花島. It notably omits 峨嵋, 全真 and 靈鷲. The page has no date. On the 2.0 lineage: a 2006 17173 notice says 中華網龍 granted mainland rights to '金庸群俠傳2.0 online' to 視訊網絡控股 (HK) in 2005, which sublicensed them to 深圳金山華絡, and the rights were terminated in 2006 over unpaid fees. That fits V1.5 evolving into OL2/2.0. The PChome claim that 歡樂數碼 took over in Sept 2006 was not verified.",
+        "verdict": "confirmed",
+        "note": "Features confirmed. Whether 1.5 shipped as described is still unknown.",
+        "sources": [
+          "https://jinyong.17173.com/v1.5/tese.htm",
+          "https://news.17173.com/content/2006-03-15/20060315180518520.shtml"
+        ]
+      },
+      {
+        "claim": "Current versions per jy2001: 收費版(上海) 2001.6.28; 免費版 2006.3.30; 懷舊版 2008.7.2; 至尊版 2018.9.19; 收費版(北京) 2020.7.23. Official servers still exist.",
+        "detail": "The dates are confirmed. Sect counts: 免費版 has 14 (with 逍遙 added 2025.8); 至尊版 has 16 (大理段氏 2023.12.16, 五毒教 2025.7 on the mainland); 懷舊版 has 13 (11 base + 明教 + 桃花島, with 逍遙 coming soon). 收費版 上海 and 北京 have the 11 base sects. 五毒教 launched in Taiwan's 武林至尊 on 2024-12-27 (GNN), so the finding's '2024-12/2025' is a Taiwan/mainland split. I found no source for the zone-18 25th-anniversary server on 2026-08-15, so that detail is unverifiable. The point that official servers still exist stands.",
+        "verdict": "corrected",
+        "note": "Mostly right. The 25th-anniversary server is unverified, and the billing mapping is uncertain (see the release-dates claim).",
+        "sources": [
+          "https://www.jy2001.net/welcome",
+          "https://gnn.gamer.com.tw/detail.php?sn=278788"
+        ]
+      },
+      {
+        "claim": "Players miss the early versions because of cheats and bots, 秘籍/殘本 leveling shortcuts, mandatory mall pills, and power creep.",
+        "detail": "Douban's general point that later versions differ drastically and that 懷舊版 restored 1.0 features but drew few players was confirmed. I did not reproduce the Zhihu figure of about 1500 RMB or the 17173 bot-script count.",
+        "verdict": "unverifiable",
+        "note": "Plausible and consistent with Douban, but specific numbers are unverified.",
+        "sources": [
+          "https://www.douban.com/game/10735021/"
+        ]
+      },
+      {
+        "claim": "Private servers and 一鍵端 packages, some based on 1.0 clients, circulate on 網單 forums.",
+        "detail": "Not independently checked. These sites are unlicensed and carry malware risk. The advice not to use their data or assets is sound.",
+        "verdict": "unverifiable",
+        "note": "Keep as context only.",
+        "sources": []
+      },
+      {
+        "claim": "Best surviving 1.0 data sources: jinyong.17173.com, jy2001.net, jytzst.cn, Bahamut, Douban and Baidu.",
+        "detail": "jinyong.17173.com is still online. I fetched mengpai, gaoshou/1, juezhan/6 and v1.5/tese successfully. However, some linked 2001 17173 news articles now 404 (e.g. the 2001-8-14 明教 article), so archiving them via web.archive.org is urgent. jy2001.net fetched fine.",
+        "verdict": "confirmed",
+        "note": "Some linked 2001 news articles are already dead.",
+        "sources": [
+          "https://jinyong.17173.com/gaoshou/1.htm",
+          "https://www.jy2001.net/welcome"
+        ]
+      },
+      {
+        "claim": "The 1996 single-player game (河洛工作室, published by 智冠) is a separate game. The MMO spans 14 novels, 400+ characters and about 50 locations.",
+        "detail": "Bahamut ACG confirms 14 novels, over 400 major characters and nearly 50 famous locations. The single-player game's attribution to 河洛 in 1996 is well established.",
+        "verdict": "confirmed",
+        "note": "",
+        "sources": [
+          "https://acg.gamer.com.tw/acgDetail.php?s=3152",
+          "https://zh.wikipedia.org/zh-hans/%E9%87%91%E5%BA%B8%E7%BE%A4%E4%BF%A0%E5%82%B3"
+        ]
+      }
+    ],
+    "added": [
+      "'神鵰大俠' is most likely the retail name of the original launch client: 17173's 決戰光明頂 page requires 'the original 金庸群俠傳Online 神鵰大俠' to be installed. A '1.0 recreation' should therefore target the 神鵰大俠-era ruleset, before 決戰光明頂 (activated 1月29日, probably 2002), and every expansion was a mandatory client patch.",
+      "明教 entry content existed by 2001-08-14 (17173 news link, now 404), so a strict 'day-one' sect list is 10–11 sects, and 明教 arrived within about six weeks. Decide whether '1.0' means launch day or the whole 神鵰大俠 era.",
+      "The V1.5 sect list omits 峨嵋, 全真 and 靈鷲. The 1.0 list therefore differs from the 1.5/2.0 design, which is useful for scoping.",
+      "Mainland timeline: 游龍在線 launched the game in mainland China on 2001-07-01 (17173). 龍圖智庫 is a wholly owned 中華網龍 subsidiary (2008). 2.0 mainland rights went to 視訊網絡控股 and then 深圳金山華絡 in 2005 and were revoked in 2006.",
+      "Do not confuse 中華網龍 (Chinese Gamer International, Taiwan) with NetDragon 網龍 (Fujian). Some English translations, e.g. of GNN, conflate them.",
+      "17173's 2001 news articles that the fan site links to are already returning 404. Archive jinyong.17173.com and try web.archive.org for the dead news links right away."
+    ]
+  },
+  {
+    "topic": "Technical stack for a 2–8 player, text-leaning wuxia RPG (a remake of 金庸群俠傳 Online 1.0) built in Godot 4.6.3 with GodotSteam and Spacewar AppID 480",
+    "verified": [
+      {
+        "claim": "GodotSteam has moved to Codeberg, and the GitHub repo was archived on 2026-10-05. The newest release is 4.23 (SDK 1.65). 4.19 and 4.19.1 were built against Godot 4.6.3.",
+        "detail": "Most of this checks out on the GitHub releases page and the GodotSteam blog. The GitHub repo was archived on Oct 5, 2026, and the release notes say the GitHub files are 'overflow files for the Codeberg release' that 'will be removed at a later date'. Releases: 4.23 (Oct 5), 4.22.1 (Sep 4), 4.22 (Aug 22), 4.21 (Jul 29, SDK 1.65), 4.20.1 (Jul 16), 4.20 (Jun 24, SDK 1.64), 4.19.1 (May 29) and 4.19 (May 23), both labelled Godot 4.6.3 / SDK 1.64, and 4.18.1 labelled Godot 4.6.2. The 4.23 changes are confirmed: auto-init and embedded callbacks now work together, compiling on older Godot versions after the 4.7 renames is fixed, and GDExtension crashes on Godot 4.5 and earlier are fixed. 4.22 did merge the module and GDExtension code (Aug 22 post, alongside Godot 4.7.2). Correction: the newest version is v4.23.1, listed on the Godot store with a changelog dated 2026-10-07. It ties to the Oct 6 blog post 'GDExtensions Only', which overhauled the plugin updater so updates run from Project > Tools. The store lists the minimum Godot version as 4.4.1. The store also marks 4.23.1 as 'unstable', so 4.23 is the safer pin.",
+        "verdict": "corrected",
+        "note": "Use 4.23 or 4.23.1. Minimum Godot is 4.4.1, so 4.6.3 is fine. The GitHub download files will eventually be removed, so download from Codeberg or the Godot store.",
+        "sources": [
+          "https://github.com/GodotSteam/GodotSteam/releases",
+          "https://godotsteam.com/blog/",
+          "https://store.godotengine.org/asset/godotsteam/godotsteam-gdextension/"
+        ]
+      },
+      {
+        "claim": "With Godot 4.6.3 on Windows, an outdated steam_api64.dll can stop the GDExtension from loading. GodotSteam 4.20+ detects this and overwrites the old DLL.",
+        "detail": "Confirmed by GodotSteam blog quotes. The 4.20 fix is 'for GDExtension, Windows, and the Steam version of Godot specifically'. The blog says 'GodotSteam will now check for the presence of the steam_api64.dll to see if it is outdated' and that this 'prevents conditions where the extension fails to load because Godot's shipped steam_api64.dll is out of date… it has caused some problems since 4.6.3 launched.' The finding's claim that the check also overwrites the DLL is inferred and was not seen verbatim.",
+        "verdict": "confirmed",
+        "note": "This mainly affects the Steam-distributed Godot editor. Using the standalone editor from godotengine.org avoids it.",
+        "sources": [
+          "https://godotsteam.com/blog/category/updates/page/2/"
+        ]
+      },
+      {
+        "claim": "steamInitEx(app_id, embed_callbacks) returns {status, verbal}, and status 0 means OK. You must call run_callbacks() every frame from an autoload that is never paused. Set the AppID in Project Settings, and treat steam_appid.txt as a fallback.",
+        "detail": "The initialization tutorial confirms the details. Both arguments to steamInitEx are optional. The returned 'status' values are 0 = OK, 1 = other failure, 2 = cannot connect (Steam client not running), 3 = client out of date. run_callbacks() should run 'preferably every frame or so', and the page warns that callbacks may not fire from a node that can be paused. Correction on ordering: the docs list four app ID methods 'depending on what is easiest for you' without ranking them. Only the environment variables and steam_appid.txt are marked 'not recommended'. The app ID argument needs GodotSteam 4.5+ on Godot 4. Embedded callbacks were broken in 4.14, and auto-init plus embed crashed the editor (the fix was slated for 4.16). In the sample code, Steam.STEAM_API_INIT_RESULT_OK was not found on the pages checked; comparing status == 0 is safe.",
+        "verdict": "confirmed",
+        "note": "Tiny correction: the methods are not given in order of preference. Use status == 0 if the constant name does not resolve.",
+        "sources": [
+          "https://godotsteam.com/tutorials/initializing/"
+        ]
+      },
+      {
+        "claim": "Use the SteamMultiplayerPeer built into GodotSteam 4.17+ with Godot's high-level RPCs. The listed API includes a server_relay property.",
+        "detail": "Confirmed: MultiplayerPeer was merged into the main GodotSteam in the 4.17 wave. The ExpressoBits SMP repo has paused development and must not be installed alongside it, because their class registrations conflict. Class reference methods are confirmed: create_host(virtual_port=0), create_client(steam_id, virtual_port=0), host_with_lobby, connect_to_lobby, add_peer, get_peer -> SteamPacketPeer, get_steam_id_for_peer_id, get_peer_id_for_steam_id. The properties are no_delay, no_nagle and debug_level, and DebugLevel is NONE/PEER/STEAM. The tutorial uses SteamMultiplayerPeer.new() and sets peer.server_relay = true, but the class reference page is headed 'MultiplayerPeer' and lists no server_relay property. Changelog 4.16.2 says 'allow users to opt-in to server_relay'. Note that Godot's own SceneMultiplayer already has a server_relay property (multiplayer.server_relay). The tutorial assigns server_relay after create_host, while the finding's snippet assigns it before. Server builds lack MultiplayerPeer (confirmed).",
+        "verdict": "corrected",
+        "note": "The overall approach is confirmed. server_relay on the peer is unverified on the class page. If it errors, set multiplayer.server_relay (SceneMultiplayer) instead. In a host-authoritative design every message goes through the host anyway, so relay matters little.",
+        "sources": [
+          "https://godotsteam.com/classes/multiplayer_peer/",
+          "https://godotsteam.com/tutorials/multiplayer_peer/",
+          "https://godotsteam.com/changelog/multiplayer_peer/",
+          "https://godotsteam.com/blog/category/multiplayerpeer/"
+        ]
+      },
+      {
+        "claim": "The lobby, invite and join API names and signal signatures given are current as of 4.23.",
+        "detail": "Confirmed against the Matchmaking class reference. createLobby(LobbyType, max_members): the maximum is 250. LobbyType enum: PRIVATE=0, FRIENDS_ONLY=1, PUBLIC=2, INVISIBLE=3, PRIVATE_UNIQUE=4. Signals: lobby_created(connect: Result, lobby); lobby_joined(lobby_id, permissions (unused, always 0), locked, response); lobby_chat_update(lobby_id, changed_id, making_change_id, chat_state); lobby_match_list(Array); lobby_data_update(success: bool, lobby_id, member_id). The lobbies tutorial confirms that join_requested fires for in-game accepts, that a cold start passes '+connect_lobby <id>', that activateGameOverlayInviteDialog(lobby_id) opens the invite dialog, and that the overlay has been 'wonky since Vulkan', so test launched from the Steam client. The tutorial cites Valve's Spacewar for its kick approach, which uses a host message rather than a native kick, matching the 'no built-in kick' claim.",
+        "verdict": "confirmed",
+        "note": "The tutorial's hosting check is 'if connect == 1' (Result OK = 1), which is the same as Steam.RESULT_OK.",
+        "sources": [
+          "https://godotsteam.com/classes/matchmaking/",
+          "https://godotsteam.com/tutorials/lobbies/"
+        ]
+      },
+      {
+        "claim": "Spacewar (480) limitations: lobby searches are polluted, achievements and stats are shared, and cold-start invites likely launch Spacewar.",
+        "detail": "Partly confirmed. The lobbies tutorial says AppID 480 has 'tons of other test and junk lobbies' and recommends a search tag. The filter API names are confirmed: addRequestLobbyListStringFilter, addRequestLobbyListDistanceFilter (CLOSE/DEFAULT/FAR/WORLDWIDE), addRequestLobbyListResultCountFilter and LOBBY_COMPARISON_EQUAL. The default result cap of about 50 and the claim that filters reset after each request match Valve's Steamworks behaviour but were not re-verified on GodotSteam pages. The claim that a cold-start 'Join Game' launches Spacewar has no source and remains an inference. The $100 Steam Direct fee is well established.",
+        "verdict": "unverifiable",
+        "note": "Points 1, 2, 4 and 5 are sound. Point 3 (cold-start invites launching Spacewar) needs a test with two accounts. Until then, tell friends to start the game first and then accept the invite.",
+        "sources": [
+          "https://godotsteam.com/tutorials/lobbies/",
+          "https://godotsteam.com/classes/matchmaking/"
+        ]
+      },
+      {
+        "claim": "Architecture: run a host-authoritative listen server behind a swappable transport layer (Steam / ENet / Offline), and keep saves on the host.",
+        "detail": "This is a design recommendation, not a factual claim. The facts it relies on are correct. OfflineMultiplayerPeer is Godot 4's default peer, with unique ID 1. ENetMultiplayerPeer has create_server and create_client. Swapping multiplayer.multiplayer_peer changes the transport while the RPC code stays the same.",
+        "verdict": "confirmed",
+        "note": "The design is sound. Combat at 1–2 rounds per second is a choice, not a documented feature of the original game.",
+        "sources": [
+          "https://docs.godotengine.org/en/stable/tutorials/networking/high_level_multiplayer.html"
+        ]
+      },
+      {
+        "claim": "RPG Maker MZ has no maintained Steam P2P multiplayer path, and the NekoGakuen author recommends nw.js 0.49.2 for Greenworks.",
+        "detail": "The main conclusion holds: no maintained plugin was found that combines Steam lobbies with P2P networking for MZ. The existing options are SteamLink (paid, Steam integration only), the NekoGakuen SteamworksPlus plugin, a LAN multiplayer plugin, MMORPG Maker (server-based, $40+, early access), QKing's RPG Maker MZ Online (currently unavailable) and Alpha NET Z (status unclear). Correction: the 'nw.js v0.49.2' recommendation comes from a commenter on the SteamLink itch page, not the NekoGakuen author. The NekoGakuen guide (hackmd) only recommends RPG Maker MV core 1.6.2+ and says a Steamworks developer account and a registered app are required.",
+        "verdict": "corrected",
+        "note": "Godot remains the right choice. The 0.49.2 attribution was wrong.",
+        "sources": [
+          "https://undermax.itch.io/steamlink",
+          "https://hackmd.io/@Mirai/Steamworks_NWjs_eng.md",
+          "https://rpg-maker-plugins.itch.io/multiplayer",
+          "https://rmalizia44.itch.io/mmorpg-maker",
+          "https://qkingsoftware.itch.io/rpgmakermp"
+        ]
+      },
+      {
+        "claim": "Data-driven design: keep content in CSV or JSON tables, load them into registries at startup, and use .tres Resources only for small hand-tuned items.",
+        "detail": "This is a design recommendation. FileAccess.get_csv_line() and JSON.parse_string() exist in Godot 4. Godot's CSV translation import exists. One caveat: by default Godot imports .csv files under res:// as translations. For data CSVs, set the import mode to 'Keep File' (or use another extension) so they ship in the export and get_csv_line() can read them.",
+        "verdict": "confirmed",
+        "note": "Add this caveat: set data CSV imports to Keep File, or exported builds may be missing them.",
+        "sources": [
+          "https://docs.godotengine.org/en/stable/classes/class_fileaccess.html"
+        ]
+      },
+      {
+        "claim": "Fonts: LXGW WenKai TC v1.522 (OFL-1.1) plus Noto Serif/Sans TC (OFL-1.1).",
+        "detail": "v1.522 is confirmed as the latest stable release (2026-03-17). A v1.530-RC pre-release is dated Oct 13. The license file was not shown on the releases page. LXGW fonts are known to use OFL-1.1, and Noto CJK / Source Han are OFL-1.1.",
+        "verdict": "confirmed",
+        "note": "Check the OFL.txt in the repo before shipping.",
+        "sources": [
+          "https://github.com/lxgw/LxgwWenkaiTC/releases"
+        ]
+      },
+      {
+        "claim": "CC0 asset sources: Kenney, OpenGameArt 'Ancient Chinese Character Pack 1' by nessava, and itch.io's CC0 filter. game-icons.net is CC BY 3.0.",
+        "detail": "Confirmed. The nessava pack is CC0 with 8 figures (a male and a female each for the Han, Tang, Yuan and Qing dynasties). Kenney is CC0, and game-icons.net is CC BY 3.0 (requires attribution), both well known. The LinXueLian non-commercial status was not re-checked.",
+        "verdict": "confirmed",
+        "note": "Note that the nessava pack has no Song or Ming figures, the eras closest to the wuxia setting.",
+        "sources": [
+          "https://opengameart.org/content/ancient-chinese-character-pack-1"
+        ]
+      },
+      {
+        "claim": "Installation steps for Godot 4.6.3 plus the GodotSteam GDExtension on Windows, including export.",
+        "detail": "The steps match the docs: res://addons/godotsteam, Project Settings > Steam > Initialization (4.14+), the Steam client must be running, and the overlay is unreliable under Vulkan. Additions: 4.23.1 adds an in-editor updater (Project > Tools). The store lists Godot 4.4.1 as the minimum. The exact zip filename was not verified.",
+        "verdict": "confirmed",
+        "note": "The minor details are fine.",
+        "sources": [
+          "https://godotsteam.com/tutorials/initializing/",
+          "https://store.godotengine.org/asset/godotsteam/godotsteam-gdextension/"
+        ]
+      }
+    ],
+    "added": [
+      "License risk: in May 2026 the GodotSteam blog announced that 4.20 would drop MIT for a custom GodotSteamKit-style license restricting where it can be shared and how it is used in things that aren't games. The June 24 post said this was 'temporarily scrapped' until closer to Godot 5. The Godot store lists v4.23.1 as MIT. Recheck the license when upgrading GodotSteam.",
+      "GodotSteam v4.23.1 (store changelog dated 2026-10-07) is newer than 4.23. It adds a plugin updater run from Project > Tools. The store marks it unstable and lists Godot 4.4.1 as the minimum.",
+      "Do not install the ExpressoBits steam-multiplayer-peer GDExtension alongside GodotSteam 4.17+. Their class registrations conflict, and ExpressoBits development has paused.",
+      "Godot imports .csv files under res:// as translations by default. Set the import mode of data tables to 'Keep File', or exported builds may be missing them.",
+      "GodotSteamKit 1.1.3 (Oct 5, 2026) is a separate companion plugin that automatically adds a steamworks.gd autoload. It is optional, and its license is more restrictive than GodotSteam's.",
+      "In the GodotSteam tutorial, server_relay is set after create_host() or create_client(). Godot's SceneMultiplayer also exposes multiplayer.server_relay (default true), which may be the property that actually takes effect."
+    ]
+  }
+]

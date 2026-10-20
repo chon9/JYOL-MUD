@@ -1,0 +1,710 @@
+{
+  "fragment": "shaolin",
+  "version": 1,
+  "author": "WP-CMD",
+  "sect": {},
+  "sect_rules": [],
+  "regions": [],
+  "maps": {},
+  "extra_rooms": {
+    "shaolin": [
+      {
+        "id": "sl_luohan",
+        "name": "羅漢堂",
+        "desc": "堂內供著十八尊羅漢，地上鋪著磨得發亮的青磚。羅漢練武師在這裡主持十八銅人陣的試煉。",
+        "exits": [
+          {
+            "dir": "E",
+            "to": "sl_hall"
+          }
+        ],
+        "npcs": [
+          "n_sl_luohan",
+          "n_sl_xuanjing"
+        ],
+        "features": [],
+        "requires": [
+          {
+            "type": "sect",
+            "sect": "shaolin"
+          }
+        ]
+      },
+      {
+        "id": "sl_cangjing",
+        "name": "藏經閣",
+        "desc": "高閣上下堆滿經卷，檀香混著紙墨的氣味。闖過十八銅人陣的弟子才能進來向渡厄長老請益。",
+        "exits": [
+          {
+            "dir": "W",
+            "to": "sl_hall"
+          }
+        ],
+        "npcs": [
+          "n_sl_due"
+        ],
+        "features": [],
+        "requires": [
+          {
+            "type": "sect",
+            "sect": "shaolin"
+          },
+          {
+            "type": "quest_flag",
+            "flag": "sl_tongren_passed"
+          }
+        ]
+      },
+      {
+        "id": "sl_siguo",
+        "name": "少林思過處",
+        "desc": "後院一間石屋，只有一張蒲團和一盞油燈。犯了戒律的弟子要在這裡面壁思過。",
+        "exits": [
+          {
+            "dir": "SE",
+            "to": "sl_hall"
+          }
+        ],
+        "npcs": [
+          "n_sl_puzhi"
+        ],
+        "features": [],
+        "requires": [
+          {
+            "type": "sect",
+            "sect": "shaolin"
+          }
+        ],
+        "jail": true
+      }
+    ]
+  },
+  "exit_patches": [
+    {
+      "room": "sl_hall",
+      "add_exits": [
+        {
+          "dir": "W",
+          "to": "sl_luohan"
+        },
+        {
+          "dir": "E",
+          "to": "sl_cangjing"
+        },
+        {
+          "dir": "NW",
+          "to": "sl_siguo"
+        }
+      ],
+      "desc": "殿中供奉著金身佛像，香煙繚繞，木魚聲聲。西側是羅漢堂，東側是藏經閣，西北角的小門通往思過處，北邊有條小徑通往後山竹林。"
+    }
+  ],
+  "npcs": [
+    {
+      "id": "n_sl_luohan",
+      "name": "羅漢練武師",
+      "kind": "FUNC",
+      "region": "shaolin",
+      "room": "sl_luohan",
+      "alignment": "GOOD",
+      "talk": "talk_n_sl_luohan",
+      "services": [
+        "TRIAL"
+      ],
+      "night_closed": false,
+      "trial": {
+        "id": "sl_tongren",
+        "name": "十八銅人陣",
+        "waves": [
+          [
+            "m_sl_tongren_1",
+            "m_sl_tongren_1",
+            "m_sl_tongren_1",
+            "m_sl_tongren_1",
+            "m_sl_tongren_1",
+            "m_sl_tongren_1"
+          ],
+          [
+            "m_sl_tongren_2",
+            "m_sl_tongren_2",
+            "m_sl_tongren_2",
+            "m_sl_tongren_2",
+            "m_sl_tongren_2",
+            "m_sl_tongren_2"
+          ],
+          [
+            "m_sl_tongren_3",
+            "m_sl_tongren_3",
+            "m_sl_tongren_3",
+            "m_sl_tongren_3",
+            "m_sl_tongren_3",
+            "m_sl_tongren_3"
+          ]
+        ],
+        "party_min": 3,
+        "party_max": 3,
+        "requires": [
+          {
+            "type": "sect",
+            "sect": "shaolin"
+          },
+          {
+            "type": "combat_xp_min",
+            "value": 60000
+          }
+        ],
+        "reward_flag": "sl_tongren_passed",
+        "no_flee": true
+      },
+      "desc": "主持十八銅人陣的武僧，實戰經驗足夠的弟子三人一組，可以向他請求試煉。",
+      "era": "1.0A",
+      "src": "verified",
+      "src_note": "少林官方頁：羅漢練武師給予闖陣資格（研究 M3a 少林；實戰門檻 60,000【待考證：另一說 50 萬】）"
+    },
+    {
+      "id": "n_sl_xuanjing",
+      "name": "玄淨",
+      "kind": "MASTER",
+      "region": "shaolin",
+      "room": "sl_luohan",
+      "alignment": "GOOD",
+      "talk": "talk_n_sl_xuanjing",
+      "services": [
+        "TEACH"
+      ],
+      "night_closed": false,
+      "desc": "少林二階師父，一條長鞭使得出神入化，傳授日月鞭法。",
+      "era": "1.0A",
+      "src": "verified",
+      "src_note": "研究：玄淨（日月鞭法）；所在房間【設計提案】"
+    },
+    {
+      "id": "n_sl_due",
+      "name": "渡厄",
+      "kind": "MASTER",
+      "region": "shaolin",
+      "room": "sl_cangjing",
+      "alignment": "GOOD",
+      "talk": "talk_n_sl_due",
+      "services": [
+        "TEACH"
+      ],
+      "night_closed": false,
+      "desc": "藏經閣的三長老之一，傳授金剛伏魔圈。",
+      "era": "1.0A",
+      "src": "verified",
+      "src_note": "研究：渡厄（金剛伏魔圈）；通過十八銅人陣後在藏經閣見三長老"
+    },
+    {
+      "id": "n_sl_puzhi",
+      "name": "普知",
+      "kind": "FUNC",
+      "region": "shaolin",
+      "room": "sl_siguo",
+      "alignment": "GOOD",
+      "talk": "talk_n_sl_puzhi",
+      "services": [
+        "JAIL"
+      ],
+      "night_closed": false,
+      "desc": "掌管戒律的執法僧，看守思過處。",
+      "era": "1.0A",
+      "src": "proposal",
+      "src_note": "少林有執法者【已證實】；執法者名字【設計提案】"
+    }
+  ],
+  "masters": [
+    {
+      "id": "ms_xuanjing_riyuebian",
+      "npc_id": "n_sl_xuanjing",
+      "skill_id": "sl_riyuebian",
+      "cap": 100,
+      "price": 0,
+      "tool": "",
+      "requires": [
+        {
+          "type": "sect",
+          "sect": "shaolin"
+        },
+        {
+          "type": "skill_min",
+          "skill": "foxa",
+          "value": 30
+        },
+        {
+          "type": "skill_min",
+          "skill": "sl_xinfa",
+          "value": 35
+        },
+        {
+          "type": "skill_min",
+          "skill": "basic_whip",
+          "value": 35
+        }
+      ],
+      "era": "1.0A",
+      "src": "verified",
+      "src_note": "GDD 二階：佛法 30、對應初階 35、少林心法 35（鞭沒有初階武功，改用基本鞭法 35【待考證】）"
+    },
+    {
+      "id": "ms_xuanjing_whip",
+      "npc_id": "n_sl_xuanjing",
+      "skill_id": "basic_whip",
+      "cap": 100,
+      "price": 0,
+      "tool": "",
+      "requires": [
+        {
+          "type": "sect",
+          "sect": "shaolin"
+        }
+      ],
+      "era": "1.0A",
+      "src": "proposal"
+    },
+    {
+      "id": "ms_due_jgfmq",
+      "npc_id": "n_sl_due",
+      "skill_id": "sl_jgfmq",
+      "cap": 100,
+      "price": 0,
+      "tool": "",
+      "requires": [
+        {
+          "type": "sect",
+          "sect": "shaolin"
+        },
+        {
+          "type": "quest_flag",
+          "flag": "sl_tongren_passed"
+        },
+        {
+          "type": "skill_min",
+          "skill": "foxa",
+          "value": 70
+        },
+        {
+          "type": "skill_min",
+          "skill": "sl_riyuebian",
+          "value": 50
+        },
+        {
+          "type": "skill_min",
+          "skill": "basic_formation",
+          "value": 1
+        }
+      ],
+      "era": "1.0A",
+      "src": "verified",
+      "src_note": "研究：金剛伏魔圈 3 人陣、cap 100、渡厄；門檻佛法 70、日月鞭法 50（2017 轉述，後期版）"
+    },
+    {
+      "id": "ms_due_formation",
+      "npc_id": "n_sl_due",
+      "skill_id": "basic_formation",
+      "cap": 100,
+      "price": 0,
+      "tool": "",
+      "requires": [
+        {
+          "type": "sect",
+          "sect": "shaolin"
+        },
+        {
+          "type": "quest_flag",
+          "flag": "sl_tongren_passed"
+        }
+      ],
+      "era": "1.0A",
+      "src": "proposal"
+    }
+  ],
+  "martial_arts": [
+    {
+      "id": "sl_riyuebian",
+      "name": "日月鞭法",
+      "sect_id": "shaolin",
+      "category": "WHIP",
+      "base_skill": "basic_whip",
+      "difficulty": 0.9,
+      "tier": "ADVANCED",
+      "self_study_until": 0,
+      "self_study_cap": 0,
+      "party_size": 0,
+      "monster_only": false,
+      "requires": [
+        {
+          "type": "sect",
+          "sect": "shaolin"
+        },
+        {
+          "type": "skill_min",
+          "skill": "foxa",
+          "value": 30
+        },
+        {
+          "type": "skill_min",
+          "skill": "sl_xinfa",
+          "value": 35
+        }
+      ],
+      "desc": "少林二階鞭法，長鞭舞開如日月輪轉，也是金剛伏魔圈的根基。",
+      "era": "1.0A",
+      "src": "verified",
+      "src_note": "研究：玄淨 日月鞭法；金剛伏魔圈要日月鞭法 50（2017 轉述）",
+      "moves": [
+        {
+          "id": "sl_ryb_1",
+          "name": "日月同輝",
+          "unlock_level": 1,
+          "power": 32,
+          "range": 2,
+          "aoe": "SINGLE",
+          "cost_inner": 4,
+          "cost_jing": 0,
+          "status": "",
+          "status_chance": 0.0,
+          "flavor": "move_whip_basic",
+          "src": "proposal"
+        },
+        {
+          "id": "sl_ryb_2",
+          "name": "橫掃千軍",
+          "unlock_level": 40,
+          "power": 36,
+          "range": 2,
+          "aoe": "FAN",
+          "cost_inner": 10,
+          "cost_jing": 0,
+          "status": "",
+          "status_chance": 0.0,
+          "flavor": "move_whip_fan",
+          "src": "proposal"
+        },
+        {
+          "id": "sl_ryb_3",
+          "name": "日月無光",
+          "unlock_level": 80,
+          "power": 60,
+          "range": 2,
+          "aoe": "SINGLE",
+          "cost_inner": 15,
+          "cost_jing": 0,
+          "status": "",
+          "status_chance": 0.0,
+          "flavor": "move_whip_basic",
+          "src": "proposal"
+        }
+      ]
+    },
+    {
+      "id": "sl_jgfmq",
+      "name": "金剛伏魔圈",
+      "sect_id": "shaolin",
+      "category": "FORMATION",
+      "base_skill": "basic_formation",
+      "difficulty": 1.0,
+      "tier": "SPECIAL",
+      "self_study_until": 0,
+      "self_study_cap": 0,
+      "party_size": 3,
+      "monster_only": false,
+      "requires": [
+        {
+          "type": "sect",
+          "sect": "shaolin"
+        },
+        {
+          "type": "quest_flag",
+          "flag": "sl_tongren_passed"
+        },
+        {
+          "type": "skill_min",
+          "skill": "foxa",
+          "value": 70
+        },
+        {
+          "type": "skill_min",
+          "skill": "sl_riyuebian",
+          "value": 50
+        },
+        {
+          "type": "skill_min",
+          "skill": "basic_formation",
+          "value": 1
+        }
+      ],
+      "formation": {
+        "party_size": 3,
+        "stations": [
+          [
+            0,
+            0
+          ],
+          [
+            -1,
+            1
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "gender": "",
+        "atk_bonus": 0.3,
+        "def_bonus": 0.3,
+        "per_avg_level": 0.004
+      },
+      "desc": "三位少林高僧持鞭結成的伏魔圈，三人站定方位，攻守渾然一體。",
+      "era": "1.0A",
+      "src": "verified",
+      "src_note": "研究：3 人陣、平均等級加成、站位固定（jy2-99 舊陣法）；GDD：每人內力 30、防禦 +30%【設計提案】；攻 +30% 與每平均等級 +0.4% 依 balance_sim formation3_bonus 調整【設計提案】",
+      "moves": [
+        {
+          "id": "sl_jg_1",
+          "name": "伏魔金剛圈",
+          "unlock_level": 1,
+          "power": 60,
+          "range": 1,
+          "aoe": "SINGLE",
+          "cost_inner": 30,
+          "cost_jing": 0,
+          "status": "",
+          "status_chance": 0.0,
+          "flavor": "move_whip_basic",
+          "src": "proposal"
+        }
+      ]
+    }
+  ],
+  "monsters": [
+    {
+      "id": "m_sl_tongren_1",
+      "name": "銅人（初陣）",
+      "short": "銅人",
+      "kind": "ELITE",
+      "alignment": "GOOD",
+      "sect": "shaolin",
+      "desc": "十八銅人陣的守陣武僧，全身塗滿銅粉，一波比一波強。（存在與波次：已證實；數值：設計提案）",
+      "stats": {
+        "qi": 165,
+        "neili": 100,
+        "jing": 200,
+        "str": 15,
+        "guts": 15,
+        "wit": 10,
+        "luck": 10,
+        "cal": 15,
+        "agi": 15,
+        "con": 15
+      },
+      "skills": {
+        "basic_dodge": 21,
+        "basic_parry": 21,
+        "basic_inner": 21,
+        "basic_fist": 21
+      },
+      "arts": [
+        {
+          "art": "sl_luohanquan",
+          "level": 21
+        }
+      ],
+      "weapon_type": "FIST",
+      "weapon_power": 0,
+      "armor_power": 11,
+      "combat_xp_ref": 20000,
+      "combat_xp": 0,
+      "learn_points": 0,
+      "drops": [],
+      "money": {
+        "min": 0,
+        "max": 0
+      },
+      "morality_on_kill": 0,
+      "killing_intent_on_kill": 0,
+      "ai": "melee_basic",
+      "no_rewards": true,
+      "era": "1.0A",
+      "src": "proposal"
+    },
+    {
+      "id": "m_sl_tongren_2",
+      "name": "銅人（中陣）",
+      "short": "銅人",
+      "kind": "ELITE",
+      "alignment": "GOOD",
+      "sect": "shaolin",
+      "desc": "十八銅人陣的守陣武僧，全身塗滿銅粉，一波比一波強。（存在與波次：已證實；數值：設計提案）",
+      "stats": {
+        "qi": 195,
+        "neili": 100,
+        "jing": 200,
+        "str": 17,
+        "guts": 15,
+        "wit": 10,
+        "luck": 10,
+        "cal": 15,
+        "agi": 17,
+        "con": 17
+      },
+      "skills": {
+        "basic_dodge": 31,
+        "basic_parry": 31,
+        "basic_inner": 31,
+        "basic_fist": 31
+      },
+      "arts": [
+        {
+          "art": "sl_luohanquan",
+          "level": 31
+        }
+      ],
+      "weapon_type": "FIST",
+      "weapon_power": 0,
+      "armor_power": 15,
+      "combat_xp_ref": 40000,
+      "combat_xp": 0,
+      "learn_points": 0,
+      "drops": [],
+      "money": {
+        "min": 0,
+        "max": 0
+      },
+      "morality_on_kill": 0,
+      "killing_intent_on_kill": 0,
+      "ai": "melee_basic",
+      "no_rewards": true,
+      "era": "1.0A",
+      "src": "proposal"
+    },
+    {
+      "id": "m_sl_tongren_3",
+      "name": "銅人（終陣）",
+      "short": "銅人",
+      "kind": "ELITE",
+      "alignment": "GOOD",
+      "sect": "shaolin",
+      "desc": "十八銅人陣的守陣武僧，全身塗滿銅粉，一波比一波強。（存在與波次：已證實；數值：設計提案）",
+      "stats": {
+        "qi": 240,
+        "neili": 100,
+        "jing": 200,
+        "str": 19,
+        "guts": 15,
+        "wit": 10,
+        "luck": 10,
+        "cal": 15,
+        "agi": 19,
+        "con": 19
+      },
+      "skills": {
+        "basic_dodge": 41,
+        "basic_parry": 41,
+        "basic_inner": 41,
+        "basic_fist": 41
+      },
+      "arts": [
+        {
+          "art": "sl_luohanquan",
+          "level": 41
+        }
+      ],
+      "weapon_type": "FIST",
+      "weapon_power": 0,
+      "armor_power": 19,
+      "combat_xp_ref": 60000,
+      "combat_xp": 0,
+      "learn_points": 0,
+      "drops": [],
+      "money": {
+        "min": 0,
+        "max": 0
+      },
+      "morality_on_kill": 0,
+      "killing_intent_on_kill": 0,
+      "ai": "melee_basic",
+      "no_rewards": true,
+      "era": "1.0A",
+      "src": "proposal"
+    }
+  ],
+  "items": [],
+  "quests": [],
+  "text_templates": [
+    {
+      "id": "talk_n_sl_luohan",
+      "era": "1.0A",
+      "self": "{npc_name}抱拳道：「十八銅人陣三人一組，三波銅人一波比一波強，中途不得退出。實戰火候到了，就找兩位師兄弟一起來。」",
+      "src": "proposal"
+    },
+    {
+      "id": "talk_n_sl_xuanjing",
+      "era": "1.0A",
+      "self": "{npc_name}抖開長鞭：「鞭法講究圓轉如意，佛法不到三十、心法不到三十五，老衲教了你也使不動。」",
+      "src": "proposal"
+    },
+    {
+      "id": "talk_n_sl_due",
+      "era": "1.0A",
+      "self": "{npc_name}閉目道：「能闖過十八銅人陣，才算入了藏經閣的門。金剛伏魔圈要三人同心，缺一不可。」",
+      "src": "proposal"
+    },
+    {
+      "id": "talk_n_sl_puzhi",
+      "era": "1.0A",
+      "self": "{npc_name}冷冷道：「犯了戒律，就在這裡好好面壁。想早點出去，就請人拿十萬兩來贖。」",
+      "src": "proposal"
+    }
+  ],
+  "art_requests": {
+    "units": [
+      {
+        "id": "n_sl_luohan",
+        "alias": "n_sl_huizhen",
+        "prompt": "少林羅漢堂武僧，赤膊、肌肉結實、灰色僧褲、腰繫布帶，神情嚴肅。"
+      },
+      {
+        "id": "n_sl_xuanjing",
+        "alias": "n_sl_huikong",
+        "prompt": "少林玄字輩高僧，土黃僧袍，手持一條黑色長鞭，白眉。"
+      },
+      {
+        "id": "n_sl_due",
+        "alias": "n_sl_huizhen",
+        "prompt": "少林藏經閣長老，枯瘦老僧，黑色僧袍，盤膝閉目，手持長鞭。"
+      },
+      {
+        "id": "n_sl_puzhi",
+        "alias": "n_sl_zhike",
+        "prompt": "少林戒律院執法僧，灰袍持棍，表情冷峻。"
+      },
+      {
+        "id": "m_sl_tongren_1",
+        "alias": "shaolin_m",
+        "prompt": "十八銅人：全身塗銅粉的武僧，赤膊，泛著銅色光澤（初陣，較暗）。"
+      },
+      {
+        "id": "m_sl_tongren_2",
+        "alias": "shaolin_m",
+        "prompt": "十八銅人：全身塗銅粉的武僧（中陣，銅色較亮）。"
+      },
+      {
+        "id": "m_sl_tongren_3",
+        "alias": "shaolin_m",
+        "prompt": "十八銅人：全身塗金銅粉的武僧（終陣，金光閃閃）。"
+      }
+    ],
+    "backgrounds": []
+  },
+  "todo_verify": [
+    "十八銅人陣實戰門檻：60,000（另一說 50 萬）",
+    "日月鞭法的「對應初階武功」：鞭沒有初階武功，暫用基本鞭法 35",
+    "金剛伏魔圈的加成數值、每人內力 30（GDD 設計提案）",
+    "銅人的數值（設計提案；balance_sim party3_vs_tongren 調到勝率約 76%，目標 0.40–0.85）",
+    "羅漢堂、藏經閣、思過處的方位（接在大雄寶殿 W／E／NW）",
+    "執法僧普知的名字",
+    "少林沒有賣鞭的兵器鋪：日月鞭法、金剛伏魔圈要鞭（研究：whips），M3a 沒有鞭類兵器資料，請 WP-MERGE／擁有者決定"
+  ],
+  "notes": "WP-CMD 撰寫的少林補充碎片（M3A_PLAN 4.3 少林補充）。sect 欄位留空（少林 sects 列的遷移由 WP-MERGE 照 3.1 做，enforcers [n_sl_puzhi]、jail_room sl_siguo）。房間放在既有地圖 shaolin（extra_rooms），出口由 exit_patches 接在大雄寶殿。"
+}

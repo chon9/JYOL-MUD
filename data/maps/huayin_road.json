@@ -1,0 +1,18 @@
+{
+  "region_id": "huayin_road", "era": "1.0A", "src": "proposal",
+  "desc": "華山南麓的華陰道，往北上華山，往西北通恆山，往東過水池可到嵩山。",
+  "escape_tiles_hint": 2,
+  "rooms": [
+    { "id": "hy_road", "name": "華陰道",
+      "desc": "黃土路兩旁是半人高的蒿草，遠遠望去，西嶽華山像一柄倒插的長劍。",
+      "exits": [ { "dir": "NW", "to": "hf_fork" }, { "dir": "E", "to": "hy_foot" } ],
+      "npcs": [], "features": [], "requires": [],
+      "encounter": { "rate": 0.1, "table": [
+        { "monster": "m_bigrabbit", "w": 50, "count": [1, 1] },
+        { "monster": "m_rabbit", "w": 20, "count": [1, 1] },
+        { "monster": "m_wolf", "w": 20, "count": [1, 1] },
+        { "monster": "m_boar", "w": 10, "count": [1, 1] } ] } },
+    {"id": "hy_foot", "name": "華山腳下", "desc": "華山腳下的小鎮口，往北一條石階直上華山山門。往東是一片水池，往西北回恆山。", "exits": [{"dir": "W", "to": "hy_road"}, {"dir": "N", "to": "hs_gate"}, {"dir": "E", "to": "hy_pond"}, {"dir": "NE", "to": "jcw_huashan", "era": "1.0B"}], "npcs": [], "features": [], "requires": [], "encounter": {"rate": 0.1, "table": [{"monster": "m_rabbit", "w": 60, "count": [1, 1]}, {"monster": "m_bigrabbit", "w": 40, "count": [1, 1]}]}, "desc_1_0b": "華山腳下的小鎮口，往北一條石階直上華山山門。往東是一片水池，往西北回恆山；往東北的山路可上京城南郊。"},
+    {"id": "hy_pond", "name": "華山水池", "desc": "華山與武當之間的一汪水池，池邊垂柳依依，常有人在池邊練劍。", "exits": [{"dir": "W", "to": "hy_foot"}, {"dir": "E", "to": "sy_road"}], "npcs": ["n_hs_linghuchong", "n_sm_litong"], "features": ["WATER"], "requires": [], "encounter": {"rate": 0.1, "table": [{"monster": "m_bigrabbit", "w": 60, "count": [1, 1]}, {"monster": "m_rabbit", "w": 40, "count": [1, 1]}]}}
+  ]
+}

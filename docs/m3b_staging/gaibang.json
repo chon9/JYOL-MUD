@@ -1,0 +1,4488 @@
+{
+ "fragment": "gaibang",
+ "version": 1,
+ "author": "WP-C-gaibang",
+ "sects": [
+  {
+   "id": "gaibang",
+   "name": "丐幫",
+   "home_city": "jingcheng",
+   "gate_region": "gaibang",
+   "prefix": "gb",
+   "gate_room": "gb_gate",
+   "head_npc": "n_gb_chen",
+   "gender": [
+    "M",
+    "F"
+   ],
+   "join_requires": [
+    {
+     "type": "no_sect"
+    },
+    {
+     "type": "morality_min",
+     "value": 0
+    },
+    {
+     "type": "not_enemy_of",
+     "sect": "gaibang"
+    }
+   ],
+   "teach_requires": [
+    {
+     "type": "morality_min",
+     "value": 0
+    }
+   ],
+   "sect_skill": "qitao",
+   "sect_skill_name": "乞討",
+   "sect_skill_effect": {
+    "effect": "POISON_FANG"
+   },
+   "sect_skill_cost": [
+    "jing",
+    "shen"
+   ],
+   "sect_skill_train_cost": [
+    "jing"
+   ],
+   "sect_skill_cap": 100,
+   "sect_skill_limits_arts": false,
+   "sect_art_cap_bonus": 0,
+   "sect_skill_gain": [],
+   "sect_skill_penalties": [],
+   "personal_master": false,
+   "enforcer": false,
+   "enforcers": [],
+   "jail_room": "",
+   "hostile_entry": [],
+   "visitors": "OPEN",
+   "meal_npc": "",
+   "ranks": "gaibang",
+   "no_escort": true,
+   "respawn_at_gate": false,
+   "practice": {
+    "verb": "乞討",
+    "target": "NPC",
+    "cost": {
+     "jing": 20,
+     "shen": 20
+    },
+    "prof": [
+     3,
+     6
+    ],
+    "per_npc_cd_s": 600,
+    "alms": [
+     {
+      "money": [
+       1,
+       8
+      ],
+      "chance": 0.35
+     },
+     {
+      "item": "c_mantou",
+      "n": 1,
+      "chance": 0.1
+     }
+    ],
+    "npc_kinds": [
+     "SHOP",
+     "FUNC",
+     "QUEST",
+     "STORY"
+    ]
+   },
+   "harass": [
+    {
+     "regions": {
+      "xixia": 0.15,
+      "dali": 0.15,
+      "jingcheng": 0.05
+     },
+     "monster": "m_gb_xiaohuang",
+     "count": [
+      1,
+      1
+     ],
+     "unless": [
+      {
+       "type": "skill_min",
+       "skill": "qitao",
+       "value": 30
+      }
+     ]
+    }
+   ],
+   "src_note": "研究 丐幫：1.0B 2001-09-28；男女皆收、善惡<0停止傳功、執法者無（官方後期 jy2-6-4、jy2-4-2）；乞討＝毒牙（jy1-4-11）；不能運鏢（2001 多篇）；小黃（2001-10-24）；乞討30免追是後期",
+   "era": "1.0B",
+   "src": "later"
+  }
+ ],
+ "sect_rules": [
+  {
+   "id": "gb_r_kill_same",
+   "sect": "gaibang",
+   "tier": "BREACH",
+   "kind": "EVENT",
+   "event": "KILL_SAME_SECT",
+   "text": "rule_gb_kill_same",
+   "era": "1.0B",
+   "src": "later",
+   "src_note": "官方後期 index_jy2-4-2【丐幫】第 1 條同門相殘；同頁「執行違反門規處罰的師父：無」→ 違規一律 BAN（O5）；2001 原文找不到"
+  }
+ ],
+ "sect_ranks": [
+  {
+   "id": "gb_dai0",
+   "sect": "gaibang",
+   "rank": 0,
+   "name": "無袋弟子",
+   "requires": [],
+   "promote": "JOIN",
+   "cost": {},
+   "era": "1.0B",
+   "src": "proposal",
+   "src_note": "拜入即得；名稱【設計提案】（2001 只見「一袋」「二袋」）"
+  },
+  {
+   "id": "gb_dai1",
+   "sect": "gaibang",
+   "rank": 1,
+   "name": "一袋弟子",
+   "requires": [
+    {
+     "type": "fame_min",
+     "value": 250
+    },
+    {
+     "type": "lilian_min",
+     "value": 250
+    }
+   ],
+   "promote": "QUEST",
+   "quest": "q_gb_dai1",
+   "assembly": true,
+   "cost": {},
+   "era": "1.0B",
+   "src": "verified",
+   "src_note": "研究 丐幫：2001-11-03 n247_163262 名聲歷練250、陳長老、聚會"
+  },
+  {
+   "id": "gb_dai2",
+   "sect": "gaibang",
+   "rank": 2,
+   "name": "二袋弟子",
+   "requires": [
+    {
+     "type": "fame_min",
+     "value": 500
+    },
+    {
+     "type": "lilian_min",
+     "value": 500
+    },
+    {
+     "type": "sect_rank_min",
+     "sect": "gaibang",
+     "value": 1
+    }
+   ],
+   "promote": "QUEST",
+   "quest": "q_gb_dai2",
+   "assembly": true,
+   "cost": {
+    "fame": 250,
+    "lilian": 250
+   },
+   "era": "1.0B",
+   "src": "verified",
+   "src_note": "研究 丐幫：2001-11-23、11-25、12-03（升二袋扣 250）"
+  },
+  {
+   "id": "gb_dai3",
+   "sect": "gaibang",
+   "rank": 3,
+   "name": "三袋弟子",
+   "requires": [
+    {
+     "type": "fame_min",
+     "value": 1200
+    },
+    {
+     "type": "lilian_min",
+     "value": 1200
+    },
+    {
+     "type": "sect_rank_min",
+     "sect": "gaibang",
+     "value": 2
+    }
+   ],
+   "promote": "AUTO",
+   "assembly": true,
+   "cost": {},
+   "era": "xkd",
+   "src": "later",
+   "src_note": "2002-07、2002-11 攻略 三袋 1200（「絕情谷跳崖失敗的那個破廟」接任務）；任務本身不在 M3b → 本列改 promote AUTO（M3B_PLAN 缺漏：§4.2 寫 QUEST q_gb_dai3，但該任務不存在，全 era 閉包 lint 會報錯）【設計提案・偏離】"
+  },
+  {
+   "id": "gb_dai4",
+   "sect": "gaibang",
+   "rank": 4,
+   "name": "四袋弟子",
+   "requires": [
+    {
+     "type": "fame_min",
+     "value": 1700
+    },
+    {
+     "type": "lilian_min",
+     "value": 1700
+    },
+    {
+     "type": "sect_rank_min",
+     "sect": "gaibang",
+     "value": 3
+    }
+   ],
+   "promote": "AUTO",
+   "assembly": true,
+   "cost": {},
+   "era": "xkd",
+   "src": "later",
+   "src_note": "2002-07「四，五，六，七袋名聲歷練夠了直接升」；1700 是免費版數字【後期版】"
+  },
+  {
+   "id": "gb_dai5",
+   "sect": "gaibang",
+   "rank": 5,
+   "name": "五袋弟子",
+   "requires": [
+    {
+     "type": "fame_min",
+     "value": 2500
+    },
+    {
+     "type": "lilian_min",
+     "value": 2500
+    },
+    {
+     "type": "sect_rank_min",
+     "sect": "gaibang",
+     "value": 4
+    }
+   ],
+   "promote": "AUTO",
+   "assembly": true,
+   "cost": {},
+   "era": "xkd",
+   "src": "later",
+   "src_note": "免費版 2500【後期版】"
+  },
+  {
+   "id": "gb_dai6",
+   "sect": "gaibang",
+   "rank": 6,
+   "name": "六袋弟子",
+   "requires": [
+    {
+     "type": "fame_min",
+     "value": 3500
+    },
+    {
+     "type": "lilian_min",
+     "value": 3500
+    },
+    {
+     "type": "sect_rank_min",
+     "sect": "gaibang",
+     "value": 5
+    }
+   ],
+   "promote": "AUTO",
+   "assembly": true,
+   "cost": {},
+   "era": "xkd",
+   "src": "later",
+   "src_note": "免費版 3500【後期版】"
+  },
+  {
+   "id": "gb_dai7",
+   "sect": "gaibang",
+   "rank": 7,
+   "name": "七袋弟子",
+   "requires": [
+    {
+     "type": "fame_min",
+     "value": 10000
+    },
+    {
+     "type": "lilian_min",
+     "value": 10000
+    },
+    {
+     "type": "sect_rank_min",
+     "sect": "gaibang",
+     "value": 6
+    }
+   ],
+   "promote": "AUTO",
+   "assembly": true,
+   "cost": {},
+   "era": "xkd",
+   "src": "later",
+   "src_note": "免費版 10000【後期版】"
+  }
+ ],
+ "regions": [
+  {
+   "id": "jingcheng_north",
+   "name": "京城北郊",
+   "type": "WILD",
+   "city": "jingcheng",
+   "map": "res://data/maps/jingcheng_north.json",
+   "world_pos": [
+    862,
+    150
+   ],
+   "suggested_xp": [
+    0,
+    20000
+   ],
+   "pk_allowed": true,
+   "birth_allowed": false,
+   "birth_room": "",
+   "night_closed": [],
+   "era": "1.0B",
+   "src": "proposal",
+   "src_note": "O4【設計提案】：2001「山門在山路中間」「跑上10分鐘」「離馬王洞不遠」（2001-10-09/10-24/11-12）"
+  },
+  {
+   "id": "gaibang",
+   "name": "丐幫總舵",
+   "type": "SECT",
+   "city": "jingcheng",
+   "map": "res://data/maps/gaibang.json",
+   "world_pos": [
+    884,
+    122
+   ],
+   "suggested_xp": [
+    0,
+    0
+   ],
+   "pk_allowed": false,
+   "birth_allowed": false,
+   "birth_room": "",
+   "night_closed": [],
+   "era": "1.0B",
+   "src": "proposal",
+   "src_note": "O4；總舵是破廟（2001-10-29「一群乞丐躲雨的破廟」；官方後期「回丐幫入破廟門口」）；後期座標 28588,2196 → [1191,92] 超出 2001 地圖，只取「京城東北、近雁門關」的方向"
+  }
+ ],
+ "maps": {
+  "jingcheng_north": {
+   "region_id": "jingcheng_north",
+   "era": "1.0B",
+   "src": "proposal",
+   "desc": "京城北門外的黃土山路，往北翻過山嶺可接雁門古道；山路半腰的破廟就是丐幫總舵。",
+   "escape_tiles_hint": 2,
+   "rooms": [
+    {
+     "id": "jcn_road1",
+     "name": "北郊山路",
+     "desc": "出了京城北門，黃土山路往北蜿蜒而上，路旁幾株老槐樹歪著脖子。往南回京城北門，往北山勢漸高。",
+     "exits": [
+      {
+       "dir": "S",
+       "to": "jc_gate_n"
+      },
+      {
+       "dir": "N",
+       "to": "jcn_road2"
+      }
+     ],
+     "npcs": [],
+     "features": [],
+     "requires": [],
+     "encounter": {
+      "rate": 0.1,
+      "table": [
+       {
+        "monster": "m_rabbit",
+        "w": 60,
+        "count": [
+         1,
+         1
+        ]
+       },
+       {
+        "monster": "m_bigrabbit",
+        "w": 30,
+        "count": [
+         1,
+         1
+        ]
+       },
+       {
+        "monster": "m_jc_qigaitou",
+        "w": 5,
+        "count": [
+         1,
+         1
+        ]
+       },
+       {
+        "monster": "m_jc_buliang",
+        "w": 5,
+        "count": [
+         1,
+         1
+        ]
+       }
+      ]
+     },
+     "src_note": "遇敵：2001-10-13 練功路線「0–10 京城門口（乞丐頭子、不良少年）」；M3B_PLAN §3.4 #2 白名單"
+    },
+    {
+     "id": "jcn_road2",
+     "name": "山路岔口",
+     "desc": "山路在此分岔：東邊林子後頭露出半截破廟的屋簷，常有叫化子進出；西邊一條小徑鑽進林間空地。往北山路繼續爬升，往南下山回京城。",
+     "exits": [
+      {
+       "dir": "S",
+       "to": "jcn_road1"
+      },
+      {
+       "dir": "E",
+       "to": "gb_gate"
+      },
+      {
+       "dir": "W",
+       "to": "jcn_kongdi"
+      },
+      {
+       "dir": "N",
+       "to": "jcn_road3"
+      }
+     ],
+     "npcs": [],
+     "features": [],
+     "requires": [],
+     "encounter": {
+      "rate": 0.1,
+      "table": [
+       {
+        "monster": "m_rabbit",
+        "w": 55,
+        "count": [
+         1,
+         1
+        ]
+       },
+       {
+        "monster": "m_bigrabbit",
+        "w": 35,
+        "count": [
+         1,
+         1
+        ]
+       },
+       {
+        "monster": "m_jc_qigaitou",
+        "w": 5,
+        "count": [
+         1,
+         1
+        ]
+       },
+       {
+        "monster": "m_jc_buliang",
+        "w": 5,
+        "count": [
+         1,
+         1
+        ]
+       }
+      ]
+     },
+     "src_note": "緊鄰山門：只放新手怪（M3B_PLAN §3.4 #2）"
+    },
+    {
+     "id": "jcn_kongdi",
+     "name": "破廟西邊空地",
+     "desc": "林間一片荒草空地，地上滿是馬蹄印和燒剩的火堆，馬賊、野道人常在這裡歇腳分贓。只有往東一條小徑回山路岔口。",
+     "exits": [
+      {
+       "dir": "E",
+       "to": "jcn_road2"
+      }
+     ],
+     "npcs": [],
+     "features": [],
+     "requires": [],
+     "encounter": {
+      "rate": 0.25,
+      "table": [
+       {
+        "monster": "m_jcn_mazeitou",
+        "w": 25,
+        "count": [
+         1,
+         1
+        ]
+       },
+       {
+        "monster": "m_jcn_edaotou",
+        "w": 20,
+        "count": [
+         1,
+         1
+        ]
+       },
+       {
+        "monster": "m_jcn_daoren",
+        "w": 20,
+        "count": [
+         1,
+         1
+        ]
+       },
+       {
+        "monster": "m_jcn_mazeiwang",
+        "w": 15,
+        "count": [
+         1,
+         1
+        ]
+       },
+       {
+        "monster": "m_jcn_yinmian",
+        "w": 20,
+        "count": [
+         1,
+         1
+        ]
+       }
+      ]
+     },
+     "src_note": "2001-10-13「20–29 丐幫左方空地（馬王、道人頭子、隱面人，隱面人 23+）」；2001-10-09 山門附近有馬賊頭子、馬賊王、惡道人頭子；死路練功點，遇敵率 0.25（M3B_PLAN §3.4 #4 ≤ 0.30；WP-MERGE 需把 jcn_kongdi 加進 lint 的 NEWBIE_RATE_EXEMPT）；「馬王」依 E4 當作馬賊王【待考證】"
+    },
+    {
+     "id": "jcn_road3",
+     "name": "北郊山道",
+     "desc": "山道越走越窄，亂石嶙峋，山口灌下來的冷風颳得人睜不開眼。往南回山路岔口，往北翻上山嶺。",
+     "exits": [
+      {
+       "dir": "S",
+       "to": "jcn_road2"
+      },
+      {
+       "dir": "N",
+       "to": "jcn_road4"
+      }
+     ],
+     "npcs": [],
+     "features": [],
+     "requires": [],
+     "encounter": {
+      "rate": 0.1,
+      "table": [
+       {
+        "monster": "m_rabbit",
+        "w": 40,
+        "count": [
+         1,
+         1
+        ]
+       },
+       {
+        "monster": "m_bigrabbit",
+        "w": 40,
+        "count": [
+         1,
+         1
+        ]
+       },
+       {
+        "monster": "m_wolf",
+        "w": 15,
+        "count": [
+         1,
+         1
+        ]
+       },
+       {
+        "monster": "m_jc_buliang",
+        "w": 5,
+        "count": [
+         1,
+         1
+        ]
+       }
+      ]
+     },
+     "src_note": "M3B_PLAN §3.4 #2：只有新手怪與野狼；一袋任務的午時埋伏在此（房間動作）"
+    },
+    {
+     "id": "jcn_road4",
+     "name": "嶺上古道",
+     "desc": "嶺上古道荒僻，林深草長，正是歹人攔路的好所在，護國法師和煞風寨的人馬常在樹後候著過客。往南下嶺回北郊山道，往西有條山徑翻過去接上雁門古道。",
+     "exits": [
+      {
+       "dir": "S",
+       "to": "jcn_road3"
+      },
+      {
+       "dir": "W",
+       "to": "ym_road",
+       "era": "1.0B"
+      }
+     ],
+     "npcs": [],
+     "features": [],
+     "requires": [],
+     "encounter": {
+      "rate": 0.12,
+      "table": [
+       {
+        "monster": "m_bigrabbit",
+        "w": 45,
+        "count": [
+         1,
+         1
+        ]
+       },
+       {
+        "monster": "m_wolf",
+        "w": 45,
+        "count": [
+         1,
+         1
+        ]
+       },
+       {
+        "monster": "m_jcn_mazeitou",
+        "w": 10,
+        "count": [
+         1,
+         1
+        ]
+       }
+      ]
+     },
+     "src_note": "2001-10-24：護國法師、煞風寨寨主在山路上埋伏、逃跑常失敗。【設計提案・偏離】本房在京城→雁門關口（lint STORY_ROUTE_TARGETS）與京城→恆山的新手最短路上，故埋伏者不放遇敵表（會違反新手規則 5、6），改成站在路上可挑戰的惡人 NPC（n_gb_huguo、n_gb_shafeng）；遇敵率 0.12、馬賊頭子 combat_xp_ref 3000 權重 10"
+    }
+   ]
+  },
+  "gaibang": {
+   "region_id": "gaibang",
+   "era": "1.0B",
+   "src": "proposal",
+   "desc": "京城北郊山路半腰的一座破山神廟，丐幫總舵就設在這裡，四方叫化子進進出出。",
+   "escape_tiles_hint": 2,
+   "rooms": [
+    {
+     "id": "gb_gate",
+     "name": "破廟門口",
+     "desc": "一座年久失修的山神廟，廟門半掩，門楣上的匾額早已斑駁難辨，幾個叫化子蹲在門檻上捉蝨子曬太陽。往西回山路岔口，往北進廟。",
+     "exits": [
+      {
+       "dir": "W",
+       "to": "jcn_road2"
+      },
+      {
+       "dir": "N",
+       "to": "gb_pomiao"
+      }
+     ],
+     "npcs": [],
+     "features": [],
+     "requires": [],
+     "src_note": "2001：門外沒有商人、沒有查小鏞（O4）；官方後期「回丐幫入破廟門口」"
+    },
+    {
+     "id": "gb_pomiao",
+     "name": "破廟正殿",
+     "desc": "殿中神像缺了半邊臉，香案上供著一根竹棒和幾隻破碗，丐幫弟子三三兩兩圍坐在草堆上。陳長老就在這裡主持幫務。",
+     "exits": [
+      {
+       "dir": "S",
+       "to": "gb_gate"
+      },
+      {
+       "dir": "N",
+       "to": "gb_houdian"
+      },
+      {
+       "dir": "E",
+       "to": "gb_yuan"
+      }
+     ],
+     "npcs": [],
+     "features": [],
+     "requires": [],
+     "src_note": "2001-10-29「一群乞丐躲雨的破廟」"
+    },
+    {
+     "id": "gb_houdian",
+     "name": "破廟後殿",
+     "desc": "後殿收拾得比前頭乾淨些，傳功長老盤坐草蓆，指點弟子拳腳棍棒；牆角堆滿了練功用的竹棒。",
+     "exits": [
+      {
+       "dir": "S",
+       "to": "gb_pomiao"
+      }
+     ],
+     "npcs": [],
+     "features": [],
+     "requires": []
+    },
+    {
+     "id": "gb_yuan",
+     "name": "破廟後院",
+     "desc": "後院雜草叢生，一口枯井旁拴著幾條黃狗，掌棍長老與執法長老常在井邊議事。",
+     "exits": [
+      {
+       "dir": "W",
+       "to": "gb_pomiao"
+      }
+     ],
+     "npcs": [],
+     "features": [],
+     "requires": []
+    }
+   ]
+  }
+ },
+ "extra_rooms": {},
+ "exit_patches": [
+  {
+   "room": "ym_road",
+   "add_exits": [
+    {
+     "dir": "E",
+     "to": "jcn_road4",
+     "era": "1.0B"
+    }
+   ],
+   "desc_1_0b": "從恆山岔路往東北延伸的古道，越走越荒涼，北風捲著黃沙。往西南回恆山岔路，往北就是雁門關口；往東的山徑翻過去可到京城北郊。"
+  }
+ ],
+ "npcs": [
+  {
+   "id": "n_gb_chen",
+   "name": "陳長老",
+   "kind": "MASTER",
+   "region": "gaibang",
+   "room": "gb_pomiao",
+   "alignment": "GOOD",
+   "talk": "talk_n_gb_chen",
+   "services": [
+    "JOIN",
+    "BETRAY",
+    "RANK",
+    "QUEST",
+    "TEACH"
+   ],
+   "night_closed": false,
+   "join_sect": "gaibang",
+   "quests": [
+    "q_gb_dai1"
+   ],
+   "no_beg": true,
+   "desc": "鬚髮花白的老叫化，背上掛著好幾隻布袋，一雙眼睛卻精光四射。收新弟子、給弟子升袋都歸他管。",
+   "era": "1.0B",
+   "src": "verified",
+   "src_note": "2001-11-03 一袋任務找陳長老；後期官方：陳長老（1 袋）；乞討教到 10 級【設計提案】（O7）"
+  },
+  {
+   "id": "n_gb_chuangong",
+   "name": "傳功長老",
+   "kind": "MASTER",
+   "region": "gaibang",
+   "room": "gb_houdian",
+   "alignment": "GOOD",
+   "talk": "talk_n_gb_chuangong",
+   "services": [
+    "TEACH"
+   ],
+   "night_closed": false,
+   "no_beg": true,
+   "desc": "丐幫四大長老之一，專司傳授本幫武功，一身拳腳棍棒功夫爐火純青。",
+   "era": "1.0B",
+   "src": "verified",
+   "src_note": "2001-10-24「二、三階武功列在傳功長老那裡但要二袋」；2001-11-27 傳功長老列著蓮花掌；DIAO/4-1 四大長老；基本武學上限 140【後期版】"
+  },
+  {
+   "id": "n_gb_zhanggun",
+   "name": "掌棍長老",
+   "kind": "QUEST",
+   "region": "gaibang",
+   "room": "gb_yuan",
+   "alignment": "GOOD",
+   "talk": "talk_n_gb_zhanggun",
+   "services": [
+    "QUEST"
+   ],
+   "night_closed": false,
+   "quests": [],
+   "no_beg": true,
+   "desc": "拄著一根烏黑鐵棍的魁梧老丐，管著幫中與外敵交手的大事，說話聲如洪鐘。",
+   "era": "1.0B",
+   "src": "verified",
+   "src_note": "2001-11-23 掌棍長老（二袋任務）；後期改稱掌棒龍頭"
+  },
+  {
+   "id": "n_gb_zhifa",
+   "name": "執法長老",
+   "kind": "STORY",
+   "region": "gaibang",
+   "room": "gb_yuan",
+   "alignment": "GOOD",
+   "talk": "talk_n_gb_zhifa",
+   "services": [],
+   "night_closed": false,
+   "no_beg": true,
+   "desc": "面色鐵青的老丐，手裡捏著一卷幫規，誰犯了戒律，第一個就得過他這一關。",
+   "era": "1.0B",
+   "src": "verified",
+   "src_note": "DIAO/4-1 預告：四大長老＝傳功、執法、掌缽、掌棒；1.0B 丐幫沒有執法者（O5），他只對話"
+  },
+  {
+   "id": "n_gb_spar",
+   "name": "丐幫弟子",
+   "kind": "FUNC",
+   "region": "gaibang",
+   "room": "gb_houdian",
+   "alignment": "GOOD",
+   "talk": "talk_n_gb_spar",
+   "services": [
+    "FIGHT"
+   ],
+   "night_closed": false,
+   "fight": {
+    "monster": "m_gb_dizi",
+    "requires": [
+     {
+      "type": "sect",
+      "sect": "gaibang"
+     }
+    ]
+   },
+   "no_beg": true,
+   "desc": "年輕的叫化子，手提竹棒，專陪同門兄弟過招喂招。",
+   "era": "1.0B",
+   "src": "proposal",
+   "src_note": "比照各派切磋弟子（M3a）【設計提案】"
+  },
+  {
+   "id": "n_gb_jiang",
+   "name": "姜乞丐",
+   "kind": "QUEST",
+   "region": "jingcheng",
+   "room": "jc_square",
+   "alignment": "GOOD",
+   "talk": "talk_n_gb_jiang",
+   "services": [
+    "QUEST"
+   ],
+   "night_closed": false,
+   "quests": [
+    "q_gb_dai2"
+   ],
+   "no_beg": true,
+   "desc": "坐在錢莊門前石階上的老乞丐，破碗伸向往來行人，耳朵卻豎得比誰都尖。",
+   "era": "1.0B",
+   "src": "verified",
+   "src_note": "2001-11-23「京城找江乞丐」、2001-11-25「姓姜的乞丐」；2002-07 在「京城錢莊前」→ 京城廣場（錢莊在廣場南邊）"
+  },
+  {
+   "id": "n_gb_youqiming",
+   "name": "游啟明",
+   "kind": "QUEST",
+   "region": "xixia",
+   "room": "xx_pharmacy",
+   "alignment": "GOOD",
+   "talk": "talk_n_gb_youqiming",
+   "services": [
+    "QUEST"
+   ],
+   "night_closed": false,
+   "quests": [
+    "q_gb_xin"
+   ],
+   "no_beg": true,
+   "desc": "蹲在回春藥鋪門口的丐幫弟子，捧著缺了口的破碗，西夏城裡的大小消息都逃不過他的耳朵。",
+   "era": "1.0B",
+   "src": "verified",
+   "src_note": "2001-11-03 一袋情報：西夏 游啟（藥店門口）；2001-08「找驛站游啟明入丐幫」是假消息（2001-08-20）；西夏丐幫 NPC 送信到大理（2001 多篇）"
+  },
+  {
+   "id": "n_gb_pan",
+   "name": "潘乞兒",
+   "kind": "STORY",
+   "region": "dali",
+   "room": "dl_wuguan",
+   "alignment": "GOOD",
+   "talk": "talk_n_gb_pan",
+   "services": [],
+   "night_closed": false,
+   "no_beg": true,
+   "desc": "倚在大理武館門口打盹的小乞兒，滿臉泥灰，鼻子卻比狗還靈。",
+   "era": "1.0B",
+   "src": "verified",
+   "src_note": "2001-11-03：大理 潘**（武館門口）；名字只知姓潘【待考證】"
+  },
+  {
+   "id": "n_gb_shenyi",
+   "name": "神醫",
+   "kind": "STORY",
+   "region": "dali",
+   "room": "dl_shop",
+   "alignment": "GOOD",
+   "talk": "talk_n_gb_shenyi",
+   "services": [],
+   "night_closed": false,
+   "desc": "在雜貨鋪角落擺了張小桌替人看病的老大夫，脾氣古怪，醫術卻是大理城裡數一數二。",
+   "era": "1.0B",
+   "src": "verified",
+   "src_note": "2001-11-03：大理 神醫（藥店門口）；大理沒有藥店房 → 放雜貨鋪【設計提案】"
+  },
+  {
+   "id": "n_gb_jc_informant",
+   "name": "轉角的漢子",
+   "kind": "STORY",
+   "region": "jingcheng",
+   "room": "jc_smithy",
+   "alignment": "NEUTRAL",
+   "talk": "talk_n_gb_jc_informant",
+   "services": [],
+   "night_closed": false,
+   "desc": "蹲在兵器鋪轉角陰影裡的漢子，帽簷壓得極低，一有人走近手就按到腰間。",
+   "era": "1.0B",
+   "src": "verified",
+   "src_note": "2001-11-03：京城「兵器店轉角的人」；身分（邪教逃卒）【設計提案】"
+  },
+  {
+   "id": "n_gb_dl_qigai",
+   "name": "丐幫弟子",
+   "kind": "STORY",
+   "region": "dali",
+   "room": "dl_square",
+   "alignment": "GOOD",
+   "talk": "talk_n_gb_dl_qigai",
+   "services": [],
+   "night_closed": false,
+   "no_beg": true,
+   "desc": "在五華樓前菜攤邊討飯的丐幫弟子，常替幫裡收發書信。",
+   "era": "1.0B",
+   "src": "verified",
+   "src_note": "2001：西夏丐幫 NPC 送信到「大理菜商上方」的丐幫 NPC（+1 名聲 +1 歷練，可重複）；大理沒有菜攤房 → 五華樓前"
+  },
+  {
+   "id": "n_gb_huguo",
+   "name": "護國法師",
+   "kind": "EVIL_NPC",
+   "region": "jingcheng_north",
+   "room": "jcn_road4",
+   "alignment": "EVIL",
+   "talk": "talk_n_gb_huguo",
+   "services": [
+    "FIGHT"
+   ],
+   "night_closed": false,
+   "fight": {
+    "monster": "m_jcn_huguo",
+    "requires": []
+   },
+   "desc": "披著紅色袈裟的番僧，自稱護國法師，帶著幾個徒眾在嶺上攔路化緣，不給錢便動手。",
+   "era": "1.0B",
+   "src": "verified",
+   "src_note": "2001-10-24：護國法師、煞風寨寨主常在丐幫山路埋伏；改成站點挑戰的 NPC【設計提案・偏離】（見 jcn_road4 src_note）"
+  },
+  {
+   "id": "n_gb_shafeng",
+   "name": "煞風寨寨主",
+   "kind": "EVIL_NPC",
+   "region": "jingcheng_north",
+   "room": "jcn_road4",
+   "alignment": "EVIL",
+   "talk": "talk_n_gb_shafeng",
+   "services": [
+    "FIGHT"
+   ],
+   "night_closed": false,
+   "fight": {
+    "monster": "m_jcn_shafeng",
+    "requires": []
+   },
+   "desc": "騎著黑馬、橫著一口鬼頭刀的大漢，煞風寨的寨主，專劫往來雁門關的商旅。",
+   "era": "1.0B",
+   "src": "verified",
+   "src_note": "2001-10-24：煞風寨寨主埋伏、逃跑常失敗；改成站點挑戰的 NPC【設計提案・偏離】"
+  }
+ ],
+ "masters": [
+  {
+   "id": "ms_gb_chen_qitao",
+   "npc_id": "n_gb_chen",
+   "skill_id": "qitao",
+   "cap": 10,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "gaibang"
+    }
+   ],
+   "era": "1.0B",
+   "src": "proposal",
+   "src_note": "O7：陳長老只教到 10 級（夠學銅鎚手）；之後只能對 NPC 乞討練（2001 練法）【設計提案】"
+  },
+  {
+   "id": "ms_gb_cg_xinfa",
+   "npc_id": "n_gb_chuangong",
+   "skill_id": "gb_xinfa",
+   "cap": 100,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "gaibang"
+    }
+   ],
+   "era": "1.0B",
+   "src": "proposal",
+   "src_note": "一階上限 100【設計提案】；2001 傳功長老教本幫武功"
+  },
+  {
+   "id": "ms_gb_cg_taizu_quan",
+   "npc_id": "n_gb_chuangong",
+   "skill_id": "gb_taizu_quan",
+   "cap": 100,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "gaibang"
+    }
+   ],
+   "era": "1.0B",
+   "src": "proposal",
+   "src_note": "一階上限 100【設計提案】；2001 傳功長老教本幫武功"
+  },
+  {
+   "id": "ms_gb_cg_taizu_gun",
+   "npc_id": "n_gb_chuangong",
+   "skill_id": "gb_taizu_gun",
+   "cap": 100,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "gaibang"
+    }
+   ],
+   "era": "1.0B",
+   "src": "proposal",
+   "src_note": "一階上限 100【設計提案】；2001 傳功長老教本幫武功"
+  },
+  {
+   "id": "ms_gb_cg_liuhe_dao",
+   "npc_id": "n_gb_chuangong",
+   "skill_id": "gb_liuhe_dao",
+   "cap": 100,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "gaibang"
+    }
+   ],
+   "era": "1.0B",
+   "src": "proposal",
+   "src_note": "一階上限 100【設計提案】；2001 傳功長老教本幫武功"
+  },
+  {
+   "id": "ms_gb_cg_tongchui",
+   "npc_id": "n_gb_chuangong",
+   "skill_id": "gb_tongchui",
+   "cap": 100,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "gaibang"
+    }
+   ],
+   "era": "1.0B",
+   "src": "proposal",
+   "src_note": "一階上限 100【設計提案】；2001 傳功長老教本幫武功"
+  },
+  {
+   "id": "ms_gb_cg_mantian",
+   "npc_id": "n_gb_chuangong",
+   "skill_id": "gb_mantian",
+   "cap": 100,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "gaibang"
+    }
+   ],
+   "era": "1.0B",
+   "src": "proposal",
+   "src_note": "一階上限 100【設計提案】；2001 傳功長老教本幫武功"
+  },
+  {
+   "id": "ms_gb_cg_fengmo",
+   "npc_id": "n_gb_chuangong",
+   "skill_id": "gb_fengmo",
+   "cap": 60,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "gaibang"
+    }
+   ],
+   "era": "1.0B",
+   "src": "verified",
+   "src_note": "二階上限 60（瘋魔【已證實 2001-12-01】，其他比照）"
+  },
+  {
+   "id": "ms_gb_cg_chansi",
+   "npc_id": "n_gb_chuangong",
+   "skill_id": "gb_chansi",
+   "cap": 60,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "gaibang"
+    }
+   ],
+   "era": "1.0B",
+   "src": "verified",
+   "src_note": "二階上限 60（瘋魔【已證實 2001-12-01】，其他比照）"
+  },
+  {
+   "id": "ms_gb_cg_qinlong",
+   "npc_id": "n_gb_chuangong",
+   "skill_id": "gb_qinlong",
+   "cap": 60,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "gaibang"
+    }
+   ],
+   "era": "1.0B",
+   "src": "verified",
+   "src_note": "二階上限 60（瘋魔【已證實 2001-12-01】，其他比照）"
+  },
+  {
+   "id": "ms_gb_cg_huntian",
+   "npc_id": "n_gb_chuangong",
+   "skill_id": "gb_huntian",
+   "cap": 60,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "gaibang"
+    }
+   ],
+   "era": "1.0B",
+   "src": "verified",
+   "src_note": "二階上限 60（瘋魔【已證實 2001-12-01】，其他比照）"
+  },
+  {
+   "id": "ms_gb_cg_lianhua",
+   "npc_id": "n_gb_chuangong",
+   "skill_id": "gb_lianhua",
+   "cap": 60,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "gaibang"
+    }
+   ],
+   "era": "1.0B",
+   "src": "verified",
+   "src_note": "二階上限 60（瘋魔【已證實 2001-12-01】，其他比照）"
+  },
+  {
+   "id": "ms_gb_cg_basic_fist",
+   "npc_id": "n_gb_chuangong",
+   "skill_id": "basic_fist",
+   "cap": 140,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "gaibang"
+    }
+   ],
+   "era": "1.0B",
+   "src": "later",
+   "src_note": "基本武學 140 為後期數字【後期版】（後期助功長老教基本刀棍暗器，2001 未見助功長老 → 傳功長老）"
+  },
+  {
+   "id": "ms_gb_cg_basic_staff",
+   "npc_id": "n_gb_chuangong",
+   "skill_id": "basic_staff",
+   "cap": 140,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "gaibang"
+    }
+   ],
+   "era": "1.0B",
+   "src": "later",
+   "src_note": "基本武學 140 為後期數字【後期版】（後期助功長老教基本刀棍暗器，2001 未見助功長老 → 傳功長老）"
+  },
+  {
+   "id": "ms_gb_cg_basic_blade",
+   "npc_id": "n_gb_chuangong",
+   "skill_id": "basic_blade",
+   "cap": 140,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "gaibang"
+    }
+   ],
+   "era": "1.0B",
+   "src": "later",
+   "src_note": "基本武學 140 為後期數字【後期版】（後期助功長老教基本刀棍暗器，2001 未見助功長老 → 傳功長老）"
+  },
+  {
+   "id": "ms_gb_cg_basic_hidden",
+   "npc_id": "n_gb_chuangong",
+   "skill_id": "basic_hidden",
+   "cap": 140,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "gaibang"
+    }
+   ],
+   "era": "1.0B",
+   "src": "later",
+   "src_note": "基本武學 140 為後期數字【後期版】（後期助功長老教基本刀棍暗器，2001 未見助功長老 → 傳功長老）"
+  },
+  {
+   "id": "ms_gb_cg_basic_inner",
+   "npc_id": "n_gb_chuangong",
+   "skill_id": "basic_inner",
+   "cap": 140,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "gaibang"
+    }
+   ],
+   "era": "1.0B",
+   "src": "later",
+   "src_note": "基本武學 140 為後期數字【後期版】（後期助功長老教基本刀棍暗器，2001 未見助功長老 → 傳功長老）"
+  },
+  {
+   "id": "ms_gb_cg_basic_parry",
+   "npc_id": "n_gb_chuangong",
+   "skill_id": "basic_parry",
+   "cap": 140,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "gaibang"
+    }
+   ],
+   "era": "1.0B",
+   "src": "later",
+   "src_note": "基本武學 140 為後期數字【後期版】（後期助功長老教基本刀棍暗器，2001 未見助功長老 → 傳功長老）"
+  },
+  {
+   "id": "ms_gb_cg_basic_dodge",
+   "npc_id": "n_gb_chuangong",
+   "skill_id": "basic_dodge",
+   "cap": 140,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "gaibang"
+    }
+   ],
+   "era": "1.0B",
+   "src": "later",
+   "src_note": "基本武學 140 為後期數字【後期版】（後期助功長老教基本刀棍暗器，2001 未見助功長老 → 傳功長老）"
+  }
+ ],
+ "martial_arts": [
+  {
+   "id": "gb_xinfa",
+   "name": "丐幫心法",
+   "sect_id": "gaibang",
+   "category": "INNER",
+   "base_skill": "basic_inner",
+   "difficulty": 0.8,
+   "tier": "BASIC",
+   "self_study_until": 0,
+   "self_study_cap": 0,
+   "party_size": 0,
+   "monster_only": false,
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "gaibang"
+    }
+   ],
+   "inner": {
+    "heal_mult": 1.0,
+    "expel_mult": 1.0
+   },
+   "desc": "丐幫入門內功，講究吐納綿長，風餐露宿也能護住一口真氣。",
+   "era": "1.0B",
+   "src": "verified",
+   "src_note": "2001-10-09 列表、2001-10-06「一開始就能學」；係數無資料（0.8【設計提案】）",
+   "moves": []
+  },
+  {
+   "id": "gb_taizu_quan",
+   "name": "太祖長拳",
+   "sect_id": "gaibang",
+   "category": "FIST",
+   "base_skill": "basic_fist",
+   "difficulty": 0.99,
+   "tier": "BASIC",
+   "self_study_until": 0,
+   "self_study_cap": 0,
+   "party_size": 0,
+   "monster_only": false,
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "gaibang"
+    }
+   ],
+   "desc": "宋太祖趙匡胤傳下的長拳，大開大闔，出手極快，是丐幫弟子最先學的拳法。",
+   "era": "1.0B",
+   "src": "verified",
+   "src_note": "2001-10-06「一開始就能學的太祖長拳」；2001-10-07 長拳最快、勝銅鎚手；小十字（CROSS）；係數 0.99（2001-10-29 實測）；招式名取自《天龍八部》聚賢莊喬峰所使【設計提案】",
+   "moves": [
+    {
+     "id": "gb_tzq_1",
+     "name": "懶扎衣",
+     "unlock_level": 1,
+     "power": 17,
+     "range": 1,
+     "aoe": "CROSS",
+     "cost_inner": 0,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "gb_move_fist_cross",
+     "src": "proposal"
+    },
+    {
+     "id": "gb_tzq_2",
+     "name": "衝陣斬將",
+     "unlock_level": 30,
+     "power": 25,
+     "range": 1,
+     "aoe": "CROSS",
+     "cost_inner": 5,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "gb_move_fist_cross",
+     "src": "proposal"
+    },
+    {
+     "id": "gb_tzq_3",
+     "name": "千里橫行",
+     "unlock_level": 60,
+     "power": 34,
+     "range": 1,
+     "aoe": "CROSS",
+     "cost_inner": 10,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "gb_move_fist_cross",
+     "src": "proposal"
+    }
+   ]
+  },
+  {
+   "id": "gb_taizu_gun",
+   "name": "太祖棍法",
+   "sect_id": "gaibang",
+   "category": "STAFF",
+   "base_skill": "basic_staff",
+   "difficulty": 0.75,
+   "tier": "BASIC",
+   "self_study_until": 0,
+   "self_study_cap": 0,
+   "party_size": 0,
+   "monster_only": false,
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "gaibang"
+    }
+   ],
+   "desc": "與太祖長拳同出一源的棍法，招式樸拙，在丐幫一階武功裡威力最弱，卻是瘋魔杖法的根基。",
+   "era": "1.0B",
+   "src": "verified",
+   "src_note": "2001-10-07 太祖棍法較弱；小十字；係數 0.75（研究 一階武功特性）；招式名【設計提案】",
+   "moves": [
+    {
+     "id": "gb_tzg_1",
+     "name": "撥草尋蛇",
+     "unlock_level": 1,
+     "power": 14,
+     "range": 1,
+     "aoe": "CROSS",
+     "cost_inner": 0,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "gb_move_staff_cross",
+     "src": "proposal"
+    },
+    {
+     "id": "gb_tzg_2",
+     "name": "橫攔鐵門",
+     "unlock_level": 30,
+     "power": 21,
+     "range": 1,
+     "aoe": "CROSS",
+     "cost_inner": 5,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "gb_move_staff_cross",
+     "src": "proposal"
+    },
+    {
+     "id": "gb_tzg_3",
+     "name": "盤打四方",
+     "unlock_level": 60,
+     "power": 29,
+     "range": 1,
+     "aoe": "CROSS",
+     "cost_inner": 9,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "gb_move_staff_cross",
+     "src": "proposal"
+    }
+   ]
+  },
+  {
+   "id": "gb_liuhe_dao",
+   "name": "六合刀法",
+   "sect_id": "gaibang",
+   "category": "BLADE",
+   "base_skill": "basic_blade",
+   "difficulty": 0.95,
+   "tier": "BASIC",
+   "self_study_until": 0,
+   "self_study_cap": 0,
+   "party_size": 0,
+   "monster_only": false,
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "gaibang"
+    }
+   ],
+   "desc": "六合刀法講究內外六合，刀隨身走，是丐幫一階武功中最剛猛的一路。",
+   "era": "1.0B",
+   "src": "verified",
+   "src_note": "2001-10-07 全部 11 級時六合刀最強；2001-10-09「基本武功??」；小十字；係數 0.95；招式名【設計提案】",
+   "moves": [
+    {
+     "id": "gb_lhd_1",
+     "name": "開門見山",
+     "unlock_level": 1,
+     "power": 18,
+     "range": 1,
+     "aoe": "CROSS",
+     "cost_inner": 0,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "gb_move_blade_cross",
+     "src": "proposal"
+    },
+    {
+     "id": "gb_lhd_2",
+     "name": "迎風一刀斬",
+     "unlock_level": 30,
+     "power": 26,
+     "range": 1,
+     "aoe": "CROSS",
+     "cost_inner": 5,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "gb_move_blade_cross",
+     "src": "proposal"
+    },
+    {
+     "id": "gb_lhd_3",
+     "name": "六合歸一",
+     "unlock_level": 60,
+     "power": 34,
+     "range": 1,
+     "aoe": "CROSS",
+     "cost_inner": 10,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "gb_move_blade_cross",
+     "src": "proposal"
+    }
+   ]
+  },
+  {
+   "id": "gb_tongchui",
+   "name": "銅鎚手",
+   "sect_id": "gaibang",
+   "category": "FIST",
+   "base_skill": "basic_fist",
+   "difficulty": 0.9,
+   "tier": "BASIC",
+   "self_study_until": 0,
+   "self_study_cap": 0,
+   "party_size": 0,
+   "monster_only": false,
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "gaibang"
+    },
+    {
+     "type": "skill_min",
+     "skill": "gb_xinfa",
+     "value": 10
+    },
+    {
+     "type": "skill_min",
+     "skill": "qitao",
+     "value": 10
+    }
+   ],
+   "desc": "雙拳如銅鎚般砸下，勁力四散，一拳打出去前後左右都要遭殃，只是四十級以後進境極慢。",
+   "era": "1.0B",
+   "src": "verified",
+   "src_note": "2001-10-09 銅鎚手 心法10 乞討10【已證實】；大十字（同血刀）；係數 0.90–0.91；40 級以後很慢（2001-10-07）；招式名【設計提案】",
+   "moves": [
+    {
+     "id": "gb_tc_1",
+     "name": "雙鎚貫耳",
+     "unlock_level": 1,
+     "power": 15,
+     "range": 1,
+     "aoe": "CROSS_L",
+     "cost_inner": 0,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "gb_move_fist_wide",
+     "src": "proposal"
+    },
+    {
+     "id": "gb_tc_2",
+     "name": "鐵鎚開山",
+     "unlock_level": 30,
+     "power": 22,
+     "range": 1,
+     "aoe": "CROSS_L",
+     "cost_inner": 5,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "gb_move_fist_wide",
+     "src": "proposal"
+    },
+    {
+     "id": "gb_tc_3",
+     "name": "重鎚擂鼓",
+     "unlock_level": 60,
+     "power": 30,
+     "range": 1,
+     "aoe": "CROSS_L",
+     "cost_inner": 10,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "gb_move_fist_wide",
+     "src": "proposal"
+    }
+   ]
+  },
+  {
+   "id": "gb_mantian",
+   "name": "滿天花雨",
+   "sect_id": "gaibang",
+   "category": "HIDDEN",
+   "base_skill": "basic_hidden",
+   "difficulty": 0.9,
+   "tier": "BASIC",
+   "self_study_until": 0,
+   "self_study_cap": 0,
+   "party_size": 0,
+   "monster_only": false,
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "gaibang"
+    }
+   ],
+   "hidden": {
+    "range_bonus": 1
+   },
+   "desc": "把一把銅錢、石子撒將出去，叫化子沒錢買暗器，便拿討來的銅板當暗器使。",
+   "era": "1.0B",
+   "src": "proposal",
+   "src_note": "2001-10-09 列表「應該是基本武功」（作者猜測）→ 一階【待考證：單一含糊來源】；係數與招式【設計提案】",
+   "moves": [
+    {
+     "id": "gb_mt_1",
+     "name": "撒豆成兵",
+     "unlock_level": 1,
+     "power": 18,
+     "range": 3,
+     "aoe": "SINGLE",
+     "cost_inner": 3,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "gb_move_hidden",
+     "src": "proposal"
+    },
+    {
+     "id": "gb_mt_2",
+     "name": "滿天花雨",
+     "unlock_level": 50,
+     "power": 28,
+     "range": 3,
+     "aoe": "SINGLE",
+     "cost_inner": 8,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "gb_move_hidden",
+     "src": "proposal"
+    }
+   ]
+  },
+  {
+   "id": "gb_fengmo",
+   "name": "瘋魔杖法",
+   "sect_id": "gaibang",
+   "category": "STAFF",
+   "base_skill": "basic_staff",
+   "difficulty": 1.337,
+   "tier": "ADVANCED",
+   "self_study_until": 0,
+   "self_study_cap": 0,
+   "party_size": 0,
+   "monster_only": false,
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "gaibang"
+    },
+    {
+     "type": "sect_rank_min",
+     "sect": "gaibang",
+     "value": 2
+    },
+    {
+     "type": "skill_min",
+     "skill": "gb_taizu_gun",
+     "value": 50
+    },
+    {
+     "type": "skill_min",
+     "skill": "gb_xinfa",
+     "value": 30
+    },
+    {
+     "type": "skill_min",
+     "skill": "qitao",
+     "value": 30
+    }
+   ],
+   "desc": "杖勢如瘋似魔，舞到急處，杖影旋成一團旋風，再往上練，杖頭隱隱帶起火光。",
+   "era": "1.0B",
+   "src": "verified",
+   "src_note": "2001-12-01「瘋魔！太組50！心法30！乞討30！二袋弟子！！！」；上限 60；1–40 旋風、40–60 火；係數「1.3 以上」（jy2001 t/68：1.337）",
+   "moves": [
+    {
+     "id": "gb_fm_1",
+     "name": "瘋魔旋風",
+     "unlock_level": 1,
+     "power": 34,
+     "range": 1,
+     "aoe": "CROSS",
+     "cost_inner": 8,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "gb_move_staff_cross",
+     "src": "proposal"
+    },
+    {
+     "id": "gb_fm_2",
+     "name": "烈火燎原",
+     "unlock_level": 40,
+     "power": 44,
+     "range": 2,
+     "aoe": "FAN",
+     "cost_inner": 12,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "gb_move_staff_fan",
+     "src": "proposal"
+    }
+   ]
+  },
+  {
+   "id": "gb_chansi",
+   "name": "纏絲擒拿手",
+   "sect_id": "gaibang",
+   "category": "FIST",
+   "base_skill": "basic_fist",
+   "difficulty": 1.3,
+   "tier": "ADVANCED",
+   "self_study_until": 0,
+   "self_study_cap": 0,
+   "party_size": 0,
+   "monster_only": false,
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "gaibang"
+    },
+    {
+     "type": "sect_rank_min",
+     "sect": "gaibang",
+     "value": 2
+    },
+    {
+     "type": "skill_min",
+     "skill": "gb_taizu_quan",
+     "value": 50
+    },
+    {
+     "type": "skill_min",
+     "skill": "gb_xinfa",
+     "value": 30
+    },
+    {
+     "type": "skill_min",
+     "skill": "qitao",
+     "value": 30
+    }
+   ],
+   "desc": "手指如絲纏繞，扣腕鎖肘，一旦搭上便甩脫不得；二階武功裡最是好用。",
+   "era": "1.0B",
+   "src": "proposal",
+   "src_note": "2001-10-09 列表（太祖長拳30 心法20 乞討30）；門檻改 12-01 形式 50/30/30/二袋【設計提案】比照瘋魔（O6）；2001-12-03「纏絲強」；係數 1.3【設計提案】",
+   "moves": [
+    {
+     "id": "gb_cs_1",
+     "name": "纏絲手",
+     "unlock_level": 1,
+     "power": 36,
+     "range": 1,
+     "aoe": "SINGLE",
+     "cost_inner": 6,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "gb_move_fist_single",
+     "src": "proposal"
+    },
+    {
+     "id": "gb_cs_2",
+     "name": "反手擒拿",
+     "unlock_level": 30,
+     "power": 46,
+     "range": 1,
+     "aoe": "SINGLE",
+     "cost_inner": 10,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "gb_move_fist_single",
+     "src": "proposal"
+    }
+   ]
+  },
+  {
+   "id": "gb_qinlong",
+   "name": "擒龍功",
+   "sect_id": "gaibang",
+   "category": "FIST",
+   "base_skill": "basic_fist",
+   "difficulty": 1.25,
+   "tier": "ADVANCED",
+   "self_study_until": 0,
+   "self_study_cap": 0,
+   "party_size": 0,
+   "monster_only": false,
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "gaibang"
+    },
+    {
+     "type": "sect_rank_min",
+     "sect": "gaibang",
+     "value": 2
+    },
+    {
+     "type": "skill_min",
+     "skill": "gb_tongchui",
+     "value": 50
+    },
+    {
+     "type": "skill_min",
+     "skill": "gb_xinfa",
+     "value": 30
+    },
+    {
+     "type": "skill_min",
+     "skill": "qitao",
+     "value": 30
+    }
+   ],
+   "desc": "以內勁隔空攫物，掌力吞吐之間，數步外的敵人也被拉得踉蹌撲來。",
+   "era": "1.0B",
+   "src": "proposal",
+   "src_note": "2001-10-09 列表（銅鎚手30 心法20 乞討30）；門檻 50/30/30/二袋【設計提案】（O6）；係數 1.25【設計提案】",
+   "moves": [
+    {
+     "id": "gb_ql_1",
+     "name": "擒龍控鶴",
+     "unlock_level": 1,
+     "power": 34,
+     "range": 2,
+     "aoe": "SINGLE",
+     "cost_inner": 6,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "gb_move_fist_single",
+     "src": "proposal"
+    },
+    {
+     "id": "gb_ql_2",
+     "name": "隔空擒龍",
+     "unlock_level": 30,
+     "power": 44,
+     "range": 2,
+     "aoe": "SINGLE",
+     "cost_inner": 10,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "gb_move_fist_single",
+     "src": "proposal"
+    }
+   ]
+  },
+  {
+   "id": "gb_huntian",
+   "name": "混天功",
+   "sect_id": "gaibang",
+   "category": "INNER",
+   "base_skill": "basic_inner",
+   "difficulty": 1.1,
+   "tier": "ADVANCED",
+   "self_study_until": 0,
+   "self_study_cap": 0,
+   "party_size": 0,
+   "monster_only": false,
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "gaibang"
+    },
+    {
+     "type": "sect_rank_min",
+     "sect": "gaibang",
+     "value": 2
+    },
+    {
+     "type": "skill_min",
+     "skill": "gb_qinlong",
+     "value": 30
+    },
+    {
+     "type": "skill_min",
+     "skill": "gb_xinfa",
+     "value": 30
+    },
+    {
+     "type": "skill_min",
+     "skill": "qitao",
+     "value": 30
+    }
+   ],
+   "inner": {
+    "heal_mult": 1.1,
+    "expel_mult": 1.1
+   },
+   "desc": "丐幫上乘內功，真氣運轉如混沌初開，療傷驅毒都比心法高明。",
+   "era": "1.0B",
+   "src": "proposal",
+   "src_note": "2001-10-09 列表（擒龍功30 心法20 乞討30）；門檻 30/30/30/二袋【設計提案】（O6）；類別【待考證】（暫作內功）；後期 jy2001 t/68 傳功長老教混天功",
+   "moves": []
+  },
+  {
+   "id": "gb_lianhua",
+   "name": "蓮花掌",
+   "sect_id": "gaibang",
+   "category": "FIST",
+   "base_skill": "basic_fist",
+   "difficulty": 1.424,
+   "tier": "ADVANCED",
+   "self_study_until": 0,
+   "self_study_cap": 0,
+   "party_size": 0,
+   "monster_only": false,
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "gaibang"
+    },
+    {
+     "type": "sect_rank_min",
+     "sect": "gaibang",
+     "value": 2
+    },
+    {
+     "type": "skill_min",
+     "skill": "gb_chansi",
+     "value": 30
+    },
+    {
+     "type": "skill_min",
+     "skill": "gb_xinfa",
+     "value": 30
+    },
+    {
+     "type": "skill_min",
+     "skill": "qitao",
+     "value": 30
+    }
+   ],
+   "desc": "掌影層層綻開如蓮瓣，看似柔和，著掌處卻勁透筋骨。",
+   "era": "1.0B",
+   "src": "proposal",
+   "src_note": "2001-10-09 列表（纏絲擒拿手30 心法30 乞討30）；2001-11-27 傳功長老列著蓮花掌；門檻 30/30/30/二袋【設計提案】（O6）；係數 1.424【後期版 t/68】",
+   "moves": [
+    {
+     "id": "gb_lh_1",
+     "name": "蓮花初綻",
+     "unlock_level": 1,
+     "power": 38,
+     "range": 1,
+     "aoe": "CROSS",
+     "cost_inner": 8,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "gb_move_fist_cross",
+     "src": "proposal"
+    },
+    {
+     "id": "gb_lh_2",
+     "name": "步步生蓮",
+     "unlock_level": 30,
+     "power": 48,
+     "range": 1,
+     "aoe": "CROSS",
+     "cost_inner": 12,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "gb_move_fist_cross",
+     "src": "proposal"
+    }
+   ]
+  }
+ ],
+ "monsters": [
+  {
+   "id": "m_gb_dizi",
+   "name": "丐幫弟子",
+   "short": "弟子",
+   "kind": "MONSTER",
+   "alignment": "GOOD",
+   "desc": "陪同門喂招的丐幫弟子，竹棒點到為止。（設計提案）",
+   "stats": {
+    "qi": 220,
+    "neili": 25,
+    "jing": 120,
+    "str": 14,
+    "guts": 14,
+    "wit": 14,
+    "luck": 16,
+    "cal": 16,
+    "agi": 18,
+    "con": 15
+   },
+   "skills": {
+    "basic_dodge": 8,
+    "basic_parry": 8,
+    "basic_inner": 5,
+    "basic_fist": 8
+   },
+   "arts": [
+    {
+     "art": "gb_taizu_quan",
+     "level": 8
+    }
+   ],
+   "weapon_type": "FIST",
+   "weapon_power": 0,
+   "armor_power": 6,
+   "combat_xp_ref": 300,
+   "combat_xp": 0,
+   "learn_points": 0,
+   "drops": [],
+   "money": {
+    "min": 0,
+    "max": 0
+   },
+   "morality_on_kill": 0,
+   "killing_intent_on_kill": 0,
+   "ai": "melee_basic",
+   "no_rewards": true,
+   "sect": "gaibang",
+   "era": "1.0B",
+   "src": "proposal"
+  },
+  {
+   "id": "m_gb_xiaohuang",
+   "name": "小黃",
+   "short": "小黃",
+   "kind": "MONSTER",
+   "alignment": "NEUTRAL",
+   "desc": "一條瘦巴巴的小黃狗，專追著叫化子的褲腳咬，叫得兇，其實不太經打。（存在、「一次有5點」：已證實 2001-10-24；數值：設計提案）",
+   "stats": {
+    "qi": 70,
+    "neili": 0,
+    "jing": 60,
+    "str": 8,
+    "guts": 10,
+    "wit": 6,
+    "luck": 10,
+    "cal": 10,
+    "agi": 18,
+    "con": 10
+   },
+   "skills": {
+    "basic_dodge": 8,
+    "basic_parry": 2,
+    "basic_inner": 0
+   },
+   "arts": [
+    {
+     "art": "mon_bite",
+     "level": 5
+    }
+   ],
+   "weapon_type": "FIST",
+   "weapon_power": 0,
+   "armor_power": 20,
+   "combat_xp_ref": 100,
+   "combat_xp": 5,
+   "learn_points": 5,
+   "drops": [],
+   "money": {
+    "min": 0,
+    "max": 0
+   },
+   "morality_on_kill": 0,
+   "killing_intent_on_kill": 0,
+   "ai": "melee_basic",
+   "no_rewards": false,
+   "era": "1.0B",
+   "src": "verified",
+   "src_note": "2001-10-24：小黃狗追咬丐幫弟子，大理、西夏最兇，京城較輕，狗很弱；「先打狗吧，一次有5點」＝一場 5 學點；氣 60–80（M3B_PLAN §5.1.3）"
+  },
+  {
+   "id": "m_gb_xiejiao",
+   "name": "邪教門徒",
+   "short": "門徒",
+   "kind": "EVIL_NPC",
+   "alignment": "EVIL",
+   "desc": "黑衣蒙面的邪教門徒，七八個一夥埋伏在橋頭，專挑落單的叫化子下手。（存在、氣 300：已證實；其餘數值：設計提案）",
+   "stats": {
+    "qi": 300,
+    "neili": 20,
+    "jing": 100,
+    "str": 15,
+    "guts": 15,
+    "wit": 12,
+    "luck": 12,
+    "cal": 14,
+    "agi": 16,
+    "con": 14
+   },
+   "skills": {
+    "basic_dodge": 14,
+    "basic_parry": 12,
+    "basic_inner": 6,
+    "basic_blade": 14
+   },
+   "arts": [
+    {
+     "art": "mon_blade",
+     "level": 14
+    }
+   ],
+   "weapon_type": "BLADE",
+   "weapon_power": 3,
+   "armor_power": 18,
+   "combat_xp_ref": 1200,
+   "combat_xp": 18,
+   "learn_points": 7,
+   "drops": [],
+   "money": {
+    "min": 2,
+    "max": 10
+   },
+   "morality_on_kill": 2,
+   "killing_intent_on_kill": 3,
+   "ai": "melee_basic",
+   "no_rewards": false,
+   "era": "1.0B",
+   "src": "verified",
+   "src_note": "2001-11-03：一袋任務三次橋上偷襲，邪教門徒 300 HP；2001-12-03 至少殺 20 個；balance_sim 案例 gb_xiejiao7（實戰 3000、一階 30 打 7 個勝率 ≥ 70%）"
+  },
+  {
+   "id": "m_gb_manbing",
+   "name": "蠻兵",
+   "short": "蠻兵",
+   "kind": "ELITE",
+   "alignment": "EVIL",
+   "desc": "高鼻深目的蠻族悍卒，披著獸皮甲，掄著一柄開山大刀，皮粗肉厚，單打獨鬥極難討好。（存在、極耐打：已證實 2001-11-23；數值依本作級距：設計提案）",
+   "stats": {
+    "qi": 6000,
+    "neili": 800,
+    "jing": 1200,
+    "str": 34,
+    "guts": 34,
+    "wit": 20,
+    "luck": 18,
+    "cal": 30,
+    "agi": 26,
+    "con": 34
+   },
+   "skills": {
+    "basic_dodge": 85,
+    "basic_parry": 90,
+    "basic_inner": 80,
+    "basic_blade": 95
+   },
+   "arts": [
+    {
+     "art": "mon_kaishan",
+     "level": 95
+    }
+   ],
+   "weapon_type": "BLADE",
+   "weapon_power": 45,
+   "armor_power": 75,
+   "combat_xp_ref": 150000,
+   "combat_xp": 700,
+   "learn_points": 160,
+   "drops": [
+    {
+     "item": "c_qiyao",
+     "chance": 0.5,
+     "min": 1,
+     "max": 2
+    }
+   ],
+   "money": {
+    "min": 100,
+    "max": 300
+   },
+   "morality_on_kill": 10,
+   "killing_intent_on_kill": 5,
+   "ai": "melee_basic",
+   "no_rewards": false,
+   "era": "1.0B",
+   "src": "verified",
+   "src_note": "2001-11-23 二袋任務三場蠻兵，原作 100000 HP；2001-11-25「要 68 級以上或找幫手」；換算【設計提案】：balance_sim gb_manbing_party3（3 人各實戰 6 萬勝率 ≥ 70%、單人 1 萬 ≤ 10%）"
+  },
+  {
+   "id": "m_jcn_mazeitou",
+   "name": "馬賊頭子",
+   "short": "馬賊",
+   "kind": "EVIL_NPC",
+   "alignment": "EVIL",
+   "desc": "騎著瘦馬的馬賊小頭目，彎刀上缺口累累，見了單身客人就吆喝著衝過來。（存在：已證實 2001-10-09；數值：設計提案）",
+   "stats": {
+    "qi": 650,
+    "neili": 50,
+    "jing": 160,
+    "str": 21,
+    "guts": 22,
+    "wit": 14,
+    "luck": 15,
+    "cal": 18,
+    "agi": 21,
+    "con": 20
+   },
+   "skills": {
+    "basic_dodge": 26,
+    "basic_parry": 25,
+    "basic_inner": 10,
+    "basic_blade": 26
+   },
+   "arts": [
+    {
+     "art": "mon_blade",
+     "level": 26
+    }
+   ],
+   "weapon_type": "BLADE",
+   "weapon_power": 10,
+   "armor_power": 30,
+   "combat_xp_ref": 3000,
+   "combat_xp": 42,
+   "learn_points": 15,
+   "drops": [
+    {
+     "item": "c_qiyao",
+     "chance": 0.15,
+     "min": 1,
+     "max": 1
+    }
+   ],
+   "money": {
+    "min": 20,
+    "max": 60
+   },
+   "morality_on_kill": 3,
+   "killing_intent_on_kill": 5,
+   "ai": "melee_basic",
+   "no_rewards": false,
+   "era": "1.0B",
+   "src": "verified",
+   "src_note": "2001-10-09 山門附近有馬賊頭子；combat_xp_ref 3000＝新手路線上限（jcn_road4 權重 10）"
+  },
+  {
+   "id": "m_jcn_edaotou",
+   "name": "惡道人頭子",
+   "short": "惡道",
+   "kind": "EVIL_NPC",
+   "alignment": "EVIL",
+   "desc": "一臉橫肉的野道士頭目，道袍油膩，拂塵柄裡藏著短刀。（存在：已證實 2001-10-09；數值：設計提案）",
+   "stats": {
+    "qi": 1300,
+    "neili": 180,
+    "jing": 320,
+    "str": 25,
+    "guts": 25,
+    "wit": 18,
+    "luck": 15,
+    "cal": 22,
+    "agi": 23,
+    "con": 24
+   },
+   "skills": {
+    "basic_dodge": 44,
+    "basic_parry": 44,
+    "basic_inner": 30,
+    "basic_blade": 44
+   },
+   "arts": [
+    {
+     "art": "mon_duoming",
+     "level": 44
+    }
+   ],
+   "weapon_type": "BLADE",
+   "weapon_power": 20,
+   "armor_power": 40,
+   "combat_xp_ref": 12000,
+   "combat_xp": 110,
+   "learn_points": 40,
+   "drops": [
+    {
+     "item": "c_qiyao",
+     "chance": 0.3,
+     "min": 1,
+     "max": 1
+    }
+   ],
+   "money": {
+    "min": 40,
+    "max": 120
+   },
+   "morality_on_kill": 5,
+   "killing_intent_on_kill": 5,
+   "ai": "melee_basic",
+   "no_rewards": false,
+   "era": "1.0B",
+   "src": "verified",
+   "src_note": "2001-10-09 山門附近有惡道人頭子"
+  },
+  {
+   "id": "m_jcn_daoren",
+   "name": "道人頭子",
+   "short": "道人",
+   "kind": "EVIL_NPC",
+   "alignment": "EVIL",
+   "desc": "帶著幾個徒弟在空地上紮營的道人頭子，說是雲遊化緣，夜裡卻幹些打家劫舍的勾當。（存在：已證實 2001-10-13；數值：設計提案）",
+   "stats": {
+    "qi": 1500,
+    "neili": 220,
+    "jing": 360,
+    "str": 25,
+    "guts": 26,
+    "wit": 19,
+    "luck": 16,
+    "cal": 23,
+    "agi": 24,
+    "con": 25
+   },
+   "skills": {
+    "basic_dodge": 50,
+    "basic_parry": 48,
+    "basic_inner": 36,
+    "basic_blade": 50
+   },
+   "arts": [
+    {
+     "art": "mon_fangshen",
+     "level": 50
+    }
+   ],
+   "weapon_type": "BLADE",
+   "weapon_power": 22,
+   "armor_power": 42,
+   "combat_xp_ref": 15000,
+   "combat_xp": 130,
+   "learn_points": 48,
+   "drops": [
+    {
+     "item": "c_qiyao",
+     "chance": 0.3,
+     "min": 1,
+     "max": 1
+    }
+   ],
+   "money": {
+    "min": 40,
+    "max": 140
+   },
+   "morality_on_kill": 5,
+   "killing_intent_on_kill": 5,
+   "ai": "melee_basic",
+   "no_rewards": false,
+   "era": "1.0B",
+   "src": "verified",
+   "src_note": "2001-10-13 練功路線 20–29「丐幫左方空地（馬王、道人頭子、隱面人）」"
+  },
+  {
+   "id": "m_jcn_mazeiwang",
+   "name": "馬賊王",
+   "short": "馬賊王",
+   "kind": "ELITE",
+   "alignment": "EVIL",
+   "desc": "雄踞北郊的馬賊首領，一身黃罩甲刀槍難入，手下馬賊見了他都得下馬行禮。（存在、氣 2000、黃罩甲：已證實 gaoshou/25；其餘數值：設計提案）",
+   "stats": {
+    "qi": 2000,
+    "neili": 300,
+    "jing": 450,
+    "str": 28,
+    "guts": 27,
+    "wit": 18,
+    "luck": 16,
+    "cal": 25,
+    "agi": 24,
+    "con": 27
+   },
+   "skills": {
+    "basic_dodge": 56,
+    "basic_parry": 56,
+    "basic_inner": 40,
+    "basic_blade": 58
+   },
+   "arts": [
+    {
+     "art": "mon_kuaidao",
+     "level": 58
+    }
+   ],
+   "weapon_type": "BLADE",
+   "weapon_power": 28,
+   "armor_power": 48,
+   "combat_xp_ref": 20000,
+   "combat_xp": 160,
+   "learn_points": 60,
+   "drops": [
+    {
+     "item": "a_jcn_huangzhaojia",
+     "chance": 0.1,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "item": "c_qiyao",
+     "chance": 0.5,
+     "min": 1,
+     "max": 1
+    }
+   ],
+   "money": {
+    "min": 80,
+    "max": 200
+   },
+   "morality_on_kill": 8,
+   "killing_intent_on_kill": 5,
+   "ai": "melee_basic",
+   "no_rewards": false,
+   "era": "1.0B",
+   "src": "verified",
+   "src_note": "17173 gaoshou/25：馬賊王 2000 HP、掉黃罩甲 +35；「建議實戰 18 級量」換算 combat_xp_ref 20000【設計提案】；2001-10-13「馬王」是否即馬賊王【待考證】（E4）；掉落率 0.1【設計提案】"
+  },
+  {
+   "id": "m_jcn_yinmian",
+   "name": "隱面人",
+   "short": "隱面",
+   "kind": "ELITE",
+   "alignment": "EVIL",
+   "desc": "黑紗罩面、來歷不明的怪客，出刀無聲無息，在空地上練功的人最怕撞見他。（存在、23 級以上：已證實 2001-10-13；數值：設計提案）",
+   "stats": {
+    "qi": 1800,
+    "neili": 300,
+    "jing": 420,
+    "str": 27,
+    "guts": 27,
+    "wit": 22,
+    "luck": 18,
+    "cal": 26,
+    "agi": 28,
+    "con": 26
+   },
+   "skills": {
+    "basic_dodge": 62,
+    "basic_parry": 58,
+    "basic_inner": 44,
+    "basic_blade": 60
+   },
+   "arts": [
+    {
+     "art": "mon_zhuihun",
+     "level": 60
+    }
+   ],
+   "weapon_type": "BLADE",
+   "weapon_power": 26,
+   "armor_power": 46,
+   "combat_xp_ref": 25000,
+   "combat_xp": 190,
+   "learn_points": 70,
+   "drops": [
+    {
+     "item": "c_qiyao",
+     "chance": 0.4,
+     "min": 1,
+     "max": 1
+    }
+   ],
+   "money": {
+    "min": 60,
+    "max": 180
+   },
+   "morality_on_kill": 6,
+   "killing_intent_on_kill": 5,
+   "ai": "melee_basic",
+   "no_rewards": false,
+   "era": "1.0B",
+   "src": "verified",
+   "src_note": "2001-10-13「隱面人 23+」"
+  },
+  {
+   "id": "m_jcn_huguo",
+   "name": "護國法師",
+   "short": "法師",
+   "kind": "ELITE",
+   "alignment": "EVIL",
+   "desc": "身披紅袈裟的番僧，掌力剛猛，一雙肉掌拍在山石上都能留下手印。（存在、山路埋伏：已證實 2001-10-24；數值：設計提案）",
+   "stats": {
+    "qi": 2400,
+    "neili": 400,
+    "jing": 520,
+    "str": 29,
+    "guts": 28,
+    "wit": 22,
+    "luck": 18,
+    "cal": 28,
+    "agi": 26,
+    "con": 28
+   },
+   "skills": {
+    "basic_dodge": 68,
+    "basic_parry": 66,
+    "basic_inner": 60,
+    "basic_fist": 70
+   },
+   "arts": [
+    {
+     "art": "mon_chilian",
+     "level": 70
+    }
+   ],
+   "weapon_type": "FIST",
+   "weapon_power": 0,
+   "armor_power": 50,
+   "combat_xp_ref": 35000,
+   "combat_xp": 230,
+   "learn_points": 85,
+   "drops": [
+    {
+     "item": "c_qiyao",
+     "chance": 0.6,
+     "min": 1,
+     "max": 2
+    }
+   ],
+   "money": {
+    "min": 80,
+    "max": 220
+   },
+   "morality_on_kill": 8,
+   "killing_intent_on_kill": 5,
+   "ai": "melee_basic",
+   "no_rewards": false,
+   "era": "1.0B",
+   "src": "verified",
+   "src_note": "2001-10-09 偶爾護國法師；2001-10-24 埋伏、逃跑常失敗（敏捷26 福緣29 也逃不掉）→ 本作由 n_gb_huguo 挑戰（可逃）【設計提案】"
+  },
+  {
+   "id": "m_jcn_shafeng",
+   "name": "煞風寨寨主",
+   "short": "寨主",
+   "kind": "ELITE",
+   "alignment": "EVIL",
+   "desc": "煞風寨的寨主，鬼頭刀一掄便是一片寒光，劫過的商隊不計其數。（存在、山路埋伏：已證實 2001-10-24；數值：設計提案）",
+   "stats": {
+    "qi": 2600,
+    "neili": 380,
+    "jing": 540,
+    "str": 30,
+    "guts": 29,
+    "wit": 20,
+    "luck": 18,
+    "cal": 27,
+    "agi": 25,
+    "con": 29
+   },
+   "skills": {
+    "basic_dodge": 68,
+    "basic_parry": 70,
+    "basic_inner": 56,
+    "basic_blade": 72
+   },
+   "arts": [
+    {
+     "art": "mon_kaishan",
+     "level": 72
+    }
+   ],
+   "weapon_type": "BLADE",
+   "weapon_power": 32,
+   "armor_power": 52,
+   "combat_xp_ref": 40000,
+   "combat_xp": 250,
+   "learn_points": 90,
+   "drops": [
+    {
+     "item": "c_qiyao",
+     "chance": 0.6,
+     "min": 1,
+     "max": 2
+    }
+   ],
+   "money": {
+    "min": 100,
+    "max": 260
+   },
+   "morality_on_kill": 8,
+   "killing_intent_on_kill": 5,
+   "ai": "melee_basic",
+   "no_rewards": false,
+   "era": "1.0B",
+   "src": "verified",
+   "src_note": "2001-10-24 山路埋伏；數值【設計提案】"
+  }
+ ],
+ "items": [
+  {
+   "id": "a_jcn_huangzhaojia",
+   "name": "黃罩甲",
+   "tab": "ARMOR",
+   "slot": "ARMOR",
+   "atk": 0,
+   "def": 35,
+   "weight": 8,
+   "price": 3000,
+   "stack": 1,
+   "spoil_days": 0,
+   "effects": [],
+   "usable": false,
+   "usable_in_battle": false,
+   "no_sell": false,
+   "quest_item": false,
+   "desc": "馬賊王貼身穿的一副黃銅罩甲，片片相扣，刀砍上去只迸出火星。",
+   "era": "1.0B",
+   "src": "verified",
+   "src_note": "17173 gaoshou/25：馬賊王掉黃罩甲 +35【已證實】；防禦照原數字 35（遠高於皮甲 8，原作防具級距與本作不同【待考證】）；重量、價格【設計提案】"
+  },
+  {
+   "id": "i_gb_mixin",
+   "name": "邪教密函",
+   "tab": "OTHER",
+   "slot": "",
+   "atk": 0,
+   "def": 0,
+   "weight": 0,
+   "price": 0,
+   "stack": 1,
+   "spoil_days": 0,
+   "effects": [],
+   "usable": false,
+   "usable_in_battle": false,
+   "no_sell": true,
+   "quest_item": true,
+   "desc": "兵器鋪轉角那漢子從邪教偷出來的密函，寫著三處埋伏的地點與時辰。",
+   "era": "1.0B",
+   "src": "proposal"
+  },
+  {
+   "id": "i_gb_manxin",
+   "name": "掌棍長老的書信",
+   "tab": "OTHER",
+   "slot": "",
+   "atk": 0,
+   "def": 0,
+   "weight": 0,
+   "price": 0,
+   "stack": 3,
+   "spoil_days": 0,
+   "effects": [],
+   "usable": false,
+   "usable_in_battle": false,
+   "no_sell": true,
+   "quest_item": true,
+   "desc": "掌棍長老親手封好的書信，要各地丐幫兄弟留意蠻兵的動靜。",
+   "era": "1.0B",
+   "src": "proposal"
+  },
+  {
+   "id": "i_gb_songxin",
+   "name": "丐幫書信",
+   "tab": "OTHER",
+   "slot": "",
+   "atk": 0,
+   "def": 0,
+   "weight": 0,
+   "price": 0,
+   "stack": 1,
+   "spoil_days": 0,
+   "effects": [],
+   "usable": false,
+   "usable_in_battle": false,
+   "no_sell": true,
+   "quest_item": true,
+   "desc": "游啟明託你送往大理的幫中書信，封口用米漿黏著。",
+   "era": "1.0B",
+   "src": "proposal"
+  }
+ ],
+ "item_patches": [],
+ "shop_patches": [],
+ "npc_links": [],
+ "quests": [
+  {
+   "id": "q_gb_dai1",
+   "name": "丐幫一袋：邪教的埋伏",
+   "chapter": "丐幫・袋位",
+   "group": "gaibang",
+   "giver": "n_gb_chen",
+   "era": "1.0B",
+   "src": "verified",
+   "dialogue_src": "proposal",
+   "src_note": "研究 丐幫 袋位：2001-11-03 n247_163262（名聲歷練 250 → 陳長老；西夏 游啟（藥店門口）、大理 潘**（武館門口）→ 神醫、京城兵器店轉角的人 → 信上三次橋上偷襲（依時辰），邪教門徒 300 HP，逃跑要再等一天 → 聚會升袋）；2001-12-03 至少殺 20 個；埋伏地點 ym_bridge、rr_bridge、jcn_road3 與時辰 酉／卯／午【設計提案】；「逃跑要再等一天」以「每處埋伏只在一個時辰出現、不能逃」近似【設計提案】",
+   "text": "江湖上冒出一夥邪教之徒，專挑落單的丐幫弟子下手。陳長老要你走遍西夏、大理、京城打聽消息，再把邪教的三處埋伏一一打退。事成之後，下回聚會便升你為一袋弟子。",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "gaibang"
+    },
+    {
+     "type": "fame_min",
+     "value": 250
+    },
+    {
+     "type": "lilian_min",
+     "value": 250
+    }
+   ],
+   "give_items": [],
+   "repeat": {
+    "max": 1,
+    "cooldown_days": 0
+   },
+   "abandon": true,
+   "party_credit": true,
+   "start": "s_xixia",
+   "offer": "d_offer",
+   "stages": [
+    {
+     "id": "s_xixia",
+     "title": "西夏的風聲",
+     "hint_room": "xx_pharmacy",
+     "log": "陳長老要你先去西夏打聽。出京城南門，經南郊岔路往西下到華山腳下，再沿東路一路往西回西夏城；從西夏廣場往西到西大街，北邊的回春藥鋪門口蹲著丐幫弟子游啟明。",
+     "objectives": [
+      {
+       "id": "o_you",
+       "type": "TALK",
+       "npc": "n_gb_youqiming",
+       "dialogue": "d_you",
+       "text": "到西夏回春藥鋪找游啟明"
+      }
+     ],
+     "next": "s_pan"
+    },
+    {
+     "id": "s_pan",
+     "title": "大理武館門口",
+     "hint_room": "dl_wuguan",
+     "log": "游啟明說大理武館門口的潘乞兒也聽到些風聲。到大理五華樓前（可在西夏驛站搭車），往西南就是大理武館。",
+     "objectives": [
+      {
+       "id": "o_pan",
+       "type": "TALK",
+       "npc": "n_gb_pan",
+       "dialogue": "d_pan",
+       "text": "到大理武館門口找潘乞兒"
+      }
+     ],
+     "next": "s_shenyi"
+    },
+    {
+     "id": "s_shenyi",
+     "title": "神醫的字條",
+     "hint_room": "dl_shop",
+     "log": "潘乞兒要你去問雜貨鋪裡那位神醫，他救過一個被邪教砍傷的漢子。雜貨鋪在大理五華樓前往東南。",
+     "objectives": [
+      {
+       "id": "o_shenyi",
+       "type": "TALK",
+       "npc": "n_gb_shenyi",
+       "dialogue": "d_shenyi",
+       "text": "到大理雜貨鋪問神醫"
+      }
+     ],
+     "next": "s_informant"
+    },
+    {
+     "id": "s_informant",
+     "title": "兵器鋪轉角",
+     "hint_room": "jc_smithy",
+     "log": "神醫說那漢子往京城去了，字條上寫著「京城兵器鋪轉角」。回京城，從廣場往北上北大街，西邊就是京城兵器鋪。",
+     "objectives": [
+      {
+       "id": "o_informant",
+       "type": "TALK",
+       "npc": "n_gb_jc_informant",
+       "dialogue": "d_informant",
+       "text": "到京城兵器鋪轉角找那個漢子"
+      }
+     ],
+     "next": "s_ambush"
+    },
+    {
+     "id": "s_ambush",
+     "title": "三處埋伏",
+     "hint_room": "ym_bridge",
+     "log": "密函上寫著邪教的三處埋伏，各只在一個時辰出現：\n酉時，雁門關外橋邊——出京城北門經北郊山路上嶺，往西接雁門古道，北到雁門關口，再往東南就是橋邊。\n卯時，大理城北的過河石橋——出大理北門到城北河畔，往西北上橋。\n午時，京城北郊山道——出京城北門，過山路岔口再往北。\n每處都有七個邪教門徒，打起來休想逃跑；打不過就等明天同一個時辰再來。三處都打退、一共除掉二十個以上，再回破廟向陳長老稟報。",
+     "on_enter": [
+      {
+       "do": "tell",
+       "key": "gb_tell_mixin"
+      }
+     ],
+     "objectives": [
+      {
+       "id": "o_amb_ym",
+       "type": "FIGHT",
+       "win": "WIN",
+       "text": "酉時在雁門關外橋邊打退邪教埋伏"
+      },
+      {
+       "id": "o_amb_rr",
+       "type": "FIGHT",
+       "win": "WIN",
+       "text": "卯時在大理城北過河石橋打退邪教埋伏"
+      },
+      {
+       "id": "o_amb_jcn",
+       "type": "FIGHT",
+       "win": "WIN",
+       "text": "午時在京城北郊山道打退邪教埋伏"
+      },
+      {
+       "id": "o_kill",
+       "type": "KILL",
+       "monster": "m_gb_xiejiao",
+       "count": 20,
+       "text": "除掉二十個邪教門徒"
+      }
+     ],
+     "room_actions": [
+      {
+       "id": "a_amb_ym",
+       "room": "ym_bridge",
+       "label": "察看橋下的動靜",
+       "hours": [
+        "酉"
+       ],
+       "requires": [],
+       "repeat": true,
+       "do": [
+        {
+         "do": "tell",
+         "key": "gb_tell_amb_ym"
+        },
+        {
+         "do": "fight",
+         "monsters": [
+          "m_gb_xiejiao",
+          "m_gb_xiejiao",
+          "m_gb_xiejiao",
+          "m_gb_xiejiao",
+          "m_gb_xiejiao",
+          "m_gb_xiejiao",
+          "m_gb_xiejiao"
+         ],
+         "no_flee": true,
+         "solo": false,
+         "obj": "o_amb_ym"
+        }
+       ]
+      },
+      {
+       "id": "a_amb_rr",
+       "room": "rr_bridge",
+       "label": "守在石橋頭",
+       "hours": [
+        "卯"
+       ],
+       "requires": [],
+       "repeat": true,
+       "do": [
+        {
+         "do": "tell",
+         "key": "gb_tell_amb_rr"
+        },
+        {
+         "do": "fight",
+         "monsters": [
+          "m_gb_xiejiao",
+          "m_gb_xiejiao",
+          "m_gb_xiejiao",
+          "m_gb_xiejiao",
+          "m_gb_xiejiao",
+          "m_gb_xiejiao",
+          "m_gb_xiejiao"
+         ],
+         "no_flee": true,
+         "solo": false,
+         "obj": "o_amb_rr"
+        }
+       ]
+      },
+      {
+       "id": "a_amb_jcn",
+       "room": "jcn_road3",
+       "label": "搜查山道兩旁",
+       "hours": [
+        "午"
+       ],
+       "requires": [],
+       "repeat": true,
+       "do": [
+        {
+         "do": "tell",
+         "key": "gb_tell_amb_jcn"
+        },
+        {
+         "do": "fight",
+         "monsters": [
+          "m_gb_xiejiao",
+          "m_gb_xiejiao",
+          "m_gb_xiejiao",
+          "m_gb_xiejiao",
+          "m_gb_xiejiao",
+          "m_gb_xiejiao",
+          "m_gb_xiejiao"
+         ],
+         "no_flee": true,
+         "solo": false,
+         "obj": "o_amb_jcn"
+        }
+       ]
+      }
+     ],
+     "next": "s_report"
+    },
+    {
+     "id": "s_report",
+     "title": "回總舵稟報",
+     "hint_room": "gb_pomiao",
+     "log": "三處埋伏都打退了。帶著密函回京城北郊的丐幫破廟（出京城北門，山路岔口往東），向陳長老稟報。",
+     "objectives": [
+      {
+       "id": "o_report",
+       "type": "TALK",
+       "npc": "n_gb_chen",
+       "dialogue": "d_report",
+       "text": "回破廟向陳長老稟報"
+      }
+     ],
+     "next": "END"
+    }
+   ],
+   "dialogues": {
+    "d_offer": {
+     "start": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "陳長老把竹棒往地上一頓：「{name}，你入幫也有些時日了。近來江湖上冒出一夥邪教之徒，四處擄掠，連咱們幫裡的兄弟也吃了虧。」",
+       "choices": [
+        {
+         "id": "c_ask",
+         "label": "弟子願聞其詳。",
+         "goto": "n1"
+        },
+        {
+         "id": "c_bye",
+         "label": "弟子還有事在身，改日再來聽長老吩咐。",
+         "goto": "END"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "「咱們丐幫弟子遍布天下，消息最是靈通。你先到西夏回春藥鋪門口找游啟明，他那裡有些風聲。把邪教的底細摸清楚了，再回來稟報。」",
+       "choices": [
+        {
+         "id": "c_take",
+         "label": "弟子這就去辦。",
+         "do": [
+          {
+           "do": "accept"
+          }
+         ],
+         "goto": "n2"
+        },
+        {
+         "id": "c_no",
+         "label": "容弟子再想想。",
+         "goto": "END"
+        }
+       ]
+      },
+      "n2": {
+       "speaker": "npc",
+       "text": "「好。這件事辦成了，下回聚會，我便當著眾兄弟的面，給你掛上第一隻布袋。」",
+       "goto": "END"
+      }
+     }
+    },
+    "d_you": {
+     "start": "n0",
+     "resume": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "游啟明蹲在藥鋪門口，捧著缺了口的破碗：「這位兄弟面生得很……喲，背後插著竹棒，是自家人？」",
+       "choices": [
+        {
+         "id": "c_ask",
+         "label": "陳長老要我來打聽邪教的消息。",
+         "goto": "n1"
+        },
+        {
+         "id": "c_bye",
+         "label": "沒事，路過看看。",
+         "goto": "END"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "游啟明壓低聲音：「那夥人穿得人模人樣，專挑落單的叫化子下手。前幾天我在這門口聽兩個行商嘀咕，說他們在大理也有人手。你去大理武館門口找潘乞兒，他鼻子比狗還靈。」",
+       "choices": [
+        {
+         "id": "c_ok",
+         "label": "多謝游兄弟。",
+         "do": [
+          {
+           "do": "complete",
+           "obj": "o_you"
+          }
+         ],
+         "goto": "END"
+        }
+       ]
+      }
+     }
+    },
+    "d_pan": {
+     "start": "n0",
+     "resume": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "一個滿臉泥灰的乞兒倚在武館門口打盹，聽見腳步聲一骨碌坐起：「討飯的地盤先來後到——咦，自己人？」",
+       "choices": [
+        {
+         "id": "c_ask",
+         "label": "游啟明叫我來找你，問邪教的事。",
+         "goto": "n1"
+        },
+        {
+         "id": "c_bye",
+         "label": "打擾了。",
+         "goto": "END"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "潘乞兒四下張望：「噓，小聲點。前兩天我在這門口撿到一個渾身是血的漢子，是雜貨鋪那位神醫把他救活的。那漢子昏迷時嘴裡一直嚷著『橋上、時辰』什麼的……你去問問神醫。」",
+       "choices": [
+        {
+         "id": "c_ok",
+         "label": "我這就去。",
+         "do": [
+          {
+           "do": "complete",
+           "obj": "o_pan"
+          }
+         ],
+         "goto": "END"
+        }
+       ]
+      }
+     }
+    },
+    "d_shenyi": {
+     "start": "n0",
+     "resume": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "神醫正替人把脈，頭也不抬：「看病排隊，討飯請到門外。」",
+       "choices": [
+        {
+         "id": "c_ask",
+         "label": "在下是丐幫弟子，想打聽前幾天那個受傷的漢子。",
+         "goto": "n1"
+        },
+        {
+         "id": "c_bye",
+         "label": "打擾先生了。",
+         "goto": "END"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "神醫這才抬眼看你：「哦，那人啊。他身上中了好幾刀，刀口都是同一路數。我替他換藥時，從他懷裡掉出半張字條，寫著『京城兵器鋪轉角』幾個字。他醒來就慌慌張張走了，八成是往京城去了。」",
+       "choices": [
+        {
+         "id": "c_ok",
+         "label": "多謝先生指點。",
+         "do": [
+          {
+           "do": "complete",
+           "obj": "o_shenyi"
+          }
+         ],
+         "goto": "END"
+        }
+       ]
+      }
+     }
+    },
+    "d_informant": {
+     "start": "n0",
+     "resume": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "兵器鋪轉角蹲著一個漢子，帽簷壓得極低，見你走近，手按到了腰間：「你是什麼人？」",
+       "choices": [
+        {
+         "id": "c_ask",
+         "label": "丐幫弟子。大理的神醫說，你知道邪教的事。",
+         "goto": "n1"
+        },
+        {
+         "id": "c_bye",
+         "label": "認錯人了。",
+         "goto": "END"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "漢子鬆了口氣：「原來是丐幫的朋友。我本是邪教裡的小卒，看不慣他們濫殺無辜，才逃了出來。這封密函是我偷出來的，上頭寫著他們三處埋伏的地點和時辰。」",
+       "choices": [
+        {
+         "id": "c_take",
+         "label": "交給我吧，丐幫替你出這口氣。",
+         "do": [
+          {
+           "do": "give",
+           "item": "i_gb_mixin",
+           "n": 1
+          },
+          {
+           "do": "complete",
+           "obj": "o_informant"
+          }
+         ],
+         "goto": "n2"
+        }
+       ]
+      },
+      "n2": {
+       "speaker": "npc",
+       "text": "「酉時，雁門關外橋邊；卯時，大理城北的過河石橋；午時，京城北郊的山道。那些人下手狠，一旦撞上，休想逃得掉。你……多保重。」",
+       "goto": "END"
+      }
+     }
+    },
+    "d_report": {
+     "start": "n0",
+     "resume": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "陳長老放下手中的竹棒：「回來了？邪教的事辦得如何？」",
+       "choices": [
+        {
+         "id": "c_report",
+         "label": "三處埋伏都打退了，這是那封密函。",
+         "requires": [
+          {
+           "type": "has_item",
+           "item": "i_gb_mixin",
+           "n": 1
+          }
+         ],
+         "do": [
+          {
+           "do": "take",
+           "item": "i_gb_mixin",
+           "n": 1
+          },
+          {
+           "do": "complete",
+           "obj": "o_report"
+          }
+         ],
+         "goto": "n1"
+        },
+        {
+         "id": "c_later",
+         "label": "弟子還在查。",
+         "goto": "END"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "陳長老看完密函，連連點頭：「好，好！咱們丐幫弟子，就是要這般不怕死、不怕難。等下回聚會，我便當著眾兄弟的面，給你掛上第一隻布袋。」",
+       "choices": [
+        {
+         "id": "c_thanks",
+         "label": "謝長老栽培。",
+         "goto": "END"
+        }
+       ]
+      }
+     }
+    }
+   },
+   "outcomes": {
+    "default": {
+     "label": "陳長老答應在聚會上升你為一袋弟子",
+     "rewards": {
+      "sect_rank": {
+       "sect": "gaibang",
+       "rank": 1
+      }
+     },
+     "src": "verified",
+     "src_note": "2001-11-03：陳長老答應在「聚會」上升袋（聚會時刻由 gb_assembly 決定，O8）"
+    }
+   },
+   "rumors": {
+    "first": "rmr_q_gb_dai1_first",
+    "foreshadow": "rmr_q_gb_dai1_foreshadow"
+   }
+  },
+  {
+   "id": "q_gb_dai2",
+   "name": "丐幫二袋：蠻兵南下",
+   "chapter": "丐幫・袋位",
+   "group": "gaibang",
+   "giver": "n_gb_jiang",
+   "era": "1.0B",
+   "src": "verified",
+   "dialogue_src": "proposal",
+   "src_note": "研究 丐幫 袋位：2001-11-23（名聲／歷練 500 →「京城找江乞丐」→ 蠻族情報 → 掌棍長老 → 三封信送京城、大理、西夏 → 三場蠻兵（100000 HP）→ 等「一號」；陳長老說下個月考慮升你）；2001-11-25「姓姜的乞丐」；2002-07 在「京城錢莊前」；2001-12-03 升二袋扣 250（sect_ranks.cost）；收信人與蠻兵地點（jcn_road4、dlw_forest、xw_hill）【設計提案】",
+   "text": "京城錢莊前的姜乞丐看見蠻族的探子在城裡打聽北郊和雁門關的路。回總舵稟報掌棍長老，替他把書信送到三城，再把南下的蠻兵打回去。",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "gaibang"
+    },
+    {
+     "type": "sect_rank_min",
+     "sect": "gaibang",
+     "value": 1
+    },
+    {
+     "type": "fame_min",
+     "value": 500
+    },
+    {
+     "type": "lilian_min",
+     "value": 500
+    }
+   ],
+   "give_items": [],
+   "repeat": {
+    "max": 1,
+    "cooldown_days": 0
+   },
+   "abandon": true,
+   "party_credit": true,
+   "start": "s_zhanggun",
+   "offer": "d_offer",
+   "stages": [
+    {
+     "id": "s_zhanggun",
+     "title": "稟報掌棍長老",
+     "hint_room": "gb_yuan",
+     "log": "把蠻族探子的事稟報掌棍長老。出京城北門，經北郊山路到山路岔口往東進破廟，從正殿往東就是後院。",
+     "objectives": [
+      {
+       "id": "o_zhanggun",
+       "type": "TALK",
+       "npc": "n_gb_zhanggun",
+       "dialogue": "d_zhanggun",
+       "text": "到破廟後院找掌棍長老"
+      }
+     ],
+     "next": "s_letters"
+    },
+    {
+     "id": "s_letters",
+     "title": "三封書信",
+     "hint_room": "xx_pharmacy",
+     "log": "把掌棍長老的三封書信分別送到：西夏回春藥鋪門口的游啟明（西大街北邊）、大理武館門口的潘乞兒（五華樓前往西南）、京城兵器鋪轉角的漢子（北大街西邊）。",
+     "objectives": [
+      {
+       "id": "o_xin_xx",
+       "type": "DELIVER",
+       "npc": "n_gb_youqiming",
+       "item": "i_gb_manxin",
+       "count": 1,
+       "text": "把書信交給西夏的游啟明"
+      },
+      {
+       "id": "o_xin_dl",
+       "type": "DELIVER",
+       "npc": "n_gb_pan",
+       "item": "i_gb_manxin",
+       "count": 1,
+       "text": "把書信交給大理的潘乞兒"
+      },
+      {
+       "id": "o_xin_jc",
+       "type": "DELIVER",
+       "npc": "n_gb_jc_informant",
+       "item": "i_gb_manxin",
+       "count": 1,
+       "text": "把書信交給京城兵器鋪轉角的漢子"
+      }
+     ],
+     "next": "s_manbing"
+    },
+    {
+     "id": "s_manbing",
+     "title": "三路蠻兵",
+     "hint_room": "jcn_road4",
+     "log": "三處都回了消息：蠻兵分三路潛了過來——京城北郊的嶺上古道（出北門一路往北上嶺）、大理的蒼山林道（出大理北門到城北河畔再往東）、西夏的狼嚎丘（出西夏東門經荒草坡往東）。蠻兵皮粗肉厚，單打獨鬥極難取勝，最好邀幾位幫手同去。三路都打退了，回破廟找陳長老。",
+     "on_enter": [
+      {
+       "do": "tell",
+       "key": "gb_tell_manbing"
+      }
+     ],
+     "objectives": [
+      {
+       "id": "o_mb_jcn",
+       "type": "FIGHT",
+       "win": "WIN",
+       "text": "打退京城北郊嶺上古道的蠻兵"
+      },
+      {
+       "id": "o_mb_dl",
+       "type": "FIGHT",
+       "win": "WIN",
+       "text": "打退大理蒼山林道的蠻兵"
+      },
+      {
+       "id": "o_mb_xx",
+       "type": "FIGHT",
+       "win": "WIN",
+       "text": "打退西夏狼嚎丘的蠻兵"
+      }
+     ],
+     "room_actions": [
+      {
+       "id": "a_mb_jcn",
+       "room": "jcn_road4",
+       "label": "攔住蠻兵",
+       "hours": [],
+       "requires": [],
+       "repeat": true,
+       "do": [
+        {
+         "do": "tell",
+         "key": "gb_tell_manbing_meet"
+        },
+        {
+         "do": "fight",
+         "monsters": [
+          "m_gb_manbing"
+         ],
+         "no_flee": false,
+         "solo": false,
+         "obj": "o_mb_jcn"
+        }
+       ]
+      },
+      {
+       "id": "a_mb_dl",
+       "room": "dlw_forest",
+       "label": "攔住蠻兵",
+       "hours": [],
+       "requires": [],
+       "repeat": true,
+       "do": [
+        {
+         "do": "tell",
+         "key": "gb_tell_manbing_meet"
+        },
+        {
+         "do": "fight",
+         "monsters": [
+          "m_gb_manbing"
+         ],
+         "no_flee": false,
+         "solo": false,
+         "obj": "o_mb_dl"
+        }
+       ]
+      },
+      {
+       "id": "a_mb_xx",
+       "room": "xw_hill",
+       "label": "攔住蠻兵",
+       "hours": [],
+       "requires": [],
+       "repeat": true,
+       "do": [
+        {
+         "do": "tell",
+         "key": "gb_tell_manbing_meet"
+        },
+        {
+         "do": "fight",
+         "monsters": [
+          "m_gb_manbing"
+         ],
+         "no_flee": false,
+         "solo": false,
+         "obj": "o_mb_xx"
+        }
+       ]
+      }
+     ],
+     "next": "s_report"
+    },
+    {
+     "id": "s_report",
+     "title": "回總舵覆命",
+     "hint_room": "gb_pomiao",
+     "log": "三路蠻兵都打退了。回京城北郊的丐幫破廟（出京城北門，山路岔口往東）向陳長老覆命。",
+     "objectives": [
+      {
+       "id": "o_report",
+       "type": "TALK",
+       "npc": "n_gb_chen",
+       "dialogue": "d_report",
+       "text": "回破廟向陳長老覆命"
+      }
+     ],
+     "next": "END"
+    }
+   ],
+   "dialogues": {
+    "d_offer": {
+     "start": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "一個姓姜的老乞丐坐在錢莊門前的石階上，伸著破碗向過往行人討錢，瞥見你肩上那隻布袋，眼睛一亮：「這位兄弟，是一袋弟子吧？」",
+       "choices": [
+        {
+         "id": "c_ask",
+         "label": "正是。老人家有何吩咐？",
+         "goto": "n1"
+        },
+        {
+         "id": "c_bye",
+         "label": "不是，認錯人了。",
+         "goto": "END"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "「我在這錢莊前討了半輩子飯，什麼人沒見過？這幾日城裡來了好些高鼻深目、說話怪腔怪調的漢子，腰裡藏著彎刀，打聽的全是北郊、雁門關的路。依我看，是蠻族的探子。」",
+       "choices": [
+        {
+         "id": "c_more",
+         "label": "此事非同小可。",
+         "goto": "n2"
+        }
+       ]
+      },
+      "n2": {
+       "speaker": "npc",
+       "text": "「我一個老叫化子，說了也沒人當真。你回總舵稟報掌棍長老，幫裡跟外敵動手的事歸他管。」",
+       "choices": [
+        {
+         "id": "c_take",
+         "label": "我這就回總舵。",
+         "do": [
+          {
+           "do": "accept"
+          }
+         ],
+         "goto": "END"
+        },
+        {
+         "id": "c_no",
+         "label": "這事我管不了。",
+         "goto": "END"
+        }
+       ]
+      }
+     }
+    },
+    "d_zhanggun": {
+     "start": "n0",
+     "resume": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "掌棍長老拄著一根烏黑的鐵棍立在井邊：「什麼事慌慌張張的？」",
+       "choices": [
+        {
+         "id": "c_report",
+         "label": "京城錢莊前的姜乞丐看見蠻族的探子。",
+         "goto": "n1"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "掌棍長老濃眉一擰：「蠻族？哼，我早聽說他們在邊上蠢蠢欲動。這三封信，你分頭送到西夏的游啟明、大理的潘乞兒，還有京城兵器鋪轉角那位朋友手上，叫他們留神蠻兵的動靜。」",
+       "choices": [
+        {
+         "id": "c_take",
+         "label": "弟子領命。",
+         "do": [
+          {
+           "do": "give",
+           "item": "i_gb_manxin",
+           "n": 3
+          },
+          {
+           "do": "complete",
+           "obj": "o_zhanggun"
+          }
+         ],
+         "goto": "n2"
+        }
+       ]
+      },
+      "n2": {
+       "speaker": "npc",
+       "text": "「信送到了，他們自會把消息報回來。到時候，就看你這個一袋弟子有沒有膽子去會一會蠻兵了。」",
+       "goto": "END"
+      }
+     }
+    },
+    "d_report": {
+     "start": "n0",
+     "resume": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "陳長老聽完掌棍長老派人捎來的消息，捋著鬍子打量你：「三路蠻兵，都教你打回去了？」",
+       "choices": [
+        {
+         "id": "c_report",
+         "label": "僥倖不辱使命。",
+         "do": [
+          {
+           "do": "complete",
+           "obj": "o_report"
+          }
+         ],
+         "goto": "n1"
+        },
+        {
+         "id": "c_later",
+         "label": "還差一些，弟子再去。",
+         "goto": "END"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "「你這一袋弟子做得不錯。等下回聚會，我便當著眾兄弟的面，給你掛上第二隻布袋。只是升了袋，名聲、歷練都得拿些出來孝敬幫裡，這是老規矩。」",
+       "choices": [
+        {
+         "id": "c_thanks",
+         "label": "弟子明白，謝長老。",
+         "goto": "END"
+        }
+       ]
+      }
+     }
+    }
+   },
+   "outcomes": {
+    "default": {
+     "label": "陳長老答應在聚會上升你為二袋弟子",
+     "rewards": {
+      "sect_rank": {
+       "sect": "gaibang",
+       "rank": 2
+      }
+     },
+     "src": "verified",
+     "src_note": "2001-11-23 等「一號」、2001-11-25「下個月考慮升你」；升袋扣 250/250 由 sect_ranks.gb_dai2.cost 處理（2001-12-03）"
+    }
+   },
+   "rumors": {
+    "first": "rmr_q_gb_dai2_first",
+    "foreshadow": "rmr_q_gb_dai2_foreshadow"
+   }
+  },
+  {
+   "id": "q_gb_xin",
+   "name": "丐幫送信",
+   "chapter": "丐幫・跑腿",
+   "group": "gaibang",
+   "giver": "n_gb_youqiming",
+   "era": "1.0B",
+   "src": "verified",
+   "dialogue_src": "proposal",
+   "src_note": "研究 丐幫 restrictions：不能運鏢所以名聲歷練靠跑腿；西夏丐幫 NPC 送信到大理菜商上方的丐幫 NPC（+1 名聲 +1 歷練，可重複）；給信的人＝游啟明、冷卻 0.5 遊戲日【設計提案】",
+   "text": "游啟明手上常有幫中書信要送往大理。替他跑一趟腿，名聲、歷練都長一點。",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "gaibang"
+    }
+   ],
+   "give_items": [
+    {
+     "id": "i_gb_songxin",
+     "n": 1
+    }
+   ],
+   "repeat": {
+    "max": 0,
+    "cooldown_days": 0.5
+   },
+   "abandon": true,
+   "party_credit": false,
+   "start": "s_go",
+   "offer": "d_offer",
+   "stages": [
+    {
+     "id": "s_go",
+     "title": "送信到大理",
+     "hint_room": "dl_square",
+     "log": "把丐幫書信送到大理五華樓前的丐幫弟子手上。可從西夏驛站搭車到大理，出驛站往東就是五華樓前。",
+     "objectives": [
+      {
+       "id": "o_deliver",
+       "type": "DELIVER",
+       "npc": "n_gb_dl_qigai",
+       "item": "i_gb_songxin",
+       "count": 1,
+       "text": "把書信交給大理五華樓前的丐幫弟子"
+      }
+     ],
+     "next": "END"
+    }
+   ],
+   "dialogues": {
+    "d_offer": {
+     "start": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "游啟明從懷裡摸出一封皺巴巴的信：「兄弟來得正好。這封信要送到大理五華樓前的自家兄弟手上，你腿腳快，替我跑一趟？」",
+       "choices": [
+        {
+         "id": "c_take",
+         "label": "交給我吧。",
+         "do": [
+          {
+           "do": "accept"
+          }
+         ],
+         "goto": "n1"
+        },
+        {
+         "id": "c_no",
+         "label": "今天走不開。",
+         "goto": "END"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "「咱們丐幫弟子運不了鏢，名聲就靠這兩條腿一點一點跑出來。路上小心那些追著叫化子咬的黃狗。」",
+       "goto": "END"
+      }
+     }
+    }
+   },
+   "outcomes": {
+    "default": {
+     "label": "書信送到",
+     "rewards": {
+      "fame": 1,
+      "lilian": 1
+     },
+     "src": "verified",
+     "src_note": "2001：+1 名聲 +1 歷練，可重複"
+    }
+   }
+  }
+ ],
+ "text_templates": [
+  {
+   "id": "talk_n_gb_chen",
+   "era": "1.0B",
+   "self": "{npc_name}捋著花白鬍子：「咱們丐幫分淨衣、污衣兩派，可都是一家兄弟。入了幫，先跟我學乞討；乞討練得好，本幫武功才學得上去。名聲、歷練攢夠了，再來找我領升袋的差事。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_gb_chuangong",
+   "era": "1.0B",
+   "self": "{npc_name}眼也不睜：「本幫的拳腳棍棒都在我這兒。一階的武功誰都能學；纏絲、瘋魔那些二階功夫，非得掛上兩隻布袋不可。善惡跌到零以下的，休想我再傳你一招半式。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_gb_zhanggun",
+   "era": "1.0B",
+   "self": "{npc_name}把鐵棍往地上一頓，震得塵土飛揚：「幫裡跟外敵動手的事，歸我管。一袋弟子要是有膽，就來找我討差事。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_gb_zhifa",
+   "era": "1.0B",
+   "self": "{npc_name}冷冷地道：「污衣派的戒律：不得行使銀錢購物，不得與外人共桌而食，不得與不會武功之人動手。不敬尊長、毆傷長老，更是丐幫大忌。至於殘害同門兄弟的——哼，不用我出手，幫裡就容不下你。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_gb_spar",
+   "era": "1.0B",
+   "self": "{npc_name}把竹棒在手上轉了個花：「師兄要喂招？來來來，點到為止，誰也別當真。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_gb_jiang",
+   "era": "1.0B",
+   "self": "{npc_name}抖了抖破碗裡的幾枚銅錢：「老叫化在這錢莊前坐了半輩子，誰存了錢、誰欠了債，誰鬼鬼祟祟，我一眼就看得出來。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_gb_youqiming",
+   "era": "1.0B",
+   "self": "{npc_name}咧嘴一笑：「西夏城裡的大小事，問我游啟明準沒錯。幫裡要往大理送的信，也都先送到我這兒。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_gb_pan",
+   "era": "1.0B",
+   "self": "{npc_name}揉著眼睛：「別擋著我曬太陽……武館的教頭心善，偶爾賞口飯吃，這門口是我的地盤。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_gb_shenyi",
+   "era": "1.0B",
+   "self": "{npc_name}頭也不抬：「看病排隊。中了毒的先坐下，斷了骨頭的到後頭躺著，討飯的請到門外。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_gb_jc_informant",
+   "era": "1.0B",
+   "self": "{npc_name}把帽簷又壓低了些：「我什麼都不知道，別問我。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_gb_dl_qigai",
+   "era": "1.0B",
+   "self": "{npc_name}一邊啃著菜販丟過來的爛菜葉，一邊說：「西夏那邊的兄弟又有信來？交給我就是。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_gb_huguo",
+   "era": "1.0B",
+   "self": "{npc_name}雙掌合十，嘴角卻掛著冷笑：「此山是貧僧化緣之地。施主留下買路錢，貧僧便替你念一卷平安經；不留……便替你念往生咒。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_gb_shafeng",
+   "era": "1.0B",
+   "self": "{npc_name}拿鬼頭刀拍著馬鞍：「煞風寨在此，識相的把包袱放下！不識相的，就嘗嘗老子這口刀。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_gb_chen@NIGHT",
+   "era": "1.0B",
+   "self": "{npc_name}圍著破廟裡的火堆烤著叫化雞，見你進來便招手：「夜裡山路不好走，先坐下烤烤火。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_gb_jiang@NIGHT",
+   "era": "1.0B",
+   "self": "{npc_name}縮在錢莊屋簷下，裹著破棉襖打盹：「錢莊早關門啦，明兒請早。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_gb_youqiming@NIGHT",
+   "era": "1.0B",
+   "self": "{npc_name}抱著破碗蜷在藥鋪屋簷下：「藥鋪打烊了，掌櫃的不會給你開門的。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_gb_pan@NIGHT",
+   "era": "1.0B",
+   "self": "{npc_name}早睡死了，鼾聲打得比武館的木人樁還響。",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_gb_dl_qigai@NIGHT",
+   "era": "1.0B",
+   "self": "{npc_name}躲在五華樓的飛簷下避風：「夜裡沒人施捨，只好早點睡。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_gb_jc_informant@NIGHT",
+   "era": "1.0B",
+   "self": "{npc_name}的身影縮在暗處，若不是你走近，根本瞧不見那裡蹲著個人。",
+   "src": "proposal"
+  },
+  {
+   "id": "rule_gb_kill_same",
+   "era": "1.0B",
+   "self": "不得殘害同門兄弟",
+   "src": "later"
+  },
+  {
+   "id": "gb_beg",
+   "era": "1.0B",
+   "self": "你捧著破碗湊到{npc_name}跟前，可憐兮兮地道：「大爺行行好，賞口飯吃吧……」（乞討熟練 +{gain_prof}）",
+   "other": "{name}捧著破碗向{npc_name}乞討。",
+   "src": "proposal"
+  },
+  {
+   "id": "gb_beg_alms_money",
+   "era": "1.0B",
+   "self": "{npc_name}嘆了口氣，往你碗裡丟了{money}兩碎銀子。",
+   "src": "proposal"
+  },
+  {
+   "id": "gb_beg_alms_item",
+   "era": "1.0B",
+   "self": "{npc_name}拗不過你，塞給你一個{item_name}。",
+   "src": "proposal"
+  },
+  {
+   "id": "gb_beg_none",
+   "era": "1.0B",
+   "self": "{npc_name}揮揮手：「去去去，別擋著我做生意。」你什麼也沒討到。",
+   "src": "proposal"
+  },
+  {
+   "id": "harass_gb",
+   "era": "1.0B",
+   "self": "一條小黃狗從巷口竄出來，汪汪狂吠，直朝你的褲腳撲來！",
+   "other": "一條小黃狗追著{name}狂吠亂咬！",
+   "src": "verified"
+  },
+  {
+   "id": "gb_sect_assembly",
+   "era": "1.0B",
+   "self": "丐幫弟子奔走相告：辰時已到，各袋弟子齊聚總舵破廟聚會！",
+   "src": "verified"
+  },
+  {
+   "id": "gb_sect_rank_up",
+   "era": "1.0B",
+   "self": "陳長老當著眾兄弟的面，在你肩頭繫上一隻新布袋——你升為{sect_name}{rank_name}了！",
+   "other": "{name}在{sect_name}聚會上升為{rank_name}。",
+   "src": "proposal"
+  },
+  {
+   "id": "gb_tell_mixin",
+   "era": "1.0B",
+   "self": "你拆開密函，上頭歪歪斜斜寫著三處地名與時辰，墨跡還沒乾透。",
+   "src": "proposal"
+  },
+  {
+   "id": "gb_tell_amb_ym",
+   "era": "1.0B",
+   "self": "橋下亂石後頭忽然竄出七條黑影，鋼刀映著夕陽：「臭叫化，等你好久了！」",
+   "src": "proposal"
+  },
+  {
+   "id": "gb_tell_amb_rr",
+   "era": "1.0B",
+   "self": "晨霧裡橋頭兩端同時冒出人來，前後一堵，七個黑衣人把你圍在橋心。",
+   "src": "proposal"
+  },
+  {
+   "id": "gb_tell_amb_jcn",
+   "era": "1.0B",
+   "self": "正午的山道上靜得出奇，兩旁亂石後猛地跳出七個蒙面人，一聲呼哨便撲了上來！",
+   "src": "proposal"
+  },
+  {
+   "id": "gb_tell_manbing",
+   "era": "1.0B",
+   "self": "三處兄弟的回信都到了：蠻兵分成三路，正往咱們的地頭摸過來。",
+   "src": "proposal"
+  },
+  {
+   "id": "gb_tell_manbing_meet",
+   "era": "1.0B",
+   "self": "一個披著獸皮的蠻族大漢掄著開山刀從林子裡衝出來，嘴裡吼著你聽不懂的話！",
+   "src": "proposal"
+  },
+  {
+   "id": "gb_move_fist_cross",
+   "era": "1.0B",
+   "self": "你使出{art}「{move}」（{tenths}成力），拳風四面激盪，打中{def}的{part}！（-{dmg}）",
+   "target": "{atk}使出{art}「{move}」，拳風四面激盪，打中你的{part}！（-{dmg}）",
+   "other": "{atk}使出{art}「{move}」，打中{def}的{part}！",
+   "src": "proposal"
+  },
+  {
+   "id": "gb_move_fist_wide",
+   "era": "1.0B",
+   "self": "你一招{art}「{move}」（{tenths}成力），雙拳如鎚砸落，勁力向四方炸開，{def}的{part}挨個正著！（-{dmg}）",
+   "target": "{atk}一招{art}「{move}」，雙拳如鎚砸落，你的{part}挨個正著！（-{dmg}）",
+   "other": "{atk}一招{art}「{move}」，雙拳如鎚砸中{def}的{part}！",
+   "src": "proposal"
+  },
+  {
+   "id": "gb_move_fist_single",
+   "era": "1.0B",
+   "self": "你使出{art}「{move}」（{tenths}成力），一把扣住{def}的{part}！（-{dmg}）",
+   "target": "{atk}使出{art}「{move}」，一把扣住你的{part}！（-{dmg}）",
+   "other": "{atk}使出{art}「{move}」，扣住{def}的{part}！",
+   "src": "proposal"
+  },
+  {
+   "id": "gb_move_staff_cross",
+   "era": "1.0B",
+   "self": "你掄起{art}「{move}」（{tenths}成力），棍影翻飛，掃中{def}的{part}！（-{dmg}）",
+   "target": "{atk}掄起{art}「{move}」，棍影翻飛，掃中你的{part}！（-{dmg}）",
+   "other": "{atk}掄起{art}「{move}」，掃中{def}的{part}！",
+   "src": "proposal"
+  },
+  {
+   "id": "gb_move_staff_fan",
+   "era": "1.0B",
+   "self": "你將{art}「{move}」舞到急處（{tenths}成力），杖頭隱隱帶起火光，一大片砸向{def}的{part}！（-{dmg}）",
+   "target": "{atk}將{art}「{move}」舞到急處，杖頭帶著火光砸中你的{part}！（-{dmg}）",
+   "other": "{atk}將{art}「{move}」舞到急處，杖影砸中{def}的{part}！",
+   "src": "proposal"
+  },
+  {
+   "id": "gb_move_blade_cross",
+   "era": "1.0B",
+   "self": "你一招{art}「{move}」（{tenths}成力），刀隨身走，砍中{def}的{part}！（-{dmg}）",
+   "target": "{atk}一招{art}「{move}」，刀隨身走，砍中你的{part}！（-{dmg}）",
+   "other": "{atk}一招{art}「{move}」，砍中{def}的{part}！",
+   "src": "proposal"
+  },
+  {
+   "id": "gb_move_hidden",
+   "era": "1.0B",
+   "self": "你一揚手使出{art}「{move}」（{tenths}成力），一把銅錢石子撒將出去，打中{def}的{part}！（-{dmg}）",
+   "target": "{atk}一揚手使出{art}「{move}」，銅錢石子打中你的{part}！（-{dmg}）",
+   "other": "{atk}一揚手使出{art}「{move}」，打中{def}的{part}！",
+   "src": "proposal"
+  },
+  {
+   "id": "rmr_q_gb_dai1_first",
+   "era": "1.0B",
+   "self": "聽說丐幫弟子{name}一連挑了邪教三處埋伏，京城北郊的破廟裡，叫化子們敲著破碗唱了一夜蓮花落。",
+   "other": "聽說丐幫弟子{name}一連挑了邪教三處埋伏，京城北郊的破廟裡，叫化子們敲著破碗唱了一夜蓮花落。",
+   "src": "proposal"
+  },
+  {
+   "id": "rmr_q_gb_dai1_foreshadow",
+   "era": "1.0B",
+   "self": "有人說雁門關外的橋下、大理城北的石橋邊，都撞見過黑衣蒙面的人蹲守，專等落單的叫化子。",
+   "other": "有人說雁門關外的橋下、大理城北的石橋邊，都撞見過黑衣蒙面的人蹲守，專等落單的叫化子。",
+   "src": "proposal"
+  },
+  {
+   "id": "rmr_q_gb_dai2_first",
+   "era": "1.0B",
+   "self": "聽說丐幫的{name}三戰蠻兵，硬是把南下的蠻族悍卒打回了關外。",
+   "other": "聽說丐幫的{name}三戰蠻兵，硬是把南下的蠻族悍卒打回了關外。",
+   "src": "proposal"
+  },
+  {
+   "id": "rmr_q_gb_dai2_foreshadow",
+   "era": "1.0B",
+   "self": "京城錢莊前那個姓姜的老乞丐逢人便說，城裡來了好些高鼻深目的怪人，腰裡都藏著彎刀。",
+   "other": "京城錢莊前那個姓姜的老乞丐逢人便說，城裡來了好些高鼻深目的怪人，腰裡都藏著彎刀。",
+   "src": "proposal"
+  },
+  {
+   "id": "gb_amb_pomiao",
+   "era": "1.0B",
+   "self": "香案下幾個叫化子正分著一隻叫化雞，見你看過來，嘿嘿一笑，撕了條雞腿遞給你。",
+   "src": "proposal"
+  },
+  {
+   "id": "gb_amb_gate",
+   "era": "1.0B",
+   "self": "破廟門口的叫化子懶洋洋地翻了個身：「新來的？進去找陳長老。」",
+   "src": "proposal"
+  },
+  {
+   "id": "gb_amb_yuan",
+   "era": "1.0B",
+   "self": "枯井邊的幾條黃狗對著你齜牙咧嘴，被掌棍長老一聲喝罵，夾著尾巴縮回了牆角。",
+   "src": "proposal"
+  },
+  {
+   "id": "gb_amb_jcn_road4",
+   "era": "1.0B",
+   "self": "樹林深處傳來一聲尖銳的呼哨，接著是馬蹄聲，又漸漸遠了。",
+   "src": "proposal"
+  },
+  {
+   "id": "gb_amb_kongdi",
+   "era": "1.0B",
+   "self": "空地上的火堆餘燼還冒著青煙，旁邊扔著幾隻啃乾淨的羊骨頭。",
+   "src": "proposal"
+  }
+ ],
+ "rumors": [
+  {
+   "id": "rum_q_gb_dai1_fs",
+   "kind": "FORESHADOW",
+   "quest": "q_gb_dai1",
+   "text": "rmr_q_gb_dai1_foreshadow",
+   "requires_world": {
+    "not_first": "q_gb_dai1"
+   },
+   "hours": [],
+   "weight": 1,
+   "era": "1.0B",
+   "src": "proposal",
+   "src_note": "系統傳聞【設計提案・非原作】（STORY_PLAN D14）"
+  },
+  {
+   "id": "rum_q_gb_dai2_fs",
+   "kind": "FORESHADOW",
+   "quest": "q_gb_dai2",
+   "text": "rmr_q_gb_dai2_foreshadow",
+   "requires_world": {
+    "not_first": "q_gb_dai2"
+   },
+   "hours": [],
+   "weight": 1,
+   "era": "1.0B",
+   "src": "proposal",
+   "src_note": "系統傳聞【設計提案・非原作】"
+  }
+ ],
+ "ambient": [
+  {
+   "id": "amb_gb_pomiao",
+   "room": "gb_pomiao",
+   "periods": [],
+   "requires": [],
+   "weight": 1,
+   "text": "gb_amb_pomiao",
+   "era": "1.0B",
+   "src": "proposal",
+   "src_note": "環境句【設計提案・非原作】（STORY_PLAN §5.3）"
+  },
+  {
+   "id": "amb_gb_gate",
+   "room": "gb_gate",
+   "periods": [],
+   "requires": [],
+   "weight": 1,
+   "text": "gb_amb_gate",
+   "era": "1.0B",
+   "src": "proposal",
+   "src_note": "環境句【設計提案・非原作】（STORY_PLAN §5.3）"
+  },
+  {
+   "id": "amb_gb_yuan",
+   "room": "gb_yuan",
+   "periods": [],
+   "requires": [],
+   "weight": 1,
+   "text": "gb_amb_yuan",
+   "era": "1.0B",
+   "src": "proposal",
+   "src_note": "環境句【設計提案・非原作】（STORY_PLAN §5.3）"
+  },
+  {
+   "id": "amb_gb_jcn_road4",
+   "room": "jcn_road4",
+   "periods": [],
+   "requires": [],
+   "weight": 1,
+   "text": "gb_amb_jcn_road4",
+   "era": "1.0B",
+   "src": "proposal",
+   "src_note": "環境句【設計提案・非原作】（STORY_PLAN §5.3）"
+  },
+  {
+   "id": "amb_gb_kongdi",
+   "room": "jcn_kongdi",
+   "periods": [],
+   "requires": [],
+   "weight": 1,
+   "text": "gb_amb_kongdi",
+   "era": "1.0B",
+   "src": "proposal",
+   "src_note": "環境句【設計提案・非原作】（STORY_PLAN §5.3）"
+  }
+ ],
+ "art_requests": {
+  "units": [
+   {
+    "id": "gaibang_m",
+    "alias": "shaolin_m",
+    "prompt": "丐幫男弟子，補丁百衲衣、草鞋、腰間掛著布袋，手持青竹棒，蓬頭赤足，神情豪爽。"
+   },
+   {
+    "id": "gaibang_f",
+    "alias": "huashan_f",
+    "prompt": "丐幫女弟子，補丁百衲衣、草鞋、頭髮用布條隨意束起，手持青竹棒，臉上沾著灰卻目光靈動。"
+   },
+   {
+    "id": "n_gb_chen",
+    "alias": "player_m",
+    "prompt": "陳長老，鬚髮花白的老乞丐，背上掛著六隻布袋，拄竹棒，精光四射的眼睛。"
+   },
+   {
+    "id": "n_gb_chuangong",
+    "alias": "player_m",
+    "prompt": "傳功長老，乾瘦老丐，盤坐草蓆，一手捏訣，身旁倚著竹棒。"
+   },
+   {
+    "id": "n_gb_zhanggun",
+    "alias": "player_m",
+    "prompt": "掌棍長老，魁梧老丐，拄著一根烏黑鐵棍，濃眉怒目。"
+   },
+   {
+    "id": "n_gb_zhifa",
+    "alias": "player_m",
+    "prompt": "執法長老，面色鐵青的老丐，手捏一卷幫規，神情嚴厲。"
+   },
+   {
+    "id": "n_gb_jiang",
+    "alias": "player_m",
+    "prompt": "姜乞丐，坐在錢莊石階上的老乞丐，伸著破碗，耳朵豎起，眼神狡黠。"
+   },
+   {
+    "id": "n_gb_youqiming",
+    "alias": "player_m",
+    "prompt": "游啟明，年輕丐幫弟子，蹲在藥鋪門口捧著缺口破碗，咧嘴笑。"
+   },
+   {
+    "id": "n_gb_pan",
+    "alias": "player_m",
+    "prompt": "潘乞兒，滿臉泥灰的少年乞兒，倚門打盹。"
+   },
+   {
+    "id": "n_gb_shenyi",
+    "alias": "n_xx_pharmacist",
+    "prompt": "大理神醫，脾氣古怪的老大夫，替人把脈，桌上藥箱。"
+   },
+   {
+    "id": "n_gb_jc_informant",
+    "alias": "player_m",
+    "prompt": "兵器鋪轉角的漢子，帽簷壓低，手按腰間短刀，縮在陰影裡。"
+   },
+   {
+    "id": "n_gb_huguo",
+    "alias": "n_sl_huikong",
+    "prompt": "護國法師，披紅色袈裟的番僧，雙掌合十，嘴角冷笑。"
+   },
+   {
+    "id": "n_gb_shafeng",
+    "alias": "n_bandit_chief",
+    "prompt": "煞風寨寨主，騎黑馬的大漢，橫著鬼頭刀。"
+   },
+   {
+    "id": "m_gb_dizi",
+    "alias": "m_hs_trainee",
+    "prompt": "丐幫弟子（切磋用），百衲衣持竹棒，起手式。"
+   },
+   {
+    "id": "m_gb_xiaohuang",
+    "alias": "m_wolf",
+    "prompt": "小黃，瘦巴巴的小黃狗，齜牙狂吠撲咬。"
+   },
+   {
+    "id": "m_gb_xiejiao",
+    "alias": "m_bandit",
+    "prompt": "邪教門徒，黑衣蒙面，手持鋼刀，戰鬥姿勢。"
+   },
+   {
+    "id": "m_gb_manbing",
+    "alias": "m_bandit_chief",
+    "prompt": "蠻兵，高鼻深目的蠻族悍卒，獸皮甲，掄開山大刀。"
+   },
+   {
+    "id": "m_jcn_mazeitou",
+    "alias": "m_bandit",
+    "prompt": "馬賊頭子，騎瘦馬、持缺口彎刀的馬賊。"
+   },
+   {
+    "id": "m_jcn_mazeiwang",
+    "alias": "m_bandit_chief",
+    "prompt": "馬賊王，身穿黃銅罩甲的馬賊首領，持大刀。"
+   },
+   {
+    "id": "m_jcn_edaotou",
+    "alias": "m_bandit",
+    "prompt": "惡道人頭子，油膩道袍、拂塵柄藏短刀的野道士。"
+   },
+   {
+    "id": "m_jcn_daoren",
+    "alias": "m_bandit",
+    "prompt": "道人頭子，雲遊道士打扮的強人，持刀。"
+   },
+   {
+    "id": "m_jcn_yinmian",
+    "alias": "m_bandit",
+    "prompt": "隱面人，黑紗罩面的怪客，持刀無聲逼近。"
+   },
+   {
+    "id": "m_jcn_huguo",
+    "alias": "m_bandit_chief",
+    "prompt": "護國法師（戰鬥），紅袈裟番僧，雙掌推出。"
+   },
+   {
+    "id": "m_jcn_shafeng",
+    "alias": "m_bandit_chief",
+    "prompt": "煞風寨寨主（戰鬥），揮鬼頭刀的大漢。"
+   }
+  ],
+  "backgrounds": [
+   {
+    "id": "gaibang",
+    "alias": "shaolin",
+    "prompt": "京城北郊山腰的破山神廟，缺角的神像、香案上竹棒與破碗、草堆與火堆，乞丐們圍坐。"
+   },
+   {
+    "id": "jingcheng_north",
+    "alias": "jingcheng_wild",
+    "prompt": "京城北門外的黃土山路，老槐樹、亂石山道，遠方山嶺與林子，荒涼肅殺。"
+   }
+  ]
+ },
+ "test_plan": [
+  {
+   "quest": "q_gb_dai1",
+   "outcome": "default",
+   "save_reload_at": "s_ambush",
+   "setup": {
+    "sect": "gaibang",
+    "sect_rank": 0,
+    "fame": 250,
+    "lilian": 250,
+    "combat_xp": 30000,
+    "skills": {
+     "basic_fist": 60,
+     "gb_taizu_quan": 60,
+     "basic_inner": 60,
+     "gb_xinfa": 60,
+     "basic_dodge": 60,
+     "basic_parry": 60
+    }
+   },
+   "note": "setup.sect_rank 需整合者在 story bot 支援（debug_set sect_rank）；三處埋伏各 7 個邪教門徒＝21 ≥ 20",
+   "path": [
+    "walk@gb_pomiao",
+    "accept@n_gb_chen",
+    "choose@n_gb_chen:n0:c_ask",
+    "choose@n_gb_chen:n1:c_take",
+    "walk@xx_pharmacy",
+    "talk@n_gb_youqiming",
+    "choose@n_gb_youqiming:n0:c_ask",
+    "choose@n_gb_youqiming:n1:c_ok",
+    "walk@dl_wuguan",
+    "talk@n_gb_pan",
+    "choose@n_gb_pan:n0:c_ask",
+    "choose@n_gb_pan:n1:c_ok",
+    "walk@dl_shop",
+    "talk@n_gb_shenyi",
+    "choose@n_gb_shenyi:n0:c_ask",
+    "choose@n_gb_shenyi:n1:c_ok",
+    "walk@jc_smithy",
+    "talk@n_gb_jc_informant",
+    "choose@n_gb_jc_informant:n0:c_ask",
+    "choose@n_gb_jc_informant:n1:c_take",
+    "walk@ym_bridge",
+    "wait:hour=酉",
+    "act@q_gb_dai1:a_amb_ym",
+    "fight:WIN",
+    "walk@rr_bridge",
+    "wait:hour=卯",
+    "act@q_gb_dai1:a_amb_rr",
+    "fight:WIN",
+    "walk@jcn_road3",
+    "wait:hour=午",
+    "act@q_gb_dai1:a_amb_jcn",
+    "fight:WIN",
+    "walk@gb_pomiao",
+    "talk@n_gb_chen",
+    "choose@n_gb_chen:n0:c_report",
+    "choose@n_gb_chen:n1:c_thanks"
+   ],
+   "expect": {
+    "outcome": "default",
+    "items": {
+     "i_gb_mixin": 0
+    },
+    "sect_rank_pending": 1,
+    "rumor": "rmr_q_gb_dai1_first"
+   }
+  },
+  {
+   "quest": "q_gb_dai2",
+   "outcome": "default",
+   "save_reload_at": "s_letters",
+   "setup": {
+    "sect": "gaibang",
+    "sect_rank": 1,
+    "fame": 500,
+    "lilian": 500,
+    "combat_xp": 300000,
+    "skills": {
+     "basic_fist": 120,
+     "gb_taizu_quan": 100,
+     "basic_inner": 120,
+     "gb_xinfa": 100,
+     "basic_dodge": 120,
+     "basic_parry": 120
+    },
+    "attrs": {
+     "str": 30,
+     "con": 30,
+     "agi": 30
+    }
+   },
+   "note": "setup.sect_rank 需 bot 支援；蠻兵設計給 3 人隊，單人 bot 用高技能 setup 代替隊友",
+   "path": [
+    "walk@jc_square",
+    "accept@n_gb_jiang",
+    "choose@n_gb_jiang:n0:c_ask",
+    "choose@n_gb_jiang:n1:c_more",
+    "choose@n_gb_jiang:n2:c_take",
+    "walk@gb_yuan",
+    "talk@n_gb_zhanggun",
+    "choose@n_gb_zhanggun:n0:c_report",
+    "choose@n_gb_zhanggun:n1:c_take",
+    "walk@xx_pharmacy",
+    "talk@n_gb_youqiming",
+    "walk@dl_wuguan",
+    "talk@n_gb_pan",
+    "walk@jc_smithy",
+    "talk@n_gb_jc_informant",
+    "walk@jcn_road4",
+    "act@q_gb_dai2:a_mb_jcn",
+    "fight:WIN",
+    "walk@dlw_forest",
+    "act@q_gb_dai2:a_mb_dl",
+    "fight:WIN",
+    "walk@xw_hill",
+    "act@q_gb_dai2:a_mb_xx",
+    "fight:WIN",
+    "walk@gb_pomiao",
+    "talk@n_gb_chen",
+    "choose@n_gb_chen:n0:c_report",
+    "choose@n_gb_chen:n1:c_thanks"
+   ],
+   "expect": {
+    "outcome": "default",
+    "items": {
+     "i_gb_manxin": 0
+    },
+    "sect_rank_pending": 2,
+    "rumor": "rmr_q_gb_dai2_first"
+   }
+  },
+  {
+   "quest": "q_gb_xin",
+   "outcome": "default",
+   "setup": {
+    "sect": "gaibang"
+   },
+   "path": [
+    "walk@xx_pharmacy",
+    "accept@n_gb_youqiming",
+    "choose@n_gb_youqiming:n0:c_take",
+    "walk@dl_square",
+    "talk@n_gb_dl_qigai"
+   ],
+   "expect": {
+    "outcome": "default",
+    "fame": 1,
+    "lilian": 1,
+    "items": {
+     "i_gb_songxin": 0
+    },
+    "repeat_cooldown": true
+   }
+  }
+ ],
+ "todo_verify": [
+  "滿天花雨（gb_mantian）是否為 2001 丐幫一階武功：只有 2001-10-09 列表作者「應該是基本武功」的猜測（單一含糊來源）",
+  "二階門檻：2001-10-09 的 30/20/30 與 2001-12-01 的 50/30/30/二袋 是改版還是誤讀；纏絲、擒龍、混天、蓮花的數字比照瘋魔【設計提案】",
+  "混天功的類別（本碎片暫作內功 INNER）與係數",
+  "纏絲擒拿手、擒龍功、丐幫心法、滿天花雨的係數（本碎片 1.3／1.25／0.8／0.9 為【設計提案】）",
+  "潘乞兒的全名（2001-11-03 只寫「潘**」）",
+  "神醫原在「藥店門口」；1.0 大理沒有藥店房，暫放雜貨鋪",
+  "一袋三處橋上埋伏的實際地點與時辰（2001 只說「依時辰」；本碎片 酉 雁門關外橋邊、卯 大理過河石橋、午 京城北郊山道）",
+  "一袋是否也等月初聚會（O8 預設一、二袋都等聚會）",
+  "二袋三封信的收信人與三場蠻兵的地點（2001 只說京城、大理、西夏）",
+  "蠻兵原作 100000 HP 換算本作數值（qi 6000、combat_xp_ref 150000），待 balance_sim gb_manbing_party3 驗證",
+  "馬賊王數值與「馬王」是否即馬賊王（E4；gaoshou/25 只列馬賊王 2000 HP）",
+  "黃罩甲 +35 是原作防禦數字，本作防具級距（皮甲 8）不同，是否要換算",
+  "2001 小黃追咬的乞討門檻（30 是後期數字）與各城機率",
+  "乞討的實際收穫（2001 只有角色扮演式描寫；施捨數值【設計提案】）",
+  "陳長老、傳功長老、掌棍長老以外 2001 是否有其他長老（助功長老、洪七公等是後期）",
+  "傳功長老教基本武學的上限（140 是後期數字）",
+  "2001-11-27 入幫異常（「還沒脫離原來的門派」）是否是 bug",
+  "護國法師、煞風寨寨主原作是山路踩地雷埋伏；本作改成站點挑戰 NPC 是否可接受"
+ ],
+ "owner_decisions": [
+  "O4",
+  "O5",
+  "O6",
+  "O7",
+  "O8",
+  "O9",
+  "O17",
+  "GB-1【設計提案・偏離】jcn_road4 在京城→雁門關口／恆山的新手最短路上（lint STORY_ROUTE_TARGETS 含 ym_gate），護國法師、煞風寨寨主不放遇敵表，改為站在嶺上古道可挑戰的惡人 NPC（n_gb_huguo、n_gb_shafeng）；遇敵率 0.12、只有野兔、野狼、馬賊頭子（xp_ref 3000、權重 10）",
+  "GB-2【設計提案・偏離】gb_dai3 的 promote 由 QUEST 改 AUTO：q_gb_dai3 不在 M3b，全 era 閉包 lint 會因 quest 不存在而報錯（列本身 era xkd，1.0B 世界不生效）",
+  "GB-3 乞討、聚會、升袋模板：_sect.json 擁有通用的 beg／sect_assembly／sect_rank_up；本碎片給丐幫口吻變體 gb_beg、gb_beg_alms_money、gb_beg_alms_item、gb_beg_none、gb_sect_assembly、gb_sect_rank_up，以及 §8.3 指名的 harass_gb（避免與 _sect 撞 id；WP-SECT 可依 sect 前綴選用）",
+  "GB-4 一袋埋伏：酉時 ym_bridge、卯時 rr_bridge、午時 jcn_road3；不能逃（no_flee），「逃跑要再等一天」以「每處只在一個時辰出現」近似",
+  "GB-5 jcn_kongdi 遇敵率 0.25（M3B_PLAN §3.4 #4 ≤ 0.30）：WP-MERGE 需把 jcn_kongdi 加進 data_lint NEWBIE_RATE_EXEMPT",
+  "GB-6 黃罩甲保留原作 +35 防禦（已證實數字），列 todo_verify",
+  "GB-7 蠻兵 qi 6000、xp_ref 150000（3 人隊）；邪教門徒 xp_ref 1200、7 隻一組，待 balance_sim 驗證",
+  "GB-8 丐幫 NPC 乞丐（姜乞丐、游啟明、潘乞兒、大理丐幫弟子、長老、切磋弟子）no_beg：同門不互相乞討【設計提案】"
+ ],
+ "notes": "WP-C-gaibang 碎片。依 M3B_PLAN §4.1（丐幫列原樣）、§4.2、§3.1–3.4、§8.3。M3B_PLAN 缺漏：(1) §3.4 #3 認為 jcn_road4 不在必經路上，但 lint 的新手路線含 京城→ym_gate，最短路經 jcn_road3/4（見 GB-1）；(2) §4.2 gb_dai3 QUEST 指向不存在的任務（見 GB-2）；(3) §8.3 模板 beg/sect_assembly/sect_rank_up 與 _sect.json 同名（見 GB-3）。整合者：story bot 的 setup 需支援 sect_rank、expect 需支援 sect_rank_pending；jcn_road1/2 的 m_jc_qigaitou、m_jc_buliang 由 jingcheng 碎片建立，lint 白名單由 WP-MERGE 加（§3.4 #2）。跨碎片引用：m_jc_qigaitou、m_jc_buliang、jc_square、jc_smithy、jc_gate_n（jingcheng）；既有：ym_road、ym_bridge、rr_bridge、dlw_forest、xw_hill、xx_pharmacy、dl_wuguan、dl_shop、dl_square、c_mantou、c_qiyao、mon_* 武功。"
+}

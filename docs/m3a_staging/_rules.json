@@ -1,0 +1,191 @@
+{
+  "fragment": "_rules",
+  "version": 1,
+  "author": "WP-RULES",
+  "text_templates": [
+    {
+      "id": "sect_breach",
+      "era": "1.0A",
+      "self": "【門規】你違反了{sect_name}門規：{rule_text}（處置：{outcome}）。",
+      "src": "proposal"
+    },
+    {
+      "id": "sect_expel",
+      "era": "1.0A",
+      "self": "【門規】你被逐出{sect_name}門牆，本門武功大減，從此成為{sect_name}的公敵。",
+      "other": "【江湖傳聞】{name}違反門規，被逐出{sect_name}門牆。",
+      "src": "proposal"
+    },
+    {
+      "id": "sect_betray",
+      "era": "1.0A",
+      "self": "【叛派】你背叛了{sect_name}。本門武功大減、門派技能盡失，從此成為{sect_name}的公敵。",
+      "other": "【江湖傳聞】{name}背叛了{sect_name}！",
+      "src": "proposal"
+    },
+    {
+      "id": "sect_stop_teach",
+      "era": "1.0A",
+      "self": "{npc_name}搖頭道：「你如今的所作所為，{sect_name}的師父們不會再傳你武功。」",
+      "src": "proposal"
+    },
+    {
+      "id": "sect_skill_decay",
+      "era": "1.0A",
+      "self": "你的{skill_name}退步了，降為 {level} 級。",
+      "src": "proposal"
+    },
+    {
+      "id": "sect_hostile",
+      "era": "1.0A",
+      "self": "{sect_name}的守山弟子攔住你的去路，喝道：「什麼人，敢擅闖{sect_name}！」",
+      "src": "proposal"
+    },
+    {
+      "id": "jail_in",
+      "era": "1.0A",
+      "self": "{enforcer}奉命將你押入{room_name}思過，刑期 {days} 個遊戲日（{reason_text}）。",
+      "other": "{name}被押進{room_name}思過。",
+      "src": "proposal"
+    },
+    {
+      "id": "jail_out",
+      "era": "1.0A",
+      "self": "思過期滿，你被放出{sect_name}思過處，回到{room_name}。",
+      "src": "proposal"
+    },
+    {
+      "id": "jail_ransom_paid",
+      "era": "1.0A",
+      "self": "你付了 {cost} 兩，把{name}從思過處贖了出來。",
+      "src": "proposal"
+    },
+    {
+      "id": "poison_flare",
+      "era": "1.0A",
+      "self": "你體內的{status_name}發作，損失 {dmg} 點氣（剩 {qi}）。",
+      "src": "proposal"
+    },
+    {
+      "id": "condition_off",
+      "era": "1.0A",
+      "self": "你身上的{status_name}已經消退。",
+      "src": "proposal"
+    },
+    {
+      "id": "npc_guide",
+      "era": "1.0A",
+      "self": "{npc_name}領著你穿過曲折的小路，來到{room_name}。",
+      "src": "proposal"
+    },
+    {
+      "id": "trial_passed",
+      "era": "1.0A",
+      "self": "【試煉】你們通過了{trial_name}！",
+      "src": "proposal"
+    },
+    {
+      "id": "debug_set",
+      "era": "1.0A",
+      "self": "【除錯】{key} = {value}",
+      "src": "proposal"
+    },
+    {
+      "id": "err_sect_stop_teach",
+      "era": "1.0A",
+      "self": "【系統】你違背門規，本派師父不肯再傳你武功。",
+      "src": "proposal"
+    },
+    {
+      "id": "err_sect_banned",
+      "era": "1.0A",
+      "self": "【系統】你被禁止學武，期滿之前本派師父不會教你。",
+      "src": "proposal"
+    },
+    {
+      "id": "err_jailed",
+      "era": "1.0A",
+      "self": "【系統】你正在思過處思過，不能這麼做。",
+      "src": "proposal"
+    },
+    {
+      "id": "err_need_confirm",
+      "era": "1.0A",
+      "self": "【系統】請再確認一次。",
+      "src": "proposal"
+    },
+    {
+      "id": "err_no_prisoner",
+      "era": "1.0A",
+      "self": "【系統】思過處裡沒有這個人。",
+      "src": "proposal"
+    },
+    {
+      "id": "err_trial_party",
+      "era": "1.0A",
+      "self": "【系統】試煉需要人數相符、條件都合格的隊友一起在場。",
+      "src": "proposal"
+    },
+    {
+      "id": "err_no_flee",
+      "era": "1.0A",
+      "self": "【系統】你被團團圍住，逃不掉！",
+      "src": "proposal"
+    },
+    {
+      "id": "err_not_teach_time",
+      "era": "1.0A",
+      "self": "【系統】師父現在不授課，請在規定的時辰再來。",
+      "src": "proposal"
+    },
+    {
+      "id": "err_req_has_item",
+      "era": "1.0A",
+      "self": "【系統】你身上沒有需要的東西。",
+      "src": "proposal"
+    },
+    {
+      "id": "err_req_any_of",
+      "era": "1.0A",
+      "self": "【系統】你不符合條件。",
+      "src": "proposal"
+    },
+    {
+      "id": "err_req_enemy_of",
+      "era": "1.0A",
+      "self": "【系統】你不符合條件。",
+      "src": "proposal"
+    },
+    {
+      "id": "err_req_pk_min",
+      "era": "1.0A",
+      "self": "【系統】你的 PK值不夠高。",
+      "src": "proposal"
+    },
+    {
+      "id": "err_req_killing_intent_min",
+      "era": "1.0A",
+      "self": "【系統】你的殺氣不夠重。",
+      "src": "proposal"
+    },
+    {
+      "id": "err_req_sect_master",
+      "era": "1.0A",
+      "self": "【系統】只有師父的親傳弟子才能學。",
+      "src": "proposal"
+    },
+    {
+      "id": "err_req_party_size_min",
+      "era": "1.0A",
+      "self": "【系統】需要更多隊友一起在場。",
+      "src": "proposal"
+    },
+    {
+      "id": "err_req_hour_in",
+      "era": "1.0A",
+      "self": "【系統】現在不是時候。",
+      "src": "proposal"
+    }
+  ],
+  "notes": "WP-RULES 的事件與原因碼模板（M3A_PLAN 6.12）。sect_breach 的 outcome 是 JAIL／EXPEL／BAN 原值，UI 可依 outcome 換說法；jail_in 的 other 變體送給同房間的人。err_not_teach_time 是 M3A_PLAN 缺漏的新原因碼（masters.hours 時辰不對）。門規文字 rule_* 由各派碎片提供。"
+}

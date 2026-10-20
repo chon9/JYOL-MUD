@@ -1,0 +1,8 @@
+{
+  "region_id": "gaochang", "era": "1.0A", "src": "verified", "desc": "沙漠中的高昌古城早已荒廢，斷垣殘壁之間只剩幾戶人家，和一座傳說藏著高昌國寶物的迷宮。", "escape_tiles_hint": 2,
+  "rooms": [
+    {"id": "gc_outside", "name": "高昌迷宮外", "desc": "斷牆圍著半埋在黃沙裡的古城門，門洞黑沉沉的，便是高昌迷宮的入口。往東回戈壁古道，往北進迷宮，西南方有間小屋。", "exits": [{"dir": "E", "to": "gc_road3"}, {"dir": "SW", "to": "gc_jihut_out"}, {"dir": "N", "to": "gc_maze1"}], "npcs": ["n_gc_xiangxiang", "n_gc_huoqingtong"], "features": [], "requires": [], "encounter": {"rate": 0.1, "table": [{"monster": "m_bigrabbit", "w": 50, "count": [1, 1]}, {"monster": "m_wolf", "w": 35, "count": [1, 1]}, {"monster": "m_xh_scorpion", "w": 15, "count": [1, 1]}]}, "src": "verified", "src_note": "研究：jyfree jy1_2「高昌室外景」；香香公主、霍青桐「高昌迷宮外左方」（gaoshou/23）"},
+    {"id": "gc_jihut_out", "name": "計老人居外", "desc": "沙丘背風處圍著一圈籬笆，院裡曬著羊皮，一匹老白馬拴在柱上。往東北回迷宮外，往南進屋。", "exits": [{"dir": "NE", "to": "gc_outside"}, {"dir": "S", "to": "gc_jihut"}], "npcs": [], "features": [], "requires": [], "encounter": {"rate": 0.05, "table": [{"monster": "m_rabbit", "w": 100, "count": [1, 1]}]}, "src": "verified", "src_note": "研究：jyfree jy1_2「計老人居外景」；白馬是《白馬嘯西風》典故【設計提案】"},
+    {"id": "gc_jihut", "name": "計老人居", "desc": "小屋收拾得乾乾淨淨，爐上煮著奶茶，牆上掛著一把舊胡琴。往北出門。", "exits": [{"dir": "N", "to": "gc_jihut_out"}], "npcs": ["n_gc_jilaoren", "n_gc_liwenxiu"], "features": [], "requires": [], "safe": true, "src": "verified", "src_note": "研究：jyfree jy1_2「高昌計老人（室內）」；gaoshou/23 計老人、李文秀「高昌左下方小屋」"}
+  ]
+}

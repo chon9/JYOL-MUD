@@ -1,0 +1,45 @@
+{
+  "region_id": "xuedao_road",
+  "era": "1.0A",
+  "src": "proposal",
+  "desc": "從大漠西緣一路往西南，穿過戈壁、翻過大雪山，便到血刀門所在的雪谷。",
+  "escape_tiles_hint": 2,
+  "rooms": [
+    { "id": "xd_road1", "name": "大漠深處", "desc": "黃沙越走越細，風一吹就迷了眼，只有幾堆駱駝骨指著西去的方向。往東回到風蝕石山下的山洞，往西隱約看得見雪山的影子。",
+      "exits": [{"dir": "E", "to": "de_cave"}, {"dir": "W", "to": "xd_road2"}], "npcs": [], "features": [],
+      "requires": [],
+      "encounter": { "rate": 0.1,
+        "table": [
+          {"monster": "m_bigrabbit", "w": 50, "count": [1, 1]},
+          {"monster": "m_wolf", "w": 30, "count": [1, 1]},
+          {"monster": "m_rabbit", "w": 20, "count": [1, 1]}
+        ] } },
+    { "id": "xd_road2", "name": "雪山腳下", "desc": "沙地到這裡變成碎石坡，寒風從雪山上直灌下來。西南方的坡下有一頂冒著炊煙的牧民帳篷。",
+      "exits": [{"dir": "E", "to": "xd_road1"}, {"dir": "SW", "to": "xd_tent"}], "npcs": [], "features": [],
+      "requires": [],
+      "encounter": { "rate": 0.1,
+        "table": [
+          {"monster": "m_bigrabbit", "w": 60, "count": [1, 1]},
+          {"monster": "m_wolf", "w": 30, "count": [1, 1]},
+          {"monster": "m_rabbit", "w": 10, "count": [1, 1]}
+        ] } },
+    { "id": "xd_tent", "name": "牧民帳篷", "desc": "一頂厚氈帳篷搭在背風的山坳裡，裡頭燒著牛糞火，奶茶的香味飄了出來。牧民說再往西南翻過大雪山就是血刀門，勸人別去。",
+      "exits": [{"dir": "NE", "to": "xd_road2"}, {"dir": "SW", "to": "xd_road3"}], "npcs": ["n_xd_herder"],
+      "features": ["WATER"], "requires": [] },
+    { "id": "xd_road3", "name": "大雪山", "desc": "終年不化的積雪沒過腳踝，每走一步都要先探探深淺。往西是一大片白茫茫的雪原，山路則往西南的雪谷繞下去。",
+      "exits": [{"dir": "NE", "to": "xd_tent"}, {"dir": "SW", "to": "xd_road4"}, {"dir": "W", "to": "xd_snowfield"}],
+      "npcs": [], "features": [], "requires": [],
+      "encounter": { "rate": 0.12,
+        "table": [
+          {"monster": "m_bigrabbit", "w": 50, "count": [1, 1]},
+          {"monster": "m_wolf", "w": 30, "count": [1, 1]},
+          {"monster": "m_rabbit", "w": 20, "count": [1, 1]}
+        ] } },
+    {"id": "xd_snowfield", "name": "雪原", "desc": "一望無際的雪原，雪地上滿是野獸的爪印，偶爾還有幾行人的腳印，不知是獵戶還是強人。這裡沒有別的路，只能回頭往東。", "exits": [{"dir": "E", "to": "xd_road3"}], "npcs": ["n_xd_pantu"], "features": [], "requires": [], "encounter": {"rate": 0.15, "table": [{"monster": "m_wolf", "w": 40, "count": [1, 1]}, {"monster": "m_boar", "w": 25, "count": [1, 1]}, {"monster": "m_bigrabbit", "w": 25, "count": [1, 1]}, {"monster": "m_bandit", "w": 10, "count": [1, 1]}]}},
+    { "id": "xd_road4", "name": "雪谷", "desc": "兩側雪峰夾著一道窄谷，谷底的積雪被踩出一條小徑。往西望去，雪地上插著一面暗紅色的旗子。",
+      "exits": [{"dir": "NE", "to": "xd_road3"}, {"dir": "W", "to": "xd_gate"}], "npcs": [], "features": [],
+      "requires": [],
+      "encounter": { "rate": 0.08,
+        "table": [{"monster": "m_bigrabbit", "w": 60, "count": [1, 1]}, {"monster": "m_rabbit", "w": 40, "count": [1, 1]}] } }
+  ]
+}

@@ -1,0 +1,5 @@
+{ "table": "eras", "version": 1, "rows": [
+  { "id": "1.0A", "name": "A", "order": 0,  "requires": [],       "base": true,  "src": "verified" },
+  { "id": "1.0B", "name": "B", "order": 10, "requires": ["1.0A"], "base": false, "src": "verified" },
+  { "id": "gmdk", "name": "G", "order": 20, "requires": ["1.0B"], "base": false, "src": "verified" }
+] }

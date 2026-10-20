@@ -1,0 +1,2687 @@
+{
+ "fragment": "gumu",
+ "version": 1,
+ "author": "WP-SECT-gumu",
+ "sect": {
+  "id": "gumu",
+  "name": "古墓",
+  "home_city": "dali",
+  "gate_region": "gumu",
+  "prefix": "gm",
+  "gate_room": "gm_entrance",
+  "head_npc": "n_gm_zhangmen",
+  "gender": [
+   "F"
+  ],
+  "join_requires": [
+   {
+    "type": "morality_min",
+    "value": -299
+   },
+   {
+    "type": "morality_max",
+    "value": 299
+   },
+   {
+    "type": "no_sect"
+   },
+   {
+    "type": "not_enemy_of",
+    "sect": "gumu"
+   }
+  ],
+  "teach_requires": [
+   {
+    "type": "morality_min",
+    "value": -299
+   },
+   {
+    "type": "morality_max",
+    "value": 299
+   },
+   {
+    "type": "pk_max",
+    "value": 3
+   },
+   {
+    "type": "killing_intent_max",
+    "value": 1000
+   }
+  ],
+  "sect_skill": "qingxin",
+  "sect_skill_name": "清心",
+  "sect_skill_effect": {
+   "effect": "PARALYZE"
+  },
+  "sect_skill_cost": [
+   "jing",
+   "shen"
+  ],
+  "sect_skill_cap": 100,
+  "sect_skill_limits_arts": true,
+  "sect_art_cap_bonus": 10,
+  "sect_skill_gain": [],
+  "sect_skill_penalties": [],
+  "forbid_meat": false,
+  "personal_master": false,
+  "enforcer": true,
+  "enforcers": [
+   "n_gm_zhangmen"
+  ],
+  "jail_room": "gm_shishi",
+  "hostile_entry": [
+   {
+    "if": [
+     {
+      "type": "enemy_of",
+      "sect": "gumu"
+     }
+    ],
+    "rooms": "ALL",
+    "monster": "m_gm_guard",
+    "count": [
+     1,
+     2
+    ],
+    "chance": 1.0,
+    "no_flee": true,
+    "capture": true
+   }
+  ],
+  "visitors": "MEMBERS",
+  "meal_npc": "n_gm_songfan",
+  "src_note": "研究 古墓：2001 官方開發頁 index_jy2-4e（入派 女、中立、未婚、守宮砂；清心限制全部武功）；清心＝痲痺（官方 2-25）；公敵到活死人墓與所有古墓 NPC 戰鬥；執法者＝古墓派掌門（jy2-22）。中立的數字範圍 −299…299 屬後期版",
+  "era": "1.0A",
+  "src": "verified"
+ },
+ "sect_rules": [
+  {
+   "id": "gm_r_morality",
+   "sect": "gumu",
+   "tier": "BREACH",
+   "kind": "STATE",
+   "ok_if": [
+    {
+     "type": "morality_min",
+     "value": -500
+    }
+   ],
+   "text": "rule_gm_morality",
+   "era": "1.0A",
+   "src": "verified",
+   "src_note": "2001-08-16 叛派條件 善惡 < −500（17173 n315_231423）"
+  },
+  {
+   "id": "gm_r_killing",
+   "sect": "gumu",
+   "tier": "BREACH",
+   "kind": "STATE",
+   "ok_if": [
+    {
+     "type": "killing_intent_max",
+     "value": 2000
+    }
+   ],
+   "text": "rule_gm_killing",
+   "era": "1.0A",
+   "src": "verified",
+   "src_note": "news 141（2001-08-07）古墓叛派 殺氣 > 2000"
+  },
+  {
+   "id": "gm_r_pk",
+   "sect": "gumu",
+   "tier": "BREACH",
+   "kind": "STATE",
+   "ok_if": [
+    {
+     "type": "pk_max",
+     "value": 3
+    }
+   ],
+   "text": "rule_gm_pk",
+   "era": "1.0A",
+   "src": "verified",
+   "src_note": "news 141（2001-08-07）古墓叛派 PK > 3"
+  }
+ ],
+ "regions": [
+  {
+   "id": "gumu",
+   "name": "古墓派",
+   "type": "SECT",
+   "city": "dali",
+   "map": "res://data/maps/gumu.json",
+   "world_pos": [
+    750,
+    455
+   ],
+   "suggested_xp": [
+    0,
+    0
+   ],
+   "pk_allowed": false,
+   "birth_allowed": false,
+   "birth_room": "",
+   "night_closed": [],
+   "era": "1.0A",
+   "src": "later",
+   "src_note": "終南山活死人墓【已證實】；座標 17990,10918 出自後期版"
+  },
+  {
+   "id": "gumu_maze",
+   "name": "活死人墓迷宮",
+   "type": "DUNGEON",
+   "city": "dali",
+   "map": "res://data/maps/gumu_maze.json",
+   "world_pos": [
+    762,
+    468
+   ],
+   "suggested_xp": [
+    60000,
+    120000
+   ],
+   "pk_allowed": true,
+   "birth_allowed": false,
+   "birth_room": "",
+   "night_closed": [],
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "墓內是迷宮、強闖一路高機率遇敵、不能逃（2001 官方頁、17173 2001-07-05）；2002 攻略 6.5 萬–12 萬實戰練功點"
+  }
+ ],
+ "maps": {
+  "gumu": {
+   "region_id": "gumu",
+   "era": "1.0A",
+   "src": "proposal",
+   "desc": "終南山後的活死人墓，古墓派代代隱居於此，弟子終生少有離開。",
+   "escape_tiles_hint": 2,
+   "rooms": [
+    {
+     "id": "gm_entrance",
+     "name": "活死人墓入口",
+     "desc": "終南山後山的密林深處，一塊大石碑半埋在亂草裡，碑後是一道黑沉沉的墓門。白髮的孫婆婆守在門邊，查小鏞在一旁的樹下記事。往西回終南山後山。",
+     "exits": [
+      {
+       "dir": "W",
+       "to": "zn_backhill"
+      },
+      {
+       "dir": "IN",
+       "to": "gm_mz_1"
+      }
+     ],
+     "npcs": [
+      "n_gm_cha",
+      "n_gm_sunpopo"
+     ],
+     "features": [],
+     "requires": []
+    },
+    {
+     "id": "gm_hall",
+     "name": "古墓正廳",
+     "desc": "墓室高大寬敞，四壁點著長明燈，石桌石椅一塵不染。古墓派掌門人在此收徒傳藝；往外是迷宮般的墓道。",
+     "exits": [
+      {
+       "dir": "OUT",
+       "to": "gm_mz_4"
+      },
+      {
+       "dir": "E",
+       "to": "gm_lianwu"
+      },
+      {
+       "dir": "W",
+       "to": "gm_food"
+      },
+      {
+       "dir": "N",
+       "to": "gm_xiaolongnu"
+      }
+     ],
+     "npcs": [
+      "n_gm_zhangmen",
+      "n_gm_yinlu"
+     ],
+     "features": [],
+     "requires": []
+    },
+    {
+     "id": "gm_lianwu",
+     "name": "練功室",
+     "desc": "石室頂上垂著一條繩索，地上畫著九宮格。師姊們在這裡指點基本武學，也陪新入門的弟子對招。南邊有一道石門通往石室。",
+     "exits": [
+      {
+       "dir": "W",
+       "to": "gm_hall"
+      },
+      {
+       "dir": "S",
+       "to": "gm_shishi"
+      }
+     ],
+     "npcs": [
+      "n_gm_dashijie",
+      "n_gm_spar"
+     ],
+     "features": [],
+     "requires": [
+      {
+       "type": "any_of",
+       "options": [
+        [
+         {
+          "type": "sect",
+          "sect": "gumu"
+         }
+        ],
+        [
+         {
+          "type": "no_sect"
+         },
+         {
+          "type": "gender",
+          "value": "F"
+         },
+         {
+          "type": "morality_min",
+          "value": -299
+         },
+         {
+          "type": "morality_max",
+          "value": 299
+         },
+         {
+          "type": "not_enemy_of",
+          "sect": "gumu"
+         }
+        ]
+       ]
+      }
+     ]
+    },
+    {
+     "id": "gm_food",
+     "name": "送飯石室",
+     "desc": "石室裡擺著一口大陶缸和幾疊粗碗，卯、午、酉三個時辰，送飯的弟子會在這裡分發飯食，來者不拒。往北是墓後的花園。",
+     "exits": [
+      {
+       "dir": "E",
+       "to": "gm_hall"
+      },
+      {
+       "dir": "N",
+       "to": "gm_huayuan"
+      }
+     ],
+     "npcs": [
+      "n_gm_songfan"
+     ],
+     "features": [
+      "STOVE"
+     ],
+     "requires": []
+    },
+    {
+     "id": "gm_huayuan",
+     "name": "墓後花園",
+     "desc": "墓後一塊隱密的園子，種著花樹與菜蔬，蜂巢裡的玉蜂嗡嗡飛舞。一道山泉從石縫間流過。",
+     "exits": [
+      {
+       "dir": "S",
+       "to": "gm_food"
+      }
+     ],
+     "npcs": [],
+     "features": [
+      "FIELD",
+      "WATER"
+     ],
+     "requires": [
+      {
+       "type": "any_of",
+       "options": [
+        [
+         {
+          "type": "sect",
+          "sect": "gumu"
+         }
+        ],
+        [
+         {
+          "type": "no_sect"
+         },
+         {
+          "type": "gender",
+          "value": "F"
+         },
+         {
+          "type": "morality_min",
+          "value": -299
+         },
+         {
+          "type": "morality_max",
+          "value": 299
+         },
+         {
+          "type": "not_enemy_of",
+          "sect": "gumu"
+         }
+        ]
+       ]
+      }
+     ]
+    },
+    {
+     "id": "gm_xiaolongnu",
+     "name": "小龍女居室",
+     "desc": "室中只有一張石床、一盞油燈，素淨得不像有人居住。白衣的小龍女靜坐其中，傳授本門上乘武功。東邊寒氣逼人，西邊是小梅的房間。",
+     "exits": [
+      {
+       "dir": "S",
+       "to": "gm_hall"
+      },
+      {
+       "dir": "E",
+       "to": "gm_hanyu"
+      },
+      {
+       "dir": "W",
+       "to": "gm_xiaomei"
+      }
+     ],
+     "npcs": [
+      "n_gm_xiaolongnu"
+     ],
+     "features": [],
+     "requires": [
+      {
+       "type": "any_of",
+       "options": [
+        [
+         {
+          "type": "sect",
+          "sect": "gumu"
+         }
+        ],
+        [
+         {
+          "type": "no_sect"
+         },
+         {
+          "type": "gender",
+          "value": "F"
+         },
+         {
+          "type": "morality_min",
+          "value": -299
+         },
+         {
+          "type": "morality_max",
+          "value": 299
+         },
+         {
+          "type": "not_enemy_of",
+          "sect": "gumu"
+         }
+        ]
+       ]
+      }
+     ]
+    },
+    {
+     "id": "gm_hanyu",
+     "name": "寒玉床石室",
+     "desc": "石室正中放著一張寒玉床，寒氣森森，在上面打坐練功事半功倍，只是精氣神也耗得極快。",
+     "exits": [
+      {
+       "dir": "W",
+       "to": "gm_xiaolongnu"
+      }
+     ],
+     "npcs": [
+      "n_gm_hanyu"
+     ],
+     "features": [],
+     "requires": [
+      {
+       "type": "any_of",
+       "options": [
+        [
+         {
+          "type": "sect",
+          "sect": "gumu"
+         }
+        ],
+        [
+         {
+          "type": "no_sect"
+         },
+         {
+          "type": "gender",
+          "value": "F"
+         },
+         {
+          "type": "morality_min",
+          "value": -299
+         },
+         {
+          "type": "morality_max",
+          "value": 299
+         },
+         {
+          "type": "not_enemy_of",
+          "sect": "gumu"
+         }
+        ]
+       ]
+      }
+     ],
+     "meditate": {
+      "mult": 1.5,
+      "drain_pct": 0.05
+     }
+    },
+    {
+     "id": "gm_xiaomei",
+     "name": "小梅的房間",
+     "desc": "小小的石室收拾得整整齊齊，床頭插著一枝梅花。小梅常在這裡陪師妹們練習清心的功夫。",
+     "exits": [
+      {
+       "dir": "E",
+       "to": "gm_xiaolongnu"
+      }
+     ],
+     "npcs": [
+      "n_gm_xiaomei"
+     ],
+     "features": [],
+     "requires": [
+      {
+       "type": "any_of",
+       "options": [
+        [
+         {
+          "type": "sect",
+          "sect": "gumu"
+         }
+        ],
+        [
+         {
+          "type": "no_sect"
+         },
+         {
+          "type": "gender",
+          "value": "F"
+         },
+         {
+          "type": "morality_min",
+          "value": -299
+         },
+         {
+          "type": "morality_max",
+          "value": 299
+         },
+         {
+          "type": "not_enemy_of",
+          "sect": "gumu"
+         }
+        ]
+       ]
+      }
+     ]
+    },
+    {
+     "id": "gm_shishi",
+     "name": "石室",
+     "desc": "一間沒有窗戶的小石室，只有牆角一盞油燈。犯了門規的弟子被關在這裡面壁思過。",
+     "exits": [
+      {
+       "dir": "N",
+       "to": "gm_lianwu"
+      }
+     ],
+     "npcs": [
+      "n_gm_jailer"
+     ],
+     "features": [],
+     "requires": [
+      {
+       "type": "sect",
+       "sect": "gumu"
+      }
+     ],
+     "jail": true
+    }
+   ]
+  },
+  "gumu_maze": {
+   "region_id": "gumu_maze",
+   "era": "1.0A",
+   "src": "proposal",
+   "desc": "活死人墓的墓道迷宮，岔路重重，蝙蝠、玉蜂與盜墓賊出沒；古墓弟子有人帶路，外人只能硬闖。",
+   "escape_tiles_hint": 2,
+   "rooms": [
+    {
+     "id": "gm_mz_1",
+     "name": "幽暗墓道",
+     "desc": "墓門後是一條漆黑的甬道，石壁濕滑，頭頂不時有蝙蝠撲翅掠過。往外可以出墓。",
+     "exits": [
+      {
+       "dir": "OUT",
+       "to": "gm_entrance"
+      },
+      {
+       "dir": "N",
+       "to": "gm_mz_2"
+      }
+     ],
+     "npcs": [],
+     "features": [],
+     "requires": [],
+     "encounter": {
+      "rate": 0.35,
+      "table": [
+       {
+        "monster": "m_gm_bianfu",
+        "w": 60,
+        "count": [
+         2,
+         4
+        ]
+       },
+       {
+        "monster": "m_gm_yufeng",
+        "w": 40,
+        "count": [
+         2,
+         3
+        ]
+       }
+      ]
+     },
+     "encounter_exempt": [
+      "gumu"
+     ]
+    },
+    {
+     "id": "gm_mz_2",
+     "name": "岔道石室",
+     "desc": "幾條一模一樣的甬道在這裡交會，牆上的記號早被磨平，不熟路的人很容易在此打轉。",
+     "exits": [
+      {
+       "dir": "S",
+       "to": "gm_mz_1"
+      },
+      {
+       "dir": "E",
+       "to": "gm_mz_3"
+      },
+      {
+       "dir": "W",
+       "to": "gm_mz_dead"
+      }
+     ],
+     "npcs": [],
+     "features": [],
+     "requires": [],
+     "encounter": {
+      "rate": 0.35,
+      "table": [
+       {
+        "monster": "m_gm_bianfu",
+        "w": 40,
+        "count": [
+         2,
+         4
+        ]
+       },
+       {
+        "monster": "m_gm_yufeng",
+        "w": 30,
+        "count": [
+         2,
+         4
+        ]
+       },
+       {
+        "monster": "m_gm_daomu",
+        "w": 25,
+        "count": [
+         2,
+         3
+        ]
+       },
+       {
+        "monster": "m_gm_hongningbo",
+        "w": 5,
+        "count": [
+         1,
+         1
+        ]
+       }
+      ]
+     },
+     "encounter_exempt": [
+      "gumu"
+     ]
+    },
+    {
+     "id": "gm_mz_dead",
+     "name": "死路石室",
+     "desc": "甬道走到這裡就斷了，地上散著幾具盜墓賊的枯骨和生鏽的鐵鏟。",
+     "exits": [
+      {
+       "dir": "E",
+       "to": "gm_mz_2"
+      }
+     ],
+     "npcs": [],
+     "features": [],
+     "requires": [],
+     "encounter": {
+      "rate": 0.35,
+      "table": [
+       {
+        "monster": "m_gm_bianfu",
+        "w": 40,
+        "count": [
+         2,
+         4
+        ]
+       },
+       {
+        "monster": "m_gm_yufeng",
+        "w": 30,
+        "count": [
+         2,
+         4
+        ]
+       },
+       {
+        "monster": "m_gm_daomu",
+        "w": 25,
+        "count": [
+         2,
+         3
+        ]
+       },
+       {
+        "monster": "m_gm_hongningbo",
+        "w": 5,
+        "count": [
+         1,
+         1
+        ]
+       }
+      ]
+     },
+     "encounter_exempt": [
+      "gumu"
+     ]
+    },
+    {
+     "id": "gm_mz_3",
+     "name": "斷龍石前",
+     "desc": "一塊萬斤巨石斜斜卡在甬道中，只留下側邊一道窄縫可以擠過去。石縫後隱約傳來流水聲。",
+     "exits": [
+      {
+       "dir": "W",
+       "to": "gm_mz_2"
+      },
+      {
+       "dir": "N",
+       "to": "gm_mz_4"
+      }
+     ],
+     "npcs": [],
+     "features": [],
+     "requires": [],
+     "encounter": {
+      "rate": 0.35,
+      "table": [
+       {
+        "monster": "m_gm_bianfu",
+        "w": 40,
+        "count": [
+         2,
+         4
+        ]
+       },
+       {
+        "monster": "m_gm_yufeng",
+        "w": 30,
+        "count": [
+         2,
+         4
+        ]
+       },
+       {
+        "monster": "m_gm_daomu",
+        "w": 25,
+        "count": [
+         2,
+         3
+        ]
+       },
+       {
+        "monster": "m_gm_hongningbo",
+        "w": 5,
+        "count": [
+         1,
+         1
+        ]
+       }
+      ]
+     },
+     "encounter_exempt": [
+      "gumu"
+     ]
+    },
+    {
+     "id": "gm_mz_4",
+     "name": "暗河石廊",
+     "desc": "石廊一側是地底暗河，水聲淙淙，寒氣逼人。廊盡頭透出長明燈的微光，再往裡就是古墓正廳。",
+     "exits": [
+      {
+       "dir": "S",
+       "to": "gm_mz_3"
+      },
+      {
+       "dir": "IN",
+       "to": "gm_hall"
+      }
+     ],
+     "npcs": [],
+     "features": [],
+     "requires": [],
+     "encounter": {
+      "rate": 0.35,
+      "table": [
+       {
+        "monster": "m_gm_bianfu",
+        "w": 40,
+        "count": [
+         2,
+         4
+        ]
+       },
+       {
+        "monster": "m_gm_yufeng",
+        "w": 30,
+        "count": [
+         2,
+         4
+        ]
+       },
+       {
+        "monster": "m_gm_daomu",
+        "w": 25,
+        "count": [
+         2,
+         3
+        ]
+       },
+       {
+        "monster": "m_gm_hongningbo",
+        "w": 5,
+        "count": [
+         1,
+         1
+        ]
+       }
+      ]
+     },
+     "encounter_exempt": [
+      "gumu"
+     ]
+    }
+   ]
+  }
+ },
+ "extra_rooms": {},
+ "exit_patches": [],
+ "npcs": [
+  {
+   "id": "n_gm_cha",
+   "name": "查小鏞",
+   "kind": "FUNC",
+   "region": "gumu",
+   "room": "gm_entrance",
+   "alignment": "GOOD",
+   "talk": "talk_n_gm_cha",
+   "services": [
+    "RESPAWN"
+   ],
+   "night_closed": false,
+   "desc": "在活死人墓外的樹下替江湖人記錄落腳處的老先生。",
+   "era": "1.0A",
+   "src": "later"
+  },
+  {
+   "id": "n_gm_sunpopo",
+   "name": "孫婆婆",
+   "kind": "FUNC",
+   "region": "gumu",
+   "room": "gm_entrance",
+   "alignment": "GOOD",
+   "talk": "talk_n_gm_sunpopo",
+   "services": [
+    "GUIDE"
+   ],
+   "night_closed": false,
+   "guide": {
+    "to_room": "gm_hall",
+    "requires": [
+     {
+      "type": "any_of",
+      "options": [
+       [
+        {
+         "type": "sect",
+         "sect": "gumu"
+        }
+       ],
+       [
+        {
+         "type": "no_sect"
+        },
+        {
+         "type": "gender",
+         "value": "F"
+        },
+        {
+         "type": "morality_min",
+         "value": -299
+        },
+        {
+         "type": "morality_max",
+         "value": 299
+        },
+        {
+         "type": "not_enemy_of",
+         "sect": "gumu"
+        }
+       ]
+      ]
+     }
+    ]
+   },
+   "src_note": "2001 官方頁：孫婆婆講解門規、守門；外人經孫婆婆入墓拜師；攻擊孫婆婆成為古墓公敵（M3b）",
+   "desc": "古墓派的老僕婦，守著墓門，向來客講解本門規矩，也替想拜師的姑娘帶路進墓。",
+   "era": "1.0A",
+   "src": "verified"
+  },
+  {
+   "id": "n_gm_zhangmen",
+   "name": "古墓派掌門人",
+   "kind": "MASTER",
+   "region": "gumu",
+   "room": "gm_hall",
+   "alignment": "GOOD",
+   "talk": "talk_n_gm_zhangmen",
+   "services": [
+    "JOIN",
+    "BETRAY",
+    "TEACH"
+   ],
+   "night_closed": false,
+   "join_sect": "gumu",
+   "src_note": "2001 官方頁：掌門人是通稱、沒有名字；收徒、教清心與武功；後期官方門規頁的執法者",
+   "desc": "一身白衣的古墓派掌門人，神情冷淡，收徒並傳授清心與本門入門武功。",
+   "era": "1.0A",
+   "src": "verified"
+  },
+  {
+   "id": "n_gm_yinlu",
+   "name": "引路弟子",
+   "kind": "FUNC",
+   "region": "gumu",
+   "room": "gm_hall",
+   "alignment": "GOOD",
+   "talk": "talk_n_gm_yinlu",
+   "services": [
+    "GUIDE"
+   ],
+   "night_closed": false,
+   "guide": {
+    "to_room": "gm_entrance",
+    "requires": [
+     {
+      "type": "sect",
+      "sect": "gumu"
+     }
+    ]
+   },
+   "src_note": "2001 官方頁「迷宮內可享有專人帶路」；NPC 名稱設計提案",
+   "desc": "熟悉墓道的古墓弟子，專門替同門帶路出入迷宮。",
+   "era": "1.0A",
+   "src": "verified"
+  },
+  {
+   "id": "n_gm_xiaolongnu",
+   "name": "小龍女",
+   "kind": "MASTER",
+   "region": "gumu",
+   "room": "gm_xiaolongnu",
+   "alignment": "GOOD",
+   "talk": "talk_n_gm_xiaolongnu",
+   "services": [
+    "TEACH"
+   ],
+   "night_closed": false,
+   "src_note": "2001 官方頁：小龍女教全部古墓武功，玉女素心劍法、銀索金鈴只有她教",
+   "desc": "肌膚勝雪、不食人間煙火的白衣少女，傳授玉女心經、銀索金鈴等上乘武功。",
+   "era": "1.0A",
+   "src": "verified"
+  },
+  {
+   "id": "n_gm_dashijie",
+   "name": "古墓大師姊",
+   "kind": "MASTER",
+   "region": "gumu",
+   "room": "gm_lianwu",
+   "alignment": "GOOD",
+   "talk": "talk_n_gm_dashijie",
+   "services": [
+    "TEACH"
+   ],
+   "night_closed": false,
+   "src_note": "2001 官方頁「部分弟子協助練功」；人名設計提案",
+   "desc": "入門最早的師姊，負責指點師妹們的基本武學。",
+   "era": "1.0A",
+   "src": "proposal"
+  },
+  {
+   "id": "n_gm_spar",
+   "name": "陪練師姊",
+   "kind": "FUNC",
+   "region": "gumu",
+   "room": "gm_lianwu",
+   "alignment": "GOOD",
+   "talk": "talk_n_gm_spar",
+   "services": [
+    "FIGHT"
+   ],
+   "night_closed": false,
+   "fight": {
+    "monster": "m_gm_dizi",
+    "requires": [
+     {
+      "type": "sect",
+      "sect": "gumu"
+     }
+    ]
+   },
+   "src_note": "2001 官方頁：外功靠與古墓弟子對招練成",
+   "desc": "奉掌門之命陪新弟子對招的師姊。",
+   "era": "1.0A",
+   "src": "verified"
+  },
+  {
+   "id": "n_gm_songfan",
+   "name": "送飯弟子",
+   "kind": "FUNC",
+   "region": "gumu",
+   "room": "gm_food",
+   "alignment": "GOOD",
+   "talk": "talk_n_gm_songfan",
+   "services": [
+    "MEAL"
+   ],
+   "night_closed": false,
+   "meal": {
+    "food": 40,
+    "water": 40,
+    "hours": [
+     "卯",
+     "午",
+     "酉"
+    ]
+   },
+   "src_note": "2001 官方頁「卯時、午時、酉時會發放食物，任何人都可以向特定之弟子拿取」；份量設計提案",
+   "desc": "提著飯籃的古墓弟子，按時分發飯食，對外人也一樣客氣。",
+   "era": "1.0A",
+   "src": "verified"
+  },
+  {
+   "id": "n_gm_hanyu",
+   "name": "守床弟子",
+   "kind": "FUNC",
+   "region": "gumu",
+   "room": "gm_hanyu",
+   "alignment": "GOOD",
+   "talk": "talk_n_gm_hanyu",
+   "services": [],
+   "night_closed": false,
+   "src_note": "2001 官方頁：寒玉床旁的弟子教導用法",
+   "desc": "守在寒玉床邊的弟子，會教人怎麼在床上打坐而不傷身。",
+   "era": "1.0A",
+   "src": "verified"
+  },
+  {
+   "id": "n_gm_xiaomei",
+   "name": "小梅",
+   "kind": "FUNC",
+   "region": "gumu",
+   "room": "gm_xiaomei",
+   "alignment": "GOOD",
+   "talk": "talk_n_gm_xiaomei",
+   "services": [],
+   "night_closed": false,
+   "src_note": "小梅的房間約 2002 年才有（清心點擊）；M3a 只做對話",
+   "desc": "伶俐的古墓丫頭，常陪師妹們練清心。",
+   "era": "1.0A",
+   "src": "later"
+  },
+  {
+   "id": "n_gm_jailer",
+   "name": "看守師姊",
+   "kind": "FUNC",
+   "region": "gumu",
+   "room": "gm_shishi",
+   "alignment": "GOOD",
+   "talk": "talk_n_gm_jailer",
+   "services": [
+    "JAIL"
+   ],
+   "night_closed": false,
+   "desc": "板著臉的師姊，看管在石室裡思過的弟子。",
+   "era": "1.0A",
+   "src": "proposal"
+  }
+ ],
+ "masters": [
+  {
+   "id": "ms_gm_zhangmen_qingxin",
+   "npc_id": "n_gm_zhangmen",
+   "skill_id": "qingxin",
+   "cap": 50,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "gumu"
+    }
+   ],
+   "era": "1.0A",
+   "src": "verified"
+  },
+  {
+   "id": "ms_gm_zhangmen_xinfa",
+   "npc_id": "n_gm_zhangmen",
+   "skill_id": "gm_xinfa",
+   "cap": 100,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "gumu"
+    }
+   ],
+   "era": "1.0A",
+   "src": "verified"
+  },
+  {
+   "id": "ms_gm_zhangmen_yunu_jian",
+   "npc_id": "n_gm_zhangmen",
+   "skill_id": "gm_yunu_jian",
+   "cap": 100,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "gumu"
+    }
+   ],
+   "era": "1.0A",
+   "src": "verified"
+  },
+  {
+   "id": "ms_gm_zhangmen_meinu",
+   "npc_id": "n_gm_zhangmen",
+   "skill_id": "gm_meinu",
+   "cap": 100,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "gumu"
+    }
+   ],
+   "era": "1.0A",
+   "src": "verified"
+  },
+  {
+   "id": "ms_gm_zhangmen_tianluo_shen",
+   "npc_id": "n_gm_zhangmen",
+   "skill_id": "gm_tianluo_shen",
+   "cap": 100,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "gumu"
+    }
+   ],
+   "era": "1.0A",
+   "src": "verified"
+  },
+  {
+   "id": "ms_gm_zhangmen_qzjianfa",
+   "npc_id": "n_gm_zhangmen",
+   "skill_id": "qz_jianfa",
+   "cap": 100,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "gumu"
+    },
+    {
+     "type": "skill_min",
+     "skill": "qingxin",
+     "value": 10
+    }
+   ],
+   "era": "1.0A",
+   "src": "verified"
+  },
+  {
+   "id": "ms_gm_zhangmen_yunu_xinjing",
+   "npc_id": "n_gm_zhangmen",
+   "skill_id": "gm_yunu_xinjing",
+   "cap": 60,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "gumu"
+    }
+   ],
+   "era": "1.0A",
+   "src": "verified"
+  },
+  {
+   "id": "ms_gm_zhangmen_tianluo_zhang",
+   "npc_id": "n_gm_zhangmen",
+   "skill_id": "gm_tianluo_zhang",
+   "cap": 60,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "gumu"
+    }
+   ],
+   "era": "1.0A",
+   "src": "verified"
+  },
+  {
+   "id": "ms_gm_zhangmen_yingfeng",
+   "npc_id": "n_gm_zhangmen",
+   "skill_id": "gm_yingfeng",
+   "cap": 60,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "gumu"
+    }
+   ],
+   "era": "1.0A",
+   "src": "verified"
+  },
+  {
+   "id": "ms_gm_xiaolongnu_qingxin",
+   "npc_id": "n_gm_xiaolongnu",
+   "skill_id": "qingxin",
+   "cap": 100,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "gumu"
+    },
+    {
+     "type": "skill_min",
+     "skill": "qingxin",
+     "value": 50
+    }
+   ],
+   "era": "1.0A",
+   "src": "verified"
+  },
+  {
+   "id": "ms_gm_xiaolongnu_yunu_xinjing",
+   "npc_id": "n_gm_xiaolongnu",
+   "skill_id": "gm_yunu_xinjing",
+   "cap": 100,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "gumu"
+    }
+   ],
+   "era": "1.0A",
+   "src": "verified"
+  },
+  {
+   "id": "ms_gm_xiaolongnu_tianluo_zhang",
+   "npc_id": "n_gm_xiaolongnu",
+   "skill_id": "gm_tianluo_zhang",
+   "cap": 100,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "gumu"
+    }
+   ],
+   "era": "1.0A",
+   "src": "verified"
+  },
+  {
+   "id": "ms_gm_xiaolongnu_yingfeng",
+   "npc_id": "n_gm_xiaolongnu",
+   "skill_id": "gm_yingfeng",
+   "cap": 80,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "gumu"
+    }
+   ],
+   "era": "1.0A",
+   "src": "verified"
+  },
+  {
+   "id": "ms_gm_xiaolongnu_yinsuo",
+   "npc_id": "n_gm_xiaolongnu",
+   "skill_id": "gm_yinsuo",
+   "cap": 100,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "gumu"
+    }
+   ],
+   "era": "1.0A",
+   "src": "verified"
+  },
+  {
+   "id": "ms_gm_xiaolongnu_suxin",
+   "npc_id": "n_gm_xiaolongnu",
+   "skill_id": "gm_suxin",
+   "cap": 100,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "gumu"
+    }
+   ],
+   "era": "1.0A",
+   "src": "verified"
+  },
+  {
+   "id": "ms_gm_dashijie_binner",
+   "npc_id": "n_gm_dashijie",
+   "skill_id": "basic_inner",
+   "cap": 140,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "gumu"
+    }
+   ],
+   "era": "1.0A",
+   "src": "later"
+  },
+  {
+   "id": "ms_gm_dashijie_bparry",
+   "npc_id": "n_gm_dashijie",
+   "skill_id": "basic_parry",
+   "cap": 140,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "gumu"
+    }
+   ],
+   "era": "1.0A",
+   "src": "later"
+  },
+  {
+   "id": "ms_gm_dashijie_bdodge",
+   "npc_id": "n_gm_dashijie",
+   "skill_id": "basic_dodge",
+   "cap": 140,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "gumu"
+    }
+   ],
+   "era": "1.0A",
+   "src": "later"
+  },
+  {
+   "id": "ms_gm_dashijie_bbody",
+   "npc_id": "n_gm_dashijie",
+   "skill_id": "basic_body",
+   "cap": 140,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "gumu"
+    }
+   ],
+   "era": "1.0A",
+   "src": "later"
+  },
+  {
+   "id": "ms_gm_dashijie_bsword",
+   "npc_id": "n_gm_dashijie",
+   "skill_id": "basic_sword",
+   "cap": 140,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "gumu"
+    }
+   ],
+   "era": "1.0A",
+   "src": "later"
+  },
+  {
+   "id": "ms_gm_dashijie_bfist",
+   "npc_id": "n_gm_dashijie",
+   "skill_id": "basic_fist",
+   "cap": 140,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "gumu"
+    }
+   ],
+   "era": "1.0A",
+   "src": "later"
+  },
+  {
+   "id": "ms_gm_dashijie_bwhip",
+   "npc_id": "n_gm_dashijie",
+   "skill_id": "basic_whip",
+   "cap": 140,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "gumu"
+    }
+   ],
+   "era": "1.0A",
+   "src": "later"
+  }
+ ],
+ "martial_arts": [
+  {
+   "id": "gm_xinfa",
+   "name": "古墓心法",
+   "sect_id": "gumu",
+   "category": "INNER",
+   "base_skill": "basic_inner",
+   "difficulty": 0.9,
+   "tier": "BASIC",
+   "self_study_until": 0,
+   "self_study_cap": 0,
+   "party_size": 0,
+   "monster_only": false,
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "gumu"
+    }
+   ],
+   "inner": {
+    "heal_mult": 1.0,
+    "expel_mult": 1.0
+   },
+   "desc": "古墓派入門內功，心如止水，清寂自守。",
+   "era": "1.0A",
+   "src": "verified",
+   "src_note": "2001 官方頁：基本武功；掌門／小龍女教；係數設計提案",
+   "moves": []
+  },
+  {
+   "id": "gm_yunu_jian",
+   "name": "玉女劍法",
+   "sect_id": "gumu",
+   "category": "SWORD",
+   "base_skill": "basic_sword",
+   "difficulty": 0.96,
+   "tier": "BASIC",
+   "self_study_until": 0,
+   "self_study_cap": 0,
+   "party_size": 0,
+   "monster_only": false,
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "gumu"
+    }
+   ],
+   "desc": "林朝英所創的劍法，招式輕盈飄逸，一劍之間籠罩對手周身。",
+   "era": "1.0A",
+   "src": "verified",
+   "src_note": "2001 官方頁：基本武功；形狀小十字（gaoshou/32）；係數 0.96（早期粉絲表，後期 1.12）",
+   "moves": [
+    {
+     "id": "gm_yn_1",
+     "name": "浪跡天涯",
+     "unlock_level": 1,
+     "power": 20,
+     "range": 1,
+     "aoe": "CROSS",
+     "cost_inner": 0,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "move_sword_cross",
+     "src": "proposal"
+    },
+    {
+     "id": "gm_yn_2",
+     "name": "花前月下",
+     "unlock_level": 30,
+     "power": 27,
+     "range": 2,
+     "aoe": "CROSS",
+     "cost_inner": 6,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "move_sword_cross",
+     "src": "proposal"
+    },
+    {
+     "id": "gm_yn_3",
+     "name": "清飲小酌",
+     "unlock_level": 60,
+     "power": 36,
+     "range": 2,
+     "aoe": "CROSS",
+     "cost_inner": 12,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "move_sword_cross",
+     "src": "proposal"
+    }
+   ]
+  },
+  {
+   "id": "gm_meinu",
+   "name": "美女拳法",
+   "sect_id": "gumu",
+   "category": "FIST",
+   "base_skill": "basic_fist",
+   "difficulty": 0.86,
+   "tier": "BASIC",
+   "self_study_until": 0,
+   "self_study_cap": 0,
+   "party_size": 0,
+   "monster_only": false,
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "gumu"
+    },
+    {
+     "type": "skill_min",
+     "skill": "qingxin",
+     "value": 5
+    }
+   ],
+   "desc": "每一招都化自古代美女的姿態，出拳婀娜卻暗藏勁力，拳勁直線遠送。",
+   "era": "1.0A",
+   "src": "verified",
+   "src_note": "2001 官方頁：基本武功；形狀直線（gaoshou/32，射程約 4【待考證】）；係數 0.86 為後期免費版",
+   "moves": [
+    {
+     "id": "gm_mn_1",
+     "name": "貴妃回眸",
+     "unlock_level": 1,
+     "power": 18,
+     "range": 3,
+     "aoe": "LINE",
+     "cost_inner": 0,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "move_fist_basic",
+     "src": "proposal"
+    },
+    {
+     "id": "gm_mn_2",
+     "name": "西施捧心",
+     "unlock_level": 30,
+     "power": 26,
+     "range": 4,
+     "aoe": "LINE",
+     "cost_inner": 6,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "move_fist_basic",
+     "src": "proposal"
+    },
+    {
+     "id": "gm_mn_3",
+     "name": "紅玉擊鼓",
+     "unlock_level": 60,
+     "power": 34,
+     "range": 4,
+     "aoe": "LINE",
+     "cost_inner": 12,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "move_fist_basic",
+     "src": "proposal"
+    }
+   ]
+  },
+  {
+   "id": "gm_tianluo_shen",
+   "name": "天羅地網勢身法",
+   "sect_id": "gumu",
+   "category": "LIGHTNESS",
+   "base_skill": "basic_body",
+   "difficulty": 0.84,
+   "tier": "BASIC",
+   "self_study_until": 0,
+   "self_study_cap": 0,
+   "party_size": 0,
+   "monster_only": false,
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "gumu"
+    },
+    {
+     "type": "skill_min",
+     "skill": "qingxin",
+     "value": 5
+    }
+   ],
+   "desc": "源自捕捉麻雀的身法，身形翻飛，四面八方都是自己的影子。",
+   "era": "1.0A",
+   "src": "verified",
+   "src_note": "2001 官方頁：基本輕功（天羅地網勢身法）；係數 0.84 為後期免費版",
+   "moves": []
+  },
+  {
+   "id": "gm_yunu_xinjing",
+   "name": "玉女心經",
+   "sect_id": "gumu",
+   "category": "INNER",
+   "base_skill": "basic_inner",
+   "difficulty": 1.2,
+   "tier": "ADVANCED",
+   "self_study_until": 0,
+   "self_study_cap": 0,
+   "party_size": 0,
+   "monster_only": false,
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "gumu"
+    },
+    {
+     "type": "skill_min",
+     "skill": "qingxin",
+     "value": 30
+    },
+    {
+     "type": "skill_min",
+     "skill": "gm_xinfa",
+     "value": 40
+    }
+   ],
+   "inner": {
+    "heal_mult": 1.2,
+    "expel_mult": 1.2
+   },
+   "desc": "古墓派上乘內功，專克全真武功，練成後內力綿長。",
+   "era": "1.0A",
+   "src": "verified",
+   "src_note": "2001 官方頁：進階內功；門檻與係數設計提案（後期免費版係數 2.95、農田雙修）",
+   "moves": []
+  },
+  {
+   "id": "gm_tianluo_zhang",
+   "name": "天羅地網勢掌法",
+   "sect_id": "gumu",
+   "category": "FIST",
+   "base_skill": "basic_fist",
+   "difficulty": 1.0,
+   "tier": "ADVANCED",
+   "self_study_until": 0,
+   "self_study_cap": 0,
+   "party_size": 0,
+   "monster_only": false,
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "gumu"
+    },
+    {
+     "type": "skill_min",
+     "skill": "qingxin",
+     "value": 30
+    },
+    {
+     "type": "skill_min",
+     "skill": "gm_meinu",
+     "value": 40
+    }
+   ],
+   "desc": "雙掌翻飛如網，把身周的敵人都罩在掌影之中，攻守兼備。",
+   "era": "1.0A",
+   "src": "verified",
+   "src_note": "2001 官方頁：進階外功（天羅地網勢掌法）；招式形狀【待考證】；後期免費版需清心 70",
+   "moves": [
+    {
+     "id": "gm_tlz_1",
+     "name": "網羅八方",
+     "unlock_level": 1,
+     "power": 34,
+     "range": 1,
+     "aoe": "SINGLE",
+     "cost_inner": 6,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "move_fist_basic",
+     "src": "proposal"
+    },
+    {
+     "id": "gm_tlz_2",
+     "name": "天羅罩頂",
+     "unlock_level": 40,
+     "power": 36,
+     "range": 1,
+     "aoe": "AROUND",
+     "cost_inner": 12,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "move_fist_basic",
+     "src": "proposal"
+    },
+    {
+     "id": "gm_tlz_3",
+     "name": "地網難逃",
+     "unlock_level": 70,
+     "power": 56,
+     "range": 1,
+     "aoe": "SINGLE",
+     "cost_inner": 20,
+     "cost_jing": 0,
+     "status": "paralysis",
+     "status_chance": 0.15,
+     "flavor": "move_fist_basic",
+     "src": "proposal"
+    }
+   ]
+  },
+  {
+   "id": "gm_yingfeng",
+   "name": "迎風拂柳步",
+   "sect_id": "gumu",
+   "category": "LIGHTNESS",
+   "base_skill": "basic_body",
+   "difficulty": 1.0,
+   "tier": "ADVANCED",
+   "self_study_until": 0,
+   "self_study_cap": 0,
+   "party_size": 0,
+   "monster_only": false,
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "gumu"
+    },
+    {
+     "type": "skill_min",
+     "skill": "qingxin",
+     "value": 30
+    },
+    {
+     "type": "skill_min",
+     "skill": "gm_tianluo_shen",
+     "value": 40
+    }
+   ],
+   "desc": "步法如柳枝迎風，飄忽難測。",
+   "era": "1.0A",
+   "src": "verified",
+   "src_note": "2001 官方頁：進階輕功；上限 80 為後期免費版；門檻設計提案",
+   "moves": []
+  },
+  {
+   "id": "gm_yinsuo",
+   "name": "銀索金鈴",
+   "sect_id": "gumu",
+   "category": "WHIP",
+   "base_skill": "basic_whip",
+   "difficulty": 1.1,
+   "tier": "SPECIAL",
+   "self_study_until": 0,
+   "self_study_cap": 0,
+   "party_size": 0,
+   "monster_only": false,
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "gumu"
+    },
+    {
+     "type": "skill_min",
+     "skill": "qingxin",
+     "value": 50
+    },
+    {
+     "type": "skill_min",
+     "skill": "basic_whip",
+     "value": 40
+    }
+   ],
+   "desc": "銀絲軟索末端繫著金鈴，鈴聲擾敵心神，金球專打穴道。",
+   "era": "1.0A",
+   "src": "verified",
+   "src_note": "2001 官方頁：特殊武功，只有小龍女教；後期免費版需清心 70、米字 36 格（本作以半米字代替）；門檻設計提案",
+   "moves": [
+    {
+     "id": "gm_ys_1",
+     "name": "金鈴索命",
+     "unlock_level": 1,
+     "power": 32,
+     "range": 2,
+     "aoe": "SINGLE",
+     "cost_inner": 8,
+     "cost_jing": 0,
+     "status": "paralysis",
+     "status_chance": 0.1,
+     "flavor": "move_whip_fan",
+     "src": "proposal"
+    },
+    {
+     "id": "gm_ys_2",
+     "name": "銀索飛舞",
+     "unlock_level": 40,
+     "power": 38,
+     "range": 3,
+     "aoe": "FAN",
+     "cost_inner": 16,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "move_whip_fan",
+     "src": "proposal"
+    },
+    {
+     "id": "gm_ys_3",
+     "name": "鈴響魂飛",
+     "unlock_level": 80,
+     "power": 64,
+     "range": 3,
+     "aoe": "SINGLE",
+     "cost_inner": 28,
+     "cost_jing": 0,
+     "status": "paralysis",
+     "status_chance": 0.2,
+     "flavor": "move_whip_fan",
+     "src": "proposal"
+    }
+   ]
+  },
+  {
+   "id": "gm_suxin",
+   "name": "玉女素心劍法",
+   "sect_id": "gumu",
+   "category": "SWORD",
+   "base_skill": "basic_sword",
+   "difficulty": 1.3,
+   "tier": "QUEST",
+   "self_study_until": 0,
+   "self_study_cap": 0,
+   "party_size": 2,
+   "monster_only": false,
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "gumu"
+    },
+    {
+     "type": "quest_flag",
+     "flag": "gm_suxin_unlocked"
+    },
+    {
+     "type": "skill_min",
+     "skill": "gm_yunu_jian",
+     "value": 60
+    }
+   ],
+   "combo": true,
+   "desc": "玉女劍法與全真劍法雙劍合璧，須一男一女心意相通方能施展。",
+   "era": "1.0A",
+   "src": "verified",
+   "src_note": "2001 官方頁：特殊武功，小龍女教；合體技（全真男＋古墓女、默契、3 秒內）；M3a 不開放，旗標鎖住",
+   "moves": [
+    {
+     "id": "gm_sx_1",
+     "name": "雙劍合璧",
+     "unlock_level": 1,
+     "power": 50,
+     "range": 1,
+     "aoe": "SINGLE",
+     "cost_inner": 20,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "move_sword_basic",
+     "src": "proposal"
+    },
+    {
+     "id": "gm_sx_2",
+     "name": "素心照影",
+     "unlock_level": 50,
+     "power": 70,
+     "range": 1,
+     "aoe": "SINGLE",
+     "cost_inner": 30,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "move_sword_basic",
+     "src": "proposal"
+    }
+   ]
+  },
+  {
+   "id": "gm_jiuyin",
+   "name": "九陰真經",
+   "sect_id": "gumu",
+   "category": "INNER",
+   "base_skill": "basic_inner",
+   "difficulty": 1.5,
+   "tier": "QUEST",
+   "self_study_until": 10,
+   "self_study_cap": 0,
+   "party_size": 0,
+   "monster_only": false,
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "gumu"
+    },
+    {
+     "type": "quest_flag",
+     "flag": "gm_jiuyin_read"
+    }
+   ],
+   "inner": {
+    "heal_mult": 1.3,
+    "expel_mult": 1.5
+   },
+   "desc": "刻在古墓石室頂上的武學總綱，沒有師父可教，只能自行參悟。",
+   "era": "1.0A",
+   "src": "verified",
+   "src_note": "2001 官方頁列為進階，但沒有教者；後期免費版係數 4.5、福緣 30 隱藏牆；取得方式【待考證】",
+   "moves": []
+  },
+  {
+   "id": "gm_mon_bianfu",
+   "name": "蝙蝠撲咬",
+   "sect_id": "",
+   "category": "FIST",
+   "base_skill": "basic_fist",
+   "difficulty": 0.9,
+   "tier": "BASIC",
+   "self_study_until": 0,
+   "self_study_cap": 0,
+   "party_size": 0,
+   "monster_only": true,
+   "requires": [],
+   "desc": "墓中蝙蝠成群撲咬。",
+   "era": "1.0A",
+   "src": "proposal",
+   "moves": [
+    {
+     "id": "gm_mon_bianfu_1",
+     "name": "撲咬",
+     "unlock_level": 1,
+     "power": 20,
+     "range": 1,
+     "aoe": "SINGLE",
+     "cost_inner": 0,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "move_bite",
+     "src": "proposal"
+    }
+   ]
+  },
+  {
+   "id": "gm_mon_yufeng",
+   "name": "玉蜂螫刺",
+   "sect_id": "",
+   "category": "FIST",
+   "base_skill": "basic_fist",
+   "difficulty": 0.9,
+   "tier": "BASIC",
+   "self_study_until": 0,
+   "self_study_cap": 0,
+   "party_size": 0,
+   "monster_only": true,
+   "requires": [],
+   "desc": "玉蜂尾針帶毒。",
+   "era": "1.0A",
+   "src": "proposal",
+   "moves": [
+    {
+     "id": "gm_mon_yufeng_1",
+     "name": "螫刺",
+     "unlock_level": 1,
+     "power": 18,
+     "range": 1,
+     "aoe": "SINGLE",
+     "cost_inner": 0,
+     "cost_jing": 0,
+     "status": "poison",
+     "status_chance": 0.15,
+     "flavor": "move_gm_sting",
+     "src": "proposal"
+    }
+   ]
+  },
+  {
+   "id": "gm_mon_daomu",
+   "name": "盜墓刀法",
+   "sect_id": "",
+   "category": "BLADE",
+   "base_skill": "basic_blade",
+   "difficulty": 0.9,
+   "tier": "BASIC",
+   "self_study_until": 0,
+   "self_study_cap": 0,
+   "party_size": 0,
+   "monster_only": true,
+   "requires": [],
+   "desc": "盜墓賊的狠辣刀法。",
+   "era": "1.0A",
+   "src": "proposal",
+   "moves": [
+    {
+     "id": "gm_mon_daomu_1",
+     "name": "破棺劈",
+     "unlock_level": 1,
+     "power": 26,
+     "range": 1,
+     "aoe": "SINGLE",
+     "cost_inner": 0,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "move_blade_basic",
+     "src": "proposal"
+    }
+   ]
+  },
+  {
+   "id": "gm_mon_fuchen",
+   "name": "拂塵功",
+   "sect_id": "",
+   "category": "WHIP",
+   "base_skill": "basic_whip",
+   "difficulty": 0.9,
+   "tier": "BASIC",
+   "self_study_until": 0,
+   "self_study_cap": 0,
+   "party_size": 0,
+   "monster_only": true,
+   "requires": [],
+   "desc": "洪凌波學自李莫愁的拂塵功夫（僅限怪物）。",
+   "era": "1.0A",
+   "src": "proposal",
+   "moves": [
+    {
+     "id": "gm_mon_fuchen_1",
+     "name": "拂塵掃面",
+     "unlock_level": 1,
+     "power": 32,
+     "range": 2,
+     "aoe": "SINGLE",
+     "cost_inner": 0,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "move_gm_fuchen",
+     "src": "proposal"
+    }
+   ]
+  }
+ ],
+ "monsters": [
+  {
+   "id": "m_gm_dizi",
+   "name": "古墓弟子",
+   "short": "弟子",
+   "kind": "MONSTER",
+   "alignment": "GOOD",
+   "desc": "陪練師姊手下的古墓弟子，奉命與你對招。（設計提案）",
+   "stats": {
+    "qi": 220,
+    "neili": 25,
+    "jing": 120,
+    "str": 14,
+    "guts": 15,
+    "wit": 18,
+    "luck": 15,
+    "cal": 16,
+    "agi": 20,
+    "con": 15
+   },
+   "skills": {
+    "basic_dodge": 8,
+    "basic_parry": 8,
+    "basic_inner": 5,
+    "basic_sword": 8
+   },
+   "arts": [
+    {
+     "art": "gm_yunu_jian",
+     "level": 8
+    }
+   ],
+   "weapon_type": "SWORD",
+   "weapon_power": 4,
+   "armor_power": 6,
+   "combat_xp_ref": 300,
+   "combat_xp": 0,
+   "learn_points": 0,
+   "drops": [],
+   "money": {
+    "min": 0,
+    "max": 0
+   },
+   "morality_on_kill": 0,
+   "killing_intent_on_kill": 0,
+   "ai": "melee_basic",
+   "no_rewards": true,
+   "sect": "gumu",
+   "era": "1.0A",
+   "src": "proposal"
+  },
+  {
+   "id": "m_gm_guard",
+   "name": "古墓守墓弟子",
+   "short": "守墓",
+   "kind": "ELITE",
+   "alignment": "GOOD",
+   "desc": "奉掌門之命截殺古墓公敵的白衣弟子，劍法凌厲，下手毫不留情。（公敵入墓即戰：已證實；數值：設計提案）",
+   "stats": {
+    "qi": 3000,
+    "neili": 400,
+    "jing": 600,
+    "str": 30,
+    "guts": 30,
+    "wit": 26,
+    "luck": 22,
+    "cal": 30,
+    "agi": 34,
+    "con": 28
+   },
+   "skills": {
+    "basic_dodge": 90,
+    "basic_parry": 80,
+    "basic_inner": 60,
+    "basic_sword": 80
+   },
+   "arts": [
+    {
+     "art": "gm_yunu_jian",
+     "level": 80
+    }
+   ],
+   "weapon_type": "SWORD",
+   "weapon_power": 40,
+   "armor_power": 55,
+   "combat_xp_ref": 60000,
+   "combat_xp": 0,
+   "learn_points": 0,
+   "drops": [],
+   "money": {},
+   "morality_on_kill": 0,
+   "killing_intent_on_kill": 0,
+   "ai": "melee_basic",
+   "no_rewards": true,
+   "sect": "gumu",
+   "era": "1.0A",
+   "src": "verified"
+  },
+  {
+   "id": "m_gm_bianfu",
+   "name": "墓穴蝙蝠",
+   "short": "蝙蝠",
+   "kind": "MONSTER",
+   "alignment": "NEUTRAL",
+   "desc": "倒掛在墓頂的大蝙蝠，一受驚就成群撲下。（迷宮怪名稱：設計提案）",
+   "stats": {
+    "qi": 900,
+    "neili": 0,
+    "jing": 300,
+    "str": 20,
+    "guts": 20,
+    "wit": 10,
+    "luck": 15,
+    "cal": 18,
+    "agi": 40,
+    "con": 22
+   },
+   "skills": {
+    "basic_dodge": 70,
+    "basic_parry": 30,
+    "basic_inner": 0
+   },
+   "arts": [
+    {
+     "art": "gm_mon_bianfu",
+     "level": 50
+    }
+   ],
+   "weapon_type": "FIST",
+   "weapon_power": 0,
+   "armor_power": 40,
+   "combat_xp_ref": 65000,
+   "combat_xp": 120,
+   "learn_points": 40,
+   "drops": [],
+   "money": {
+    "min": 0,
+    "max": 10
+   },
+   "morality_on_kill": 0,
+   "killing_intent_on_kill": 0,
+   "ai": "melee_basic",
+   "no_rewards": false,
+   "era": "1.0A",
+   "src": "proposal"
+  },
+  {
+   "id": "m_gm_yufeng",
+   "name": "古墓玉蜂",
+   "short": "玉蜂",
+   "kind": "MONSTER",
+   "alignment": "NEUTRAL",
+   "desc": "通體淡白的大蜂，尾針帶毒，螫中後又癢又痛。（設計提案）",
+   "stats": {
+    "qi": 700,
+    "neili": 0,
+    "jing": 250,
+    "str": 18,
+    "guts": 22,
+    "wit": 10,
+    "luck": 15,
+    "cal": 20,
+    "agi": 45,
+    "con": 18
+   },
+   "skills": {
+    "basic_dodge": 80,
+    "basic_parry": 20,
+    "basic_inner": 0
+   },
+   "arts": [
+    {
+     "art": "gm_mon_yufeng",
+     "level": 55
+    }
+   ],
+   "weapon_type": "FIST",
+   "weapon_power": 0,
+   "armor_power": 30,
+   "combat_xp_ref": 80000,
+   "combat_xp": 140,
+   "learn_points": 45,
+   "drops": [
+    {
+     "item": "gm_fengmi",
+     "chance": 0.25,
+     "min": 1,
+     "max": 1
+    }
+   ],
+   "money": {
+    "min": 0,
+    "max": 0
+   },
+   "morality_on_kill": 0,
+   "killing_intent_on_kill": 0,
+   "ai": "melee_basic",
+   "no_rewards": false,
+   "era": "1.0A",
+   "src": "proposal"
+  },
+  {
+   "id": "m_gm_daomu",
+   "name": "盜墓賊",
+   "short": "盜墓賊",
+   "kind": "EVIL_NPC",
+   "alignment": "EVIL",
+   "desc": "聽說古墓裡藏有寶物而摸進來的盜墓賊，手持短刀，見人就砍。（「賊擾終南山」任務名稱已證實；此怪：設計提案）",
+   "stats": {
+    "qi": 1500,
+    "neili": 200,
+    "jing": 400,
+    "str": 26,
+    "guts": 26,
+    "wit": 18,
+    "luck": 18,
+    "cal": 24,
+    "agi": 30,
+    "con": 26
+   },
+   "skills": {
+    "basic_dodge": 70,
+    "basic_parry": 70,
+    "basic_inner": 40,
+    "basic_blade": 70
+   },
+   "arts": [
+    {
+     "art": "gm_mon_daomu",
+     "level": 60
+    }
+   ],
+   "weapon_type": "BLADE",
+   "weapon_power": 25,
+   "armor_power": 45,
+   "combat_xp_ref": 100000,
+   "combat_xp": 220,
+   "learn_points": 70,
+   "drops": [
+    {
+     "item": "c_qiyao",
+     "chance": 0.2,
+     "min": 1,
+     "max": 1
+    }
+   ],
+   "money": {
+    "min": 50,
+    "max": 150
+   },
+   "morality_on_kill": 3,
+   "killing_intent_on_kill": 5,
+   "ai": "melee_basic",
+   "no_rewards": false,
+   "era": "1.0A",
+   "src": "proposal"
+  },
+  {
+   "id": "m_gm_hongningbo",
+   "name": "洪凌波",
+   "short": "洪凌波",
+   "kind": "ELITE",
+   "alignment": "EVIL",
+   "desc": "赤練仙子李莫愁的弟子，手持拂塵，常在古墓附近窺伺，會加入墓中的戰鬥。（會參戰：已證實；數值：設計提案）",
+   "stats": {
+    "qi": 3500,
+    "neili": 600,
+    "jing": 800,
+    "str": 30,
+    "guts": 30,
+    "wit": 28,
+    "luck": 22,
+    "cal": 30,
+    "agi": 36,
+    "con": 30
+   },
+   "skills": {
+    "basic_dodge": 95,
+    "basic_parry": 90,
+    "basic_inner": 80,
+    "basic_whip": 90
+   },
+   "arts": [
+    {
+     "art": "gm_mon_fuchen",
+     "level": 90
+    }
+   ],
+   "weapon_type": "WHIP",
+   "weapon_power": 35,
+   "armor_power": 55,
+   "combat_xp_ref": 120000,
+   "combat_xp": 600,
+   "learn_points": 200,
+   "drops": [
+    {
+     "item": "c_qiyao",
+     "chance": 1.0,
+     "min": 1,
+     "max": 2
+    },
+    {
+     "item": "gm_fengmi",
+     "chance": 0.5,
+     "min": 1,
+     "max": 2
+    }
+   ],
+   "money": {
+    "min": 200,
+    "max": 500
+   },
+   "morality_on_kill": 5,
+   "killing_intent_on_kill": 10,
+   "ai": "melee_basic",
+   "no_rewards": false,
+   "era": "1.0A",
+   "src": "verified"
+  }
+ ],
+ "items": [
+  {
+   "id": "gm_fengmi",
+   "name": "玉蜂漿",
+   "tab": "OTHER",
+   "slot": "",
+   "atk": 0,
+   "def": 0,
+   "weight": 1,
+   "price": 120,
+   "stack": 99,
+   "spoil_days": 0,
+   "effects": [
+    {
+     "type": "restore",
+     "stat": "qi",
+     "value": 150
+    }
+   ],
+   "usable": true,
+   "usable_in_battle": true,
+   "no_sell": false,
+   "quest_item": false,
+   "desc": "古墓玉蜂所釀的蜂漿，清香甘甜，可以恢復 150 點氣。",
+   "era": "1.0A",
+   "src": "proposal"
+  }
+ ],
+ "quests": [],
+ "text_templates": [
+  {
+   "id": "talk_n_gm_cha",
+   "era": "1.0A",
+   "self": "{npc_name}拍拍身邊的樹幹：「這墓道進去容易出來難，先在我這兒記個落腳處吧。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_gm_sunpopo",
+   "era": "1.0A",
+   "self": "{npc_name}上下打量你：「本門只收心性中正、未曾婚配的姑娘，入門後守宮砂不可失、不可嫁人。想拜師的，婆婆帶你進去；硬闖墓道，可別怪裡頭的東西不客氣。」",
+   "src": "verified"
+  },
+  {
+   "id": "talk_n_gm_zhangmen",
+   "era": "1.0A",
+   "self": "{npc_name}淡淡地說：「古墓派弟子，終其一生多在墓中。清心是本門根基，清心不足，什麼武功都練不上去。」",
+   "src": "verified"
+  },
+  {
+   "id": "talk_n_gm_yinlu",
+   "era": "1.0A",
+   "self": "{npc_name}說：「墓道岔路多，同門要出去，跟著我走就是。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_gm_xiaolongnu",
+   "era": "1.0A",
+   "self": "{npc_name}眼也不抬：「玉女心經講究清心寡慾。你的清心若還淺，學了也是白學。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_gm_dashijie",
+   "era": "1.0A",
+   "self": "{npc_name}笑道：「師妹，根基要紮穩。內功、招架、閃躲、身法，還有劍、拳、鞭，我都可以教你。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_gm_spar",
+   "era": "1.0A",
+   "self": "{npc_name}抽出長劍：「掌門吩咐我陪你對招。外功要靠實打實地過招才練得出來。」",
+   "src": "verified"
+  },
+  {
+   "id": "talk_n_gm_songfan",
+   "era": "1.0A",
+   "self": "{npc_name}提著飯籃說：「卯時、午時、酉時開飯，不論是不是本門的人，來了就有一口熱飯。」",
+   "src": "verified"
+  },
+  {
+   "id": "talk_n_gm_hanyu",
+   "era": "1.0A",
+   "self": "{npc_name}說：「在寒玉床上打坐，內力進境比別處快得多；只是寒氣傷身，精氣神消耗得也快，可別硬撐。」",
+   "src": "verified"
+  },
+  {
+   "id": "talk_n_gm_xiaomei",
+   "era": "1.0A",
+   "self": "{npc_name}抿嘴一笑：「師姊說練清心要心如止水，我陪你一起靜坐吧。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_gm_jailer",
+   "era": "1.0A",
+   "self": "{npc_name}冷冷地說：「犯了門規就在這裡好好思過。要贖人，拿十萬兩來。」",
+   "src": "proposal"
+  },
+  {
+   "id": "rule_gm_morality",
+   "era": "1.0A",
+   "self": "你的善惡已低於 −500，違反古墓門規（善惡不可過低）。",
+   "src": "verified"
+  },
+  {
+   "id": "rule_gm_killing",
+   "era": "1.0A",
+   "self": "你的殺氣超過 2000，違反古墓門規（殺氣不可太重）。",
+   "src": "verified"
+  },
+  {
+   "id": "rule_gm_pk",
+   "era": "1.0A",
+   "self": "你的 PK 值超過 3，違反古墓門規。",
+   "src": "verified"
+  },
+  {
+   "id": "move_gm_sting",
+   "era": "1.0A",
+   "self": "你使出{art}「{move}」（{tenths}成力），螫中{def}的{part}！（-{dmg}）",
+   "target": "{atk}使出{art}「{move}」，尾針螫中你的{part}！（-{dmg}）",
+   "other": "{atk}使出{art}「{move}」，螫中{def}的{part}！",
+   "src": "proposal"
+  },
+  {
+   "id": "move_gm_fuchen",
+   "era": "1.0A",
+   "self": "你拂塵一揮，{art}「{move}」（{tenths}成力）掃中{def}的{part}！（-{dmg}）",
+   "target": "{atk}拂塵一揮，{art}「{move}」掃中你的{part}！（-{dmg}）",
+   "other": "{atk}拂塵一揮，{art}「{move}」掃中{def}的{part}！",
+   "src": "proposal"
+  }
+ ],
+ "art_requests": {
+  "units": [
+   {
+    "id": "gumu_f",
+    "alias": "huashan_f",
+    "prompt": "古墓派女弟子，一身素白長衣、白絲帶束髮，腰懸長劍，神情清冷。"
+   },
+   {
+    "id": "n_gm_cha",
+    "alias": "n_xx_cha",
+    "prompt": "查小鏞，灰袍老先生，捧著簿子坐在林中樹下。"
+   },
+   {
+    "id": "n_gm_sunpopo",
+    "alias": "n_yeerniang",
+    "prompt": "孫婆婆，白髮駝背的老僕婦，粗布衣裳、手拄木杖，面容慈和。"
+   },
+   {
+    "id": "n_gm_zhangmen",
+    "alias": "n_shuanger",
+    "prompt": "古墓派掌門人，白衣中年女子，長髮披肩，神情冷淡威嚴。"
+   },
+   {
+    "id": "n_gm_yinlu",
+    "alias": "n_shuanger",
+    "prompt": "引路弟子，白衣少女，手提油燈。"
+   },
+   {
+    "id": "n_gm_xiaolongnu",
+    "alias": "n_shuanger",
+    "prompt": "小龍女，白衣如雪的絕美少女，長髮及腰，氣質清冷出塵。"
+   },
+   {
+    "id": "n_gm_dashijie",
+    "alias": "n_shuanger",
+    "prompt": "古墓大師姊，白衣女子，負劍而立，神情和善。"
+   },
+   {
+    "id": "n_gm_spar",
+    "alias": "n_shuanger",
+    "prompt": "陪練師姊，白衣女弟子，手持長劍作起手式。"
+   },
+   {
+    "id": "n_gm_songfan",
+    "alias": "n_sl_zhaiseng",
+    "prompt": "送飯弟子，白衣少女，提著竹編飯籃。"
+   },
+   {
+    "id": "n_gm_hanyu",
+    "alias": "n_shuanger",
+    "prompt": "守床弟子，白衣少女，盤坐在寒氣繚繞的玉床旁。"
+   },
+   {
+    "id": "n_gm_xiaomei",
+    "alias": "n_shuanger",
+    "prompt": "小梅，梳雙髻的伶俐丫頭，手拿一枝梅花。"
+   },
+   {
+    "id": "n_gm_jailer",
+    "alias": "n_shuanger",
+    "prompt": "看守師姊，板著臉的白衣女子，腰掛鑰匙。"
+   },
+   {
+    "id": "m_gm_dizi",
+    "alias": "m_hs_trainee",
+    "prompt": "古墓派陪練女弟子，白衣、持木劍。"
+   },
+   {
+    "id": "m_gm_guard",
+    "alias": "huashan_f",
+    "prompt": "古墓守墓弟子，白衣蒙面女子，持劍殺氣騰騰。"
+   },
+   {
+    "id": "m_gm_bianfu",
+    "alias": "m_ghost",
+    "prompt": "墓穴大蝙蝠，黑褐色雙翼張開，紅眼利齒。"
+   },
+   {
+    "id": "m_gm_yufeng",
+    "alias": "m_bigrabbit",
+    "prompt": "古墓玉蜂，拳頭大小、通體淡白的大蜂，尾針發亮。"
+   },
+   {
+    "id": "m_gm_daomu",
+    "alias": "m_bandit",
+    "prompt": "盜墓賊，灰黑短打、蒙面，一手短刀一手鐵鏟。"
+   },
+   {
+    "id": "m_gm_hongningbo",
+    "alias": "huashan_f",
+    "prompt": "洪凌波，杏黃道袍少女，手持拂塵，神情嬌媚帶狠。"
+   }
+  ],
+  "backgrounds": [
+   {
+    "id": "gumu",
+    "alias": "guiwang",
+    "prompt": "古墓內的石室：長明燈、石桌石椅、四壁光潔的青石，清冷幽靜。"
+   },
+   {
+    "id": "gumu_maze",
+    "alias": "guiwang",
+    "prompt": "活死人墓的漆黑墓道，濕滑石壁、斷龍石、地底暗河，蝙蝠倒掛。"
+   }
+  ]
+ },
+ "todo_verify": [
+  "古墓入派「中立」的數字範圍：2001 只寫中立／平善到平惡；−299…299 為後期版數字【待考證】",
+  "停止傳功的 PK、殺氣門檻（PK ≤ 3、殺氣 ≤ 1000）：2001 官方頁只寫「PK值過高、殺氣過重」【待考證】",
+  "守宮砂如何取得、如何消失：官方頁沒有說明【待考證】；M3a 不做（婚姻與守宮砂一律視為成立）",
+  "清心各武功門檻（每套武功要幾級清心）與 2001 的上限：原作未載【待考證】；本檔門檻為設計提案",
+  "清心觸發痲痺的機率數值【待考證】；2001-07-05 預告文寫的「閃避」效果與官方表衝突，採官方痲痺",
+  "美女拳法直線射程約 4 格【待考證】",
+  "天羅地網勢掌法的範圍形狀【待考證】（本檔用單體＋周身）",
+  "銀索金鈴後期為米字 36 格；2001 形狀【待考證】（本檔用半米字 FAN）",
+  "九陰真經 1.0 是否可取得、取得方式【待考證】（沒有教者；用 gm_jiuyin_read 旗標鎖住）",
+  "全真劍法是否由古墓直接共用全真派的同一套武功【待考證】",
+  "迷宮實際格局、房間數與怪物名稱【待考證】：原作只說是迷宮、高機率遇敵、不能逃；墓穴蝙蝠、古墓玉蜂、盜墓賊皆為設計提案（洪凌波會參戰為已證實）",
+  "迷宮強闖時「不能逃」：遇敵表沒有 no_flee 欄位，本檔未實作【待考證／機制缺漏】",
+  "古墓派座標 17990,10918 為後期版資料；1.0 的座標表沒有古墓【待考證】",
+  "離山條件（沒有任務不能離開終南山）的執行方式【待考證】；M3a 不做，等擁有者決定",
+  "古墓派掌門人與小龍女在 1.0 的各武功教授上限（cap）【待考證】",
+  "門派技能師父：官方說掌門人或小龍女教清心；小龍女教到 100、需清心 50 為設計提案"
+ ],
+ "notes": "古墓碎片。山門＝gm_entrance（活死人墓入口，查小鏞＋孫婆婆引路）；外人可經 IN 強闖迷宮（gumu_maze，4 間＋1 死路，遇敵率 0.35、古墓弟子免遇敵）到 gm_hall。gm_hall、gm_food（送飯：任何人可拿）、gm_entrance 開放；其餘內室用 any_of（本派或現在就能拜入者），gm_shishi 只限本派（jail）。引路弟子 n_gm_yinlu 從正廳送同門回入口。全真劍法直接引用 qz_jianfa（全真碎片的武功列）：WP-MERGE 請確認 qz_jianfa 的 requires 允許古墓弟子學（例如 any_of [[sect quanzhen],[sect gumu]]），否則 ms_gm_zhangmen_qzjianfa 會學不到。玉女素心劍法 combo:true、QUEST 鎖住；九陰真經無師父、QUEST 鎖住。攻擊孫婆婆成為古墓公敵屬 M3b（ATTACK_SECT_NPC）。招式 flavor move_sword_cross、move_whip_fan 由 _cmd.json 提供；move_gm_sting、move_gm_fuchen 由本檔提供。迷宮怪數值是設計提案，請依 balance_sim 的 gumu_maze_p3 案例調整。銀索金鈴需要鞭，現有物品沒有鞭類兵器（M3a 不補）。"
+}

@@ -1,0 +1,11 @@
+{
+  "region_id": "hengshan_s_road",
+  "era": "1.0A",
+  "src": "proposal",
+  "escape_tiles_hint": 2,
+  "desc": "從武當山下往東南延伸的古道，一路通到湘江渡口與南嶽衡山。",
+  "rooms": [
+    {"id": "hn_road1", "name": "衡陽古道", "desc": "古道離開武當山腳往東南伸去，兩旁是竹林與茶園。往西北回武當山下，往南可到湘江渡口。", "exits": [{"dir": "NW", "to": "wd_road1"}, {"dir": "S", "to": "hn_road2"}], "npcs": ["n_hn_maiyi"], "features": [], "requires": [], "encounter": {"rate": 0.1, "table": [{"monster": "m_bigrabbit", "w": 80, "count": [1, 1]}, {"monster": "m_wolf", "w": 15, "count": [1, 1]}, {"monster": "m_boar", "w": 5, "count": [1, 1]}]}},
+    {"id": "hn_road2", "name": "湘江渡口", "desc": "江面寬闊，渡船往來不絕，船家吆喝著招呼過客。往北回衡陽古道，往南過了江就是衡山腳下。", "exits": [{"dir": "N", "to": "hn_road1"}, {"dir": "S", "to": "hn_foot"}], "npcs": [], "features": ["WATER"], "requires": [], "encounter": {"rate": 0.1, "table": [{"monster": "m_bigrabbit", "w": 80, "count": [1, 1]}, {"monster": "m_wolf", "w": 15, "count": [1, 1]}, {"monster": "m_boar", "w": 5, "count": [1, 1]}]}}
+  ]
+}

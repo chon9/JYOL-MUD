@@ -1,0 +1,1274 @@
+{
+ "_comment": "WP-BATTLE 單元測試用的最小 tables（GameData.tables 的形狀：table -> {id -> row}）。數值僅供測試。",
+ "martial_arts": {
+  "sl_changquan": {
+   "id": "sl_changquan",
+   "name": "少林長拳",
+   "category": "FIST",
+   "base_skill": "basic_fist",
+   "difficulty": 0.9,
+   "moves": [
+    {
+     "id": "sl_cq_1",
+     "name": "黑虎掏心",
+     "unlock_level": 1,
+     "power": 20,
+     "range": 1,
+     "aoe": "SINGLE",
+     "cost_inner": 0,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "move_fist_basic"
+    },
+    {
+     "id": "sl_cq_2",
+     "name": "雙龍搶珠",
+     "unlock_level": 30,
+     "power": 32,
+     "range": 1,
+     "aoe": "SINGLE",
+     "cost_inner": 5,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "move_fist_basic"
+    },
+    {
+     "id": "sl_cq_3",
+     "name": "猛虎下山",
+     "unlock_level": 60,
+     "power": 44,
+     "range": 1,
+     "aoe": "SINGLE",
+     "cost_inner": 10,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "move_fist_basic"
+    }
+   ]
+  },
+  "hs_jianfa": {
+   "id": "hs_jianfa",
+   "name": "華山劍法",
+   "category": "SWORD",
+   "base_skill": "basic_sword",
+   "difficulty": 0.8,
+   "moves": [
+    {
+     "id": "hs_jf_1",
+     "name": "有鳳來儀",
+     "unlock_level": 1,
+     "power": 24,
+     "range": 1,
+     "aoe": "SINGLE",
+     "cost_inner": 0,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "move_sword_basic"
+    }
+   ]
+  },
+  "hs_pishiquan": {
+   "id": "hs_pishiquan",
+   "name": "劈石破玉拳",
+   "category": "FIST",
+   "base_skill": "basic_fist",
+   "difficulty": 0.9,
+   "moves": [
+    {
+     "id": "hs_pishi_1",
+     "name": "劈石破玉",
+     "unlock_level": 1,
+     "power": 40,
+     "range": 1,
+     "aoe": "SINGLE",
+     "cost_inner": 15,
+     "cost_jing": 0,
+     "status": "inner_wound",
+     "status_chance": 1.0,
+     "flavor": "move_fist_basic"
+    }
+   ]
+  },
+  "test_aoe": {
+   "id": "test_aoe",
+   "name": "測試群攻",
+   "category": "FIST",
+   "base_skill": "basic_fist",
+   "difficulty": 0.9,
+   "moves": [
+    {
+     "id": "t_aoe_1",
+     "name": "橫掃千軍",
+     "unlock_level": 1,
+     "power": 10,
+     "range": 1,
+     "aoe": "LINE",
+     "cost_inner": 0,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "move_fist_basic"
+    },
+    {
+     "id": "t_jing_1",
+     "name": "耗神一擊",
+     "unlock_level": 1,
+     "power": 10,
+     "range": 1,
+     "aoe": "SINGLE",
+     "cost_inner": 0,
+     "cost_jing": 500,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "move_fist_basic"
+    }
+   ]
+  },
+  "sl_xinfa": {
+   "id": "sl_xinfa",
+   "name": "少林心法",
+   "category": "INNER",
+   "base_skill": "basic_inner",
+   "difficulty": 0.9,
+   "moves": []
+  },
+  "sl_shenfa": {
+   "id": "sl_shenfa",
+   "name": "少林身法",
+   "category": "LIGHTNESS",
+   "base_skill": "basic_body",
+   "difficulty": 0.9,
+   "moves": []
+  },
+  "mon_bite": {
+   "id": "mon_bite",
+   "name": "撕咬",
+   "category": "FIST",
+   "base_skill": "basic_fist",
+   "difficulty": 0.9,
+   "monster_only": true,
+   "moves": [
+    {
+     "id": "mon_bite_1",
+     "name": "撲咬",
+     "unlock_level": 1,
+     "power": 8,
+     "range": 1,
+     "aoe": "SINGLE",
+     "cost_inner": 0,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "move_bite"
+    }
+   ]
+  },
+  "mon_claw": {
+   "id": "mon_claw",
+   "name": "利爪",
+   "category": "FIST",
+   "base_skill": "basic_fist",
+   "difficulty": 0.9,
+   "monster_only": true,
+   "moves": [
+    {
+     "id": "mon_claw_1",
+     "name": "利爪撕扯",
+     "unlock_level": 1,
+     "power": 12,
+     "range": 1,
+     "aoe": "SINGLE",
+     "cost_inner": 0,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "move_claw"
+    }
+   ]
+  },
+  "mon_blade": {
+   "id": "mon_blade",
+   "name": "山賊刀法",
+   "category": "BLADE",
+   "base_skill": "basic_blade",
+   "difficulty": 0.9,
+   "monster_only": true,
+   "moves": [
+    {
+     "id": "mon_blade_1",
+     "name": "亂刀砍",
+     "unlock_level": 1,
+     "power": 20,
+     "range": 1,
+     "aoe": "SINGLE",
+     "cost_inner": 0,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "move_blade_basic"
+    }
+   ]
+  },
+  "mon_guiwang": {
+   "id": "mon_guiwang",
+   "name": "鬼王掌",
+   "category": "FIST",
+   "base_skill": "basic_fist",
+   "difficulty": 0.9,
+   "monster_only": true,
+   "moves": [
+    {
+     "id": "mon_guiwang_1",
+     "name": "鬼王掌",
+     "unlock_level": 1,
+     "power": 30,
+     "range": 1,
+     "aoe": "SINGLE",
+     "cost_inner": 0,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "move_ghost"
+    },
+    {
+     "id": "mon_guiwang_2",
+     "name": "攝魂",
+     "unlock_level": 40,
+     "power": 45,
+     "range": 2,
+     "aoe": "SINGLE",
+     "cost_inner": 0,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "move_ghost"
+    }
+   ]
+  },
+  "t_poison": {
+   "id": "t_poison",
+   "name": "測試放毒法",
+   "sect_id": "xingxiu",
+   "category": "POISON",
+   "base_skill": "basic_poison",
+   "difficulty": 1.0,
+   "poison": {
+    "status": "poison",
+    "level_bonus": 0
+   },
+   "moves": [
+    {
+     "id": "t_poison_1",
+     "name": "腐屍毒",
+     "unlock_level": 1,
+     "power": 20,
+     "range": 2,
+     "aoe": "SINGLE",
+     "cost_inner": 5,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "move_fist_basic"
+    }
+   ]
+  },
+  "t_medic": {
+   "id": "t_medic",
+   "name": "測試醫術",
+   "sect_id": "hengshan",
+   "category": "MEDIC",
+   "base_skill": "basic_medic",
+   "difficulty": 1.0,
+   "medic": {
+    "heal_mult": 1.0
+   },
+   "moves": [
+    {
+     "id": "t_medic_1",
+     "name": "妙手回春",
+     "unlock_level": 1,
+     "power": 0,
+     "range": 2,
+     "aoe": "SINGLE",
+     "cost_inner": 0,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "move_fist_basic"
+    }
+   ]
+  },
+  "t_hidden": {
+   "id": "t_hidden",
+   "name": "測試暗器",
+   "sect_id": "",
+   "category": "HIDDEN",
+   "base_skill": "basic_hidden",
+   "difficulty": 1.0,
+   "hidden": {
+    "range_bonus": 1
+   },
+   "moves": [
+    {
+     "id": "t_hidden_1",
+     "name": "滿天花雨",
+     "unlock_level": 1,
+     "power": 10,
+     "range": 4,
+     "aoe": "SINGLE",
+     "cost_inner": 0,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "move_fist_basic"
+    }
+   ]
+  },
+  "t_formation": {
+   "id": "t_formation",
+   "name": "測試三才陣",
+   "sect_id": "shaolin",
+   "category": "FORMATION",
+   "base_skill": "basic_formation",
+   "difficulty": 1.0,
+   "formation": {
+    "party_size": 3,
+    "stations": [
+     [
+      0,
+      0
+     ],
+     [
+      -1,
+      1
+     ],
+     [
+      1,
+      1
+     ]
+    ],
+    "gender": "",
+    "atk_bonus": 0.1,
+    "def_bonus": 0.2,
+    "per_avg_level": 0.002
+   },
+   "moves": [
+    {
+     "id": "t_form_1",
+     "name": "三才歸元",
+     "unlock_level": 1,
+     "power": 0,
+     "range": 0,
+     "aoe": "SINGLE",
+     "cost_inner": 10,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "move_fist_basic"
+    }
+   ]
+  },
+  "t_formation_f": {
+   "id": "t_formation_f",
+   "name": "測試女子陣",
+   "sect_id": "emei",
+   "category": "FORMATION",
+   "base_skill": "basic_formation",
+   "difficulty": 1.0,
+   "formation": {
+    "party_size": 2,
+    "stations": [
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      1
+     ]
+    ],
+    "gender": "F",
+    "atk_bonus": 0.1,
+    "def_bonus": 0.1,
+    "per_avg_level": 0.0
+   },
+   "moves": [
+    {
+     "id": "t_formf_1",
+     "name": "雙燕",
+     "unlock_level": 1,
+     "power": 0,
+     "range": 0,
+     "aoe": "SINGLE",
+     "cost_inner": 0,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "move_fist_basic"
+    }
+   ]
+  },
+  "t_inner": {
+   "id": "t_inner",
+   "name": "測試心法",
+   "sect_id": "quanzhen",
+   "category": "INNER",
+   "base_skill": "basic_inner",
+   "difficulty": 1.0,
+   "inner": {
+    "heal_mult": 1.0,
+    "expel_mult": 1.0
+   },
+   "moves": []
+  },
+  "t_stab": {
+   "id": "t_stab",
+   "name": "測試點穴手",
+   "sect_id": "lingjiu",
+   "category": "FIST",
+   "base_skill": "basic_fist",
+   "difficulty": 1.0,
+   "acupoint": true,
+   "moves": [
+    {
+     "id": "t_stab_1",
+     "name": "梅花手",
+     "unlock_level": 1,
+     "power": 10,
+     "range": 1,
+     "aoe": "SINGLE",
+     "cost_inner": 0,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "move_fist_basic"
+    }
+   ]
+  },
+  "t_cross": {
+   "id": "t_cross",
+   "name": "測試十字劍",
+   "sect_id": "",
+   "category": "FIST",
+   "base_skill": "basic_fist",
+   "difficulty": 1.0,
+   "moves": [
+    {
+     "id": "t_cross_1",
+     "name": "小十字",
+     "unlock_level": 1,
+     "power": 10,
+     "range": 3,
+     "aoe": "CROSS",
+     "cost_inner": 0,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "move_fist_basic"
+    },
+    {
+     "id": "t_crossl_1",
+     "name": "大十字",
+     "unlock_level": 1,
+     "power": 10,
+     "range": 3,
+     "aoe": "CROSS_L",
+     "cost_inner": 0,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "move_fist_basic"
+    },
+    {
+     "id": "t_line_1",
+     "name": "直線",
+     "unlock_level": 1,
+     "power": 10,
+     "range": 3,
+     "aoe": "LINE",
+     "cost_inner": 0,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "move_fist_basic"
+    },
+    {
+     "id": "t_fan_1",
+     "name": "半米字",
+     "unlock_level": 1,
+     "power": 10,
+     "range": 2,
+     "aoe": "FAN",
+     "cost_inner": 0,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "move_fist_basic"
+    },
+    {
+     "id": "t_around_1",
+     "name": "周身",
+     "unlock_level": 1,
+     "power": 10,
+     "range": 1,
+     "aoe": "AROUND",
+     "cost_inner": 0,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "move_fist_basic"
+    },
+    {
+     "id": "t_single_poison",
+     "name": "毒掌",
+     "unlock_level": 1,
+     "power": 10,
+     "range": 1,
+     "aoe": "SINGLE",
+     "cost_inner": 0,
+     "cost_jing": 0,
+     "status": "poison",
+     "status_chance": 1.0,
+     "flavor": "move_fist_basic"
+    }
+   ]
+  }
+ },
+ "monsters": {
+  "m_rabbit": {
+   "id": "m_rabbit",
+   "name": "野兔",
+   "kind": "MONSTER",
+   "alignment": "NEUTRAL",
+   "stats": {
+    "qi": 60,
+    "neili": 0,
+    "jing": 50,
+    "str": 8,
+    "guts": 5,
+    "wit": 5,
+    "luck": 5,
+    "cal": 5,
+    "agi": 15,
+    "con": 10
+   },
+   "skills": {
+    "basic_dodge": 5,
+    "basic_parry": 0,
+    "basic_inner": 0
+   },
+   "arts": [
+    {
+     "art": "mon_bite",
+     "level": 1
+    }
+   ],
+   "weapon_type": "FIST",
+   "weapon_power": 0,
+   "armor_power": 31,
+   "combat_xp_ref": 50,
+   "combat_xp": 5,
+   "learn_points": 2,
+   "drops": [
+    {
+     "item": "r_rabbitskin",
+     "chance": 0.5,
+     "min": 1,
+     "max": 1
+    }
+   ],
+   "money": {
+    "min": 0,
+    "max": 2
+   },
+   "morality_on_kill": 0,
+   "killing_intent_on_kill": 0,
+   "ai": "coward",
+   "no_rewards": false
+  },
+  "m_wolf": {
+   "id": "m_wolf",
+   "name": "野狼",
+   "kind": "MONSTER",
+   "alignment": "NEUTRAL",
+   "stats": {
+    "qi": 250,
+    "neili": 0,
+    "jing": 80,
+    "str": 10,
+    "guts": 12,
+    "wit": 5,
+    "luck": 5,
+    "cal": 12,
+    "agi": 22,
+    "con": 15
+   },
+   "skills": {
+    "basic_dodge": 15,
+    "basic_parry": 5,
+    "basic_inner": 0
+   },
+   "arts": [
+    {
+     "art": "mon_claw",
+     "level": 10
+    }
+   ],
+   "weapon_type": "FIST",
+   "weapon_power": 0,
+   "armor_power": 28,
+   "combat_xp_ref": 500,
+   "combat_xp": 15,
+   "learn_points": 6,
+   "drops": [
+    {
+     "item": "r_wolfskin",
+     "chance": 0.5,
+     "min": 1,
+     "max": 1
+    }
+   ],
+   "money": {
+    "min": 0,
+    "max": 5
+   },
+   "morality_on_kill": 0,
+   "killing_intent_on_kill": 0,
+   "ai": "melee_basic",
+   "no_rewards": false
+  },
+  "m_bandit": {
+   "id": "m_bandit",
+   "name": "山賊",
+   "kind": "EVIL_NPC",
+   "alignment": "EVIL",
+   "stats": {
+    "qi": 600,
+    "neili": 10,
+    "jing": 100,
+    "str": 20,
+    "guts": 22,
+    "wit": 10,
+    "luck": 10,
+    "cal": 18,
+    "agi": 20,
+    "con": 20
+   },
+   "skills": {
+    "basic_dodge": 25,
+    "basic_parry": 25,
+    "basic_inner": 10
+   },
+   "arts": [
+    {
+     "art": "mon_blade",
+     "level": 25
+    }
+   ],
+   "weapon_type": "BLADE",
+   "weapon_power": 10,
+   "armor_power": 30,
+   "combat_xp_ref": 3000,
+   "combat_xp": 40,
+   "learn_points": 15,
+   "drops": [],
+   "money": {
+    "min": 20,
+    "max": 60
+   },
+   "morality_on_kill": 3,
+   "killing_intent_on_kill": 5,
+   "ai": "melee_basic",
+   "no_rewards": false
+  },
+  "m_glass": {
+   "id": "m_glass",
+   "name": "紙老虎",
+   "kind": "MONSTER",
+   "alignment": "NEUTRAL",
+   "stats": {
+    "qi": 2,
+    "neili": 0,
+    "jing": 10,
+    "str": 1,
+    "guts": 1,
+    "wit": 1,
+    "luck": 1,
+    "cal": 1,
+    "agi": 1,
+    "con": 1
+   },
+   "skills": {
+    "basic_dodge": 0
+   },
+   "arts": [
+    {
+     "art": "mon_bite",
+     "level": 1
+    }
+   ],
+   "weapon_type": "FIST",
+   "weapon_power": 0,
+   "armor_power": 0,
+   "combat_xp_ref": 0,
+   "combat_xp": 10,
+   "learn_points": 4,
+   "drops": [
+    {
+     "item": "r_rabbitskin",
+     "chance": 1.0,
+     "min": 2,
+     "max": 2
+    },
+    {
+     "item": "r_wolfskin",
+     "chance": 0.0,
+     "min": 1,
+     "max": 1
+    }
+   ],
+   "money": {
+    "min": 7,
+    "max": 7
+   },
+   "morality_on_kill": -5,
+   "killing_intent_on_kill": 2,
+   "ai": "melee_basic",
+   "no_rewards": false
+  },
+  "m_dummy": {
+   "id": "m_dummy",
+   "name": "木人",
+   "kind": "MONSTER",
+   "alignment": "NEUTRAL",
+   "stats": {
+    "qi": 100000,
+    "neili": 0,
+    "jing": 10,
+    "str": 1,
+    "guts": 1,
+    "wit": 1,
+    "luck": 1,
+    "cal": 1,
+    "agi": 1,
+    "con": 1
+   },
+   "skills": {},
+   "arts": [],
+   "weapon_type": "FIST",
+   "weapon_power": 0,
+   "armor_power": 0,
+   "combat_xp_ref": 0,
+   "combat_xp": 0,
+   "learn_points": 0,
+   "drops": [],
+   "money": {
+    "min": 0,
+    "max": 0
+   },
+   "morality_on_kill": 0,
+   "killing_intent_on_kill": 0,
+   "ai": "melee_basic",
+   "no_rewards": false
+  },
+  "m_trainee": {
+   "id": "m_trainee",
+   "name": "華山弟子",
+   "kind": "MONSTER",
+   "alignment": "GOOD",
+   "stats": {
+    "qi": 2,
+    "neili": 0,
+    "jing": 50,
+    "str": 14,
+    "guts": 15,
+    "wit": 10,
+    "luck": 10,
+    "cal": 16,
+    "agi": 1,
+    "con": 16
+   },
+   "skills": {
+    "basic_dodge": 8,
+    "basic_parry": 8,
+    "basic_inner": 5
+   },
+   "arts": [
+    {
+     "art": "hs_jianfa",
+     "level": 8
+    }
+   ],
+   "weapon_type": "SWORD",
+   "weapon_power": 4,
+   "armor_power": 6,
+   "combat_xp_ref": 300,
+   "combat_xp": 0,
+   "learn_points": 0,
+   "drops": [
+    {
+     "item": "r_rabbitskin",
+     "chance": 1.0,
+     "min": 1,
+     "max": 1
+    }
+   ],
+   "money": {
+    "min": 5,
+    "max": 5
+   },
+   "morality_on_kill": 0,
+   "killing_intent_on_kill": 0,
+   "ai": "melee_basic",
+   "no_rewards": true
+  },
+  "m_guiwang": {
+   "id": "m_guiwang",
+   "name": "鬼王",
+   "kind": "BOSS",
+   "alignment": "EVIL",
+   "stats": {
+    "qi": 2000,
+    "neili": 50,
+    "jing": 200,
+    "str": 24,
+    "guts": 30,
+    "wit": 20,
+    "luck": 20,
+    "cal": 28,
+    "agi": 26,
+    "con": 30
+   },
+   "skills": {
+    "basic_dodge": 50,
+    "basic_parry": 50,
+    "basic_inner": 50
+   },
+   "arts": [
+    {
+     "art": "mon_guiwang",
+     "level": 50
+    },
+    {
+     "art": "sl_xinfa",
+     "level": 30
+    }
+   ],
+   "weapon_type": "FIST",
+   "weapon_power": 0,
+   "armor_power": 60,
+   "combat_xp_ref": 20000,
+   "combat_xp": 300,
+   "learn_points": 120,
+   "drops": [],
+   "money": {
+    "min": 200,
+    "max": 400
+   },
+   "morality_on_kill": 0,
+   "killing_intent_on_kill": 0,
+   "ai": "melee_basic",
+   "no_rewards": false
+  },
+  "m_poisoner": {
+   "id": "m_poisoner",
+   "name": "毒蛇",
+   "kind": "MONSTER",
+   "alignment": "EVIL",
+   "sect": "xingxiu",
+   "stats": {
+    "qi": 300,
+    "neili": 200,
+    "jing": 80,
+    "str": 10,
+    "guts": 12,
+    "wit": 5,
+    "luck": 5,
+    "cal": 12,
+    "agi": 22,
+    "con": 15
+   },
+   "skills": {
+    "basic_dodge": 5,
+    "basic_poison": 30
+   },
+   "arts": [
+    {
+     "art": "mon_bite",
+     "level": 10
+    },
+    {
+     "art": "t_poison",
+     "level": 30
+    },
+    {
+     "art": "t_inner",
+     "level": 5
+    }
+   ],
+   "weapon_type": "FIST",
+   "weapon_power": 0,
+   "armor_power": 5,
+   "combat_xp_ref": 500,
+   "combat_xp": 1,
+   "learn_points": 1,
+   "drops": [],
+   "money": {
+    "min": 0,
+    "max": 0
+   },
+   "morality_on_kill": 0,
+   "killing_intent_on_kill": 0,
+   "ai": "melee_basic",
+   "no_rewards": true
+  }
+ },
+ "status_effects": {
+  "inner_wound": {
+   "id": "inner_wound",
+   "name": "內傷",
+   "kind": "WOUND",
+   "duration_actions": 5,
+   "blocks": [
+    "REST"
+   ],
+   "qi_pct_per_action": 0.02
+  },
+  "poison": {
+   "id": "poison",
+   "name": "中毒",
+   "kind": "DEBUFF",
+   "glyph": "毒",
+   "color": "#3c9a3c",
+   "duration_actions": 6,
+   "stack": "LEVEL_MAX",
+   "blocks": [],
+   "skip_actions": false,
+   "random_action": false,
+   "atk_mult": 1.0,
+   "def_mult": 1.0,
+   "gauge_mult": 1.0,
+   "qi_pct_per_action": 0.02,
+   "qi_pct_per_level": 0.004,
+   "qi_pct_per_move": 0.0,
+   "resist_by": [
+    "RESIST"
+   ],
+   "cure_by": [
+    "ANTIDOTE",
+    "MEDIC",
+    "INNER_EXPEL"
+   ],
+   "persists": true,
+   "persist_tick_real_s": 120,
+   "persist_ticks_per_level": 2,
+   "persist_qi_pct": 0.03,
+   "desc": "每次行動都扣氣；離開戰鬥後每 2 分鐘發作一次（已證實 news 316），直到藥效時間結束。",
+   "era": "1.0A",
+   "src": "verified"
+  },
+  "acupoint": {
+   "id": "acupoint",
+   "name": "封穴",
+   "kind": "DEBUFF",
+   "glyph": "穴",
+   "color": "#c8a020",
+   "duration_actions": 3,
+   "stack": "REFRESH",
+   "blocks": [
+    "MOVE",
+    "FLEE"
+   ],
+   "skip_actions": false,
+   "random_action": false,
+   "atk_mult": 1.0,
+   "def_mult": 1.0,
+   "gauge_mult": 0.6,
+   "qi_pct_per_action": 0.0,
+   "qi_pct_per_level": 0.0,
+   "qi_pct_per_move": 0.0,
+   "resist_by": [],
+   "cure_by": [
+    "INNER_UNSEAL",
+    "AUTO"
+   ],
+   "persists": false,
+   "persist_tick_real_s": 0,
+   "persist_ticks_per_level": 0,
+   "persist_qi_pct": 0.0,
+   "desc": "穴道受制，無法移動，時間棒變慢（後期版 2002-01-25）。",
+   "era": "1.0A",
+   "src": "later"
+  },
+  "paralysis": {
+   "id": "paralysis",
+   "name": "痲痺",
+   "kind": "DEBUFF",
+   "glyph": "痺",
+   "color": "#5a5a5a",
+   "duration_actions": 1,
+   "stack": "REFRESH",
+   "blocks": [],
+   "skip_actions": true,
+   "random_action": false,
+   "atk_mult": 1.0,
+   "def_mult": 1.0,
+   "gauge_mult": 1.0,
+   "qi_pct_per_action": 0.0,
+   "qi_pct_per_level": 0.0,
+   "qi_pct_per_move": 0.0,
+   "resist_by": [
+    "RESIST"
+   ],
+   "cure_by": [
+    "AUTO"
+   ],
+   "persists": false,
+   "persist_tick_real_s": 0,
+   "persist_ticks_per_level": 0,
+   "persist_qi_pct": 0.0,
+   "desc": "四肢發麻，跳過下一次行動（古墓清心觸發）。",
+   "era": "1.0A",
+   "src": "proposal"
+  },
+  "confusion": {
+   "id": "confusion",
+   "name": "混亂",
+   "kind": "DEBUFF",
+   "glyph": "亂",
+   "color": "#d8c040",
+   "duration_actions": 2,
+   "stack": "REFRESH",
+   "blocks": [],
+   "skip_actions": false,
+   "random_action": true,
+   "atk_mult": 1.0,
+   "def_mult": 1.0,
+   "gauge_mult": 1.0,
+   "qi_pct_per_action": 0.0,
+   "qi_pct_per_level": 0.0,
+   "qi_pct_per_move": 0.0,
+   "resist_by": [
+    "RESIST"
+   ],
+   "cure_by": [
+    "AUTO"
+   ],
+   "persists": false,
+   "persist_tick_real_s": 0,
+   "persist_ticks_per_level": 0,
+   "persist_qi_pct": 0.0,
+   "desc": "神智錯亂，不分敵我亂打（靈鷲定性觸發）。",
+   "era": "1.0A",
+   "src": "proposal"
+  },
+  "distract": {
+   "id": "distract",
+   "name": "分心",
+   "kind": "DEBUFF",
+   "glyph": "分",
+   "color": "#6aa0c8",
+   "duration_actions": 3,
+   "stack": "REFRESH",
+   "blocks": [],
+   "skip_actions": false,
+   "random_action": false,
+   "atk_mult": 0.8,
+   "def_mult": 1.0,
+   "gauge_mult": 1.0,
+   "qi_pct_per_action": 0.0,
+   "qi_pct_per_level": 0.0,
+   "qi_pct_per_move": 0.0,
+   "resist_by": [],
+   "cure_by": [
+    "AUTO"
+   ],
+   "persists": false,
+   "persist_tick_real_s": 0,
+   "persist_ticks_per_level": 0,
+   "persist_qi_pct": 0.0,
+   "desc": "心神不寧，攻擊力下降兩成（星宿諂媚觸發）。",
+   "era": "1.0A",
+   "src": "proposal"
+  },
+  "bleed": {
+   "id": "bleed",
+   "name": "流血",
+   "kind": "DEBUFF",
+   "glyph": "血",
+   "color": "#c03030",
+   "duration_actions": 4,
+   "stack": "REFRESH",
+   "blocks": [],
+   "skip_actions": false,
+   "random_action": false,
+   "atk_mult": 1.0,
+   "def_mult": 1.0,
+   "gauge_mult": 1.0,
+   "qi_pct_per_action": 0.0,
+   "qi_pct_per_level": 0.0,
+   "qi_pct_per_move": 0.03,
+   "resist_by": [],
+   "cure_by": [
+    "ANTIDOTE",
+    "AUTO"
+   ],
+   "persists": false,
+   "persist_tick_real_s": 0,
+   "persist_ticks_per_level": 0,
+   "persist_qi_pct": 0.0,
+   "desc": "傷口流血，戰鬥中每走一步就損氣（已證實 2001-08-09；觸發來源待考證）。",
+   "era": "1.0A",
+   "src": "verified"
+  },
+  "formation": {
+   "id": "formation",
+   "name": "陣法",
+   "kind": "BUFF",
+   "glyph": "陣",
+   "color": "#d0a050",
+   "duration_actions": 6,
+   "stack": "REFRESH",
+   "blocks": [],
+   "skip_actions": false,
+   "random_action": false,
+   "atk_mult": 1.0,
+   "def_mult": 1.0,
+   "gauge_mult": 1.0,
+   "qi_pct_per_action": 0.0,
+   "qi_pct_per_level": 0.0,
+   "qi_pct_per_move": 0.0,
+   "resist_by": [],
+   "cure_by": [],
+   "persists": false,
+   "persist_tick_real_s": 0,
+   "persist_ticks_per_level": 0,
+   "persist_qi_pct": 0.0,
+   "desc": "結陣加持：攻防依陣法平均等級提高；有人倒下或移動即破陣（加成值由陣法武功決定）。",
+   "era": "1.0A",
+   "src": "proposal"
+  }
+ },
+ "sects": {
+  "shaolin": {
+   "id": "shaolin",
+   "name": "少林",
+   "sect_skill": "foxa",
+   "sect_skill_name": "佛法"
+  },
+  "huashan": {
+   "id": "huashan",
+   "name": "華山",
+   "sect_skill": "rufeng",
+   "sect_skill_name": "儒風"
+  },
+  "wudang": {
+   "id": "wudang",
+   "name": "wudang",
+   "sect_skill": "xiayi",
+   "sect_skill_name": "xiayi名",
+   "sect_skill_effect": {
+    "effect": "RESIST"
+   },
+   "sect_skill_cost": [
+    "jing",
+    "neili"
+   ]
+  },
+  "emei": {
+   "id": "emei",
+   "name": "emei",
+   "sect_skill": "duane",
+   "sect_skill_name": "duane名",
+   "sect_skill_effect": {
+    "effect": "EVADE"
+   },
+   "sect_skill_cost": [
+    "jing",
+    "shen"
+   ]
+  },
+  "hengshan": {
+   "id": "hengshan",
+   "name": "hengshan",
+   "sect_skill": "cibei",
+   "sect_skill_name": "cibei名",
+   "sect_skill_effect": {
+    "effect": "COUNTER"
+   },
+   "sect_skill_cost": [
+    "jing",
+    "neili"
+   ]
+  },
+  "quanzhen": {
+   "id": "quanzhen",
+   "name": "quanzhen",
+   "sect_skill": "yangsheng",
+   "sect_skill_name": "yangsheng名",
+   "sect_skill_effect": {
+    "effect": "REST"
+   },
+   "sect_skill_cost": [
+    "jing",
+    "shen"
+   ]
+  },
+  "gumu": {
+   "id": "gumu",
+   "name": "gumu",
+   "sect_skill": "qingxin",
+   "sect_skill_name": "qingxin名",
+   "sect_skill_effect": {
+    "effect": "PARALYZE"
+   },
+   "sect_skill_cost": [
+    "jing",
+    "shen"
+   ]
+  },
+  "lingjiu": {
+   "id": "lingjiu",
+   "name": "lingjiu",
+   "sect_skill": "dingxing",
+   "sect_skill_name": "dingxing名",
+   "sect_skill_effect": {
+    "effect": "CONFUSE"
+   },
+   "sect_skill_cost": [
+    "jing",
+    "shen"
+   ]
+  },
+  "xingxiu": {
+   "id": "xingxiu",
+   "name": "xingxiu",
+   "sect_skill": "chanmei",
+   "sect_skill_name": "chanmei名",
+   "sect_skill_effect": {
+    "effect": "DISTRACT"
+   },
+   "sect_skill_cost": [
+    "jing",
+    "shen"
+   ]
+  },
+  "xuedao": {
+   "id": "xuedao",
+   "name": "xuedao",
+   "sect_skill": "weihe",
+   "sect_skill_name": "weihe名",
+   "sect_skill_effect": {
+    "effect": "HEAVY"
+   },
+   "sect_skill_cost": [
+    "jing",
+    "neili"
+   ]
+  }
+ }
+}

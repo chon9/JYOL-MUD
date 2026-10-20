@@ -1,0 +1,2 @@
+{ "enabled_eras": ["1.0A"], "rule_profile": { "preset": "classic_standard", "overrides": { "xuedian_cap": 100 } },
+  "max_players": 8, "autosave_interval_s": 60 }

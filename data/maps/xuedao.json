@@ -1,0 +1,29 @@
+{
+  "region_id": "xuedao",
+  "era": "1.0A",
+  "src": "proposal",
+  "desc": "大雪山深處的血刀門，門人多是紅袍喇嘛，行事狠辣，江湖上人人避之唯恐不及。",
+  "escape_tiles_hint": 2,
+  "rooms": [
+    { "id": "xd_gate", "name": "血刀門口", "desc": "雪谷盡頭的山壁上鑿出一座石門，門楣漆成暗紅色，兩名披著紅袍的血刀弟子按刀守著。門邊一位老先生縮著脖子在簿子上記事。",
+      "exits": [{"dir": "E", "to": "xd_road4"}, {"dir": "N", "to": "xd_hall"}], "npcs": ["n_xd_guard", "n_xd_cha"],
+      "features": [], "requires": [] },
+    { "id": "xd_hall", "name": "血刀本堂", "desc": "堂內燒著酥油燈，四壁掛著猙獰的護法畫像，空氣裡有股血腥味。一名枯瘦的老喇嘛盤坐在虎皮上，眼神比刀還冷。",
+      "exits": [
+        {"dir": "S", "to": "xd_gate"},
+        {"dir": "W", "to": "xd_yard"},
+        {"dir": "N", "to": "xd_pool"},
+        {"dir": "E", "to": "xd_mishi"}
+      ],
+      "npcs": ["n_xd_laozu", "n_xd_shanyong", "n_xd_buliu", "n_xd_buzou"], "features": [], "requires": [] },
+    { "id": "xd_yard", "name": "練刀場", "desc": "本堂西邊的雪地被踩得結實，木樁上滿是刀痕。弟子們赤著上身練刀，呼出的氣一團團地白。",
+      "exits": [{"dir": "E", "to": "xd_hall"}], "npcs": ["n_xd_shengdi", "n_xd_kuji", "n_xd_spar"], "features": [],
+      "requires": [] },
+    { "id": "xd_pool", "name": "血池", "desc": "本堂後方的山洞裡有一方暗紅色的水池，池水微溫，冒著淡淡的腥氣。血刀弟子在這裡比武，輸的人常被打進池裡。",
+      "exits": [{"dir": "S", "to": "xd_hall"}], "npcs": ["n_xd_xuehai"], "features": [],
+      "requires": [{"type": "sect", "sect": "xuedao"}] },
+    { "id": "xd_mishi", "name": "密室", "desc": "本堂東側的一道暗門後是間不透光的石室，堆著酒罈、乾肉和幾把用油布包著的彎刀。只有本門弟子知道怎麼進來。",
+      "exits": [{"dir": "W", "to": "xd_hall"}], "npcs": ["n_xd_jingqi", "n_xd_aihui"], "features": [],
+      "requires": [{"type": "sect", "sect": "xuedao"}] }
+  ]
+}

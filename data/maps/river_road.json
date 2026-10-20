@@ -1,0 +1,34 @@
+{
+  "region_id": "river_road", "era": "1.0A", "src": "proposal",
+  "desc": "大理城北的河川往西北一直延伸到大漠，古道就沿著河岸走。",
+  "escape_tiles_hint": 2,
+  "rooms": [
+    { "id": "rr_upper", "name": "河川上游",
+      "desc": "河水從大漠邊的泉眼匯出，水勢還小，岸邊盡是山豬拱過的爛泥。",
+      "exits": [ { "dir": "NW", "to": "de_oasis" }, { "dir": "S", "to": "rr_road" } ],
+      "npcs": [], "features": [], "requires": [],
+      "encounter": { "rate": 0.12, "table": [
+        { "monster": "m_bigrabbit", "w": 50, "count": [1, 1] },
+        { "monster": "m_wolf", "w": 20, "count": [1, 1] },
+        { "monster": "m_boar", "w": 20, "count": [1, 1] },
+        { "monster": "m_bandit", "w": 10, "count": [1, 1] } ] } },
+    { "id": "rr_road", "name": "河川古道",
+      "desc": "古道貼著河岸蜿蜒，一邊是水，一邊是長滿灌木的山坡。",
+      "exits": [ { "dir": "N", "to": "rr_upper" }, { "dir": "SE", "to": "rr_bend" } ],
+      "npcs": [], "features": [], "requires": [],
+      "encounter": { "rate": 0.1, "table": [
+        { "monster": "m_bigrabbit", "w": 60, "count": [1, 1] },
+        { "monster": "m_rabbit", "w": 20, "count": [1, 1] },
+        { "monster": "m_wolf", "w": 10, "count": [1, 1] },
+        { "monster": "m_boar", "w": 10, "count": [1, 1] } ] } },
+    {"id": "rr_bend", "name": "河灣", "desc": "河在這裡繞了個大彎，水流緩慢，是釣魚的好地方。往東是遠望雪山的東岸。", "exits": [{"dir": "NW", "to": "rr_road"}, {"dir": "S", "to": "rr_bridge"}, {"dir": "E", "to": "rr_eastbank"}], "npcs": [], "features": ["WATER"], "requires": [], "encounter": {"rate": 0.1, "table": [{"monster": "m_bigrabbit", "w": 60, "count": [1, 1]}, {"monster": "m_rabbit", "w": 40, "count": [1, 1]}]}},
+    { "id": "rr_bridge", "name": "過河石橋",
+      "desc": "一座古老的石拱橋橫跨河面。過了橋往東南走，就是大理城北的河畔。",
+      "exits": [ { "dir": "N", "to": "rr_bend" }, { "dir": "SE", "to": "dlw_river" } ],
+      "npcs": [], "features": [], "requires": [],
+      "encounter": { "rate": 0.1, "table": [
+        { "monster": "m_bigrabbit", "w": 60, "count": [1, 1] },
+        { "monster": "m_rabbit", "w": 40, "count": [1, 1] } ] } },
+    {"id": "rr_eastbank", "name": "雪山東岸", "desc": "河灣東岸遠望雪山，岸邊石縫裡常有毒蟲出沒。往西回河灣。", "exits": [{"dir": "W", "to": "rr_bend"}], "npcs": ["n_lf_lanfenghuang"], "features": ["WATER"], "requires": [], "encounter": {"rate": 0.08, "table": [{"monster": "m_rabbit", "w": 70, "count": [1, 1]}, {"monster": "m_bigrabbit", "w": 30, "count": [1, 1]}]}}
+  ]
+}

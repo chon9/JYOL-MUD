@@ -1,0 +1,29 @@
+{
+  "region_id": "hengshan_foot",
+  "era": "1.0A",
+  "src": "proposal",
+  "desc": "恆山腳下水田連片，官道沿著河往東南通到華山。",
+  "escape_tiles_hint": 2,
+  "rooms": [
+    {"id": "hf_paddy", "name": "恆山外稻田", "desc": "山腳下開出一片稻田，田埂縱橫，水車吱呀作響。", "exits": [{"dir": "NW", "to": "xe_river"}, {"dir": "E", "to": "hf_teahouse"}], "npcs": ["n_sm_qiaofu_xx"], "features": ["FIELD"], "requires": [], "encounter": {"rate": 0.1, "table": [{"monster": "m_rabbit", "w": 50, "count": [1, 1]}, {"monster": "m_bigrabbit", "w": 40, "count": [1, 1]}, {"monster": "m_boar", "w": 10, "count": [1, 1]}]}},
+    { "id": "hf_teahouse", "name": "路邊茶棚", "desc": "官道旁搭著一座茅草茶棚，幾張木桌坐滿歇腳的旅人。老闆說往東南再走半天就到華山腳下。",
+      "exits": [{"dir": "W", "to": "hf_paddy"}, {"dir": "E", "to": "hf_shore"}], "npcs": ["n_hf_teaman"],
+      "features": [], "requires": [] },
+    { "id": "hf_shore", "name": "恆山岸邊", "desc": "河水在這裡轉了個彎，沙洲上繫著一條小船。對岸的雲霧裡露出恆山峰頂。",
+      "exits": [{"dir": "W", "to": "hf_teahouse"}, {"dir": "E", "to": "hf_fork"}], "npcs": [], "features": ["WATER"],
+      "requires": [],
+      "encounter": { "rate": 0.12,
+        "table": [
+          {"monster": "m_bigrabbit", "w": 50, "count": [1, 1]},
+          {"monster": "m_rabbit", "w": 20, "count": [1, 1]},
+          {"monster": "m_wolf", "w": 20, "count": [1, 1]},
+          {"monster": "m_boar", "w": 10, "count": [1, 1]}
+        ] } },
+    {"id": "hf_fork", "name": "恆山岔路", "desc": "官道在這裡分岔。往北的山路通往恆山派；往東北的古道已經通了，一路可到雁門關。往東南是去華山的華陰道。", "exits": [{"dir": "W", "to": "hf_shore"}, {"dir": "SE", "to": "hy_road"}, {"dir": "N", "to": "hg_shandao"}, {"dir": "NE", "to": "ym_road"}], "npcs": [], "features": [], "requires": [], "encounter": {"rate": 0.1, "table": [{"monster": "m_bigrabbit", "w": 60, "count": [1, 1]}, {"monster": "m_wolf", "w": 40, "count": [1, 1]}]}},
+    { "id": "hg_shandao", "name": "恆山山道", "desc": "從岔路往北的石階山道，兩旁古松參天，越往上走雲霧越濃。偶爾有野兔從石縫裡竄出來。",
+      "exits": [{"dir": "S", "to": "hf_fork"}, {"dir": "N", "to": "hg_gate"}], "npcs": ["n_hg_yilin"], "features": [],
+      "requires": [],
+      "encounter": { "rate": 0.1,
+        "table": [{"monster": "m_rabbit", "w": 60, "count": [1, 1]}, {"monster": "m_bigrabbit", "w": 40, "count": [1, 1]}] } }
+  ]
+}

@@ -1,0 +1,2977 @@
+{
+ "fragment": "emei",
+ "version": 1,
+ "author": "WP-SECT-emei",
+ "sect": {
+  "id": "emei",
+  "name": "峨嵋",
+  "home_city": "dali",
+  "gate_region": "emei",
+  "prefix": "em",
+  "gate_room": "em_gate",
+  "head_npc": "n_em_miejue",
+  "gender": [
+   "F"
+  ],
+  "join_requires": [
+   {
+    "type": "morality_min",
+    "value": -299
+   },
+   {
+    "type": "no_sect"
+   },
+   {
+    "type": "not_enemy_of",
+    "sect": "emei"
+   }
+  ],
+  "teach_requires": [
+   {
+    "type": "morality_min",
+    "value": 0
+   },
+   {
+    "type": "killing_intent_max",
+    "value": 2000
+   }
+  ],
+  "sect_skill": "duane",
+  "sect_skill_name": "斷惡",
+  "sect_skill_effect": {
+   "effect": "EVADE"
+  },
+  "sect_skill_cost": [
+   "jing",
+   "shen"
+  ],
+  "sect_skill_cap": 100,
+  "sect_skill_limits_arts": false,
+  "sect_art_cap_bonus": 10,
+  "forbid_meat": false,
+  "sect_skill_gain": [
+   {
+    "on": "KILL_ALIGNMENT",
+    "alignment": "EVIL",
+    "prof": 10
+   }
+  ],
+  "sect_skill_penalties": [],
+  "personal_master": false,
+  "enforcer": true,
+  "enforcers": [
+   "n_em_miejue",
+   "n_em_zhouzhiruo",
+   "n_em_beimianyi",
+   "n_em_jingxuan",
+   "n_em_jingjia"
+  ],
+  "jail_room": "em_siguo",
+  "hostile_entry": [
+   {
+    "if": [
+     {
+      "type": "enemy_of",
+      "sect": "emei"
+     }
+    ],
+    "rooms": "ALL",
+    "monster": "m_em_guard",
+    "count": [
+     1,
+     2
+    ],
+    "chance": 1.0,
+    "no_flee": true,
+    "capture": true
+   },
+   {
+    "if": [
+     {
+      "type": "morality_max",
+      "value": -300
+     }
+    ],
+    "rooms": "INNER",
+    "monster": "m_em_xunshan",
+    "count": [
+     1,
+     1
+    ],
+    "chance": 0.5,
+    "no_flee": false,
+    "capture": false
+   }
+  ],
+  "visitors": "OPEN",
+  "meal_npc": "",
+  "src_note": "研究 峨嵋：只收女、非邪惡（mengpai/3、index_jy2-6-4）；斷惡＝閃避、耗精與神（官方 index_jy2-25、巴哈 2004）；殺邪惡之人斷惡增長（mengpai/3；每隻 +10 為設計提案）；叛派 善惡 < −299、同門相殘（news 141、n315_231423）；執法者 滅絕師太、周芷若、貝綿儀、靜玄、靜迦（官方門規頁 index_jy2-22）；停止傳功線「善良」以善惡 ≥ 0 表示【待考證】；邪惡入山遇峨嵋弟子（17173 練功點說明）",
+  "era": "1.0A",
+  "src": "verified"
+ },
+ "sect_rules": [
+  {
+   "id": "em_r_morality",
+   "sect": "emei",
+   "tier": "BREACH",
+   "kind": "STATE",
+   "ok_if": [
+    {
+     "type": "morality_min",
+     "value": -299
+    }
+   ],
+   "text": "rule_em_morality",
+   "era": "1.0A",
+   "src": "verified",
+   "src_note": "news 141（2001-08-07）／n315_231423（2001-08-16）峨嵋叛派條件 善惡 < −299"
+  },
+  {
+   "id": "em_r_kill_same",
+   "sect": "emei",
+   "tier": "BREACH",
+   "kind": "EVENT",
+   "event": "KILL_SAME_SECT",
+   "text": "rule_em_kill_same",
+   "era": "1.0A",
+   "src": "verified",
+   "src_note": "news 141：同門相殘；官方門規頁：PK 同門峨嵋弟子即開除"
+  }
+ ],
+ "regions": [
+  {
+   "id": "emei_road",
+   "name": "峨嵋道",
+   "type": "WILD",
+   "city": "dali",
+   "map": "res://data/maps/emei_road.json",
+   "world_pos": [
+    420,
+    640
+   ],
+   "suggested_xp": [
+    0,
+    3000
+   ],
+   "pk_allowed": true,
+   "birth_allowed": false,
+   "birth_room": "",
+   "night_closed": [],
+   "era": "1.0A",
+   "src": "proposal"
+  },
+  {
+   "id": "emei",
+   "name": "峨嵋派",
+   "type": "SECT",
+   "city": "dali",
+   "map": "res://data/maps/emei.json",
+   "world_pos": [
+    579,
+    574
+   ],
+   "suggested_xp": [
+    0,
+    0
+   ],
+   "pk_allowed": false,
+   "birth_allowed": false,
+   "birth_room": "",
+   "night_closed": [],
+   "era": "1.0A",
+   "src": "verified"
+  },
+  {
+   "id": "emei_maze",
+   "name": "峨嵋迷宮",
+   "type": "DUNGEON",
+   "city": "dali",
+   "map": "res://data/maps/emei_maze.json",
+   "world_pos": [
+    565,
+    592
+   ],
+   "suggested_xp": [
+    40000,
+    80000
+   ],
+   "pk_allowed": true,
+   "birth_allowed": false,
+   "birth_room": "",
+   "night_closed": [],
+   "era": "1.0A",
+   "src": "later"
+  }
+ ],
+ "maps": {
+  "emei": {
+   "region_id": "emei",
+   "era": "1.0A",
+   "src": "proposal",
+   "desc": "峨嵋天下秀。峨嵋派建在金頂之下，門下弟子都是女子，掌門滅絕師太以嚴厲出名。",
+   "escape_tiles_hint": 2,
+   "rooms": [
+    {
+     "id": "em_gate",
+     "name": "峨嵋山門",
+     "desc": "山門前的石坊上刻著「峨嵋派」三字，兩名峨嵋弟子按劍守門。門邊的老先生正替香客記錄落腳處。往南下山。",
+     "exits": [
+      {
+       "dir": "S",
+       "to": "em_foot"
+      },
+      {
+       "dir": "N",
+       "to": "em_square"
+      }
+     ],
+     "npcs": [
+      "n_em_cha",
+      "n_em_gatedizi"
+     ],
+     "features": [],
+     "requires": []
+    },
+    {
+     "id": "em_square",
+     "name": "練武場",
+     "desc": "青石鋪成的廣場上，女弟子們正練掌法劍法，一位師太在旁指點。場邊有一堵高牆，常有弟子在牆上練踏牆的輕身功夫。",
+     "exits": [
+      {
+       "dir": "S",
+       "to": "em_gate"
+      },
+      {
+       "dir": "N",
+       "to": "em_dadian"
+      },
+      {
+       "dir": "E",
+       "to": "em_jingzhao"
+      },
+      {
+       "dir": "W",
+       "to": "em_caiyuan"
+      }
+     ],
+     "npcs": [
+      "n_em_jingjia",
+      "n_em_spar",
+      "n_em_beimianyi",
+      "n_em_dingminjun"
+     ],
+     "features": [],
+     "requires": []
+    },
+    {
+     "id": "em_jingzhao",
+     "name": "易理房",
+     "desc": "房裡擺滿經書與卦象圖，靜照師太在這裡教弟子讀書、研習易理，也替師父考核弟子的斷惡修為。",
+     "exits": [
+      {
+       "dir": "W",
+       "to": "em_square"
+      }
+     ],
+     "npcs": [
+      "n_em_jingzhao"
+     ],
+     "features": [],
+     "requires": []
+    },
+    {
+     "id": "em_caiyuan",
+     "name": "菜園",
+     "desc": "練武場西邊開墾出一片菜園，種著青菜蘿蔔，是峨嵋自給自足的地方。一位農夫正在田裡忙活。",
+     "exits": [
+      {
+       "dir": "E",
+       "to": "em_square"
+      }
+     ],
+     "npcs": [
+      "n_em_nongfu"
+     ],
+     "features": [
+      "FIELD"
+     ],
+     "requires": []
+    },
+    {
+     "id": "em_dadian",
+     "name": "金頂大殿",
+     "desc": "大殿供奉普賢菩薩，香煙繚繞，鐘聲悠悠。靜玄師太在殿中傳授本門基本武學。往北是滅絕師太的住處。",
+     "exits": [
+      {
+       "dir": "S",
+       "to": "em_square"
+      },
+      {
+       "dir": "N",
+       "to": "em_miejue"
+      },
+      {
+       "dir": "E",
+       "to": "em_chanfang"
+      },
+      {
+       "dir": "W",
+       "to": "em_kitchen"
+      }
+     ],
+     "npcs": [
+      "n_em_jingxuan",
+      "n_em_jingguan"
+     ],
+     "features": [],
+     "requires": []
+    },
+    {
+     "id": "em_chanfang",
+     "name": "禪房",
+     "desc": "幾個蒲團排在窗下，屋裡靜得只聽得見念珠聲。蓮香在固定的時辰帶弟子禪修，消去心中殺氣。往北是思過處。",
+     "exits": [
+      {
+       "dir": "W",
+       "to": "em_dadian"
+      },
+      {
+       "dir": "N",
+       "to": "em_siguo"
+      }
+     ],
+     "npcs": [
+      "n_em_lianxiang"
+     ],
+     "features": [],
+     "requires": []
+    },
+    {
+     "id": "em_kitchen",
+     "name": "廚房",
+     "desc": "灶上蒸籠冒著白氣，案上擺著素菜。金小妹圍著圍裙，一邊切菜一邊哼著小曲。",
+     "exits": [
+      {
+       "dir": "E",
+       "to": "em_dadian"
+      }
+     ],
+     "npcs": [
+      "n_em_jinxiaomei"
+     ],
+     "features": [
+      "STOVE",
+      "WATER"
+     ],
+     "requires": []
+    },
+    {
+     "id": "em_miejue",
+     "name": "滅絕師太居所",
+     "desc": "簡樸的屋子裡只有一張木榻、一張經案，牆上掛著一柄長劍。滅絕師太神色冷峻，正打量著來人。",
+     "exits": [
+      {
+       "dir": "S",
+       "to": "em_dadian"
+      },
+      {
+       "dir": "E",
+       "to": "em_zhou"
+      }
+     ],
+     "npcs": [
+      "n_em_miejue"
+     ],
+     "features": [],
+     "requires": []
+    },
+    {
+     "id": "em_zhou",
+     "name": "周芷若的房間",
+     "desc": "收拾得一塵不染的小屋，窗邊擺著一盆蘭花。只有本門弟子可以進來。",
+     "exits": [
+      {
+       "dir": "W",
+       "to": "em_miejue"
+      }
+     ],
+     "npcs": [
+      "n_em_zhouzhiruo"
+     ],
+     "features": [],
+     "requires": [
+      {
+       "type": "sect",
+       "sect": "emei"
+      }
+     ]
+    },
+    {
+     "id": "em_siguo",
+     "name": "思過處",
+     "desc": "後山崖邊的一間石屋，只有一扇小窗。違反門規的弟子被關在這裡面壁思過，看守的師姐寸步不離。",
+     "exits": [
+      {
+       "dir": "S",
+       "to": "em_chanfang"
+      }
+     ],
+     "npcs": [
+      "n_em_jailer"
+     ],
+     "features": [],
+     "requires": [
+      {
+       "type": "sect",
+       "sect": "emei"
+      }
+     ],
+     "jail": true
+    }
+   ]
+  },
+  "emei_road": {
+   "region_id": "emei_road",
+   "era": "1.0A",
+   "src": "proposal",
+   "desc": "從大理東北的崆峒道口上峨嵋的山路，沿途竹林溪澗，山腳下常有盜賊。",
+   "escape_tiles_hint": 2,
+   "rooms": [
+    {
+     "id": "em_road1",
+     "name": "崆峒橋",
+     "desc": "一座石橋橫跨山澗，橋頭的路標一邊寫著「崆峒」、一邊寫著「峨嵋」。往西南回崆峒道口，往東是上峨嵋的山路。",
+     "exits": [
+      {
+       "dir": "SW",
+       "to": "dlw_fork"
+      },
+      {
+       "dir": "E",
+       "to": "em_road2"
+      }
+     ],
+     "npcs": [],
+     "features": [],
+     "requires": [],
+     "encounter": {
+      "rate": 0.1,
+      "table": [
+       {
+        "monster": "m_rabbit",
+        "w": 60,
+        "count": [
+         1,
+         1
+        ]
+       },
+       {
+        "monster": "m_bigrabbit",
+        "w": 30,
+        "count": [
+         1,
+         1
+        ]
+       },
+       {
+        "monster": "m_wolf",
+        "w": 10,
+        "count": [
+         1,
+         1
+        ]
+       }
+      ]
+     }
+    },
+    {
+     "id": "em_road2",
+     "name": "竹林山徑",
+     "desc": "山徑穿過一大片翠竹林，風吹過竹梢沙沙作響。往東不遠有個茶棚，可以歇腳。",
+     "exits": [
+      {
+       "dir": "W",
+       "to": "em_road1"
+      },
+      {
+       "dir": "E",
+       "to": "em_teahouse"
+      }
+     ],
+     "npcs": [],
+     "features": [
+      "WOOD"
+     ],
+     "requires": [],
+     "encounter": {
+      "rate": 0.1,
+      "table": [
+       {
+        "monster": "m_rabbit",
+        "w": 70,
+        "count": [
+         1,
+         1
+        ]
+       },
+       {
+        "monster": "m_bigrabbit",
+        "w": 30,
+        "count": [
+         1,
+         1
+        ]
+       }
+      ]
+     }
+    },
+    {
+     "id": "em_teahouse",
+     "name": "峨嵋茶棚",
+     "desc": "路邊搭著竹棚，賣些茶水饅頭，往來峨嵋的香客都在這裡歇腳。老闆說南邊山腳下最近有盜賊出沒。",
+     "exits": [
+      {
+       "dir": "W",
+       "to": "em_road2"
+      },
+      {
+       "dir": "E",
+       "to": "em_road3"
+      }
+     ],
+     "npcs": [
+      "n_em_teaman",
+      "n_em_yingyueer"
+     ],
+     "features": [],
+     "requires": []
+    },
+    {
+     "id": "em_road3",
+     "name": "清音閣山道",
+     "desc": "溪水在亂石間奔流，水聲清越。往東北上山，往南是峨嵋山下的盜賊窩，新手最好別去。",
+     "exits": [
+      {
+       "dir": "W",
+       "to": "em_teahouse"
+      },
+      {
+       "dir": "NE",
+       "to": "em_road4"
+      },
+      {
+       "dir": "S",
+       "to": "em_bandit"
+      }
+     ],
+     "npcs": [],
+     "features": [
+      "WATER"
+     ],
+     "requires": [],
+     "encounter": {
+      "rate": 0.12,
+      "table": [
+       {
+        "monster": "m_rabbit",
+        "w": 40,
+        "count": [
+         1,
+         1
+        ]
+       },
+       {
+        "monster": "m_bigrabbit",
+        "w": 25,
+        "count": [
+         1,
+         1
+        ]
+       },
+       {
+        "monster": "m_em_monkey",
+        "w": 15,
+        "count": [
+         1,
+         1
+        ]
+       },
+       {
+        "monster": "m_wolf",
+        "w": 12,
+        "count": [
+         1,
+         1
+        ]
+       },
+       {
+        "monster": "m_boar",
+        "w": 8,
+        "count": [
+         1,
+         1
+        ]
+       }
+      ]
+     }
+    },
+    {
+     "id": "em_bandit",
+     "name": "峨嵋山下",
+     "desc": "山腳下的亂石坡上搭著幾個草棚，是盜賊的窩。武當弟子奉命剿匪、峨嵋弟子持殲逞令除惡，都到這裡來。這裡往裡就沒有路了。",
+     "exits": [
+      {
+       "dir": "N",
+       "to": "em_road3"
+      }
+     ],
+     "npcs": [],
+     "features": [],
+     "requires": [],
+     "encounter": {
+      "rate": 0.25,
+      "table": [
+       {
+        "monster": "m_bandit",
+        "w": 50,
+        "count": [
+         1,
+         1
+        ]
+       },
+       {
+        "monster": "m_boar",
+        "w": 30,
+        "count": [
+         1,
+         1
+        ]
+       },
+       {
+        "monster": "m_wolf",
+        "w": 20,
+        "count": [
+         1,
+         1
+        ]
+       }
+      ]
+     }
+    },
+    {
+     "id": "em_road4",
+     "name": "峨嵋西林",
+     "desc": "峨嵋山門左邊的樹林，林木茂密，日光幾乎透不進來。一位清秀的女子常在林中徘徊；往南的密林聽說是座迷宮。",
+     "exits": [
+      {
+       "dir": "SW",
+       "to": "em_road3"
+      },
+      {
+       "dir": "E",
+       "to": "em_foot"
+      },
+      {
+       "dir": "S",
+       "to": "em_mz_1"
+      }
+     ],
+     "npcs": [
+      "n_em_jixiaofu"
+     ],
+     "features": [
+      "WOOD"
+     ],
+     "requires": [],
+     "encounter": {
+      "rate": 0.12,
+      "table": [
+       {
+        "monster": "m_bigrabbit",
+        "w": 35,
+        "count": [
+         1,
+         1
+        ]
+       },
+       {
+        "monster": "m_em_monkey",
+        "w": 30,
+        "count": [
+         1,
+         1
+        ]
+       },
+       {
+        "monster": "m_rabbit",
+        "w": 15,
+        "count": [
+         1,
+         1
+        ]
+       },
+       {
+        "monster": "m_wolf",
+        "w": 12,
+        "count": [
+         1,
+         1
+        ]
+       },
+       {
+        "monster": "m_boar",
+        "w": 8,
+        "count": [
+         1,
+         1
+        ]
+       }
+      ]
+     }
+    },
+    {
+     "id": "em_foot",
+     "name": "峨嵋山腳",
+     "desc": "峨嵋金頂高聳入雲，石階從這裡一路盤上山門。往東的小路通往終南山。",
+     "exits": [
+      {
+       "dir": "W",
+       "to": "em_road4"
+      },
+      {
+       "dir": "N",
+       "to": "em_gate"
+      },
+      {
+       "dir": "E",
+       "to": "zn_road1"
+      }
+     ],
+     "npcs": [
+      "n_em_jianchi"
+     ],
+     "features": [],
+     "requires": [],
+     "encounter": {
+      "rate": 0.08,
+      "table": [
+       {
+        "monster": "m_rabbit",
+        "w": 70,
+        "count": [
+         1,
+         1
+        ]
+       },
+       {
+        "monster": "m_bigrabbit",
+        "w": 30,
+        "count": [
+         1,
+         1
+        ]
+       }
+      ]
+     }
+    }
+   ]
+  },
+  "emei_maze": {
+   "region_id": "emei_maze",
+   "era": "1.0A",
+   "src": "later",
+   "desc": "峨嵋西林南邊的密林迷宮，林中毒蛇與白猿出沒，原作是十層的線性迷宮，這裡縮成四間。",
+   "escape_tiles_hint": 2,
+   "rooms": [
+    {
+     "id": "em_mz_1",
+     "name": "迷林入口",
+     "desc": "密林中的小徑忽左忽右，樹上刻著前人留下的記號。往北可以回到峨嵋西林。",
+     "exits": [
+      {
+       "dir": "N",
+       "to": "em_road4"
+      },
+      {
+       "dir": "S",
+       "to": "em_mz_2"
+      }
+     ],
+     "npcs": [],
+     "features": [
+      "WOOD"
+     ],
+     "requires": [],
+     "encounter": {
+      "rate": 0.25,
+      "table": [
+       {
+        "monster": "m_em_mz_snake",
+        "w": 60,
+        "count": [
+         1,
+         1
+        ]
+       },
+       {
+        "monster": "m_em_mz_ape",
+        "w": 40,
+        "count": [
+         1,
+         1
+        ]
+       }
+      ]
+     }
+    },
+    {
+     "id": "em_mz_2",
+     "name": "迷林深處",
+     "desc": "四周的樹長得一模一樣，地上的腳印繞了一圈又回到原處。草叢裡不時傳來嘶嘶聲。",
+     "exits": [
+      {
+       "dir": "N",
+       "to": "em_mz_1"
+      },
+      {
+       "dir": "S",
+       "to": "em_mz_3"
+      }
+     ],
+     "npcs": [],
+     "features": [
+      "WOOD"
+     ],
+     "requires": [],
+     "encounter": {
+      "rate": 0.3,
+      "table": [
+       {
+        "monster": "m_em_mz_snake",
+        "w": 50,
+        "count": [
+         1,
+         1
+        ]
+       },
+       {
+        "monster": "m_em_mz_ape",
+        "w": 50,
+        "count": [
+         1,
+         1
+        ]
+       }
+      ]
+     }
+    },
+    {
+     "id": "em_mz_3",
+     "name": "猿啼谷",
+     "desc": "林子在這裡開成一道山谷，猿啼聲此起彼落，回音不絕。",
+     "exits": [
+      {
+       "dir": "N",
+       "to": "em_mz_2"
+      },
+      {
+       "dir": "S",
+       "to": "em_mz_4"
+      }
+     ],
+     "npcs": [],
+     "features": [
+      "WOOD",
+      "WATER"
+     ],
+     "requires": [],
+     "encounter": {
+      "rate": 0.3,
+      "table": [
+       {
+        "monster": "m_em_mz_ape",
+        "w": 60,
+        "count": [
+         1,
+         1
+        ]
+       },
+       {
+        "monster": "m_em_mz_snake",
+        "w": 40,
+        "count": [
+         1,
+         1
+        ]
+       }
+      ]
+     }
+    },
+    {
+     "id": "em_mz_4",
+     "name": "迷林盡頭",
+     "desc": "一道斷崖擋住去路，崖下雲霧翻騰，再也走不下去了。",
+     "exits": [
+      {
+       "dir": "N",
+       "to": "em_mz_3"
+      }
+     ],
+     "npcs": [],
+     "features": [
+      "WOOD"
+     ],
+     "requires": [],
+     "encounter": {
+      "rate": 0.3,
+      "table": [
+       {
+        "monster": "m_em_mz_ape",
+        "w": 70,
+        "count": [
+         1,
+         1
+        ]
+       },
+       {
+        "monster": "m_em_mz_snake",
+        "w": 30,
+        "count": [
+         1,
+         1
+        ]
+       }
+      ]
+     }
+    }
+   ]
+  }
+ },
+ "extra_rooms": {},
+ "exit_patches": [
+  {
+   "room": "dlw_fork",
+   "add_exits": [
+    {
+     "dir": "NE",
+     "to": "em_road1"
+    }
+   ],
+   "desc": "幾條山路在這裡交會。往北通崆峒的路還被落石堵著；往東北的小路已經清開，可以走到峨嵋山和終南山。"
+  }
+ ],
+ "npcs": [
+  {
+   "id": "n_em_cha",
+   "name": "查小鏞",
+   "kind": "FUNC",
+   "region": "emei",
+   "room": "em_gate",
+   "alignment": "GOOD",
+   "talk": "talk_n_em_cha",
+   "services": [
+    "RESPAWN"
+   ],
+   "night_closed": false,
+   "desc": "在峨嵋山門替香客記錄落腳處的老先生。",
+   "era": "1.0A",
+   "src": "later"
+  },
+  {
+   "id": "n_em_gatedizi",
+   "name": "峨嵋弟子",
+   "kind": "FUNC",
+   "region": "emei",
+   "room": "em_gate",
+   "alignment": "GOOD",
+   "talk": "talk_n_em_gatedizi",
+   "services": [
+    "FIGHT"
+   ],
+   "night_closed": false,
+   "fight": {
+    "monster": "m_em_xunshan",
+    "requires": [
+     {
+      "type": "morality_max",
+      "value": -1
+     }
+    ]
+   },
+   "desc": "按劍守在山門口的峨嵋弟子，對心術不正的人絕不客氣。",
+   "era": "1.0A",
+   "src": "verified"
+  },
+  {
+   "id": "n_em_miejue",
+   "name": "滅絕師太",
+   "kind": "MASTER",
+   "region": "emei",
+   "room": "em_miejue",
+   "alignment": "GOOD",
+   "talk": "talk_n_em_miejue",
+   "services": [
+    "JOIN",
+    "TEACH",
+    "BETRAY"
+   ],
+   "night_closed": false,
+   "join_sect": "emei",
+   "desc": "峨嵋派掌門，面容冷峻，嫉惡如仇。本門的特殊武功只傳一級，其餘要弟子自己苦練。",
+   "era": "1.0A",
+   "src": "verified"
+  },
+  {
+   "id": "n_em_jingjia",
+   "name": "靜迦師太",
+   "kind": "MASTER",
+   "region": "emei",
+   "room": "em_square",
+   "alignment": "GOOD",
+   "talk": "talk_n_em_jingjia",
+   "services": [
+    "TEACH"
+   ],
+   "night_closed": false,
+   "desc": "峨嵋派的入門師父，傳授峨嵋心法、身法、飄雪穿雲掌、金頂綿掌與迴風拂柳劍。",
+   "era": "1.0A",
+   "src": "verified"
+  },
+  {
+   "id": "n_em_spar",
+   "name": "對招師姐",
+   "kind": "FUNC",
+   "region": "emei",
+   "room": "em_square",
+   "alignment": "GOOD",
+   "talk": "talk_n_em_spar",
+   "services": [
+    "FIGHT"
+   ],
+   "night_closed": false,
+   "fight": {
+    "monster": "m_em_dizi",
+    "requires": [
+     {
+      "type": "sect",
+      "sect": "emei"
+     }
+    ]
+   },
+   "desc": "負責陪同門對招切磋的師姐，出手點到為止。",
+   "era": "1.0A",
+   "src": "proposal"
+  },
+  {
+   "id": "n_em_jingzhao",
+   "name": "靜照師太",
+   "kind": "MASTER",
+   "region": "emei",
+   "room": "em_jingzhao",
+   "alignment": "GOOD",
+   "talk": "talk_n_em_jingzhao",
+   "services": [
+    "TEACH",
+    "QUEST"
+   ],
+   "night_closed": false,
+   "quests": [
+    "q_em_jiancheng"
+   ],
+   "desc": "掌管易理房的師太，教弟子讀書與斷惡，也發下殲逞盜賊令。",
+   "era": "1.0A",
+   "src": "verified"
+  },
+  {
+   "id": "n_em_jingxuan",
+   "name": "靜玄師太",
+   "kind": "MASTER",
+   "region": "emei",
+   "room": "em_dadian",
+   "alignment": "GOOD",
+   "talk": "talk_n_em_jingxuan",
+   "services": [
+    "TEACH"
+   ],
+   "night_closed": false,
+   "desc": "滅絕師太的大弟子，帶領弟子禪定修練內力，並傳授本門基本武學。",
+   "era": "1.0A",
+   "src": "verified"
+  },
+  {
+   "id": "n_em_beimianyi",
+   "name": "貝綿儀",
+   "kind": "QUEST",
+   "region": "emei",
+   "room": "em_square",
+   "alignment": "GOOD",
+   "talk": "talk_n_em_beimianyi",
+   "services": [
+    "QUEST"
+   ],
+   "night_closed": false,
+   "quests": [
+    "q_em_xin"
+   ],
+   "desc": "身形輕盈的峨嵋弟子，常在練武場邊的高牆上練踏牆功夫。",
+   "era": "1.0A",
+   "src": "verified"
+  },
+  {
+   "id": "n_em_dingminjun",
+   "name": "丁敏君",
+   "kind": "STORY",
+   "region": "emei",
+   "room": "em_square",
+   "alignment": "GOOD",
+   "talk": "talk_n_em_dingminjun",
+   "services": [],
+   "night_closed": false,
+   "desc": "滅絕師太的弟子，眉目間帶著幾分傲氣，說話尖酸。",
+   "era": "1.0A",
+   "src": "verified"
+  },
+  {
+   "id": "n_em_zhouzhiruo",
+   "name": "周芷若",
+   "kind": "STORY",
+   "region": "emei",
+   "room": "em_zhou",
+   "alignment": "GOOD",
+   "talk": "talk_n_em_zhouzhiruo",
+   "services": [],
+   "night_closed": false,
+   "desc": "滅絕師太最疼愛的弟子，容貌清麗，舉止溫柔。",
+   "era": "1.0A",
+   "src": "verified"
+  },
+  {
+   "id": "n_em_jingguan",
+   "name": "靜觀師太",
+   "kind": "STORY",
+   "region": "emei",
+   "room": "em_dadian",
+   "alignment": "GOOD",
+   "talk": "talk_n_em_jingguan",
+   "services": [],
+   "night_closed": false,
+   "desc": "在大殿誦經的師太，提起孤鴻子師伯的往事就嘆氣。",
+   "era": "1.0A",
+   "src": "verified"
+  },
+  {
+   "id": "n_em_lianxiang",
+   "name": "蓮香",
+   "kind": "STORY",
+   "region": "emei",
+   "room": "em_chanfang",
+   "alignment": "GOOD",
+   "talk": "talk_n_em_lianxiang",
+   "services": [],
+   "night_closed": false,
+   "desc": "在禪房帶弟子禪修的女尼，說心中殺氣太重的人學不好武功。",
+   "era": "1.0A",
+   "src": "verified"
+  },
+  {
+   "id": "n_em_jinxiaomei",
+   "name": "金小妹",
+   "kind": "STORY",
+   "region": "emei",
+   "room": "em_kitchen",
+   "alignment": "GOOD",
+   "talk": "talk_n_em_jinxiaomei",
+   "services": [],
+   "night_closed": false,
+   "desc": "峨嵋廚房裡圓臉愛笑的小姑娘，最拿手的是烤香魚。",
+   "era": "1.0A",
+   "src": "verified"
+  },
+  {
+   "id": "n_em_nongfu",
+   "name": "農夫",
+   "kind": "MASTER",
+   "region": "emei",
+   "room": "em_caiyuan",
+   "alignment": "NEUTRAL",
+   "talk": "talk_n_em_nongfu",
+   "services": [
+    "TEACH"
+   ],
+   "night_closed": false,
+   "desc": "替峨嵋派種菜的老農，願意教人種田。",
+   "era": "1.0A",
+   "src": "verified"
+  },
+  {
+   "id": "n_em_jailer",
+   "name": "看守師姐",
+   "kind": "FUNC",
+   "region": "emei",
+   "room": "em_siguo",
+   "alignment": "GOOD",
+   "talk": "talk_n_em_jailer",
+   "services": [
+    "JAIL"
+   ],
+   "night_closed": false,
+   "desc": "看守思過處的師姐，面無表情。",
+   "era": "1.0A",
+   "src": "proposal"
+  },
+  {
+   "id": "n_em_jianchi",
+   "name": "劍痴",
+   "kind": "STORY",
+   "region": "emei_road",
+   "room": "em_foot",
+   "alignment": "NEUTRAL",
+   "talk": "talk_n_em_jianchi",
+   "services": [],
+   "night_closed": false,
+   "desc": "背著好幾把劍的怪人，嘴裡念念有詞，三句話不離冷凝劍。",
+   "era": "1.0A",
+   "src": "verified"
+  },
+  {
+   "id": "n_em_jixiaofu",
+   "name": "紀曉芙",
+   "kind": "STORY",
+   "region": "emei_road",
+   "room": "em_road4",
+   "alignment": "GOOD",
+   "talk": "talk_n_em_jixiaofu",
+   "services": [],
+   "night_closed": false,
+   "desc": "峨嵋派的女弟子，不知為何獨自在山門外的樹林裡，神色憂鬱。",
+   "era": "1.0A",
+   "src": "verified"
+  },
+  {
+   "id": "n_em_yingyueer",
+   "name": "瑩月兒",
+   "kind": "STORY",
+   "region": "emei_road",
+   "room": "em_teahouse",
+   "alignment": "GOOD",
+   "talk": "talk_n_em_yingyueer",
+   "services": [],
+   "night_closed": false,
+   "desc": "在茶棚歇腳的少女，自稱在等人。（原作只知道位置，身分【待考證】）",
+   "era": "1.0A",
+   "src": "unverified"
+  },
+  {
+   "id": "n_em_teaman",
+   "name": "茶棚老闆",
+   "kind": "FUNC",
+   "region": "emei_road",
+   "room": "em_teahouse",
+   "alignment": "NEUTRAL",
+   "talk": "talk_n_em_teaman",
+   "services": [
+    "INN",
+    "SHOP"
+   ],
+   "night_closed": false,
+   "inn_price": 15,
+   "shop": {
+    "items": [
+     "c_mantou",
+     "c_water",
+     "c_qiyao"
+    ]
+   },
+   "desc": "在峨嵋山路旁擺茶棚的老闆，見了香客就招呼。",
+   "era": "1.0A",
+   "src": "proposal"
+  }
+ ],
+ "masters": [
+  {
+   "id": "ms_em_jingjia_xinfa",
+   "npc_id": "n_em_jingjia",
+   "skill_id": "em_xinfa",
+   "cap": 100,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "emei"
+    }
+   ],
+   "era": "1.0A",
+   "src": "verified"
+  },
+  {
+   "id": "ms_em_jingjia_shenfa",
+   "npc_id": "n_em_jingjia",
+   "skill_id": "em_shenfa",
+   "cap": 100,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "emei"
+    }
+   ],
+   "era": "1.0A",
+   "src": "verified"
+  },
+  {
+   "id": "ms_em_jingjia_piaoxue",
+   "npc_id": "n_em_jingjia",
+   "skill_id": "em_piaoxue",
+   "cap": 100,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "emei"
+    }
+   ],
+   "era": "1.0A",
+   "src": "verified"
+  },
+  {
+   "id": "ms_em_jingjia_jinding",
+   "npc_id": "n_em_jingjia",
+   "skill_id": "em_jinding",
+   "cap": 100,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "emei"
+    }
+   ],
+   "era": "1.0A",
+   "src": "verified"
+  },
+  {
+   "id": "ms_em_jingjia_huifeng",
+   "npc_id": "n_em_jingjia",
+   "skill_id": "em_huifeng",
+   "cap": 100,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "emei"
+    }
+   ],
+   "era": "1.0A",
+   "src": "verified"
+  },
+  {
+   "id": "ms_em_jingzhao_duane",
+   "npc_id": "n_em_jingzhao",
+   "skill_id": "duane",
+   "cap": 20,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "emei"
+    }
+   ],
+   "era": "1.0A",
+   "src": "proposal"
+  },
+  {
+   "id": "ms_em_jingzhao_literacy",
+   "npc_id": "n_em_jingzhao",
+   "skill_id": "basic_literacy",
+   "cap": 60,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "emei"
+    }
+   ],
+   "era": "1.0A",
+   "src": "proposal"
+  },
+  {
+   "id": "ms_em_jingxuan_inner",
+   "npc_id": "n_em_jingxuan",
+   "skill_id": "basic_inner",
+   "cap": 140,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "emei"
+    }
+   ],
+   "era": "1.0A",
+   "src": "later"
+  },
+  {
+   "id": "ms_em_jingxuan_parry",
+   "npc_id": "n_em_jingxuan",
+   "skill_id": "basic_parry",
+   "cap": 140,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "emei"
+    }
+   ],
+   "era": "1.0A",
+   "src": "later"
+  },
+  {
+   "id": "ms_em_jingxuan_dodge",
+   "npc_id": "n_em_jingxuan",
+   "skill_id": "basic_dodge",
+   "cap": 140,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "emei"
+    }
+   ],
+   "era": "1.0A",
+   "src": "later"
+  },
+  {
+   "id": "ms_em_jingxuan_body",
+   "npc_id": "n_em_jingxuan",
+   "skill_id": "basic_body",
+   "cap": 140,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "emei"
+    }
+   ],
+   "era": "1.0A",
+   "src": "later"
+  },
+  {
+   "id": "ms_em_jingxuan_fist",
+   "npc_id": "n_em_jingxuan",
+   "skill_id": "basic_fist",
+   "cap": 140,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "emei"
+    }
+   ],
+   "era": "1.0A",
+   "src": "later"
+  },
+  {
+   "id": "ms_em_jingxuan_sword",
+   "npc_id": "n_em_jingxuan",
+   "skill_id": "basic_sword",
+   "cap": 140,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "emei"
+    }
+   ],
+   "era": "1.0A",
+   "src": "later"
+  },
+  {
+   "id": "ms_em_miejue_jiuyang",
+   "npc_id": "n_em_miejue",
+   "skill_id": "em_jiuyang",
+   "cap": 1,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "emei"
+    }
+   ],
+   "era": "1.0A",
+   "src": "verified"
+  },
+  {
+   "id": "ms_em_miejue_miejian",
+   "npc_id": "n_em_miejue",
+   "skill_id": "em_miejian",
+   "cap": 1,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "emei"
+    }
+   ],
+   "era": "1.0A",
+   "src": "verified"
+  },
+  {
+   "id": "ms_em_miejue_juejian",
+   "npc_id": "n_em_miejue",
+   "skill_id": "em_juejian",
+   "cap": 1,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "emei"
+    }
+   ],
+   "era": "1.0A",
+   "src": "verified"
+  },
+  {
+   "id": "ms_em_miejue_foguang",
+   "npc_id": "n_em_miejue",
+   "skill_id": "em_foguang",
+   "cap": 1,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "emei"
+    }
+   ],
+   "era": "1.0A",
+   "src": "verified"
+  },
+  {
+   "id": "ms_em_nongfu_farming",
+   "npc_id": "n_em_nongfu",
+   "skill_id": "life_farming",
+   "cap": 100,
+   "price": 50,
+   "tool": "t_chutou",
+   "requires": [],
+   "era": "1.0A",
+   "src": "proposal"
+  }
+ ],
+ "martial_arts": [
+  {
+   "id": "em_xinfa",
+   "name": "峨嵋心法",
+   "sect_id": "emei",
+   "category": "INNER",
+   "base_skill": "basic_inner",
+   "difficulty": 0.9,
+   "tier": "BASIC",
+   "self_study_until": 0,
+   "self_study_cap": 0,
+   "party_size": 0,
+   "monster_only": false,
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "emei"
+    }
+   ],
+   "inner": {
+    "heal_mult": 1.0,
+    "expel_mult": 1.0
+   },
+   "desc": "峨嵋派入門內功，講究心平氣和、綿綿不絕。",
+   "era": "1.0A",
+   "src": "verified",
+   "src_note": "研究 峨嵋：靜迦教（mengpai/3、2001-08-13）",
+   "moves": []
+  },
+  {
+   "id": "em_shenfa",
+   "name": "峨嵋身法",
+   "sect_id": "emei",
+   "category": "LIGHTNESS",
+   "base_skill": "basic_body",
+   "difficulty": 0.9,
+   "tier": "BASIC",
+   "self_study_until": 0,
+   "self_study_cap": 0,
+   "party_size": 0,
+   "monster_only": false,
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "emei"
+    }
+   ],
+   "desc": "峨嵋弟子的輕身步法，身形飄逸，閃避靈動。",
+   "era": "1.0A",
+   "src": "verified",
+   "src_note": "研究 峨嵋：靜迦教（mengpai/3）",
+   "moves": []
+  },
+  {
+   "id": "em_piaoxue",
+   "name": "飄雪穿雲掌",
+   "sect_id": "emei",
+   "category": "FIST",
+   "base_skill": "basic_fist",
+   "difficulty": 0.9,
+   "tier": "BASIC",
+   "self_study_until": 0,
+   "self_study_cap": 0,
+   "party_size": 0,
+   "monster_only": false,
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "emei"
+    }
+   ],
+   "desc": "峨嵋入門掌法，掌勢如雪片紛飛，一掌接一掌直穿而出。",
+   "era": "1.0A",
+   "src": "verified",
+   "src_note": "研究 峨嵋：靜迦教；射程直線（gaoshou/32）。第一招單體是為了新手驗收（3.2）【設計提案】",
+   "moves": [
+    {
+     "id": "em_px_1",
+     "name": "瑞雪初降",
+     "unlock_level": 1,
+     "power": 22,
+     "range": 1,
+     "aoe": "SINGLE",
+     "cost_inner": 0,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "move_em_palm",
+     "src": "proposal"
+    },
+    {
+     "id": "em_px_2",
+     "name": "穿雲破霧",
+     "unlock_level": 30,
+     "power": 26,
+     "range": 2,
+     "aoe": "LINE",
+     "cost_inner": 5,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "move_em_palm_line",
+     "src": "proposal"
+    },
+    {
+     "id": "em_px_3",
+     "name": "飄雪漫天",
+     "unlock_level": 60,
+     "power": 34,
+     "range": 3,
+     "aoe": "LINE",
+     "cost_inner": 10,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "move_em_palm_line",
+     "src": "proposal"
+    }
+   ]
+  },
+  {
+   "id": "em_jinding",
+   "name": "金頂綿掌",
+   "sect_id": "emei",
+   "category": "FIST",
+   "base_skill": "basic_fist",
+   "difficulty": 0.95,
+   "tier": "BASIC",
+   "self_study_until": 0,
+   "self_study_cap": 0,
+   "party_size": 0,
+   "monster_only": false,
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "emei"
+    },
+    {
+     "type": "skill_min",
+     "skill": "em_piaoxue",
+     "value": 20
+    }
+   ],
+   "desc": "以柔克剛的綿掌，掌力綿密，中者內腑受震。",
+   "era": "1.0A",
+   "src": "verified",
+   "src_note": "研究 峨嵋：靜迦教；射程直線（gaoshou/32；70 級起大十字是後期版）；飄雪 20 的門檻是 M3A_PLAN 4.3【設計提案】",
+   "moves": [
+    {
+     "id": "em_jd_1",
+     "name": "金頂禮佛",
+     "unlock_level": 1,
+     "power": 24,
+     "range": 1,
+     "aoe": "SINGLE",
+     "cost_inner": 0,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "move_em_palm",
+     "src": "proposal"
+    },
+    {
+     "id": "em_jd_2",
+     "name": "綿裡藏針",
+     "unlock_level": 30,
+     "power": 27,
+     "range": 2,
+     "aoe": "LINE",
+     "cost_inner": 6,
+     "cost_jing": 0,
+     "status": "inner_wound",
+     "status_chance": 0.1,
+     "flavor": "move_em_palm_line",
+     "src": "proposal"
+    },
+    {
+     "id": "em_jd_3",
+     "name": "萬佛朝宗",
+     "unlock_level": 60,
+     "power": 36,
+     "range": 2,
+     "aoe": "LINE",
+     "cost_inner": 12,
+     "cost_jing": 0,
+     "status": "inner_wound",
+     "status_chance": 0.15,
+     "flavor": "move_em_palm_line",
+     "src": "proposal"
+    }
+   ]
+  },
+  {
+   "id": "em_huifeng",
+   "name": "迴風拂柳劍",
+   "sect_id": "emei",
+   "category": "SWORD",
+   "base_skill": "basic_sword",
+   "difficulty": 0.9,
+   "tier": "BASIC",
+   "self_study_until": 0,
+   "self_study_cap": 0,
+   "party_size": 0,
+   "monster_only": false,
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "emei"
+    }
+   ],
+   "desc": "峨嵋入門劍法，劍勢如風拂柳枝，輕柔中暗藏殺著。",
+   "era": "1.0A",
+   "src": "verified",
+   "src_note": "研究 峨嵋：靜迦教；射程小十字（gaoshou/32）；取代 GDD 的「峨嵋劍法」（M3A_PLAN D3）",
+   "moves": [
+    {
+     "id": "em_hf_1",
+     "name": "迴風舞柳",
+     "unlock_level": 1,
+     "power": 22,
+     "range": 1,
+     "aoe": "SINGLE",
+     "cost_inner": 0,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "move_em_sword",
+     "src": "proposal"
+    },
+    {
+     "id": "em_hf_2",
+     "name": "拂柳穿花",
+     "unlock_level": 30,
+     "power": 26,
+     "range": 1,
+     "aoe": "CROSS",
+     "cost_inner": 6,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "move_em_sword_cross",
+     "src": "proposal"
+    },
+    {
+     "id": "em_hf_3",
+     "name": "柳絮隨風",
+     "unlock_level": 60,
+     "power": 35,
+     "range": 2,
+     "aoe": "CROSS",
+     "cost_inner": 12,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "move_em_sword_cross",
+     "src": "proposal"
+    }
+   ]
+  },
+  {
+   "id": "em_jiuyang",
+   "name": "峨嵋九陽功",
+   "sect_id": "emei",
+   "category": "INNER",
+   "base_skill": "basic_inner",
+   "difficulty": 1.1,
+   "tier": "QUEST",
+   "self_study_until": 0,
+   "self_study_cap": 0,
+   "party_size": 0,
+   "monster_only": false,
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "emei"
+    },
+    {
+     "type": "skill_min",
+     "skill": "duane",
+     "value": 50
+    },
+    {
+     "type": "quest_flag",
+     "flag": "em_shougongsha"
+    }
+   ],
+   "inner": {
+    "heal_mult": 1.2,
+    "expel_mult": 1.2
+   },
+   "desc": "峨嵋派的上乘內功，與武當、少林的九陽功同出一源。滅絕師太只傳一級，其餘要自己苦修。",
+   "era": "1.0A",
+   "src": "verified",
+   "src_note": "研究 峨嵋：2001-08-13 斷惡 50 → 靜照給守宮砂證明 → 滅絕；滅絕只教 1 級（M3b 開任務）",
+   "moves": []
+  },
+  {
+   "id": "em_miejian",
+   "name": "滅劍",
+   "sect_id": "emei",
+   "category": "SWORD",
+   "base_skill": "basic_sword",
+   "difficulty": 1.1,
+   "tier": "QUEST",
+   "self_study_until": 0,
+   "self_study_cap": 0,
+   "party_size": 0,
+   "monster_only": false,
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "emei"
+    },
+    {
+     "type": "skill_min",
+     "skill": "em_huifeng",
+     "value": 30
+    },
+    {
+     "type": "skill_min",
+     "skill": "em_jiuyang",
+     "value": 1
+    },
+    {
+     "type": "quest_flag",
+     "flag": "em_miejian_ok"
+    }
+   ],
+   "desc": "滅絕師太的獨門劍法，劍劍狠辣，專斬邪魔。",
+   "era": "1.0A",
+   "src": "verified",
+   "src_note": "研究 峨嵋：2001-08-13 迴風拂柳劍 30 + 九陽 + 丁敏君的任務（鐵指環）→ 滅絕；射程大十字（gaoshou/32）",
+   "moves": [
+    {
+     "id": "em_mj_1",
+     "name": "滅魔一劍",
+     "unlock_level": 1,
+     "power": 38,
+     "range": 1,
+     "aoe": "SINGLE",
+     "cost_inner": 8,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "move_em_sword",
+     "src": "proposal"
+    },
+    {
+     "id": "em_mj_2",
+     "name": "劍滅邪蹤",
+     "unlock_level": 40,
+     "power": 39,
+     "range": 2,
+     "aoe": "CROSS_L",
+     "cost_inner": 16,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "move_em_sword_cross",
+     "src": "proposal"
+    },
+    {
+     "id": "em_mj_3",
+     "name": "滅盡群魔",
+     "unlock_level": 70,
+     "power": 50,
+     "range": 3,
+     "aoe": "CROSS_L",
+     "cost_inner": 24,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "move_em_sword_cross",
+     "src": "proposal"
+    }
+   ]
+  },
+  {
+   "id": "em_juejian",
+   "name": "絕劍",
+   "sect_id": "emei",
+   "category": "SWORD",
+   "base_skill": "basic_sword",
+   "difficulty": 1.1,
+   "tier": "QUEST",
+   "self_study_until": 0,
+   "self_study_cap": 0,
+   "party_size": 0,
+   "monster_only": false,
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "emei"
+    },
+    {
+     "type": "skill_min",
+     "skill": "em_huifeng",
+     "value": 50
+    },
+    {
+     "type": "quest_flag",
+     "flag": "em_juejian_ok"
+    }
+   ],
+   "desc": "與滅劍並稱的峨嵋絕學，出劍不留餘地。",
+   "era": "1.0A",
+   "src": "verified",
+   "src_note": "研究 峨嵋：滅絕教（mengpai/3）；2001 的取得條件【待考證】（後期：絕劍 80 + 紀曉芙鐵焰令）；射程半米字是後期資料；迴風 50 的門檻【設計提案】",
+   "moves": [
+    {
+     "id": "em_jj_1",
+     "name": "斷情絕念",
+     "unlock_level": 1,
+     "power": 40,
+     "range": 1,
+     "aoe": "SINGLE",
+     "cost_inner": 8,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "move_em_sword",
+     "src": "proposal"
+    },
+    {
+     "id": "em_jj_2",
+     "name": "絕壁孤松",
+     "unlock_level": 40,
+     "power": 38,
+     "range": 2,
+     "aoe": "FAN",
+     "cost_inner": 16,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "move_em_sword_fan",
+     "src": "proposal"
+    },
+    {
+     "id": "em_jj_3",
+     "name": "萬念俱絕",
+     "unlock_level": 70,
+     "power": 51,
+     "range": 3,
+     "aoe": "FAN",
+     "cost_inner": 25,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "move_em_sword_fan",
+     "src": "proposal"
+    }
+   ]
+  },
+  {
+   "id": "em_foguang",
+   "name": "佛光普照掌",
+   "sect_id": "emei",
+   "category": "FIST",
+   "base_skill": "basic_fist",
+   "difficulty": 1.1,
+   "tier": "QUEST",
+   "self_study_until": 0,
+   "self_study_cap": 0,
+   "party_size": 0,
+   "monster_only": false,
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "emei"
+    },
+    {
+     "type": "skill_min",
+     "skill": "em_jinding",
+     "value": 50
+    },
+    {
+     "type": "skill_min",
+     "skill": "em_jiuyang",
+     "value": 1
+    },
+    {
+     "type": "quest_flag",
+     "flag": "em_foguang_ok"
+    }
+   ],
+   "desc": "峨嵋掌法的最高境界，一掌拍出，掌力如佛光籠罩四方。",
+   "era": "1.0A",
+   "src": "verified",
+   "src_note": "研究 峨嵋：滅絕教（mengpai/3）；2001-12-07 已可經由鐵指環取得；2001 的等級門檻【待考證】，金頂 50 的門檻【設計提案】；射程小十字是後期資料",
+   "moves": [
+    {
+     "id": "em_fg_1",
+     "name": "佛光初照",
+     "unlock_level": 1,
+     "power": 40,
+     "range": 1,
+     "aoe": "SINGLE",
+     "cost_inner": 10,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "move_em_palm",
+     "src": "proposal"
+    },
+    {
+     "id": "em_fg_2",
+     "name": "佛光普照",
+     "unlock_level": 50,
+     "power": 45,
+     "range": 2,
+     "aoe": "CROSS",
+     "cost_inner": 20,
+     "cost_jing": 0,
+     "status": "inner_wound",
+     "status_chance": 0.2,
+     "flavor": "move_em_palm",
+     "src": "proposal"
+    }
+   ]
+  },
+  {
+   "id": "em_mon_dushe",
+   "name": "毒牙",
+   "sect_id": "",
+   "category": "FIST",
+   "base_skill": "basic_fist",
+   "difficulty": 0.9,
+   "self_study_until": 0,
+   "self_study_cap": 0,
+   "party_size": 0,
+   "monster_only": true,
+   "requires": [],
+   "desc": "毒蛇的毒牙，咬中會中毒。",
+   "era": "1.0A",
+   "src": "proposal",
+   "moves": [
+    {
+     "id": "em_mon_dushe_1",
+     "name": "毒牙",
+     "unlock_level": 1,
+     "power": 22,
+     "range": 1,
+     "aoe": "SINGLE",
+     "cost_inner": 0,
+     "cost_jing": 0,
+     "status": "poison",
+     "status_chance": 0.2,
+     "flavor": "move_bite",
+     "src": "proposal"
+    }
+   ]
+  },
+  {
+   "id": "em_mon_yuanzhua",
+   "name": "白猿爪",
+   "sect_id": "",
+   "category": "FIST",
+   "base_skill": "basic_fist",
+   "difficulty": 0.9,
+   "self_study_until": 0,
+   "self_study_cap": 0,
+   "party_size": 0,
+   "monster_only": true,
+   "requires": [],
+   "desc": "白猿迅捷的爪擊。",
+   "era": "1.0A",
+   "src": "proposal",
+   "moves": [
+    {
+     "id": "em_mon_yuanzhua_1",
+     "name": "白猿探爪",
+     "unlock_level": 1,
+     "power": 26,
+     "range": 1,
+     "aoe": "SINGLE",
+     "cost_inner": 0,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "move_claw",
+     "src": "proposal"
+    }
+   ]
+  }
+ ],
+ "monsters": [
+  {
+   "id": "m_em_dizi",
+   "name": "峨嵋弟子",
+   "short": "弟子",
+   "kind": "MONSTER",
+   "alignment": "GOOD",
+   "desc": "對招師姐手下的峨嵋弟子，奉命與你切磋掌法。（設計提案）",
+   "stats": {
+    "qi": 230,
+    "neili": 25,
+    "jing": 120,
+    "str": 13,
+    "guts": 14,
+    "wit": 18,
+    "luck": 15,
+    "cal": 16,
+    "agi": 20,
+    "con": 15
+   },
+   "skills": {
+    "basic_dodge": 8,
+    "basic_parry": 8,
+    "basic_inner": 5,
+    "basic_fist": 8
+   },
+   "arts": [
+    {
+     "art": "em_piaoxue",
+     "level": 8
+    }
+   ],
+   "weapon_type": "FIST",
+   "weapon_power": 0,
+   "armor_power": 6,
+   "combat_xp_ref": 300,
+   "combat_xp": 0,
+   "learn_points": 0,
+   "drops": [],
+   "money": {
+    "min": 0,
+    "max": 0
+   },
+   "morality_on_kill": 0,
+   "killing_intent_on_kill": 0,
+   "ai": "melee_basic",
+   "no_rewards": true,
+   "sect": "emei",
+   "era": "1.0A",
+   "src": "proposal"
+  },
+  {
+   "id": "m_em_xunshan",
+   "name": "峨嵋巡山弟子",
+   "short": "巡山",
+   "kind": "MONSTER",
+   "alignment": "GOOD",
+   "desc": "巡守峨嵋的女弟子，見了邪惡之徒便拔劍相向。惡人常拿她們練功。（存在：已證實 17173 練功點；數值：設計提案）",
+   "stats": {
+    "qi": 1800,
+    "neili": 300,
+    "jing": 500,
+    "str": 24,
+    "guts": 26,
+    "wit": 22,
+    "luck": 18,
+    "cal": 26,
+    "agi": 30,
+    "con": 24
+   },
+   "skills": {
+    "basic_dodge": 60,
+    "basic_parry": 55,
+    "basic_inner": 45,
+    "basic_sword": 55,
+    "basic_fist": 40
+   },
+   "arts": [
+    {
+     "art": "em_huifeng",
+     "level": 45
+    }
+   ],
+   "weapon_type": "SWORD",
+   "weapon_power": 18,
+   "armor_power": 40,
+   "combat_xp_ref": 50000,
+   "combat_xp": 150,
+   "learn_points": 60,
+   "drops": [
+    {
+     "item": "c_qiyao",
+     "chance": 0.3,
+     "min": 1,
+     "max": 1
+    }
+   ],
+   "money": {
+    "min": 0,
+    "max": 20
+   },
+   "morality_on_kill": -10,
+   "killing_intent_on_kill": 10,
+   "ai": "melee_basic",
+   "no_rewards": false,
+   "sect": "emei",
+   "era": "1.0A",
+   "src": "verified"
+  },
+  {
+   "id": "m_em_guard",
+   "name": "峨嵋護法師太",
+   "short": "護法",
+   "kind": "ELITE",
+   "alignment": "GOOD",
+   "desc": "奉滅絕師太之命緝拿本門公敵的護法師太，劍法凌厲，新手絕非敵手。（執法存在：已證實；數值：設計提案）",
+   "stats": {
+    "qi": 3200,
+    "neili": 400,
+    "jing": 650,
+    "str": 30,
+    "guts": 30,
+    "wit": 22,
+    "luck": 20,
+    "cal": 32,
+    "agi": 32,
+    "con": 30
+   },
+   "skills": {
+    "basic_dodge": 85,
+    "basic_parry": 85,
+    "basic_inner": 65,
+    "basic_sword": 85,
+    "basic_fist": 70
+   },
+   "arts": [
+    {
+     "art": "em_huifeng",
+     "level": 85
+    },
+    {
+     "art": "em_jinding",
+     "level": 70
+    }
+   ],
+   "weapon_type": "SWORD",
+   "weapon_power": 40,
+   "armor_power": 60,
+   "combat_xp_ref": 70000,
+   "combat_xp": 0,
+   "learn_points": 0,
+   "drops": [],
+   "money": {},
+   "morality_on_kill": 0,
+   "killing_intent_on_kill": 0,
+   "ai": "melee_basic",
+   "no_rewards": true,
+   "sect": "emei",
+   "era": "1.0A",
+   "src": "proposal"
+  },
+  {
+   "id": "m_em_monkey",
+   "name": "峨嵋潑猴",
+   "short": "潑猴",
+   "kind": "MONSTER",
+   "alignment": "NEUTRAL",
+   "desc": "峨嵋山上的猴子，膽大包天，專搶香客的乾糧。（設計提案）",
+   "stats": {
+    "qi": 120,
+    "neili": 0,
+    "jing": 60,
+    "str": 10,
+    "guts": 6,
+    "wit": 10,
+    "luck": 15,
+    "cal": 8,
+    "agi": 22,
+    "con": 10
+   },
+   "skills": {
+    "basic_dodge": 12,
+    "basic_parry": 0,
+    "basic_inner": 0
+   },
+   "arts": [
+    {
+     "art": "mon_claw",
+     "level": 4
+    }
+   ],
+   "weapon_type": "FIST",
+   "weapon_power": 0,
+   "armor_power": 26,
+   "combat_xp_ref": 300,
+   "combat_xp": 8,
+   "learn_points": 3,
+   "drops": [
+    {
+     "item": "c_mantou",
+     "chance": 0.2,
+     "min": 1,
+     "max": 1
+    }
+   ],
+   "money": {
+    "min": 0,
+    "max": 3
+   },
+   "morality_on_kill": 0,
+   "killing_intent_on_kill": 0,
+   "ai": "coward",
+   "no_rewards": false,
+   "era": "1.0A",
+   "src": "proposal"
+  },
+  {
+   "id": "m_em_mz_snake",
+   "name": "竹葉青",
+   "short": "毒蛇",
+   "kind": "MONSTER",
+   "alignment": "NEUTRAL",
+   "desc": "通體碧綠的毒蛇，盤在竹枝上幾乎看不出來，咬中就中毒。（迷宮怪物種類【待考證】；數值：設計提案）",
+   "stats": {
+    "qi": 1300,
+    "neili": 150,
+    "jing": 400,
+    "str": 18,
+    "guts": 24,
+    "wit": 15,
+    "luck": 18,
+    "cal": 22,
+    "agi": 34,
+    "con": 22
+   },
+   "skills": {
+    "basic_dodge": 60,
+    "basic_parry": 40,
+    "basic_inner": 40,
+    "basic_fist": 50
+   },
+   "arts": [
+    {
+     "art": "em_mon_dushe",
+     "level": 50
+    }
+   ],
+   "weapon_type": "FIST",
+   "weapon_power": 0,
+   "armor_power": 40,
+   "combat_xp_ref": 40000,
+   "combat_xp": 110,
+   "learn_points": 45,
+   "drops": [
+    {
+     "item": "c_qiyao",
+     "chance": 0.15,
+     "min": 1,
+     "max": 1
+    }
+   ],
+   "money": {
+    "min": 0,
+    "max": 10
+   },
+   "morality_on_kill": 0,
+   "killing_intent_on_kill": 0,
+   "ai": "melee_basic",
+   "no_rewards": false,
+   "era": "1.0A",
+   "src": "proposal"
+  },
+  {
+   "id": "m_em_mz_ape",
+   "name": "峨嵋白猿",
+   "short": "白猿",
+   "kind": "MONSTER",
+   "alignment": "NEUTRAL",
+   "desc": "身形高大的白猿，力大無窮，在林間縱躍如飛。（迷宮怪物種類【待考證】；數值：設計提案）",
+   "stats": {
+    "qi": 1800,
+    "neili": 200,
+    "jing": 500,
+    "str": 26,
+    "guts": 28,
+    "wit": 18,
+    "luck": 18,
+    "cal": 24,
+    "agi": 32,
+    "con": 28
+   },
+   "skills": {
+    "basic_dodge": 65,
+    "basic_parry": 60,
+    "basic_inner": 45,
+    "basic_fist": 60
+   },
+   "arts": [
+    {
+     "art": "em_mon_yuanzhua",
+     "level": 55
+    }
+   ],
+   "weapon_type": "FIST",
+   "weapon_power": 0,
+   "armor_power": 45,
+   "combat_xp_ref": 50000,
+   "combat_xp": 150,
+   "learn_points": 60,
+   "drops": [
+    {
+     "item": "c_qiyao",
+     "chance": 0.2,
+     "min": 1,
+     "max": 1
+    }
+   ],
+   "money": {
+    "min": 5,
+    "max": 30
+   },
+   "morality_on_kill": 0,
+   "killing_intent_on_kill": 0,
+   "ai": "melee_basic",
+   "no_rewards": false,
+   "era": "1.0A",
+   "src": "proposal"
+  }
+ ],
+ "items": [
+  {
+   "id": "i_em_letter",
+   "name": "貝綿儀的信",
+   "tab": "OTHER",
+   "slot": "",
+   "atk": 0,
+   "def": 0,
+   "weight": 0,
+   "price": 0,
+   "stack": 1,
+   "spoil_days": 0,
+   "effects": [],
+   "usable": false,
+   "usable_in_battle": false,
+   "no_sell": true,
+   "quest_item": true,
+   "sect_only": "emei",
+   "desc": "貝綿儀託你轉交靜照師太的信，信封上寫著「靜照師姐親啟」。",
+   "era": "1.0A",
+   "src": "verified"
+  },
+  {
+   "id": "i_em_jianchengling",
+   "name": "殲逞盜賊令",
+   "tab": "OTHER",
+   "slot": "",
+   "atk": 0,
+   "def": 0,
+   "weight": 0,
+   "price": 0,
+   "stack": 1,
+   "spoil_days": 0,
+   "effects": [],
+   "usable": false,
+   "usable_in_battle": false,
+   "no_sell": true,
+   "quest_item": true,
+   "sect_only": "emei",
+   "desc": "靜照師太發下的令牌，持令下山剿除盜賊，事成後繳回。",
+   "era": "1.0A",
+   "src": "verified"
+  }
+ ],
+ "quests": [
+  {
+   "id": "q_em_xin",
+   "name": "貝綿儀的信",
+   "giver": "n_em_beimianyi",
+   "text": "貝綿儀說你的峨嵋心法已有根基，託你把一封信送到練武場東邊的易理房，交給靜照師太。靜照師太看過信，才會把殲逞盜賊令交給你。",
+   "repeatable": false,
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "emei"
+    },
+    {
+     "type": "skill_min",
+     "skill": "em_xinfa",
+     "value": 20
+    }
+   ],
+   "give_items": [
+    {
+     "id": "i_em_letter",
+     "n": 1
+    }
+   ],
+   "steps": [
+    {
+     "type": "DELIVER",
+     "target": "n_em_jingzhao",
+     "item": "i_em_letter",
+     "count": 1,
+     "text": "把信交給易理房的靜照師太"
+    }
+   ],
+   "rewards": {
+    "money": 0,
+    "combat_xp": 0,
+    "learn_points": 20,
+    "fame": 0,
+    "morality": 0,
+    "items": [],
+    "flags": [
+     "em_bmy_letter"
+    ],
+    "skill_prof": {}
+   },
+   "era": "1.0A",
+   "src": "verified",
+   "src_note": "研究 峨嵋：守宮砂鏈第一段（貝綿儀，峨嵋心法 20 → 信給靜照；2001-08-13、blog）"
+  },
+  {
+   "id": "q_em_jiancheng",
+   "name": "殲逞盜賊令",
+   "giver": "n_em_jingzhao",
+   "text": "靜照師太交給你一面殲逞盜賊令：「斷惡二字，要在惡人身上練。」下山出峨嵋山門，往西經峨嵋西林到清音閣山道，往南就是盜賊盤據的峨嵋山下。剿滅 3 名盜賊，再把令牌繳回。路上野狼、山豬不少，帶夠金創藥。",
+   "repeatable": true,
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "emei"
+    },
+    {
+     "type": "quest_flag",
+     "flag": "em_bmy_letter"
+    }
+   ],
+   "give_items": [
+    {
+     "id": "i_em_jianchengling",
+     "n": 1
+    }
+   ],
+   "steps": [
+    {
+     "type": "KILL",
+     "target": "m_bandit",
+     "item": "",
+     "count": 3,
+     "text": "到峨嵋山下剿滅盜賊"
+    },
+    {
+     "type": "DELIVER",
+     "target": "n_em_jingzhao",
+     "item": "i_em_jianchengling",
+     "count": 1,
+     "text": "把殲逞盜賊令繳回靜照師太"
+    }
+   ],
+   "rewards": {
+    "money": 0,
+    "combat_xp": 0,
+    "learn_points": 0,
+    "fame": 0,
+    "morality": 10,
+    "items": [],
+    "flags": [],
+    "skill_prof": {
+     "duane": 50
+    }
+   },
+   "era": "1.0A",
+   "src": "verified",
+   "src_note": "研究 峨嵋：殲逞盜賊令、殺盜賊增長斷惡（2001-07-05、2001-08-13）；熟練 50 比照武當俠義任務【設計提案】"
+  }
+ ],
+ "text_templates": [
+  {
+   "id": "talk_n_em_cha",
+   "era": "1.0A",
+   "self": "{npc_name}捻著鬍子：「峨嵋山高路遠，在山門記個落腳處吧，下回就從這裡出發。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_em_gatedizi",
+   "era": "1.0A",
+   "self": "{npc_name}按著劍柄：「峨嵋派只收品行端正的女弟子。若是心術不正之徒，休怪我劍下無情！」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_em_miejue",
+   "era": "1.0A",
+   "self": "{npc_name}冷冷地說：「峨嵋派只收女弟子，邪惡之徒一概不收。入我門下，便須嫉惡如仇，除惡務盡。學武先找練武場的靜迦，斷惡去問靜照。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_em_jingjia",
+   "era": "1.0A",
+   "self": "{npc_name}說：「初入峨嵋，先學峨嵋心法與飄雪穿雲掌，再練身法與迴風拂柳劍。飄雪穿雲掌有了二十級，我再教你金頂綿掌。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_em_spar",
+   "era": "1.0A",
+   "self": "{npc_name}微微一笑：「師妹想試試身手？我讓手下的師妹陪你過幾招，點到為止。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_em_jingzhao",
+   "era": "1.0A",
+   "self": "{npc_name}放下經卷：「斷惡二字，靠的是殺盡天下惡人。我只能教你入門，往後要在惡人身上練。讀書識字也可以來找我。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_em_jingxuan",
+   "era": "1.0A",
+   "self": "{npc_name}雙手合十：「練武先練內力。拆招、閃躲、身法這些根基，貧尼都可以教你。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_em_beimianyi",
+   "era": "1.0A",
+   "self": "{npc_name}從牆頭輕輕躍下：「師妹的峨嵋心法練到二十級了嗎？我有一封信要送給靜照師姐。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_em_dingminjun",
+   "era": "1.0A",
+   "self": "{npc_name}斜眼看你：「新來的？師父的滅劍可不是人人都學得到的，先把迴風拂柳劍練好再說吧。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_em_zhouzhiruo",
+   "era": "1.0A",
+   "self": "{npc_name}輕聲說：「師父對我們嚴厲，其實是盼大家都能成材。師姐妹之間，可千萬不能自相殘殺。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_em_jingguan",
+   "era": "1.0A",
+   "self": "{npc_name}嘆了口氣：「孤鴻子師伯當年……唉，往事不提也罷。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_em_lianxiang",
+   "era": "1.0A",
+   "self": "{npc_name}低聲說：「心中殺氣太重，師父們便不肯傳功。靜下心來，跟我一起禪修吧。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_em_jinxiaomei",
+   "era": "1.0A",
+   "self": "{npc_name}笑嘻嘻地說：「師姐餓了嗎？等我把香魚烤好，分你一條！」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_em_nongfu",
+   "era": "1.0A",
+   "self": "{npc_name}擦了擦汗：「峨嵋上上下下吃的菜，都是這片園子種的。想學種田，我可以教你。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_em_jailer",
+   "era": "1.0A",
+   "self": "{npc_name}面無表情：「這裡是思過處。犯了門規的人，好好面壁思過吧。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_em_jianchi",
+   "era": "1.0A",
+   "self": "{npc_name}抱著一把劍喃喃自語：「冷凝劍……天下第一的冷凝劍……你見過冷凝劍沒有？」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_em_jixiaofu",
+   "era": "1.0A",
+   "self": "{npc_name}望著林子深處出神，半晌才說：「我……我只是在這裡等一個人。別告訴師父你見過我。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_em_yingyueer",
+   "era": "1.0A",
+   "self": "{npc_name}托著腮：「我在等一個人，他說好要來的……你從大理來的嗎？」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_em_teaman",
+   "era": "1.0A",
+   "self": "{npc_name}提著茶壺：「客官歇歇腳！往東上山就是峨嵋，南邊山腳下有盜賊，千萬別亂闖。住一宿十五兩。」",
+   "src": "proposal"
+  },
+  {
+   "id": "rule_em_morality",
+   "era": "1.0A",
+   "self": "峨嵋門規：善惡淪為邪惡（低於 −299），便是背叛師門。",
+   "src": "proposal"
+  },
+  {
+   "id": "rule_em_kill_same",
+   "era": "1.0A",
+   "self": "峨嵋門規：同門相殘，殺害峨嵋同門弟子。",
+   "src": "proposal"
+  },
+  {
+   "id": "move_em_palm",
+   "era": "1.0A",
+   "self": "你一招{art}「{move}」（{tenths}成力），掌風輕柔卻勁力暗藏，拍中{def}的{part}！（-{dmg}）",
+   "target": "{atk}一招{art}「{move}」，綿柔的掌力拍中你的{part}！（-{dmg}）",
+   "other": "{atk}一招{art}「{move}」，掌風拍中{def}的{part}！",
+   "src": "proposal"
+  },
+  {
+   "id": "move_em_palm_line",
+   "era": "1.0A",
+   "self": "你雙掌連環推出{art}「{move}」（{tenths}成力），掌勁如雪片直穿而過，擊中{def}的{part}！（-{dmg}）",
+   "target": "{atk}雙掌連環推出{art}「{move}」，一道掌勁直穿而來，擊中你的{part}！（-{dmg}）",
+   "other": "{atk}雙掌連環推出{art}「{move}」，掌勁直穿而過，擊中{def}的{part}！",
+   "src": "proposal"
+  },
+  {
+   "id": "move_em_sword",
+   "era": "1.0A",
+   "self": "你劍走輕靈，一招{art}「{move}」（{tenths}成力），劍尖點中{def}的{part}！（-{dmg}）",
+   "target": "{atk}劍走輕靈，一招{art}「{move}」，劍尖點中你的{part}！（-{dmg}）",
+   "other": "{atk}劍走輕靈，一招{art}「{move}」，劍尖點中{def}的{part}！",
+   "src": "proposal"
+  },
+  {
+   "id": "move_em_sword_cross",
+   "era": "1.0A",
+   "self": "你長劍迴旋，{art}「{move}」（{tenths}成力）劍光四散，掃中{def}的{part}！（-{dmg}）",
+   "target": "{atk}長劍迴旋，{art}「{move}」劍光四散，掃中你的{part}！（-{dmg}）",
+   "other": "{atk}長劍迴旋，{art}「{move}」劍光四散，掃中{def}的{part}！",
+   "src": "proposal"
+  },
+  {
+   "id": "move_em_sword_fan",
+   "era": "1.0A",
+   "self": "你一劍斜劈，{art}「{move}」（{tenths}成力）劍氣呈扇形撒開，劃中{def}的{part}！（-{dmg}）",
+   "target": "{atk}一劍斜劈，{art}「{move}」劍氣撒開，劃中你的{part}！（-{dmg}）",
+   "other": "{atk}一劍斜劈，{art}「{move}」劍氣撒開，劃中{def}的{part}！",
+   "src": "proposal"
+  }
+ ],
+ "art_requests": {
+  "units": [
+   {
+    "id": "emei_f",
+    "alias": "huashan_f",
+    "prompt": "峨嵋派女弟子，素白僧衣外罩青色比甲、髮髻插木簪（帶髮修行）、腰懸長劍，神情清冷。"
+   },
+   {
+    "id": "n_em_cha",
+    "alias": "n_hs_cha",
+    "prompt": "查小鏞：在峨嵋山門記錄落腳處的老先生，長衫、拿著簿子與毛筆。"
+   },
+   {
+    "id": "n_em_gatedizi",
+    "alias": "huashan_f",
+    "prompt": "峨嵋守門女弟子，按劍而立，眼神警惕。"
+   },
+   {
+    "id": "n_em_miejue",
+    "alias": "huashan_f",
+    "prompt": "滅絕師太：中年尼姑，削瘦、雙眉下垂、神情冷峻，灰色僧袍，手持長劍（倚天劍風格但不必是倚天劍）。"
+   },
+   {
+    "id": "n_em_jingjia",
+    "alias": "huashan_f",
+    "prompt": "靜迦師太：中年尼姑，灰色僧袍，一手負背、一手指點，嚴師模樣。"
+   },
+   {
+    "id": "n_em_spar",
+    "alias": "huashan_f",
+    "prompt": "對招師姐：年輕峨嵋女弟子，青色勁裝，抱拳行禮。"
+   },
+   {
+    "id": "n_em_jingzhao",
+    "alias": "huashan_f",
+    "prompt": "靜照師太：中年尼姑，手捧經卷，文靜。"
+   },
+   {
+    "id": "n_em_jingxuan",
+    "alias": "huashan_f",
+    "prompt": "靜玄師太：滅絕的大弟子，四十餘歲尼姑，盤腿禪坐、手撥念珠。"
+   },
+   {
+    "id": "n_em_beimianyi",
+    "alias": "huashan_f",
+    "prompt": "貝綿儀：身形輕盈的年輕女弟子，正從牆頭躍下。"
+   },
+   {
+    "id": "n_em_dingminjun",
+    "alias": "huashan_f",
+    "prompt": "丁敏君：年輕女弟子，眉目帶傲氣，雙手抱胸。"
+   },
+   {
+    "id": "n_em_zhouzhiruo",
+    "alias": "huashan_f",
+    "prompt": "周芷若：清麗少女，白衣素裙，溫柔含蓄。"
+   },
+   {
+    "id": "n_em_jingguan",
+    "alias": "huashan_f",
+    "prompt": "靜觀師太：年長尼姑，雙手合十，面帶愁容。"
+   },
+   {
+    "id": "n_em_lianxiang",
+    "alias": "huashan_f",
+    "prompt": "蓮香：年輕女尼，手持念珠，神情安詳。"
+   },
+   {
+    "id": "n_em_jinxiaomei",
+    "alias": "huashan_f",
+    "prompt": "金小妹：圓臉愛笑的小姑娘，圍著圍裙，手拿烤魚。"
+   },
+   {
+    "id": "n_em_nongfu",
+    "alias": "n_taoyun",
+    "prompt": "峨嵋菜園的老農，捲褲管、拿鋤頭。"
+   },
+   {
+    "id": "n_em_jailer",
+    "alias": "huashan_f",
+    "prompt": "看守思過處的峨嵋師姐，面無表情，手持鑰匙串。"
+   },
+   {
+    "id": "n_em_jianchi",
+    "alias": "n_xx_wushi",
+    "prompt": "劍痴：披頭散髮的怪人，背上插滿各式長劍，抱著一把劍喃喃自語。"
+   },
+   {
+    "id": "n_em_jixiaofu",
+    "alias": "huashan_f",
+    "prompt": "紀曉芙：二十餘歲的峨嵋女弟子，神色憂鬱，站在樹林裡。"
+   },
+   {
+    "id": "n_em_yingyueer",
+    "alias": "huashan_f",
+    "prompt": "瑩月兒：少女，托腮坐在茶棚長凳上。"
+   },
+   {
+    "id": "n_em_teaman",
+    "alias": "n_hf_teaman",
+    "prompt": "峨嵋山路茶棚老闆，竹棚、提大茶壺。"
+   },
+   {
+    "id": "m_em_dizi",
+    "alias": "huashan_f",
+    "prompt": "峨嵋女弟子（切磋用），青色勁裝，空手擺出掌法起手式。"
+   },
+   {
+    "id": "m_em_xunshan",
+    "alias": "huashan_f",
+    "prompt": "峨嵋巡山女弟子，長劍出鞘，神情凌厲。"
+   },
+   {
+    "id": "m_em_guard",
+    "alias": "huashan_f",
+    "prompt": "峨嵋護法師太，中年尼姑，劍法凌厲，身後衣袂飄揚。"
+   },
+   {
+    "id": "m_em_monkey",
+    "alias": "m_bigrabbit",
+    "prompt": "峨嵋山的獼猴，抓著一個饅頭，齜牙咧嘴。"
+   },
+   {
+    "id": "m_em_mz_snake",
+    "alias": "m_wolf",
+    "prompt": "竹葉青毒蛇，通體碧綠，盤在竹枝上吐信。"
+   },
+   {
+    "id": "m_em_mz_ape",
+    "alias": "m_boar",
+    "prompt": "高大的白猿，白毛長臂，作勢撲擊。"
+   }
+  ],
+  "backgrounds": [
+   {
+    "id": "emei",
+    "alias": "huashan",
+    "prompt": "峨嵋派：金頂下的寺院建築群，雲海、古松、青石廣場，晨鐘暮鼓的清幽氣氛。"
+   },
+   {
+    "id": "emei_road",
+    "alias": "dali_wild",
+    "prompt": "上峨嵋的山路：竹林、溪澗、石階，遠處雲霧中的峨嵋山。"
+   },
+   {
+    "id": "emei_maze",
+    "alias": "guiwang",
+    "prompt": "峨嵋迷宮：幽暗的密林，樹木一模一樣，藤蔓與霧氣，林間有毒蛇與白猿的影子。"
+   }
+  ]
+ },
+ "todo_verify": [
+  "停止傳功線：研究只說「低於善良就不教」，以 善惡 ≥ 0 表示【待考證】；邪惡＝≤ −300【待考證】（官方叛派線 −299）。",
+  "斷惡觸發數值（閃避幅度、觸發率）原作沒有數字，沿用 M3A_PLAN 5.6【設計提案】；研究另說斷惡高會減少受傷、抗藥性上升較快，M3a 未做。",
+  "斷惡取得：每殺一隻邪惡怪 +10 熟練【設計提案】；靜照可教到 20 級【設計提案】（研究：斷惡主要靠殺惡人）。",
+  "2001 年各武功的等級上限、師父 cap（靜迦 100、靜玄基本武學 140 屬後期數字）【待考證】。",
+  "招式名稱全部是設計提案（原作沒有招式名單）。",
+  "飄雪穿雲掌、迴風拂柳劍、金頂綿掌第一招做成單體（驗收要求 SINGLE/CROSS），研究的直線／小十字放在 30、60 級招式【設計提案】。",
+  "金頂綿掌要飄雪穿雲掌 20：取自 M3A_PLAN 4.3，原作門檻【待考證】。",
+  "絕劍、佛光普照掌 2001 年的取得條件【待考證】（後期：絕劍 80 + 紀曉芙鐵焰令；佛光 80 + 周芷若／張無忌信 + 5 萬氣對決）；先用 quest_flag em_juejian_ok／em_foguang_ok 鎖住。",
+  "絕劍半米字、佛光小十字是後期資料【後期版】；大十字格數 13 vs 10【待考證】。",
+  "四象掌（17173 全武功表峨嵋欄，可能是 1.0A）、截手九式、天罡指穴法、峨嵋陣法：未做【待考證／後期版】。",
+  "峨嵋房間配置：研究只有山門、滅絕的家、廚房、周芷若房間；練武場、易理房、菜園、金頂大殿、禪房、思過處的位置是自訂【待考證】。",
+  "瑩月兒只知座標（11696,14786），身分與用途【待考證】；暫放在茶棚當對話 NPC。",
+  "峨嵋迷宮：原作 10 層線性迷宮（17173 ditu/4），縮成 4 間；迷宮裡的怪物種類（竹葉青、白猿）與數值【待考證／設計提案】；入口位置（峨嵋西林往南）【設計提案】。",
+  "峨嵋弟子守門開戰：17173「點入口的峨嵋弟子就會進入戰鬥」做成 FIGHT 服務（善惡 ≤ −1）；巡山弟子強度（實戰參考 5 萬，研究 2002 標竿特武 38）【設計提案】。",
+  "思過處看守人、看守師姐的名字【設計提案】；原作執法者名單是滅絕、周芷若、貝綿儀、靜玄、靜迦。",
+  "蓮香禪修（固定時辰、降低殺氣）沒有對應服務，暫做對話 NPC【待考證：時辰與降低量】。",
+  "峨嵋的男性特殊途徑只有 2012 部落格提到，不做【待考證】。",
+  "畢業（靜畢：實戰 100 萬、基內 50、拆招 80）屬 M9，不做。"
+ ],
+ "notes": "WP-SECT-emei 碎片。M3A_PLAN 缺漏：(1) 滅絕只教 1 級的特殊武功（cap 1）在現行 learning.self_study_cap 下自修上限也只有 1，M3b 開任務時需要 self_study_cap 機制（例如 QUEST 武功改用 martial_arts.self_study_cap）；本碎片未改。(2) em_bandit 遇敵率 0.25，需要 WP-MERGE／lint 把 em_bandit 加進 NEWBIE_RATE_EXEMPT（M3A_PLAN 2.3 第 6 條已允許 ≤ 0.30）。(3) 守門的峨嵋弟子 n_em_gatedizi 用 FUNC + FIGHT（不用 GUARD，避免 pk_system 把它當守城官兵）。(4) em_foot 的 E 出口指向全真碎片的 zn_road1（反向由全真碎片寫）。(5) 守宮砂證明、丁敏君鐵指環、孤鴻子師伯的死因、峨嵋的修練、冷凝劍事件、金小妹烤香魚等任務屬 M3b，只放對話。(6) 平一指（17637,14053「峨嵋右方，往衡山客棧途中」）在峨嵋以東、終南路上，不在本碎片範圍。新手路線估算：dl 北門外大道 → em_road2 一段難纏怪期望約 0.128（含既有 dlw_fork 0.108）、山豬 0.048；em_road3 → em_foot 一段難纏怪 0.048、山豬 0.019；山賊只在 em_bandit（離山門 4 步）。"
+}

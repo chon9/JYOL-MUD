@@ -1,0 +1,8411 @@
+{
+ "fragment": "sect_stories",
+ "version": 1,
+ "author": "WP-C-sect_stories",
+ "quests": [
+  {
+   "id": "q_wd_yinliu",
+   "name": "殷六俠的迷思",
+   "chapter": "武當派",
+   "group": "sect_stories",
+   "giver": "n_wd_yinliting",
+   "era": "1.0A",
+   "src": "verified",
+   "dialogue_src": "proposal",
+   "src_note": "研究 殷六俠的迷思：2001-08-15 n450_366905（武當身法40、定22、根22，做完學得梯雲縱1級）；信→紀曉芙→回信→殷梨亭 是後期步驟【後期版】",
+   "text": "殷梨亭整日望著後山松林出神。他與峨嵋派的紀曉芙早有婚約，近來卻音訊全無。殷六俠託你走一趟峨嵋，把他的信交到紀姑娘手上。",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "wudang"
+    },
+    {
+     "type": "skill_min",
+     "skill": "wd_shenfa",
+     "value": 40
+    },
+    {
+     "type": "attr_min",
+     "attr": "cal",
+     "value": 22
+    },
+    {
+     "type": "attr_min",
+     "attr": "con",
+     "value": 22
+    }
+   ],
+   "give_items": [],
+   "repeat": {
+    "max": 1,
+    "cooldown_days": 0
+   },
+   "abandon": true,
+   "party_credit": true,
+   "start": "s_letter",
+   "offer": "d_offer",
+   "stages": [
+    {
+     "id": "s_letter",
+     "title": "峨嵋西林的紀姑娘",
+     "log": "殷梨亭的信要親手交給紀曉芙。出武當山門往北到武當山下，往西南經終南東麓、終南山腳、終南山麓、終南山道口，往西過峨嵋山腳就是峨嵋西林，紀曉芙一個人待在林子裡。",
+     "objectives": [
+      {
+       "id": "o_ji",
+       "type": "TALK",
+       "npc": "n_em_jixiaofu",
+       "dialogue": "d_ji",
+       "text": "把殷梨亭的信交給峨嵋西林的紀曉芙"
+      }
+     ],
+     "hint_room": "em_road4",
+     "next": "s_back"
+    },
+    {
+     "id": "s_back",
+     "title": "回覆殷六俠",
+     "log": "帶著紀曉芙的回信，循原路回武當：峨嵋山腳往東經終南山一帶到武當山下，上山穿過練武場、大殿、大殿後屋，殷梨亭在後山松林。",
+     "objectives": [
+      {
+       "id": "o_back",
+       "type": "TALK",
+       "npc": "n_wd_yinliting",
+       "dialogue": "d_back",
+       "text": "把回信交給後山松林的殷梨亭"
+      }
+     ],
+     "hint_room": "wd_houshan",
+     "next": [
+      {
+       "if": [
+        {
+         "type": "quest_var",
+         "quest": "q_wd_yinliu",
+         "var": "told",
+         "value": "truth"
+        }
+       ],
+       "goto": "END:truth"
+      },
+      {
+       "goto": "END:comfort"
+      }
+     ]
+    }
+   ],
+   "dialogues": {
+    "d_offer": {
+     "start": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "（殷梨亭握著一封信，在松樹下站了很久，才轉過身來。）你來得正好……我有一件私事，想託人走一趟峨嵋。",
+       "src_note": "研究 殷六俠的迷思：teaser「殷六俠的迷思（殷梨亭／紀曉芙）」(index_jy3-1-3)；2001-08-15「找殷梨亭接任務」；對白【設計提案】",
+       "choices": [
+        {
+         "id": "c_what",
+         "label": "六師叔請吩咐。",
+         "goto": "n1"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "峨嵋派的紀曉芙紀姑娘，與我自幼訂親。可這一年多來，她一封信也沒回過。我……我只想知道她平安。",
+       "choices": [
+        {
+         "id": "c_yes",
+         "label": "這封信，弟子一定親手交到紀姑娘手上。",
+         "do": [
+          {
+           "do": "accept"
+          },
+          {
+           "do": "give",
+           "item": "i_wd_yinli_xin",
+           "n": 1
+          }
+         ],
+         "goto": "n_yes"
+        },
+        {
+         "id": "c_no",
+         "label": "弟子功夫未成，還不敢遠行。",
+         "goto": "n_no"
+        }
+       ]
+      },
+      "n_yes": {
+       "speaker": "npc",
+       "text": "多謝。峨嵋山門外往西的林子裡，常有人看見她獨自一人。你……替我看看她過得好不好。"
+      },
+      "n_no": {
+       "speaker": "npc",
+       "text": "也好，也好。路上不太平，等你練好了身法再說。"
+      }
+     }
+    },
+    "d_ji": {
+     "start": "n0",
+     "resume": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "（林中的女子聽見腳步聲，急忙拭了拭眼角。）你是……武當派的人？",
+       "src_note": "研究：紀曉芙 12879,13843「峨嵋出口左邊樹林中」（gaoshou/23）；既有 n_em_jixiaofu",
+       "choices": [
+        {
+         "id": "c_letter",
+         "label": "殷六俠託我送信給紀姑娘。",
+         "do": [
+          {
+           "do": "take",
+           "item": "i_wd_yinli_xin",
+           "n": 1
+          }
+         ],
+         "goto": "n1"
+        },
+        {
+         "id": "c_later",
+         "label": "（還是改天再來吧。）",
+         "goto": "END"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "（她拆開信，看著看著，手指便微微發抖。）殷六哥……他還記著我。",
+       "goto": "n2"
+      },
+      "n2": {
+       "speaker": "npc",
+       "text": "我對不起他。有些事，我不能說，也說不出口。你就替我把這封信帶回去，告訴他……紀曉芙不值得他再等。",
+       "choices": [
+        {
+         "id": "c_why",
+         "label": "紀姑娘，究竟發生了什麼事？",
+         "goto": "n3"
+        },
+        {
+         "id": "c_take",
+         "label": "我會把信帶到。",
+         "goto": "n_end"
+        }
+       ]
+      },
+      "n3": {
+       "speaker": "npc",
+       "text": "（她搖搖頭，把懷裡的一個小女孩的布偶塞回包袱。）別問了。求你，別問了。",
+       "goto": "n_end"
+      },
+      "n_end": {
+       "speaker": "npc",
+       "text": "（紀曉芙把回信交給你，轉身走進了林子深處。）",
+       "do": [
+        {
+         "do": "give",
+         "item": "i_wd_jixiaofu_xin",
+         "n": 1
+        },
+        {
+         "do": "complete",
+         "obj": "o_ji"
+        }
+       ]
+      }
+     }
+    },
+    "d_back": {
+     "start": "n0",
+     "resume": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "你回來了！她……她可好？有沒有回信？",
+       "choices": [
+        {
+         "id": "c_give",
+         "label": "這是紀姑娘的回信。",
+         "do": [
+          {
+           "do": "take",
+           "item": "i_wd_jixiaofu_xin",
+           "n": 1
+          }
+         ],
+         "goto": "n1"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "（殷梨亭讀完回信，臉色一下子白了。）「不值得再等」……她只寫了這幾個字。她到底遇上了什麼事？",
+       "choices": [
+        {
+         "id": "c_truth",
+         "label": "紀姑娘神色憔悴，似有難言之隱，她親口說不要六師叔再等了。",
+         "do": [
+          {
+           "do": "var",
+           "name": "told",
+           "value": "truth"
+          },
+          {
+           "do": "complete",
+           "obj": "o_back"
+          }
+         ],
+         "goto": "n_truth"
+        },
+        {
+         "id": "c_comfort",
+         "label": "紀姑娘說她一切安好，只是身不由己，請六師叔保重。",
+         "do": [
+          {
+           "do": "var",
+           "name": "told",
+           "value": "comfort"
+          },
+          {
+           "do": "complete",
+           "obj": "o_back"
+          }
+         ],
+         "goto": "n_comfort"
+        }
+       ]
+      },
+      "n_truth": {
+       "speaker": "npc",
+       "text": "（他沉默良久，長長吐出一口氣。）多謝你說了實話。人生在世，有些事不能強求……心裡放下了，腳下才輕得起來。",
+       "goto": "n_teach"
+      },
+      "n_comfort": {
+       "speaker": "npc",
+       "text": "（他望著松林，勉強笑了笑。）她平安就好……多謝你了。我心裡亂得很，練功去吧，練功的時候，什麼都不必想。",
+       "goto": "n_teach"
+      },
+      "n_teach": {
+       "speaker": "npc",
+       "text": "你這趟跑得不容易。我把本門的梯雲縱教你：左腳踏右腳，借力上縱，心無掛礙，身子自然就輕了。"
+      }
+     }
+    }
+   },
+   "outcomes": {
+    "truth": {
+     "label": "把紀曉芙的話照實告訴了殷梨亭",
+     "rewards": {
+      "flags": [
+       "wd_q_yinliu"
+      ],
+      "learn": {
+       "wd_tiyun": 1
+      }
+     },
+     "src_note": "2001-08-15：做完即可學得梯雲縱1級；兩種說法同獎勵，說法差異【設計提案】"
+    },
+    "comfort": {
+     "label": "用寬慰的話安慰了殷梨亭",
+     "rewards": {
+      "flags": [
+       "wd_q_yinliu"
+      ],
+      "learn": {
+       "wd_tiyun": 1
+      }
+     },
+     "src_note": "同上"
+    }
+   },
+   "rumors": {
+    "first": "rmr_q_wd_yinliu_first"
+   }
+  },
+  {
+   "id": "q_wd_heiyu",
+   "name": "真假黑玉斷續膏之謎",
+   "chapter": "武當派",
+   "group": "sect_stories",
+   "giver": "n_wd_zhangsanfeng",
+   "era": "1.0A",
+   "src": "later",
+   "dialogue_src": "proposal",
+   "src_note": "研究 黑玉：步驟為後期結構（委託信→阿大→假膏→病危令→阿大→真膏+郡主手令→趙敏→思慕函→張無忌→七蟲七花→俞岱巖→感謝函→張三丰），2001 門檻 悟28 根25（KFLearn 09-10）、武當心法40；七蟲出沒點用 2001 楚禮子七毒（17173 2001-08-18 n862_778664）對應既有地點【設計提案】",
+   "text": "俞岱巖三俠當年被人以大力金剛指捏碎四肢筋骨，癱瘓至今。聽說汝陽王府藏有能續骨的黑玉斷續膏，張三丰真人寫了一封委託信，要你到西夏皇宮門口去討藥。",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "wudang"
+    },
+    {
+     "type": "skill_min",
+     "skill": "wd_xinfa",
+     "value": 40
+    },
+    {
+     "type": "attr_min",
+     "attr": "wit",
+     "value": 28
+    },
+    {
+     "type": "attr_min",
+     "attr": "con",
+     "value": 25
+    }
+   ],
+   "give_items": [],
+   "repeat": {
+    "max": 1,
+    "cooldown_days": 0
+   },
+   "abandon": true,
+   "party_credit": true,
+   "start": "s_ada1",
+   "offer": "d_offer",
+   "stages": [
+    {
+     "id": "s_ada1",
+     "title": "皇宮門口的阿大",
+     "log": "帶著委託信去西夏皇宮門口找阿大討黑玉斷續膏。出武當山門往北經武當山下、古道南岔到武當岔路，往西走東行古道到華山水池，再往西經華山腳下、華陰道到恆山岔路，往西經恆山岸邊、路邊茶棚、恆山外稻田、潭東河岸、黑龍潭、礦區、東北官道，進西夏東門，經廣場往西到西大街，皇宮門口在西大街西北。阿大不好惹，帶足金創藥。",
+     "objectives": [
+      {
+       "id": "o_ada1",
+       "type": "TALK",
+       "npc": "n_xx_ada",
+       "dialogue": "d_ada1",
+       "text": "向皇宮門口的阿大討藥"
+      },
+      {
+       "id": "o_fight1",
+       "type": "FIGHT",
+       "win": "WIN",
+       "text": "打贏阿大"
+      }
+     ],
+     "hint_room": "xx_palace",
+     "next": "s_yu1",
+     "on_complete": [
+      {
+       "do": "take",
+       "item": "i_wd_weituoxin",
+       "n": 1
+      },
+      {
+       "do": "give",
+       "item": "i_wd_jiagao",
+       "n": 1
+      },
+      {
+       "do": "tell",
+       "key": "tell_wd_heiyu_jiagao"
+      }
+     ]
+    },
+    {
+     "id": "s_yu1",
+     "title": "給俞三俠敷藥",
+     "log": "把黑玉斷續膏帶回武當。原路回到武當山門，往南進練武場，俞岱巖在練武場。",
+     "objectives": [
+      {
+       "id": "o_yu1",
+       "type": "TALK",
+       "npc": "n_wd_yudaiyan",
+       "dialogue": "d_yu1",
+       "text": "把藥膏交給練武場的俞岱巖"
+      }
+     ],
+     "hint_room": "wd_square",
+     "next": "s_zsf1"
+    },
+    {
+     "id": "s_zsf1",
+     "title": "藥是假的",
+     "log": "俞三俠敷了藥，傷勢反而轉劇。快到三清宮後面的內堂稟告張三丰真人（練武場往南到大殿，往東三清宮，再往南就是內堂）。",
+     "objectives": [
+      {
+       "id": "o_zsf1",
+       "type": "TALK",
+       "npc": "n_wd_zhangsanfeng",
+       "dialogue": "d_zsf1",
+       "text": "到內堂稟告張三丰"
+      }
+     ],
+     "hint_room": "wd_neitang",
+     "next": "s_ada2"
+    },
+    {
+     "id": "s_ada2",
+     "title": "再闖皇宮門口",
+     "log": "帶著病危令再去西夏皇宮門口，這回非要阿大交出真藥不可。路線同前：武當山下往北，經華山、恆山岔路一帶往西進西夏東門，皇宮門口在西大街西北。",
+     "objectives": [
+      {
+       "id": "o_ada2",
+       "type": "TALK",
+       "npc": "n_xx_ada",
+       "dialogue": "d_ada2",
+       "text": "持病危令再找阿大"
+      },
+      {
+       "id": "o_fight2",
+       "type": "FIGHT",
+       "win": "WIN",
+       "text": "再次打贏阿大"
+      }
+     ],
+     "hint_room": "xx_palace",
+     "next": "s_zhaomin",
+     "on_complete": [
+      {
+       "do": "take",
+       "item": "i_wd_bingweiling",
+       "n": 1
+      },
+      {
+       "do": "give",
+       "item": "i_wd_heiyugao",
+       "n": 1
+      },
+      {
+       "do": "give",
+       "item": "i_wd_junzhu_shouling",
+       "n": 1
+      },
+      {
+       "do": "tell",
+       "key": "tell_wd_heiyu_zhengao"
+      }
+     ]
+    },
+    {
+     "id": "s_zhaomin",
+     "title": "胡楊林裡的郡主",
+     "log": "阿大說：要用真藥，得先見過郡主。出西夏東門到東門外官道，往東到荒草坡，再往北進胡楊林，一位搖著摺扇的公子在等你。",
+     "objectives": [
+      {
+       "id": "o_zhaomin",
+       "type": "TALK",
+       "npc": "n_wd_zhaomin",
+       "dialogue": "d_zhaomin",
+       "text": "把郡主手令交給胡楊林的趙敏"
+      }
+     ],
+     "hint_room": "xw_wood",
+     "next": "s_wuji1"
+    },
+    {
+     "id": "s_wuji1",
+     "title": "客棧樓上的大夫",
+     "log": "趙敏要你把思慕函送給「那位大夫」。回西夏東門，經廣場往北進客棧，上二樓找張無忌。",
+     "objectives": [
+      {
+       "id": "o_wuji1",
+       "type": "TALK",
+       "npc": "n_zhangwuji",
+       "dialogue": "d_wuji1",
+       "text": "把思慕函交給客棧二樓的張無忌"
+      }
+     ],
+     "hint_room": "xx_inn_2f",
+     "next": "s_seven"
+    },
+    {
+     "id": "s_seven",
+     "title": "七蟲七花",
+     "log": "張無忌要七蟲七花做藥引。七種毒蟲各捕一隻（到了地點按「捕捉」）：黑龍潭的斑蟾（西夏東門外往東北經礦區往東）、星宿毒沼的赤蠍（荒草坡往南經小溪邊、南坡、溪口淺灘到沙丘邊緣，往西蛇骨小徑再往南）、城北山坡的蜈蚣（荒草坡往北經胡楊林）、大理城北河畔的青蛇、武當山下樹林的黑蛛（古道南岔往西）、雪原小徑的蜂蟻（城北山坡往北到雪地再往西）、恆山岔路的彩蛾。七花在大理城北河畔往東的蒼山林道採。",
+     "objectives": [
+      {
+       "id": "o_banchan",
+       "type": "FIGHT",
+       "win": "WIN",
+       "text": "捕獲黑龍潭的斑蟾"
+      },
+      {
+       "id": "o_chixie",
+       "type": "FIGHT",
+       "win": "WIN",
+       "text": "捕獲星宿毒沼的赤蠍"
+      },
+      {
+       "id": "o_wugong",
+       "type": "FIGHT",
+       "win": "WIN",
+       "text": "捕獲西夏城北山坡的蜈蚣"
+      },
+      {
+       "id": "o_qingshe",
+       "type": "FIGHT",
+       "win": "WIN",
+       "text": "捕獲大理城北河畔的青蛇"
+      },
+      {
+       "id": "o_heizhu",
+       "type": "FIGHT",
+       "win": "WIN",
+       "text": "捕獲武當山下樹林的黑蛛"
+      },
+      {
+       "id": "o_fengyi",
+       "type": "FIGHT",
+       "win": "WIN",
+       "text": "捕獲雪原小徑的蜂蟻"
+      },
+      {
+       "id": "o_caie",
+       "type": "FIGHT",
+       "win": "WIN",
+       "text": "捕獲恆山岔路的彩蛾"
+      },
+      {
+       "id": "o_hua",
+       "type": "COLLECT",
+       "item": "i_wd_qihua",
+       "count": 1,
+       "text": "在蒼山林道採齊七色奇花"
+      }
+     ],
+     "room_actions": [
+      {
+       "id": "a_banchan",
+       "room": "xe_heilong",
+       "label": "捕捉斑蟾",
+       "hours": [],
+       "requires": [],
+       "repeat": true,
+       "do": [
+        {
+         "do": "fight",
+         "monsters": [
+          "m_xh_toad"
+         ],
+         "obj": "o_banchan"
+        }
+       ]
+      },
+      {
+       "id": "a_chixie",
+       "room": "xh_marsh",
+       "label": "捕捉赤蠍",
+       "hours": [],
+       "requires": [],
+       "repeat": true,
+       "do": [
+        {
+         "do": "fight",
+         "monsters": [
+          "m_xh_scorpion"
+         ],
+         "obj": "o_chixie"
+        }
+       ]
+      },
+      {
+       "id": "a_wugong",
+       "room": "xn_slope",
+       "label": "捕捉蜈蚣",
+       "hours": [],
+       "requires": [],
+       "repeat": true,
+       "do": [
+        {
+         "do": "fight",
+         "monsters": [
+          "m_lf_wugong"
+         ],
+         "obj": "o_wugong"
+        }
+       ]
+      },
+      {
+       "id": "a_qingshe",
+       "room": "dlw_river",
+       "label": "捕捉青蛇",
+       "hours": [],
+       "requires": [],
+       "repeat": true,
+       "do": [
+        {
+         "do": "fight",
+         "monsters": [
+          "m_xh_snake"
+         ],
+         "obj": "o_qingshe"
+        }
+       ]
+      },
+      {
+       "id": "a_heizhu",
+       "room": "wd_woods",
+       "label": "捕捉黑蛛",
+       "hours": [],
+       "requires": [],
+       "repeat": true,
+       "do": [
+        {
+         "do": "fight",
+         "monsters": [
+          "m_lf_zhizhu"
+         ],
+         "obj": "o_heizhu"
+        }
+       ]
+      },
+      {
+       "id": "a_fengyi",
+       "room": "ts_road1",
+       "label": "捕捉蜂蟻",
+       "hours": [],
+       "requires": [],
+       "repeat": true,
+       "do": [
+        {
+         "do": "fight",
+         "monsters": [
+          "m_wd_fengyi"
+         ],
+         "obj": "o_fengyi"
+        }
+       ]
+      },
+      {
+       "id": "a_caie",
+       "room": "hf_fork",
+       "label": "捕捉彩蛾",
+       "hours": [],
+       "requires": [],
+       "repeat": true,
+       "do": [
+        {
+         "do": "fight",
+         "monsters": [
+          "m_wd_caie"
+         ],
+         "obj": "o_caie"
+        }
+       ]
+      },
+      {
+       "id": "a_hua",
+       "room": "dlw_forest",
+       "label": "採摘七色奇花",
+       "hours": [],
+       "requires": [],
+       "repeat": false,
+       "do": [
+        {
+         "do": "give",
+         "item": "i_wd_qihua",
+         "n": 1
+        },
+        {
+         "do": "tell",
+         "key": "tell_wd_heiyu_hua"
+        }
+       ]
+      }
+     ],
+     "next": "s_wuji2"
+    },
+    {
+     "id": "s_wuji2",
+     "title": "調製藥引",
+     "log": "七蟲七花都齊了，回西夏客棧二樓找張無忌調藥。",
+     "objectives": [
+      {
+       "id": "o_wuji2",
+       "type": "TALK",
+       "npc": "n_zhangwuji",
+       "dialogue": "d_wuji2",
+       "text": "請張無忌調製藥引"
+      }
+     ],
+     "hint_room": "xx_inn_2f",
+     "next": "s_yu2"
+    },
+    {
+     "id": "s_yu2",
+     "title": "續骨",
+     "log": "帶著黑玉斷續膏和藥引回武當，到練武場替俞岱巖敷藥。",
+     "objectives": [
+      {
+       "id": "o_yu2",
+       "type": "TALK",
+       "npc": "n_wd_yudaiyan",
+       "dialogue": "d_yu2",
+       "text": "替俞岱巖敷上真藥"
+      }
+     ],
+     "hint_room": "wd_square",
+     "next": "s_zsf2"
+    },
+    {
+     "id": "s_zsf2",
+     "title": "回稟真人",
+     "log": "把俞岱巖的感謝函呈給內堂的張三丰（練武場往南大殿，往東三清宮，再往南內堂）。",
+     "objectives": [
+      {
+       "id": "o_zsf2",
+       "type": "TALK",
+       "npc": "n_wd_zhangsanfeng",
+       "dialogue": "d_zsf2",
+       "text": "把感謝函呈給張三丰"
+      }
+     ],
+     "hint_room": "wd_neitang",
+     "next": "END"
+    }
+   ],
+   "dialogues": {
+    "d_offer": {
+     "start": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "（張三丰撫著長鬚，嘆了一口氣。）岱巖癱在床上二十年了。老道這把年紀，別的都看得開，就這件事放不下。",
+       "src_note": "研究 黑玉：teaser「真假黑玉斷續膏之謎（張三丰／俞岱巖）」index_jy3-1-3；委託信（後期結構）；對白【設計提案】",
+       "choices": [
+        {
+         "id": "c_ask",
+         "label": "太師父有何吩咐？",
+         "goto": "n1"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "江湖傳言，汝陽王府有一種黑玉斷續膏，能續接斷骨。王府的人在西夏皇宮門口出入，有個叫阿大的老家人管著這藥。你拿我的信去，好言相求；求不來……也不必傷他性命。",
+       "choices": [
+        {
+         "id": "c_yes",
+         "label": "弟子這就動身。",
+         "do": [
+          {
+           "do": "accept"
+          },
+          {
+           "do": "give",
+           "item": "i_wd_weituoxin",
+           "n": 1
+          }
+         ],
+         "goto": "n_yes"
+        },
+        {
+         "id": "c_no",
+         "label": "弟子武功低微，怕誤了大事。",
+         "goto": "n_no"
+        }
+       ]
+      },
+      "n_yes": {
+       "speaker": "npc",
+       "text": "好孩子。路上小心，汝陽王府的人，個個都不簡單。"
+      },
+      "n_no": {
+       "speaker": "npc",
+       "text": "嗯，量力而為，也是武當弟子的本分。"
+      }
+     }
+    },
+    "d_ada1": {
+     "start": "n0",
+     "resume": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "（一個枯瘦的老者靠在宮門石獅旁，眼皮也不抬。）武當派的？這裡不是你們撒野的地方。",
+       "src_note": "研究：阿大（西夏皇宮前廣場右下，gaoshou/23）；黑玉 阿大 fight（後期結構）",
+       "choices": [
+        {
+         "id": "c_letter",
+         "label": "（遞上委託信）張真人請貴府賜藥，救俞三俠一命。",
+         "goto": "n1"
+        },
+        {
+         "id": "c_leave",
+         "label": "（還是先離開。）",
+         "goto": "END"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "黑玉斷續膏？哼，張三丰的面子是不小，可王府的東西，也不是一封信就能拿走的。想要，先過我這一關。",
+       "choices": [
+        {
+         "id": "c_fight",
+         "label": "得罪了！",
+         "do": [
+          {
+           "do": "complete",
+           "obj": "o_ada1"
+          },
+          {
+           "do": "fight",
+           "monsters": [
+            "m_wd_ada"
+           ],
+           "obj": "o_fight1",
+           "npc": "n_xx_ada"
+          }
+         ],
+         "goto": "END"
+        },
+        {
+         "id": "c_wait",
+         "label": "（先退下準備一下。）",
+         "goto": "END"
+        }
+       ]
+      }
+     }
+    },
+    "d_yu1": {
+     "start": "n0",
+     "resume": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "（俞岱巖躺在竹榻上，四肢軟軟地垂著。）你……真把黑玉斷續膏討來了？",
+       "src_note": "研究 黑玉：假膏 → 張三丰／俞岱巖 → 病危令（後期結構）",
+       "choices": [
+        {
+         "id": "c_give",
+         "label": "三師伯，藥在這裡，弟子替您敷上。",
+         "do": [
+          {
+           "do": "take",
+           "item": "i_wd_jiagao",
+           "n": 1
+          }
+         ],
+         "goto": "n1"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "（藥膏一抹上去，俞岱巖就悶哼一聲，額上冷汗直冒，手腳的舊傷處泛起一片青黑。）這……這藥不對……",
+       "goto": "n2"
+      },
+      "n2": {
+       "speaker": "npc",
+       "text": "（旁邊的武當弟子慌了手腳。）快、快去內堂請太師父！",
+       "do": [
+        {
+         "do": "complete",
+         "obj": "o_yu1"
+        }
+       ]
+      }
+     }
+    },
+    "d_zsf1": {
+     "start": "n0",
+     "resume": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "（張三丰聽完，臉色一沉。）是假藥。王府的人好狠的心思，給了藥，卻要人命。",
+       "choices": [
+        {
+         "id": "c_sorry",
+         "label": "都怪弟子大意。",
+         "goto": "n1"
+        },
+        {
+         "id": "c_angry",
+         "label": "弟子這就回去找阿大算帳！",
+         "goto": "n1"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "不怪你。老道寫一道病危令給你：岱巖傷勢轉危，王府若還有半點江湖道義，就該交出真藥。去吧，這一趟，不必再客氣。",
+       "do": [
+        {
+         "do": "give",
+         "item": "i_wd_bingweiling",
+         "n": 1
+        },
+        {
+         "do": "complete",
+         "obj": "o_zsf1"
+        }
+       ]
+      }
+     }
+    },
+    "d_ada2": {
+     "start": "n0",
+     "resume": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "（阿大一見你，眼角抽了抽。）又是你。藥都給你了，還來做什麼？",
+       "choices": [
+        {
+         "id": "c_ling",
+         "label": "（亮出病危令）你給的是假藥！真藥交出來。",
+         "goto": "n1"
+        },
+        {
+         "id": "c_leave",
+         "label": "（先離開。）",
+         "goto": "END"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "嘿嘿，假的？那是郡主的意思，不關老頭子的事。真藥嘛……還在我身上。你再贏我一次，我就給你。",
+       "choices": [
+        {
+         "id": "c_fight",
+         "label": "這次你可別再耍花樣。",
+         "do": [
+          {
+           "do": "complete",
+           "obj": "o_ada2"
+          },
+          {
+           "do": "fight",
+           "monsters": [
+            "m_wd_ada"
+           ],
+           "obj": "o_fight2",
+           "npc": "n_xx_ada"
+          }
+         ],
+         "goto": "END"
+        },
+        {
+         "id": "c_wait",
+         "label": "（先退下準備一下。）",
+         "goto": "END"
+        }
+       ]
+      }
+     }
+    },
+    "d_zhaomin": {
+     "start": "n0",
+     "resume": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "（那公子收起摺扇，笑吟吟地打量你。）阿大說有個武當弟子打了他兩回，就是你？",
+       "src_note": "研究 黑玉：郡主手令 → 趙敏 → 思慕函（後期結構；綠柳莊改胡楊林【設計提案】）",
+       "choices": [
+        {
+         "id": "c_ling",
+         "label": "（交出郡主手令）阿大要我來見郡主。",
+         "do": [
+          {
+           "do": "take",
+           "item": "i_wd_junzhu_shouling",
+           "n": 1
+          }
+         ],
+         "goto": "n1"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "我就是。那盒假藥是我叫人換的——誰叫武當派的人老是跟王府作對？不過你肯為師伯兩度拚命，倒是條漢子。",
+       "choices": [
+        {
+         "id": "c_why",
+         "label": "郡主既然肯見我，想必另有吩咐。",
+         "goto": "n2"
+        },
+        {
+         "id": "c_angry",
+         "label": "拿人性命開玩笑，郡主好狠的心。",
+         "goto": "n2"
+        }
+       ]
+      },
+      "n2": {
+       "speaker": "npc",
+       "text": "哼，你罵得也不錯。黑玉斷續膏是真的，可俞三俠的骨頭斷了二十年，單用這膏也接不回去。西夏客棧樓上住著一位大夫，醫術天下第一……你替我把這封信交給他，他自然會幫你。",
+       "goto": "n3"
+      },
+      "n3": {
+       "speaker": "npc",
+       "text": "（她把一封灑了香粉的信塞到你手裡，臉上微微一紅。）不許拆開看！",
+       "do": [
+        {
+         "do": "give",
+         "item": "i_wd_simuhan",
+         "n": 1
+        },
+        {
+         "do": "complete",
+         "obj": "o_zhaomin"
+        }
+       ]
+      }
+     }
+    },
+    "d_wuji1": {
+     "start": "n0",
+     "resume": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "（一個衣著樸素的年輕大夫正在搗藥，抬頭看了你一眼。）這位朋友，可是哪裡不舒服？",
+       "src_note": "研究 黑玉：思慕函 → 張無忌（喬裝，西夏客棧二樓；既有 n_zhangwuji）",
+       "choices": [
+        {
+         "id": "c_letter",
+         "label": "有位姑娘託我把這封信交給您。",
+         "do": [
+          {
+           "do": "take",
+           "item": "i_wd_simuhan",
+           "n": 1
+          }
+         ],
+         "goto": "n1"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "（他拆開信，看了兩行，苦笑著搖頭。）這丫頭……又在胡鬧。俞三俠的事，她都在信裡說了。",
+       "choices": [
+        {
+         "id": "c_ask",
+         "label": "大夫能救俞三俠嗎？",
+         "goto": "n2"
+        }
+       ]
+      },
+      "n2": {
+       "speaker": "npc",
+       "text": "能。黑玉斷續膏是真的，可二十年的舊傷，骨頭早已長歪，得先用七蟲七花做成藥引，以毒攻毒，化開淤結，膏藥才接得上。",
+       "goto": "n3"
+      },
+      "n3": {
+       "speaker": "npc",
+       "text": "七蟲是斑蟾、赤蠍、蜈蚣、青蛇、黑蛛、蜂蟻、彩蛾，各要一隻活的；七花在大理北邊的蒼山林道能採齊。辛苦你了。",
+       "do": [
+        {
+         "do": "complete",
+         "obj": "o_wuji1"
+        }
+       ]
+      }
+     }
+    },
+    "d_wuji2": {
+     "start": "n0",
+     "resume": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "七蟲七花都帶來了？讓我看看。",
+       "choices": [
+        {
+         "id": "c_give",
+         "label": "都在這裡了。",
+         "do": [
+          {
+           "do": "take",
+           "item": "i_wd_qihua",
+           "n": 1
+          }
+         ],
+         "goto": "n1"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "（他把毒蟲一隻隻放進藥罐，加上七花細細研磨，一股古怪的氣味瀰漫開來。過了好半晌，才倒出一小瓶黑褐色的藥汁。）",
+       "goto": "n2"
+      },
+      "n2": {
+       "speaker": "npc",
+       "text": "先塗藥引，再敷黑玉斷續膏，每日一次。告訴俞三俠，好好將養，三個月後就能下地了。……還有，別跟那位姑娘說我收了她的信。",
+       "do": [
+        {
+         "do": "give",
+         "item": "i_wd_yaoyin",
+         "n": 1
+        },
+        {
+         "do": "complete",
+         "obj": "o_wuji2"
+        }
+       ]
+      }
+     }
+    },
+    "d_yu2": {
+     "start": "n0",
+     "resume": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "你又回來了……這回的藥，可別再是假的了。（俞岱巖苦笑。）",
+       "choices": [
+        {
+         "id": "c_give",
+         "label": "三師伯放心，這回是真藥，還有張大夫調的藥引。",
+         "do": [
+          {
+           "do": "take",
+           "item": "i_wd_heiyugao",
+           "n": 1
+          },
+          {
+           "do": "take",
+           "item": "i_wd_yaoyin",
+           "n": 1
+          }
+         ],
+         "goto": "n1"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "（藥引一塗上去，只覺一陣冰涼滲入骨中；再敷上黑玉斷續膏，俞岱巖的右手手指竟輕輕動了一下。）",
+       "goto": "n2"
+      },
+      "n2": {
+       "speaker": "npc",
+       "text": "動了……真的動了！（他眼眶通紅。）好孩子，我口不能言謝，請人寫了這封感謝函，你替我呈給師父。",
+       "do": [
+        {
+         "do": "give",
+         "item": "i_wd_ganxiehan",
+         "n": 1
+        },
+        {
+         "do": "complete",
+         "obj": "o_yu2"
+        }
+       ]
+      }
+     }
+    },
+    "d_zsf2": {
+     "start": "n0",
+     "resume": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "（張三丰讀著感謝函，雪白的鬍子微微顫動。）二十年了……岱巖的手，終於能動了。",
+       "choices": [
+        {
+         "id": "c_give",
+         "label": "這都是太師父洪福。",
+         "do": [
+          {
+           "do": "take",
+           "item": "i_wd_ganxiehan",
+           "n": 1
+          }
+         ],
+         "goto": "n1"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "你為同門奔走千里，不貪功、不記仇，這份心性難得。老道的純陽無極功，講究的就是一個「正」字，今日傳你入門的法子，往後要自己勤練。",
+       "do": [
+        {
+         "do": "complete",
+         "obj": "o_zsf2"
+        }
+       ]
+      }
+     }
+    }
+   },
+   "outcomes": {
+    "default": {
+     "label": "俞岱巖的手又能動了",
+     "rewards": {
+      "flags": [
+       "wd_q_heiyu"
+      ],
+      "learn": {
+       "wd_chunyang": 1
+      }
+     },
+     "src_note": "研究 黑玉：張三丰 lv1（後期結構）；純陽無極功 自修到 30（jb71）"
+    }
+   },
+   "rumors": {
+    "first": "rmr_q_wd_heiyu_first"
+   }
+  },
+  {
+   "id": "q_wd_longmen",
+   "name": "龍門遺案",
+   "chapter": "武當派",
+   "group": "sect_stories",
+   "giver": "n_wd_moshenggu",
+   "era": "1.0A",
+   "src": "later",
+   "dialogue_src": "proposal",
+   "src_note": "研究 龍門遺案：teaser（莫聲谷）index_jy3-1-3；步驟為後期結構（龍門事件令→龍門遺孤→圓音/圓業→鐵證→俞蓮舟→七獸→宋遠橋→學習令）；2001 門檻 悟26 定25；不重現「重談俞蓮舟會重來」的錯誤；陣法使用是 1.0B（2001-10-05）",
+   "text": "當年龍門鏢局護送俞岱巖不力，一夜之間滿門被殺，江湖上都說是張翠山下的手。這樁舊案壓在武當頭上二十年，莫聲谷要你去查個水落石出。",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "wudang"
+    },
+    {
+     "type": "attr_min",
+     "attr": "wit",
+     "value": 26
+    },
+    {
+     "type": "attr_min",
+     "attr": "cal",
+     "value": 25
+    }
+   ],
+   "give_items": [],
+   "repeat": {
+    "max": 1,
+    "cooldown_days": 0
+   },
+   "abandon": true,
+   "party_credit": true,
+   "start": "s_orphan",
+   "offer": "d_offer",
+   "stages": [
+    {
+     "id": "s_orphan",
+     "title": "衡山小茶店",
+     "log": "持龍門事件令去衡山小茶店找龍門遺孤。出武當山門往北到武當山下、古道南岔，往東南走衡陽古道、湘江渡口，往南到衡山下，再往東就是小茶店。龍門遺孤只在白天（卯時到申時）在店裡幫忙。",
+     "objectives": [
+      {
+       "id": "o_orphan",
+       "type": "TALK",
+       "npc": "n_hn_longmen",
+       "dialogue": "d_orphan",
+       "text": "向衡山小茶店的龍門遺孤打聽當年的事（卯時～申時）"
+      }
+     ],
+     "hint_room": "hn_teahouse",
+     "next": "s_monks"
+    },
+    {
+     "id": "s_monks",
+     "title": "兩位少林僧",
+     "log": "遺孤說當年作證的是少林的圓音、圓業。他們常在辰時、巳時到嵩陽茶棚歇腳：從衡山下往北回古道南岔，再往北到武當岔路，往東就是嵩陽茶棚。",
+     "objectives": [
+      {
+       "id": "o_yuanyin",
+       "type": "TALK",
+       "npc": "n_wd_yuanyin",
+       "dialogue": "d_yuanyin",
+       "text": "向圓音討鐵證（辰時、巳時）"
+      },
+      {
+       "id": "o_yuanye",
+       "type": "TALK",
+       "npc": "n_wd_yuanye",
+       "dialogue": "d_yuanye",
+       "text": "向圓業討鐵證（辰時、巳時）"
+      }
+     ],
+     "hint_room": "sy_teahouse",
+     "next": "s_yu"
+    },
+    {
+     "id": "s_yu",
+     "title": "二俠的判斷",
+     "log": "把兩件鐵證帶回武當，交給大殿後屋的俞蓮舟（練武場往南到大殿，再往南）。",
+     "objectives": [
+      {
+       "id": "o_yu",
+       "type": "TALK",
+       "npc": "n_wd_yulianzhou",
+       "dialogue": "d_yu",
+       "text": "把鐵證交給大殿後屋的俞蓮舟"
+      }
+     ],
+     "hint_room": "wd_tanqiang",
+     "next": "s_beasts"
+    },
+    {
+     "id": "s_beasts",
+     "title": "七獸練陣",
+     "log": "俞蓮舟要你先降服七頭猛獸，體會七人如一的道理（到了地點按「追捕」）：大理東邊樹林的野象（大理北門外大道往東經陶耘稻田）、西夏狼嚎丘的惡狼（荒草坡往東）、峨嵋竹林山徑的白猿（崆峒橋往東）、嵩山松林的猛虎（嵩陽茶棚往東）、天山雪谷的黑熊（雪原小徑往西到獵戶小屋再往南）、終南後山的獵豹（終南山腳往東）、星宿毒沼的大毒蛇。",
+     "objectives": [
+      {
+       "id": "o_xiang",
+       "type": "FIGHT",
+       "win": "WIN",
+       "text": "降服大理東邊樹林的野象"
+      },
+      {
+       "id": "o_elang",
+       "type": "FIGHT",
+       "win": "WIN",
+       "text": "降服西夏狼嚎丘的惡狼"
+      },
+      {
+       "id": "o_baiyuan",
+       "type": "FIGHT",
+       "win": "WIN",
+       "text": "降服峨嵋竹林山徑的白猿"
+      },
+      {
+       "id": "o_menghu",
+       "type": "FIGHT",
+       "win": "WIN",
+       "text": "降服嵩山松林的猛虎"
+      },
+      {
+       "id": "o_heixiong",
+       "type": "FIGHT",
+       "win": "WIN",
+       "text": "降服天山雪谷的黑熊"
+      },
+      {
+       "id": "o_liebao",
+       "type": "FIGHT",
+       "win": "WIN",
+       "text": "降服終南後山的獵豹"
+      },
+      {
+       "id": "o_dadushe",
+       "type": "FIGHT",
+       "win": "WIN",
+       "text": "降服星宿毒沼的大毒蛇"
+      }
+     ],
+     "room_actions": [
+      {
+       "id": "a_xiang",
+       "room": "dlw_eastwood",
+       "label": "追捕野象",
+       "hours": [],
+       "requires": [],
+       "repeat": true,
+       "do": [
+        {
+         "do": "fight",
+         "monsters": [
+          "m_wd_xiang"
+         ],
+         "obj": "o_xiang"
+        }
+       ]
+      },
+      {
+       "id": "a_elang",
+       "room": "xw_hill",
+       "label": "追捕惡狼",
+       "hours": [],
+       "requires": [],
+       "repeat": true,
+       "do": [
+        {
+         "do": "fight",
+         "monsters": [
+          "m_wd_elang"
+         ],
+         "obj": "o_elang"
+        }
+       ]
+      },
+      {
+       "id": "a_baiyuan",
+       "room": "em_road2",
+       "label": "追捕白猿",
+       "hours": [],
+       "requires": [],
+       "repeat": true,
+       "do": [
+        {
+         "do": "fight",
+         "monsters": [
+          "m_wd_baiyuan"
+         ],
+         "obj": "o_baiyuan"
+        }
+       ]
+      },
+      {
+       "id": "a_menghu",
+       "room": "sy_pines",
+       "label": "追捕猛虎",
+       "hours": [],
+       "requires": [],
+       "repeat": true,
+       "do": [
+        {
+         "do": "fight",
+         "monsters": [
+          "m_wd_menghu"
+         ],
+         "obj": "o_menghu"
+        }
+       ]
+      },
+      {
+       "id": "a_heixiong",
+       "room": "ts_xuegu",
+       "label": "追捕黑熊",
+       "hours": [],
+       "requires": [],
+       "repeat": true,
+       "do": [
+        {
+         "do": "fight",
+         "monsters": [
+          "m_wd_heixiong"
+         ],
+         "obj": "o_heixiong"
+        }
+       ]
+      },
+      {
+       "id": "a_liebao",
+       "room": "zn_backhill",
+       "label": "追捕獵豹",
+       "hours": [],
+       "requires": [],
+       "repeat": true,
+       "do": [
+        {
+         "do": "fight",
+         "monsters": [
+          "m_wd_liebao"
+         ],
+         "obj": "o_liebao"
+        }
+       ]
+      },
+      {
+       "id": "a_dadushe",
+       "room": "xh_marsh",
+       "label": "追捕大毒蛇",
+       "hours": [],
+       "requires": [],
+       "repeat": true,
+       "do": [
+        {
+         "do": "fight",
+         "monsters": [
+          "m_wd_dadushe"
+         ],
+         "obj": "o_dadushe"
+        }
+       ]
+      }
+     ],
+     "next": "s_song"
+    },
+    {
+     "id": "s_song",
+     "title": "大師伯的學習令",
+     "log": "七獸都降服了，回武當大殿見宋遠橋（練武場往南）。",
+     "objectives": [
+      {
+       "id": "o_song",
+       "type": "TALK",
+       "npc": "n_wd_songyuanqiao",
+       "dialogue": "d_song",
+       "text": "到大殿向宋遠橋覆命"
+      }
+     ],
+     "hint_room": "wd_dadian",
+     "next": "END"
+    }
+   ],
+   "dialogues": {
+    "d_offer": {
+     "start": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "（莫聲谷把一面令牌拍在石上。）龍門鏢局的案子，你聽過沒有？",
+       "src_note": "研究 龍門遺案：teaser「龍門遺案（莫聲谷）」index_jy3-1-3；龍門事件令（後期結構）；《倚天屠龍記》龍門鏢局事；對白【設計提案】",
+       "choices": [
+        {
+         "id": "c_heard",
+         "label": "聽說當年龍門鏢局滿門被殺……",
+         "goto": "n1"
+        },
+        {
+         "id": "c_no",
+         "label": "弟子孤陋寡聞。",
+         "goto": "n1"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "都大錦的龍門鏢局受託護送三哥回山，卻讓三哥給人害了。後來鏢局一夜之間七十多口被殺，少林的和尚一口咬定是五哥張翠山幹的。五哥已經不在了，這筆帳，武當不能就這麼認了。",
+       "choices": [
+        {
+         "id": "c_yes",
+         "label": "弟子願去查個明白。",
+         "do": [
+          {
+           "do": "accept"
+          },
+          {
+           "do": "give",
+           "item": "i_wd_longmenling",
+           "n": 1
+          }
+         ],
+         "goto": "n_yes"
+        },
+        {
+         "id": "c_no2",
+         "label": "此事牽涉少林，弟子不敢插手。",
+         "goto": "n_no"
+        }
+       ]
+      },
+      "n_yes": {
+       "speaker": "npc",
+       "text": "好！拿著龍門事件令。聽說鏢局有個孩子逃了出來，如今在衡山一帶。先去找他。"
+      },
+      "n_no": {
+       "speaker": "npc",
+       "text": "哼，怕事就別穿這身道袍。罷了，等你想清楚再來。"
+      }
+     }
+    },
+    "d_orphan": {
+     "start": "n0",
+     "resume": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "（擦桌子的少年看見你腰間的令牌，手上的抹布停了。）龍門事件令……你是武當派的？",
+       "src_note": "研究：龍門遺孤 at 衡山 lower right (time-gated)；gaoshou/23 小茶店右上龍門遺孤",
+       "choices": [
+        {
+         "id": "c_ask",
+         "label": "我想知道那一夜到底發生了什麼。",
+         "goto": "n1"
+        },
+        {
+         "id": "c_leave",
+         "label": "（先不打擾他。）",
+         "goto": "END"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "那年我才七歲，躲在水缸裡。殺人的是個女的，聲音很好聽，手上的暗器一閃一閃的……她一邊殺人，一邊說『誰叫你們護不住俞三俠』。",
+       "choices": [
+        {
+         "id": "c_who",
+         "label": "不是張五俠？",
+         "goto": "n2"
+        }
+       ]
+      },
+      "n2": {
+       "speaker": "npc",
+       "text": "我從頭到尾沒看見什麼張五俠。可是第二天，兩個少林和尚就到處說是武當的人幹的。那兩個和尚叫圓音、圓業，聽說常在嵩山那邊的茶棚歇腳。",
+       "goto": "n3"
+      },
+      "n3": {
+       "speaker": "npc",
+       "text": "你要是能讓真相大白……我爹娘在地下也能閉眼了。",
+       "do": [
+        {
+         "do": "complete",
+         "obj": "o_orphan"
+        }
+       ]
+      }
+     }
+    },
+    "d_yuanyin": {
+     "start": "n0",
+     "resume": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "阿彌陀佛。施主腰間那面令牌，老衲認得。武當的人，又來翻舊帳了？",
+       "src_note": "研究 龍門遺案：圓音/圓業 → 鐵證1/2（後期結構）；對白【設計提案】",
+       "choices": [
+        {
+         "id": "c_ask",
+         "label": "大師當年親眼看見張五俠殺人？",
+         "goto": "n1"
+        },
+        {
+         "id": "c_leave",
+         "label": "（告辭。）",
+         "goto": "END"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "……老衲趕到時，人已經死光了。只聽見有人說話，聲音是個女子。是師弟說，除了張翠山，沒有人有這種狠手。",
+       "choices": [
+        {
+         "id": "c_proof",
+         "label": "大師是出家人，總該說句實話。",
+         "goto": "n2"
+        }
+       ]
+      },
+      "n2": {
+       "speaker": "npc",
+       "text": "（圓音低頭唸了好一陣佛號，從懷裡取出一頁發黃的紙。）這是老衲當夜記下的情形，二十年沒給人看過。拿去吧。",
+       "do": [
+        {
+         "do": "give",
+         "item": "i_wd_tiezheng1",
+         "n": 1
+        },
+        {
+         "do": "complete",
+         "obj": "o_yuanyin"
+        }
+       ]
+      }
+     }
+    },
+    "d_yuanye": {
+     "start": "n0",
+     "resume": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "（圓業瞪著你。）武當派的？哼，張翠山的徒子徒孫，還有臉來問？",
+       "choices": [
+        {
+         "id": "c_calm",
+         "label": "大師息怒。我只想知道真相，若真是武當的錯，武當自會認。",
+         "goto": "n1"
+        },
+        {
+         "id": "c_angry",
+         "label": "大師一口咬定，可有憑據？",
+         "goto": "n1"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "憑據？（他從袖裡摸出一枚發黑的暗器殘片，往桌上一拍。）這是從都大錦身上拔出來的。你倒說說，武當哪一門功夫用這玩意兒？",
+       "choices": [
+        {
+         "id": "c_look",
+         "label": "（細看）這是天鷹教的銀針……不是武當的東西。",
+         "goto": "n2"
+        }
+       ]
+      },
+      "n2": {
+       "speaker": "npc",
+       "text": "……（圓業的臉色變了幾變，終於重重哼了一聲。）拿去給你們的人看吧！灑家倒要看看，你們怎麼說。",
+       "do": [
+        {
+         "do": "give",
+         "item": "i_wd_tiezheng2",
+         "n": 1
+        },
+        {
+         "do": "complete",
+         "obj": "o_yuanye"
+        }
+       ]
+      }
+     }
+    },
+    "d_yu": {
+     "start": "n0",
+     "resume": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "（俞蓮舟把兩件鐵證並排放在桌上，看了很久。）口供和暗器都指向天鷹教……五弟的冤屈，總算有了著落。",
+       "src_note": "研究 龍門遺案：鐵證 → 俞蓮舟 → 七獸（後期結構；不重現重談重來的錯誤）",
+       "choices": [
+        {
+         "id": "c_give",
+         "label": "（交出鐵證）二師伯，接下來該怎麼做？",
+         "do": [
+          {
+           "do": "take",
+           "item": "i_wd_tiezheng1",
+           "n": 1
+          },
+          {
+           "do": "take",
+           "item": "i_wd_tiezheng2",
+           "n": 1
+          }
+         ],
+         "goto": "n1"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "冤有頭、債有主，這筆帳不是殺幾個人就算得清的。武當七兄弟，少了一個、殘了一個，往後要靠真武七截陣才護得住武當。",
+       "goto": "n2"
+      },
+      "n2": {
+       "speaker": "npc",
+       "text": "你先去降服七頭猛獸：野象、惡狼、白猿、猛虎、黑熊、獵豹、大毒蛇。七獸各有長處，合起來才是一個陣。降服了，再去見大師哥。",
+       "do": [
+        {
+         "do": "complete",
+         "obj": "o_yu"
+        }
+       ]
+      }
+     }
+    },
+    "d_song": {
+     "start": "n0",
+     "resume": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "（宋遠橋聽完二弟的轉述，起身向你一揖。）你替五弟洗清了冤屈，宋某代武當上下謝過。",
+       "src_note": "研究 龍門遺案：宋遠橋 → 學習令 → lv1（後期結構）；陣法使用 1.0B",
+       "choices": [
+        {
+         "id": "c_humble",
+         "label": "大師伯言重了，這是弟子分內之事。",
+         "goto": "n1"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "真武七截陣是師父看了龜蛇二山悟出來的，要七人同心才擺得起來。這面學習令給你，陣法的根基，今日就傳你。",
+       "do": [
+        {
+         "do": "give",
+         "item": "i_wd_xuexiling",
+         "n": 1
+        },
+        {
+         "do": "complete",
+         "obj": "o_song"
+        }
+       ]
+      }
+     }
+    }
+   },
+   "outcomes": {
+    "default": {
+     "label": "龍門鏢局舊案真相大白",
+     "rewards": {
+      "flags": [
+       "wd_q_longmen"
+      ],
+      "learn": {
+       "wd_zhenwu": 1
+      }
+     },
+     "src_note": "研究 龍門遺案：學習令 → lv1；陣法列 era 1.0B，使用要 7 人與 1.0B 開放（STORY_PLAN §1.1）"
+    }
+   },
+   "rumors": {
+    "first": "rmr_q_wd_longmen_first"
+   }
+  },
+  {
+   "id": "q_wd_yitian",
+   "name": "倚天屠龍筆法",
+   "chapter": "武當派",
+   "group": "sect_stories",
+   "giver": "n_wd_zhangsanfeng",
+   "era": "1.0A",
+   "src": "proposal",
+   "dialogue_src": "proposal",
+   "src_note": "研究：teaser「倚天屠龍筆法（張三丰）」index_jy3-1-3，排在黑玉（純陽無極功）之後是官方順序；門檻 讀書40 悟30；步驟無任何來源 → 全部【設計提案】，取材《倚天屠龍記》第四回張三丰寫二十四字",
+   "text": "張三丰真人當年痛惜愛徒，在牆上寫下二十四個字，字中藏著一套武功。純陽功夫有了根基的弟子，才能學這套筆法。",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "wudang"
+    },
+    {
+     "type": "quest_done",
+     "quest": "q_wd_heiyu"
+    },
+    {
+     "type": "skill_min",
+     "skill": "wd_chunyang",
+     "value": 30
+    },
+    {
+     "type": "skill_min",
+     "skill": "basic_literacy",
+     "value": 40
+    },
+    {
+     "type": "attr_min",
+     "attr": "wit",
+     "value": 30
+    }
+   ],
+   "give_items": [],
+   "repeat": {
+    "max": 1,
+    "cooldown_days": 0
+   },
+   "abandon": true,
+   "party_credit": true,
+   "start": "s_song",
+   "offer": "d_offer",
+   "stages": [
+    {
+     "id": "s_song",
+     "title": "書房的四師伯",
+     "log": "張三丰要你先去書房找張松溪學寫字。書房在練武場東邊。",
+     "objectives": [
+      {
+       "id": "o_song",
+       "type": "TALK",
+       "npc": "n_wd_zhangsongxi",
+       "dialogue": "d_song",
+       "text": "到書房向張松溪請教書法"
+      }
+     ],
+     "hint_room": "wd_shufang",
+     "next": "s_copy"
+    },
+    {
+     "id": "s_copy",
+     "title": "閉門臨帖",
+     "log": "在書房閉門臨摹那二十四個字，至少要寫上半天（約半個遊戲日）。",
+     "objectives": [
+      {
+       "id": "o_wait",
+       "type": "WAIT",
+       "days": 0.5,
+       "text": "臨摹二十四字半日"
+      }
+     ],
+     "hint_room": "wd_shufang",
+     "next": "s_test"
+    },
+    {
+     "id": "s_test",
+     "title": "真人考字",
+     "log": "寫熟了，到內堂請張三丰考校（練武場往南到大殿，往東三清宮，再往南）。",
+     "objectives": [
+      {
+       "id": "o_test",
+       "type": "TALK",
+       "npc": "n_wd_zhangsanfeng",
+       "dialogue": "d_test",
+       "text": "到內堂接受張三丰考校"
+      }
+     ],
+     "hint_room": "wd_neitang",
+     "next": "END"
+    }
+   ],
+   "dialogues": {
+    "d_offer": {
+     "start": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "（張三丰望著窗外，緩緩說道。）那一年翠山出事，老道一夜沒睡，在牆上寫了二十四個字。寫完了才發覺，字裡全是武功。",
+       "src_note": "研究：teaser（張三丰）；《倚天屠龍記》張三丰二十四字；對白【設計提案】",
+       "choices": [
+        {
+         "id": "c_ask",
+         "label": "弟子想學。",
+         "goto": "n1"
+        },
+        {
+         "id": "c_no",
+         "label": "弟子不敢勾起太師父的傷心事。",
+         "goto": "n_no"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "要學這套筆法，得先會寫字。松溪的字是武當寫得最好的，你去書房找他，學會了那二十四個字，再來見我。",
+       "choices": [
+        {
+         "id": "c_yes",
+         "label": "弟子遵命。",
+         "do": [
+          {
+           "do": "accept"
+          }
+         ],
+         "goto": "END"
+        }
+       ]
+      },
+      "n_no": {
+       "speaker": "npc",
+       "text": "傻孩子，人老了，傷心事也就是一筆一劃的事了。"
+      }
+     }
+    },
+    "d_song": {
+     "start": "n0",
+     "resume": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "（張松溪擱下筆。）師父要你來學那二十四個字？好，先看我寫一遍。",
+       "choices": [
+        {
+         "id": "c_watch",
+         "label": "（靜心觀看）",
+         "goto": "n1"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "（他提筆蘸墨，一氣呵成：武林至尊，寶刀屠龍，號令天下，莫敢不從。倚天不出，誰與爭鋒。每一筆都像一記殺招。）",
+       "goto": "n2"
+      },
+      "n2": {
+       "speaker": "npc",
+       "text": "看清楚了？筆鋒裡的起承轉合，就是招式。回去閉門臨帖，寫上半天，手腕自然就有了那股勁。寫熟了，再去見師父。",
+       "do": [
+        {
+         "do": "complete",
+         "obj": "o_song"
+        }
+       ]
+      }
+     }
+    },
+    "d_test": {
+     "start": "n0",
+     "resume": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "寫熟了？老道考你一考：「武林至尊，寶刀屠龍」，下一句是什麼？",
+       "choices": [
+        {
+         "id": "c_right",
+         "label": "號令天下，莫敢不從。",
+         "goto": "n1"
+        },
+        {
+         "id": "c_wrong1",
+         "label": "倚天不出，誰與爭鋒。",
+         "goto": "n_wrong"
+        },
+        {
+         "id": "c_wrong2",
+         "label": "天下英雄，唯我獨尊。",
+         "goto": "n_wrong"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "嗯。那「倚天不出」之後呢？",
+       "choices": [
+        {
+         "id": "c_right2",
+         "label": "誰與爭鋒。",
+         "do": [
+          {
+           "do": "complete",
+           "obj": "o_test"
+          }
+         ],
+         "goto": "n_ok"
+        },
+        {
+         "id": "c_wrong3",
+         "label": "莫敢不從。",
+         "goto": "n_wrong"
+        }
+       ]
+      },
+      "n_wrong": {
+       "speaker": "npc",
+       "text": "（張三丰搖搖頭。）字記不牢，招式就亂。回去再寫幾遍，想好了再來。"
+      },
+      "n_ok": {
+       "speaker": "npc",
+       "text": "好。這套筆法以筆代劍，一筆一劃都要寫得堂堂正正。從今日起，你就照著這二十四個字去練吧。"
+      }
+     }
+    }
+   },
+   "outcomes": {
+    "default": {
+     "label": "學會了倚天屠龍筆法",
+     "rewards": {
+      "flags": [
+       "wd_q_yitian"
+      ],
+      "learn": {
+       "wd_yitian": 1
+      }
+     },
+     "src_note": "【設計提案】；武功門檻 臂26 悟25（17173 2001-08-07）"
+    }
+   },
+   "rumors": {
+    "first": "rmr_q_wd_yitian_first"
+   }
+  },
+  {
+   "id": "q_wd_taiji",
+   "name": "太極拳與太極劍",
+   "chapter": "武當派",
+   "group": "sect_stories",
+   "giver": "n_wd_zhangsongxi",
+   "era": "1.0A",
+   "src": "later",
+   "dialogue_src": "proposal",
+   "src_note": "研究：teaser「太極拳與太極劍（俞蓮舟／張松溪）」index_jy3-1-3；後期步驟：張松溪 duel（太極拳）、俞蓮舟 test fight win or lose（太極劍）；門檻 太極拳 悟26 定22 機22 根22、太極劍 悟26 定28",
+   "text": "張松溪與俞蓮舟奉師命，要考較你的拳腳和劍法，看你夠不夠格學太極拳與太極劍。考較勝負不拘，重要的是撐得住、看得懂。",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "wudang"
+    },
+    {
+     "type": "attr_min",
+     "attr": "wit",
+     "value": 26
+    },
+    {
+     "type": "attr_min",
+     "attr": "cal",
+     "value": 22
+    },
+    {
+     "type": "attr_min",
+     "attr": "agi",
+     "value": 22
+    },
+    {
+     "type": "attr_min",
+     "attr": "con",
+     "value": 22
+    }
+   ],
+   "give_items": [],
+   "repeat": {
+    "max": 1,
+    "cooldown_days": 0
+   },
+   "abandon": true,
+   "party_credit": true,
+   "start": "s_quan",
+   "offer": "d_offer",
+   "stages": [
+    {
+     "id": "s_quan",
+     "title": "四師伯的拳",
+     "log": "在書房接下張松溪的考較。撐不住就退開（逃），也算過了這一關。",
+     "objectives": [
+      {
+       "id": "o_quan",
+       "type": "TALK",
+       "npc": "n_wd_zhangsongxi",
+       "dialogue": "d_quan",
+       "text": "接受張松溪的拳腳考較"
+      },
+      {
+       "id": "o_quan_f",
+       "type": "FIGHT",
+       "win": "ANY",
+       "text": "與張松溪過招"
+      }
+     ],
+     "hint_room": "wd_shufang",
+     "next": "s_jian"
+    },
+    {
+     "id": "s_jian",
+     "title": "二師伯的劍",
+     "log": "到大殿後屋接下俞蓮舟的劍法考較（練武場往南到大殿，再往南）。勝負不拘，撐不住就退開。",
+     "objectives": [
+      {
+       "id": "o_jian",
+       "type": "TALK",
+       "npc": "n_wd_yulianzhou",
+       "dialogue": "d_jian",
+       "text": "接受俞蓮舟的劍法考較"
+      },
+      {
+       "id": "o_jian_f",
+       "type": "FIGHT",
+       "win": "ANY",
+       "text": "與俞蓮舟過招"
+      }
+     ],
+     "hint_room": "wd_tanqiang",
+     "next": "s_back"
+    },
+    {
+     "id": "s_back",
+     "title": "說說心得",
+     "log": "回書房把兩場考較的心得說給張松溪聽。",
+     "objectives": [
+      {
+       "id": "o_back",
+       "type": "TALK",
+       "npc": "n_wd_zhangsongxi",
+       "dialogue": "d_back",
+       "text": "回書房向張松溪覆命"
+      }
+     ],
+     "hint_room": "wd_shufang",
+     "next": "END"
+    }
+   ],
+   "dialogues": {
+    "d_offer": {
+     "start": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "（張松溪把一本拳譜闔上。）師父新近悟出一套拳、一套劍，講的是以柔克剛、以靜制動。",
+       "src_note": "研究：teaser（俞蓮舟／張松溪）；張松溪 duel、俞蓮舟 test fight（後期結構）；對白【設計提案】",
+       "choices": [
+        {
+         "id": "c_how",
+         "label": "以柔克剛？",
+         "goto": "n1"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "一兩撥千斤，後發先至。說來容易，練起來難。他老人家要我和二哥先考較考較你們這些小輩，看誰的根骨悟性夠。",
+       "choices": [
+        {
+         "id": "c_yes",
+         "label": "請四師伯指點。",
+         "do": [
+          {
+           "do": "accept"
+          }
+         ],
+         "goto": "n_yes"
+        },
+        {
+         "id": "c_no",
+         "label": "弟子還差得遠，改日再來。",
+         "goto": "END"
+        }
+       ]
+      },
+      "n_yes": {
+       "speaker": "npc",
+       "text": "好。先過我這一關，再去大殿後屋找二哥。"
+      }
+     }
+    },
+    "d_quan": {
+     "start": "n0",
+     "resume": "n1",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "（張松溪站在書房中央，雙手虛抱成圓。）準備好了？",
+       "choices": [
+        {
+         "id": "c_ready",
+         "label": "弟子準備好了。",
+         "goto": "n1"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "出拳吧。我只守不攻，你能逼我出一招，就算你贏。打不下去就退開，不丟人。",
+       "choices": [
+        {
+         "id": "c_go",
+         "label": "弟子得罪了。",
+         "do": [
+          {
+           "do": "complete",
+           "obj": "o_quan"
+          },
+          {
+           "do": "fight",
+           "monsters": [
+            "m_wd_zhangsongxi"
+           ],
+           "obj": "o_quan_f",
+           "solo": true,
+           "npc": "n_wd_zhangsongxi"
+          }
+         ],
+         "goto": "END"
+        },
+        {
+         "id": "c_wait",
+         "label": "（先調勻內息。）",
+         "goto": "END"
+        }
+       ]
+      }
+     }
+    },
+    "d_jian": {
+     "start": "n0",
+     "resume": "n1",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "（俞蓮舟抱劍而立。）四弟說你拳腳還過得去。",
+       "choices": [
+        {
+         "id": "c_ready",
+         "label": "請二師伯考較劍法。",
+         "goto": "n1"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "劍法講究的是圓，你看得出我劍上的圓，就算過關。撐不住就退開。",
+       "choices": [
+        {
+         "id": "c_go",
+         "label": "請二師伯賜招。",
+         "do": [
+          {
+           "do": "complete",
+           "obj": "o_jian"
+          },
+          {
+           "do": "fight",
+           "monsters": [
+            "m_wd_yulianzhou"
+           ],
+           "obj": "o_jian_f",
+           "solo": true,
+           "npc": "n_wd_yulianzhou"
+          }
+         ],
+         "goto": "END"
+        },
+        {
+         "id": "c_wait",
+         "label": "（先調勻內息。）",
+         "goto": "END"
+        }
+       ]
+      }
+     }
+    },
+    "d_back": {
+     "start": "n0",
+     "resume": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "兩場打下來，有什麼心得？",
+       "choices": [
+        {
+         "id": "c_a",
+         "label": "四師伯的拳一圈套一圈，打出去的力氣都被化掉了。",
+         "goto": "n1"
+        },
+        {
+         "id": "c_b",
+         "label": "二師伯的劍招招都在畫圓，看似慢，卻處處封住了我的去路。",
+         "goto": "n1"
+        },
+        {
+         "id": "c_c",
+         "label": "弟子只覺得打不到人，什麼也沒看出來。",
+         "goto": "n1"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "（張松溪笑了。）能說出這幾句，就夠了。太極拳、太極劍，說穿了就是一個圓字。往後你自己去練，練得越慢，進得越快。",
+       "do": [
+        {
+         "do": "complete",
+         "obj": "o_back"
+        }
+       ]
+      }
+     }
+    }
+   },
+   "outcomes": {
+    "default": {
+     "label": "通過太極拳與太極劍的考較",
+     "rewards": {
+      "flags": [
+       "wd_q_taiji"
+      ]
+     },
+     "src_note": "旗標同時解鎖太極拳、太極劍（各自屬性門檻照 martial_arts.json）；消點或自修取得 1 級【待考證】"
+    }
+   },
+   "rumors": {
+    "first": "rmr_q_wd_taiji_first"
+   }
+  },
+  {
+   "id": "q_em_shougongsha",
+   "name": "冰清玉潔守宮砂",
+   "chapter": "峨嵋派",
+   "group": "sect_stories",
+   "giver": "n_em_jingzhao",
+   "era": "1.0A",
+   "src": "verified",
+   "dialogue_src": "proposal",
+   "src_note": "研究 守宮砂：2001-09-10/09-02（基本內功40、峨嵋心法40、斷惡50、歷練80 → 靜照 → 守宮砂證明 → 滅絕 → 九陽）；2001-08-13 n192_108147（斷惡50、滅絕只教1級）；前段貝綿儀的信、殲逞盜賊令已做成 q_em_xin、q_em_jiancheng",
+   "text": "峨嵋九陽功是峨嵋派的上乘內功，滅絕師太只傳給冰清玉潔、斷惡有成的弟子。易理房的靜照師太會先替你驗明守宮砂，開出證明。",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "emei"
+    },
+    {
+     "type": "quest_flag",
+     "flag": "em_bmy_letter"
+    },
+    {
+     "type": "skill_min",
+     "skill": "basic_inner",
+     "value": 40
+    },
+    {
+     "type": "skill_min",
+     "skill": "em_xinfa",
+     "value": 40
+    },
+    {
+     "type": "skill_min",
+     "skill": "duane",
+     "value": 50
+    },
+    {
+     "type": "lilian_min",
+     "value": 80
+    }
+   ],
+   "give_items": [],
+   "repeat": {
+    "max": 1,
+    "cooldown_days": 0
+   },
+   "abandon": true,
+   "party_credit": true,
+   "start": "s_cert",
+   "offer": "d_offer",
+   "stages": [
+    {
+     "id": "s_cert",
+     "title": "靜照師太驗砂",
+     "log": "到練武場東邊的易理房，請靜照師太驗明守宮砂。",
+     "objectives": [
+      {
+       "id": "o_cert",
+       "type": "TALK",
+       "npc": "n_em_jingzhao",
+       "dialogue": "d_cert",
+       "text": "請易理房的靜照師太驗明守宮砂"
+      }
+     ],
+     "hint_room": "em_jingzhao",
+     "next": "s_miejue"
+    },
+    {
+     "id": "s_miejue",
+     "title": "拜見師父",
+     "log": "帶著守宮砂證明去見滅絕師太：練武場往北進金頂大殿，再往北就是師父的居所。",
+     "objectives": [
+      {
+       "id": "o_miejue",
+       "type": "TALK",
+       "npc": "n_em_miejue",
+       "dialogue": "d_miejue",
+       "text": "把守宮砂證明呈給滅絕師太"
+      }
+     ],
+     "hint_room": "em_miejue",
+     "next": "END"
+    }
+   ],
+   "dialogues": {
+    "d_offer": {
+     "start": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "（靜照師太放下手裡的易經。）你的斷惡已有五十，內功心法也都有了根基。想學九陽功？",
+       "src_note": "研究 守宮砂 2001-09-10/09-02：靜照 → 守宮砂證明 → 滅絕；對白【設計提案】",
+       "choices": [
+        {
+         "id": "c_yes",
+         "label": "弟子想求師父傳授九陽功。",
+         "goto": "n1"
+        },
+        {
+         "id": "c_no",
+         "label": "弟子只是來請安的。",
+         "goto": "END"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "九陽功是本門上乘心法，師父規矩嚴，非冰清玉潔的弟子不傳。我先替你驗一驗守宮砂，開一張證明，你再拿去見師父。",
+       "choices": [
+        {
+         "id": "c_ok",
+         "label": "請師叔查驗。",
+         "do": [
+          {
+           "do": "accept"
+          }
+         ],
+         "goto": "END"
+        }
+       ]
+      }
+     }
+    },
+    "d_cert": {
+     "start": "n0",
+     "resume": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "把袖子捲起來。（靜照師太看了一眼你臂上那一點殷紅，點點頭。）守宮砂完好。",
+       "choices": [
+        {
+         "id": "c_thanks",
+         "label": "多謝師叔。",
+         "goto": "n1"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "（她提筆寫了幾行字，蓋上自己的小印。）記住，這一點紅不只是一顆砂，是你一輩子的清白。去吧，師父在居所等你。",
+       "do": [
+        {
+         "do": "give",
+         "item": "i_em_shougongsha_zheng",
+         "n": 1
+        },
+        {
+         "do": "complete",
+         "obj": "o_cert"
+        }
+       ]
+      }
+     }
+    },
+    "d_miejue": {
+     "start": "n0",
+     "resume": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "（滅絕師太接過證明，冷冷看了你一眼。）靜照說你斷惡有成。我問你一句：若在江湖上遇見魔教中人，你當如何？",
+       "src_note": "研究：滅絕教九陽、只教 1 級（2001-08-13）；問答【設計提案】",
+       "choices": [
+        {
+         "id": "c_kill",
+         "label": "除惡務盡，絕不手軟。",
+         "do": [
+          {
+           "do": "take",
+           "item": "i_em_shougongsha_zheng",
+           "n": 1
+          }
+         ],
+         "goto": "n_kill"
+        },
+        {
+         "id": "c_ask",
+         "label": "先問清楚是非，再行處置。",
+         "do": [
+          {
+           "do": "take",
+           "item": "i_em_shougongsha_zheng",
+           "n": 1
+          }
+         ],
+         "goto": "n_ask"
+        }
+       ]
+      },
+      "n_kill": {
+       "speaker": "npc",
+       "text": "好！這才是峨嵋弟子。正邪不兩立，你心裡要永遠記著這幾個字。",
+       "goto": "n_teach"
+      },
+      "n_ask": {
+       "speaker": "npc",
+       "text": "哼，是非？魔教中人哪有什麼是非！……罷了，你年紀還輕，往後自然會明白。",
+       "goto": "n_teach"
+      },
+      "n_teach": {
+       "speaker": "npc",
+       "text": "九陽功我只傳你入門的一層，往後全憑你自己苦修。練不成，也不必來問我。",
+       "do": [
+        {
+         "do": "complete",
+         "obj": "o_miejue"
+        }
+       ]
+      }
+     }
+    }
+   },
+   "outcomes": {
+    "default": {
+     "label": "滅絕師太傳了峨嵋九陽功",
+     "rewards": {
+      "flags": [
+       "em_shougongsha"
+      ],
+      "learn": {
+       "em_jiuyang": 1
+      }
+     },
+     "src_note": "2001-08-13：滅絕只教九陽 1 級"
+    }
+   },
+   "rumors": {
+    "first": "rmr_q_em_shougongsha_first"
+   }
+  },
+  {
+   "id": "q_em_shandu",
+   "name": "善妒之女",
+   "chapter": "峨嵋派",
+   "group": "sect_stories",
+   "giver": "n_em_dingminjun",
+   "era": "1.0A",
+   "src": "verified",
+   "dialogue_src": "proposal",
+   "src_note": "研究 善妒之女：迴風拂柳劍 30（2001-08-13）或 45（2001-09-10）→ 丁敏君給「掌門指環」→ 九陽 ≥ 10 → 滅絕 → 滅劍；丁敏君的心事與等待分支【設計提案】",
+   "text": "練武場上的丁敏君師姐最近臉色難看得很，聽說師父有件東西要她交給劍法有成的弟子，她卻遲遲不肯拿出來。",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "emei"
+    },
+    {
+     "type": "skill_min",
+     "skill": "em_huifeng",
+     "value": 30
+    }
+   ],
+   "give_items": [],
+   "repeat": {
+    "max": 1,
+    "cooldown_days": 0
+   },
+   "abandon": true,
+   "party_credit": true,
+   "start": "s_ding",
+   "offer": "d_offer",
+   "stages": [
+    {
+     "id": "s_ding",
+     "title": "丁師姐的脾氣",
+     "log": "在練武場找丁敏君，看她肯不肯把東西交出來。",
+     "objectives": [
+      {
+       "id": "o_ding",
+       "type": "TALK",
+       "npc": "n_em_dingminjun",
+       "dialogue": "d_ding",
+       "text": "和練武場的丁敏君談談"
+      }
+     ],
+     "hint_room": "em_square",
+     "next": [
+      {
+       "if": [
+        {
+         "type": "quest_var",
+         "quest": "q_em_shandu",
+         "var": "honest",
+         "value": true
+        }
+       ],
+       "goto": "s_cool"
+      },
+      {
+       "goto": "s_jiuyang"
+      }
+     ]
+    },
+    {
+     "id": "s_cool",
+     "title": "等她消氣",
+     "log": "丁敏君氣你不肯順著她說話，把你晾在一邊。等她消消氣（約半個遊戲日），再回練武場找她。",
+     "objectives": [
+      {
+       "id": "o_cool",
+       "type": "WAIT",
+       "days": 0.5,
+       "text": "等丁敏君消氣（半日）"
+      }
+     ],
+     "hint_room": "em_square",
+     "next": "s_ding2"
+    },
+    {
+     "id": "s_ding2",
+     "title": "再找丁師姐",
+     "log": "回練武場再找丁敏君。",
+     "objectives": [
+      {
+       "id": "o_ding2",
+       "type": "TALK",
+       "npc": "n_em_dingminjun",
+       "dialogue": "d_ding2",
+       "text": "再找練武場的丁敏君"
+      }
+     ],
+     "hint_room": "em_square",
+     "next": "s_jiuyang"
+    },
+    {
+     "id": "s_jiuyang",
+     "title": "九陽十級",
+     "log": "師父說要九陽功練到十級，才能學滅劍。把峨嵋九陽功練到 10 級，再帶著掌門指環去見滅絕師太（金頂大殿往北）。",
+     "objectives": [
+      {
+       "id": "o_jy",
+       "type": "STATE",
+       "requires": [
+        {
+         "type": "skill_min",
+         "skill": "em_jiuyang",
+         "value": 10
+        }
+       ],
+       "text": "峨嵋九陽功練到 10 級"
+      },
+      {
+       "id": "o_miejue",
+       "type": "TALK",
+       "npc": "n_em_miejue",
+       "dialogue": "d_miejue",
+       "text": "把掌門指環呈給滅絕師太"
+      }
+     ],
+     "hint_room": "em_miejue",
+     "next": "END"
+    }
+   ],
+   "dialogues": {
+    "d_offer": {
+     "start": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "（丁敏君正拿劍削著樹枝，見你過來，哼了一聲。）迴風拂柳劍練到三十了不起啊？師父的寶貝徒弟又多一個了。",
+       "src_note": "研究 善妒之女：teaser（丁敏君）index_jy3-1-5；迴風 30 → 丁敏君給掌門指環（2001-08-13）；對白【設計提案】",
+       "choices": [
+        {
+         "id": "c_ask",
+         "label": "師姐，聽說師父有件東西託您轉交？",
+         "goto": "n1"
+        },
+        {
+         "id": "c_leave",
+         "label": "（不惹她。）",
+         "goto": "END"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "（她把樹枝一扔。）消息倒靈通。是有這麼一件東西，不過給不給、給誰，得看我高不高興。",
+       "choices": [
+        {
+         "id": "c_wait",
+         "label": "那我陪師姐說說話。",
+         "do": [
+          {
+           "do": "accept"
+          }
+         ],
+         "goto": "END"
+        },
+        {
+         "id": "c_bye",
+         "label": "那就不打擾師姐了。",
+         "goto": "END"
+        }
+       ]
+      }
+     }
+    },
+    "d_ding": {
+     "start": "n0",
+     "resume": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "東西是有。可我問你：師父是不是偏心周師妹？她入門才幾年，什麼好處都是她的。",
+       "choices": [
+        {
+         "id": "c_flatter",
+         "label": "師姐說得是，師父確實偏心了些。",
+         "do": [
+          {
+           "do": "var",
+           "name": "honest",
+           "value": false
+          }
+         ],
+         "goto": "n_flatter"
+        },
+        {
+         "id": "c_honest",
+         "label": "師父自有道理，周師姐用功，大家都看在眼裡。",
+         "do": [
+          {
+           "do": "var",
+           "name": "honest",
+           "value": true
+          },
+          {
+           "do": "complete",
+           "obj": "o_ding"
+          }
+         ],
+         "goto": "n_honest"
+        }
+       ]
+      },
+      "n_flatter": {
+       "speaker": "npc",
+       "text": "（她臉色好看了些。）總算有個明白人。喏，這是師父當年用過的掌門指環，說是要給劍法有成的弟子。九陽功練到十級，再拿去給師父看。",
+       "do": [
+        {
+         "do": "give",
+         "item": "i_em_zhangmen_zhihuan",
+         "n": 1
+        },
+        {
+         "do": "complete",
+         "obj": "o_ding"
+        }
+       ]
+      },
+      "n_honest": {
+       "speaker": "npc",
+       "text": "（丁敏君的臉一下子漲紅了。）好啊，連你也幫著她說話！走開，我現在不想看見你！"
+      }
+     }
+    },
+    "d_ding2": {
+     "start": "n0",
+     "resume": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "（丁敏君背著身子，過了好一會兒才開口。）……你倒有骨氣，不像有些人只會順著我說話。",
+       "choices": [
+        {
+         "id": "c_sorry",
+         "label": "師姐，方才是我說話太直了。",
+         "goto": "n1"
+        },
+        {
+         "id": "c_firm",
+         "label": "我只是說了實話。",
+         "goto": "n1"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "哼。東西是師父給的，我扣著也沒意思。拿去吧，九陽功練到十級，再去見師父。",
+       "do": [
+        {
+         "do": "give",
+         "item": "i_em_zhangmen_zhihuan",
+         "n": 1
+        },
+        {
+         "do": "complete",
+         "obj": "o_ding2"
+        }
+       ]
+      }
+     }
+    },
+    "d_miejue": {
+     "start": "n0",
+     "resume": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "（滅絕師太看見指環，神色微動。）這指環，敏君竟肯交給你。九陽功練到十級了？",
+       "choices": [
+        {
+         "id": "c_give",
+         "label": "（呈上掌門指環）弟子九陽功已有十級火候。",
+         "requires": [
+          {
+           "type": "skill_min",
+           "skill": "em_jiuyang",
+           "value": 10
+          }
+         ],
+         "do": [
+          {
+           "do": "take",
+           "item": "i_em_zhangmen_zhihuan",
+           "n": 1
+          }
+         ],
+         "goto": "n1"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "滅劍是我的獨門劍法，劍劍要見血，專斬邪魔。我只教你頭一招，往後是龍是蟲，看你自己。",
+       "do": [
+        {
+         "do": "complete",
+         "obj": "o_miejue"
+        }
+       ]
+      }
+     }
+    }
+   },
+   "outcomes": {
+    "default": {
+     "label": "滅絕師太傳了滅劍",
+     "rewards": {
+      "flags": [
+       "em_miejian_ok"
+      ],
+      "learn": {
+       "em_miejian": 1
+      }
+     },
+     "src_note": "2001-08-13：滅絕只教滅劍 1 級；回部短劍支線（迴風 45、每遊戲日一次）不做【待考證】"
+    }
+   },
+   "rumors": {
+    "first": "rmr_q_em_shandu_first"
+   }
+  },
+  {
+   "id": "q_em_baifang",
+   "name": "峨嵋的修練",
+   "chapter": "峨嵋派",
+   "group": "sect_stories",
+   "giver": "n_em_miejue",
+   "era": "1.0A",
+   "src": "verified",
+   "dialogue_src": "proposal",
+   "src_note": "研究 拜訪名人：2001-09-02（韋小寶 7 妻／陳圓圓／100% → 錢與戒指；胡斐 勝負不拘 → 信；虛竹 → 段譽 → 喬峰+阿紫 鬥酒 → 信 → 虛竹；回滅絕 → 60 學點＋歷練）；與 2001-07-26 預告「峨嵋的修練」同名是強推論；段譽一段略去（1.0 資料沒有大理皇宮，擁有者預設）",
+   "text": "滅絕師太說，練武不能只關在山上，要你下山去拜訪幾位江湖名人，長長見識。",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "emei"
+    }
+   ],
+   "give_items": [],
+   "repeat": {
+    "max": 1,
+    "cooldown_days": 0
+   },
+   "abandon": true,
+   "party_credit": true,
+   "start": "s_wxb",
+   "offer": "d_offer",
+   "stages": [
+    {
+     "id": "s_wxb",
+     "title": "大理衙門的韋爵爺",
+     "log": "先去大理衙門拜訪韋小寶。下山出峨嵋山門到峨嵋山腳，往西經峨嵋西林、清音閣山道、峨嵋茶棚、竹林山徑、崆峒橋，往西南到崆峒道口，再往西經東邊樹林、陶耘稻田到北門外大道，往南進大理北門，衙門在五華樓前往南。",
+     "objectives": [
+      {
+       "id": "o_wxb",
+       "type": "TALK",
+       "npc": "n_weixiaobao",
+       "dialogue": "d_wxb",
+       "text": "拜訪大理衙門的韋小寶"
+      }
+     ],
+     "hint_room": "dl_yamen",
+     "next": "s_hufei"
+    },
+    {
+     "id": "s_hufei",
+     "title": "雁門關內的胡斐",
+     "log": "再去雁門關內拜訪胡斐。從大理出北門往東經陶耘稻田、東邊樹林到崆峒道口，往東北經崆峒橋、竹林山徑、峨嵋茶棚、清音閣山道、峨嵋西林到峨嵋山腳，往東經終南山道口、終南山麓、終南山腳、終南東麓到武當山下，往北經古道南岔到武當岔路，往西走東行古道、華山水池、華山腳下、華陰道到恆山岔路，往東北走雁門古道到雁門關口，再往北進關。胡斐脾氣直，要切磋就陪他過幾招，打不過退開也不要緊。",
+     "objectives": [
+      {
+       "id": "o_hufei",
+       "type": "TALK",
+       "npc": "n_ym_hufei",
+       "dialogue": "d_hufei",
+       "text": "拜訪雁門關內的胡斐"
+      },
+      {
+       "id": "o_hufei_f",
+       "type": "FIGHT",
+       "win": "ANY",
+       "text": "陪胡斐過招"
+      }
+     ],
+     "hint_room": "ym_inner",
+     "next": "s_xuzhu",
+     "on_complete": [
+      {
+       "do": "give",
+       "item": "i_em_hufei_xin",
+       "n": 1
+      },
+      {
+       "do": "tell",
+       "key": "tell_em_baifang_hufei"
+      }
+     ]
+    },
+    {
+     "id": "s_xuzhu",
+     "title": "西夏衙門的虛竹",
+     "log": "回西夏拜訪虛竹：雁門關往南回恆山岔路，往西經恆山岸邊、路邊茶棚、恆山外稻田、潭東河岸、黑龍潭、礦區、東北官道、東門外官道，進西夏東門，虛竹在廣場西北的衙門裡。",
+     "objectives": [
+      {
+       "id": "o_xuzhu",
+       "type": "TALK",
+       "npc": "n_xx_xuzhu",
+       "dialogue": "d_xuzhu",
+       "text": "拜訪西夏衙門的虛竹"
+      }
+     ],
+     "hint_room": "xx_yamen",
+     "next": "s_qiao"
+    },
+    {
+     "id": "s_qiao",
+     "title": "客棧裡的喬大俠",
+     "log": "虛竹託你去看看他的大哥喬峰。喬峰在西夏客棧（廣場往北）喝酒，身邊跟著阿紫。",
+     "objectives": [
+      {
+       "id": "o_qiao",
+       "type": "TALK",
+       "npc": "n_xx_qiaofeng",
+       "dialogue": "d_qiao",
+       "text": "陪客棧裡的喬峰喝酒"
+      }
+     ],
+     "hint_room": "xx_inn",
+     "next": "s_xuzhu2"
+    },
+    {
+     "id": "s_xuzhu2",
+     "title": "送信給三弟",
+     "log": "把喬峰的信帶回衙門交給虛竹。",
+     "objectives": [
+      {
+       "id": "o_xuzhu2",
+       "type": "TALK",
+       "npc": "n_xx_xuzhu",
+       "dialogue": "d_xuzhu2",
+       "text": "把喬峰的信交給虛竹"
+      }
+     ],
+     "hint_room": "xx_yamen",
+     "next": "s_back"
+    },
+    {
+     "id": "s_back",
+     "title": "回山覆命",
+     "log": "回峨嵋向滅絕師太覆命：出西夏東門到東門外官道，往東到荒草坡，往南經小溪邊、南坡、溪口淺灘、沙丘邊緣、大漠邊緣、沙漠山洞外到綠洲，往東南沿河川上游、河川古道、河灣、過河石橋到大理城北河畔，往南到北門外大道，再往東經陶耘稻田、東邊樹林、崆峒道口、崆峒橋、竹林山徑、峨嵋茶棚、清音閣山道、峨嵋西林到峨嵋山腳，往北上山，金頂大殿往北是師父居所。別忘了帶著胡斐的信。",
+     "objectives": [
+      {
+       "id": "o_back",
+       "type": "TALK",
+       "npc": "n_em_miejue",
+       "dialogue": "d_back",
+       "text": "回峨嵋向滅絕師太覆命"
+      }
+     ],
+     "hint_room": "em_miejue",
+     "next": "END"
+    }
+   ],
+   "dialogues": {
+    "d_offer": {
+     "start": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "（滅絕師太負手站在窗前。）你在山上練了這些時日，劍法是有了，見識卻還是井底之蛙。",
+       "src_note": "研究 拜訪名人 2001-09-02：滅絕 sends you to 韋小寶；預告「峨嵋的修練」2001-07-26；對白【設計提案】",
+       "choices": [
+        {
+         "id": "c_ask",
+         "label": "請師父指點。",
+         "goto": "n1"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "下山去，拜訪幾個江湖上的人物：大理衙門的韋小寶、雁門關的胡斐、西夏的虛竹。這些人有正有邪，有精有傻，你看清楚了，回來說給我聽。",
+       "choices": [
+        {
+         "id": "c_yes",
+         "label": "弟子遵命。",
+         "do": [
+          {
+           "do": "accept"
+          }
+         ],
+         "goto": "END"
+        },
+        {
+         "id": "c_no",
+         "label": "弟子想先把劍法練熟。",
+         "goto": "END"
+        }
+       ]
+      }
+     }
+    },
+    "d_wxb": {
+     "start": "n0",
+     "resume": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "（韋小寶翹著二郎腿。）峨嵋派的小師太？稀客稀客！來來來，先答我三個問題，答對了有賞。第一題：韋爵爺我有幾位夫人？",
+       "src_note": "研究 拜訪名人 2001-09-02：answer 7 wives / 陳圓圓 / 100%（原題文字不存，題目【設計提案】）",
+       "choices": [
+        {
+         "id": "c_q1a",
+         "label": "五位。",
+         "goto": "n_wrong"
+        },
+        {
+         "id": "c_q1b",
+         "label": "七位。",
+         "goto": "n1"
+        },
+        {
+         "id": "c_q1c",
+         "label": "一位都沒有。",
+         "goto": "n_wrong"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "嘿，有見識！第二題：天下第一美人是誰？",
+       "choices": [
+        {
+         "id": "c_q2a",
+         "label": "陳圓圓。",
+         "goto": "n2"
+        },
+        {
+         "id": "c_q2b",
+         "label": "阿珂。",
+         "goto": "n_wrong"
+        },
+        {
+         "id": "c_q2c",
+         "label": "雙兒。",
+         "goto": "n_wrong"
+        }
+       ]
+      },
+      "n2": {
+       "speaker": "npc",
+       "text": "（他朝旁邊的雙兒擠擠眼。）第三題最要緊：你對韋爵爺我，佩服到幾成？",
+       "choices": [
+        {
+         "id": "c_q3a",
+         "label": "七成。",
+         "goto": "n_wrong"
+        },
+        {
+         "id": "c_q3b",
+         "label": "十成，百分之百！",
+         "do": [
+          {
+           "do": "reward",
+           "rewards": {
+            "money": 200
+           }
+          },
+          {
+           "do": "give",
+           "item": "a_em_wxb_jiezhi",
+           "n": 1
+          },
+          {
+           "do": "complete",
+           "obj": "o_wxb"
+          }
+         ],
+         "goto": "n_ok"
+        },
+        {
+         "id": "c_q3c",
+         "label": "一成也沒有。",
+         "goto": "n_wrong"
+        }
+       ]
+      },
+      "n_wrong": {
+       "speaker": "npc",
+       "text": "錯錯錯！（韋小寶把頭一扭。）回去想清楚再來，答不出可沒賞錢。"
+      },
+      "n_ok": {
+       "speaker": "npc",
+       "text": "哈哈哈，好！滅絕老尼姑教出這麼識相的徒弟，難得難得。這二百兩銀子和這枚金戒指賞你，替我向你師父問好——不，還是別問好了，她準拿劍砍我。"
+      }
+     }
+    },
+    "d_hufei": {
+     "start": "n0",
+     "resume": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "（胡斐抬起頭，打量了你一番。）峨嵋派的？滅絕師太叫你來的？她那劍法太狠，我不大喜歡。",
+       "src_note": "研究 拜訪名人 2001-09-02：胡斐 at 雁門關, fight win or lose → letter；gaoshou/23 胡斐在雁門關內",
+       "choices": [
+        {
+         "id": "c_spar",
+         "label": "晚輩奉師命來向胡大俠請教，想領教幾招。",
+         "goto": "n1"
+        },
+        {
+         "id": "c_leave",
+         "label": "（先告辭。）",
+         "goto": "END"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "好，爽快！我讓你三招，你撐不住就退開，咱們點到為止。",
+       "choices": [
+        {
+         "id": "c_go",
+         "label": "請！",
+         "do": [
+          {
+           "do": "complete",
+           "obj": "o_hufei"
+          },
+          {
+           "do": "fight",
+           "monsters": [
+            "m_em_hufei"
+           ],
+           "obj": "o_hufei_f",
+           "solo": true,
+           "npc": "n_ym_hufei"
+          }
+         ],
+         "goto": "END"
+        },
+        {
+         "id": "c_wait",
+         "label": "（先調勻氣息。）",
+         "goto": "END"
+        }
+       ]
+      }
+     }
+    },
+    "d_xuzhu": {
+     "start": "n0",
+     "resume": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "（一個面目醜陋卻神情憨厚的小和尚雙手合十。）阿彌陀佛，施主是來找小僧的？小僧……小僧沒什麼好看的。",
+       "src_note": "研究 拜訪名人：虛竹（2001：西夏鏢局右邊；本專案 n_xx_xuzhu 在 xx_yamen）；段譽一段略去（擁有者預設）",
+       "choices": [
+        {
+         "id": "c_ask",
+         "label": "久仰虛竹師父大名，滅絕師太要我來拜訪。",
+         "goto": "n1"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "大名？小僧哪有什麼大名……（他搔搔光頭。）施主要是有空，能不能替小僧去看看大哥？大哥在客棧喝酒，喝了好幾天了，小僧……小僧不會喝酒。",
+       "choices": [
+        {
+         "id": "c_yes",
+         "label": "我這就去。",
+         "do": [
+          {
+           "do": "complete",
+           "obj": "o_xuzhu"
+          }
+         ],
+         "goto": "END"
+        }
+       ]
+      }
+     }
+    },
+    "d_qiao": {
+     "start": "n0",
+     "resume": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "（喬峰放下酒碗，一雙虎目看過來。）三弟叫你來的？好！坐下，先陪我喝三碗！",
+       "src_note": "研究 拜訪名人 2001-09-02：喬峰 + 阿紫（西夏客棧）drinking duel → letter；鬥酒過程【設計提案】",
+       "choices": [
+        {
+         "id": "c_drink",
+         "label": "喬大俠請！（舉碗）",
+         "goto": "n1"
+        },
+        {
+         "id": "c_no",
+         "label": "晚輩不會喝酒。",
+         "goto": "n_no"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "player",
+       "text": "（一碗烈酒下肚，喉嚨像著了火。）",
+       "goto": "n2"
+      },
+      "n2": {
+       "speaker": "n_xx_azi",
+       "text": "（阿紫托著腮，笑嘻嘻地說。）姐夫，這人臉都紅了，再喝一碗準得趴下。",
+       "choices": [
+        {
+         "id": "c_more",
+         "label": "再來！",
+         "goto": "n3"
+        },
+        {
+         "id": "c_stop",
+         "label": "（實在喝不下了……）",
+         "goto": "n_no"
+        }
+       ]
+      },
+      "n3": {
+       "speaker": "npc",
+       "text": "好酒量！（喬峰哈哈大笑，又給你斟滿。）第三碗，乾了它，你就是我喬峰的朋友！",
+       "choices": [
+        {
+         "id": "c_last",
+         "label": "乾！",
+         "goto": "n4"
+        },
+        {
+         "id": "c_stop2",
+         "label": "（頭暈眼花，放下了碗。）",
+         "goto": "n_no"
+        }
+       ]
+      },
+      "n4": {
+       "speaker": "npc",
+       "text": "痛快！峨嵋派竟有你這樣的人。（他從懷裡摸出一封信。）這封信替我帶給三弟，叫他別擔心大哥。",
+       "do": [
+        {
+         "do": "give",
+         "item": "i_em_qiaofeng_xin",
+         "n": 1
+        },
+        {
+         "do": "complete",
+         "obj": "o_qiao"
+        }
+       ]
+      },
+      "n_no": {
+       "speaker": "npc",
+       "text": "（阿紫咯咯直笑。）姐夫，這人不行啦。（喬峰擺擺手：）酒量是練出來的，醒了酒再來！"
+      }
+     }
+    },
+    "d_xuzhu2": {
+     "start": "n0",
+     "resume": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "施主回來了！大哥他……還好嗎？",
+       "choices": [
+        {
+         "id": "c_give",
+         "label": "喬大俠一切安好，這是他給你的信。",
+         "do": [
+          {
+           "do": "take",
+           "item": "i_em_qiaofeng_xin",
+           "n": 1
+          }
+         ],
+         "goto": "n1"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "（虛竹讀了信，咧嘴笑了。）大哥說他喝得痛快，叫小僧別操心。多謝施主，施主替小僧向滅絕師太問好。",
+       "do": [
+        {
+         "do": "complete",
+         "obj": "o_xuzhu2"
+        }
+       ]
+      }
+     }
+    },
+    "d_back": {
+     "start": "n0",
+     "resume": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "回來了。說說看，你見了些什麼人？",
+       "choices": [
+        {
+         "id": "c_report",
+         "label": "（呈上胡斐的信）韋小寶油滑、胡斐豪爽、虛竹憨厚、喬峰是條好漢。",
+         "do": [
+          {
+           "do": "take",
+           "item": "i_em_hufei_xin",
+           "n": 1
+          }
+         ],
+         "goto": "n1"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "（滅絕師太看了胡斐的信，哼了一聲。）這小子倒會說話。……你能看出人有百樣，才知道劍該往哪裡砍。這趟下山，沒白走。",
+       "do": [
+        {
+         "do": "complete",
+         "obj": "o_back"
+        }
+       ]
+      }
+     }
+    }
+   },
+   "outcomes": {
+    "default": {
+     "label": "拜訪了江湖名人",
+     "rewards": {
+      "learn_points": 60,
+      "lilian": 20
+     },
+     "src_note": "2001-09-02：60 學點 + some 歷練；歷練 20【設計提案】"
+    }
+   },
+   "rumors": {
+    "first": "rmr_q_em_baifang_first"
+   }
+  },
+  {
+   "id": "q_em_lianhuan",
+   "name": "連環殺人案",
+   "chapter": "峨嵋派",
+   "group": "sect_stories",
+   "giver": "n_em_jingguan",
+   "era": "1.0A",
+   "src": "verified",
+   "dialogue_src": "proposal",
+   "src_note": "研究 替天行道：2001-09-01 靜觀發替天行道令（殺人王 衡山城外、強盜大當家 大理左邊山腳）；2001-09-02「連環殺人案」四目標（殺人王、土匪大當家、高昌迷宮惡賊、雁門關淫賊 → 斷惡 +500；峨嵋心法或峨嵋武功 ≥ 20）；高昌迷宮是 1.0B 地區不做（擁有者預設）；可重複【待考證】",
+   "text": "江湖上接連出了好幾樁血案，兇手各據一方。靜觀師姐頒下替天行道令，要峨嵋弟子去把這幾個兇徒除掉。",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "emei"
+    },
+    {
+     "type": "any_of",
+     "options": [
+      [
+       {
+        "type": "skill_min",
+        "skill": "em_xinfa",
+        "value": 20
+       }
+      ],
+      [
+       {
+        "type": "skill_min",
+        "skill": "em_huifeng",
+        "value": 20
+       }
+      ],
+      [
+       {
+        "type": "skill_min",
+        "skill": "em_piaoxue",
+        "value": 20
+       }
+      ],
+      [
+       {
+        "type": "skill_min",
+        "skill": "em_jinding",
+        "value": 20
+       }
+      ]
+     ]
+    }
+   ],
+   "give_items": [
+    {
+     "id": "i_em_titian_ling",
+     "n": 1
+    }
+   ],
+   "repeat": {
+    "max": 0,
+    "cooldown_days": 1
+   },
+   "abandon": true,
+   "party_credit": true,
+   "start": "s_hunt",
+   "offer": "d_offer",
+   "stages": [
+    {
+     "id": "s_hunt",
+     "title": "替天行道",
+     "log": "持替天行道令剷除三個兇徒（到了地點按「緝拿」）：衡山城外湘江渡口的殺人王（武當山下往北到古道南岔，往東南經衡陽古道到湘江渡口）、大理西邊蒼山林道的土匪大當家（大理北門外大道往北到城北河畔，再往東）、雁門關外橋邊的淫賊（恆山岔路往東北經雁門古道到雁門關口，再往東南）。",
+     "objectives": [
+      {
+       "id": "o_sharen",
+       "type": "FIGHT",
+       "win": "WIN",
+       "text": "剷除衡山城外湘江渡口的殺人王"
+      },
+      {
+       "id": "o_tufei",
+       "type": "FIGHT",
+       "win": "WIN",
+       "text": "剷除大理西邊蒼山林道的土匪大當家"
+      },
+      {
+       "id": "o_yinzei",
+       "type": "FIGHT",
+       "win": "WIN",
+       "text": "剷除雁門關外橋邊的淫賊"
+      }
+     ],
+     "room_actions": [
+      {
+       "id": "a_sharen",
+       "room": "hn_road2",
+       "label": "緝拿殺人王",
+       "hours": [],
+       "requires": [],
+       "repeat": true,
+       "do": [
+        {
+         "do": "fight",
+         "monsters": [
+          "m_em_sharenwang"
+         ],
+         "obj": "o_sharen"
+        }
+       ]
+      },
+      {
+       "id": "a_tufei",
+       "room": "dlw_forest",
+       "label": "緝拿土匪大當家",
+       "hours": [],
+       "requires": [],
+       "repeat": true,
+       "do": [
+        {
+         "do": "fight",
+         "monsters": [
+          "m_em_tufei"
+         ],
+         "obj": "o_tufei"
+        }
+       ]
+      },
+      {
+       "id": "a_yinzei",
+       "room": "ym_bridge",
+       "label": "緝拿淫賊",
+       "hours": [],
+       "requires": [],
+       "repeat": true,
+       "do": [
+        {
+         "do": "fight",
+         "monsters": [
+          "m_em_yinzei"
+         ],
+         "obj": "o_yinzei"
+        }
+       ]
+      }
+     ],
+     "next": "s_back"
+    },
+    {
+     "id": "s_back",
+     "title": "繳令",
+     "log": "回峨嵋金頂大殿（練武場往北），把替天行道令繳回靜觀師姐。",
+     "objectives": [
+      {
+       "id": "o_back",
+       "type": "TALK",
+       "npc": "n_em_jingguan",
+       "dialogue": "d_back",
+       "text": "把替天行道令繳回靜觀"
+      }
+     ],
+     "hint_room": "em_dadian",
+     "next": "END"
+    }
+   ],
+   "dialogues": {
+    "d_offer": {
+     "start": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "（靜觀把一面朱漆令牌放在案上。）最近江湖上連出血案，衡山城外、大理山腳、雁門關外，死的都是無辜百姓。",
+       "src_note": "研究 替天行道 2001-09-01：靜觀 issue 替天行道令；2001-09-02 連環殺人案；對白【設計提案】（稱呼「靜觀師姐」，擁有者預設 D17）",
+       "choices": [
+        {
+         "id": "c_yes",
+         "label": "靜觀師姐，交給我吧。",
+         "goto": "n1"
+        },
+        {
+         "id": "c_no",
+         "label": "我功夫還淺，怕壞了事。",
+         "goto": "END"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "好。這面替天行道令你拿著，見令如見峨嵋。三個兇徒都除了，再來繳令。小心，他們個個手上都有人命。",
+       "choices": [
+        {
+         "id": "c_ok",
+         "label": "弟子明白。",
+         "do": [
+          {
+           "do": "accept"
+          }
+         ],
+         "goto": "END"
+        }
+       ]
+      }
+     }
+    },
+    "d_back": {
+     "start": "n0",
+     "resume": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "三個兇徒都除了？",
+       "choices": [
+        {
+         "id": "c_give",
+         "label": "（繳回替天行道令）都除了。",
+         "do": [
+          {
+           "do": "take",
+           "item": "i_em_titian_ling",
+           "n": 1
+          }
+         ],
+         "goto": "n1"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "（靜觀收回令牌，神色稍霽。）斷惡二字，就是這樣一刀一劍練出來的。往後江湖上再有血案，我還會找你。",
+       "do": [
+        {
+         "do": "complete",
+         "obj": "o_back"
+        }
+       ]
+      }
+     }
+    }
+   },
+   "outcomes": {
+    "default": {
+     "label": "剷除了三名兇徒",
+     "rewards": {
+      "skill_prof": {
+       "duane": 375
+      },
+      "lilian": 10
+     },
+     "src_note": "2001-09-02：四目標共斷惡 +500；少了高昌迷宮一個目標 → 375【設計提案】；歷練 10【設計提案】"
+    }
+   },
+   "rumors": {
+    "first": "rmr_q_em_lianhuan_first",
+    "each": "rmr_q_em_lianhuan_each"
+   }
+  },
+  {
+   "id": "q_sl_riyuebian",
+   "name": "日月鞭法",
+   "chapter": "少林派",
+   "group": "sect_stories",
+   "giver": "n_sl_xuanjing",
+   "era": "1.0A",
+   "src": "verified",
+   "dialogue_src": "proposal",
+   "src_note": "研究 日月鞭法：2001-08-16 n324_241081（讀書50、心法50、佛法70 → 玄淨）；後期（jyfreeonline）：戌／亥時玄淨派你取一部隨機佛經，只有《藥師如來本願經》帶回才能解鎖 → 改成在藏經閣自己挑經，挑錯就失敗、可再接【設計提案】",
+   "text": "羅漢堂的玄淨大師只在夜裡戌時、亥時收徒傳鞭。他要先看看你的佛學根底，派你到藏經閣取一部經來。",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "shaolin"
+    },
+    {
+     "type": "skill_min",
+     "skill": "basic_literacy",
+     "value": 50
+    },
+    {
+     "type": "skill_min",
+     "skill": "sl_xinfa",
+     "value": 50
+    },
+    {
+     "type": "skill_min",
+     "skill": "foxa",
+     "value": 70
+    },
+    {
+     "type": "hour_in",
+     "hours": [
+      "戌",
+      "亥"
+     ]
+    }
+   ],
+   "give_items": [],
+   "repeat": {
+    "max": 1,
+    "cooldown_days": 0
+   },
+   "abandon": true,
+   "party_credit": true,
+   "start": "s_fetch",
+   "offer": "d_offer",
+   "stages": [
+    {
+     "id": "s_fetch",
+     "title": "藏經閣取經",
+     "log": "到藏經閣向渡厄大師取經（前院往北進大雄寶殿，再往東）。玄淨大師說的是「東方淨琉璃世界教主」的那部經。",
+     "objectives": [
+      {
+       "id": "o_fetch",
+       "type": "TALK",
+       "npc": "n_sl_due",
+       "dialogue": "d_fetch",
+       "text": "到藏經閣取一部佛經"
+      }
+     ],
+     "hint_room": "sl_cangjing",
+     "next": "s_return"
+    },
+    {
+     "id": "s_return",
+     "title": "呈經",
+     "log": "把經卷帶回羅漢堂交給玄淨（大雄寶殿往西）。",
+     "objectives": [
+      {
+       "id": "o_return",
+       "type": "TALK",
+       "npc": "n_sl_xuanjing",
+       "dialogue": "d_return",
+       "text": "把經卷交給羅漢堂的玄淨"
+      }
+     ],
+     "hint_room": "sl_luohan",
+     "next": "END"
+    }
+   ],
+   "dialogues": {
+    "d_offer": {
+     "start": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "（玄淨手持長鞭，閉目打坐，聽見腳步聲才睜眼。）夜深了，你來找老衲，是想學日月鞭法？",
+       "src_note": "研究 日月鞭法 2001-08-16：讀書50 心法50 佛法70 → 玄淨；後期 戌／亥時派取經；對白【設計提案】",
+       "choices": [
+        {
+         "id": "c_yes",
+         "label": "弟子正是為此而來。",
+         "goto": "n1"
+        },
+        {
+         "id": "c_no",
+         "label": "弟子路過，打擾大師了。",
+         "goto": "END"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "鞭法如日月輪轉，心中若無佛法，鞭子揮出去就只是殺人的繩索。你到藏經閣替老衲取一部經來：東方淨琉璃世界教主所說的那一部。",
+       "choices": [
+        {
+         "id": "c_ok",
+         "label": "弟子這就去。",
+         "do": [
+          {
+           "do": "accept"
+          }
+         ],
+         "goto": "END"
+        }
+       ]
+      }
+     }
+    },
+    "d_fetch": {
+     "start": "n0",
+     "resume": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "（渡厄大師盤坐在經架下，眼也不睜。）玄淨要經？自己挑吧。挑對了是你的緣法，挑錯了，也是你的緣法。",
+       "src_note": "後期：只有藥師如來本願經能解鎖；挑經改為選擇【設計提案】",
+       "choices": [
+        {
+         "id": "c_jingang",
+         "label": "《金剛般若波羅蜜經》",
+         "do": [
+          {
+           "do": "var",
+           "name": "sutra",
+           "value": "jingang"
+          },
+          {
+           "do": "give",
+           "item": "i_sl_jingjuan",
+           "n": 1
+          },
+          {
+           "do": "complete",
+           "obj": "o_fetch"
+          }
+         ],
+         "goto": "n_got"
+        },
+        {
+         "id": "c_lengyan",
+         "label": "《大佛頂首楞嚴經》",
+         "do": [
+          {
+           "do": "var",
+           "name": "sutra",
+           "value": "lengyan"
+          },
+          {
+           "do": "give",
+           "item": "i_sl_jingjuan",
+           "n": 1
+          },
+          {
+           "do": "complete",
+           "obj": "o_fetch"
+          }
+         ],
+         "goto": "n_got"
+        },
+        {
+         "id": "c_yaoshi",
+         "label": "《藥師琉璃光如來本願功德經》",
+         "do": [
+          {
+           "do": "var",
+           "name": "sutra",
+           "value": "yaoshi"
+          },
+          {
+           "do": "give",
+           "item": "i_sl_jingjuan",
+           "n": 1
+          },
+          {
+           "do": "complete",
+           "obj": "o_fetch"
+          }
+         ],
+         "goto": "n_got"
+        }
+       ]
+      },
+      "n_got": {
+       "speaker": "npc",
+       "text": "（渡厄從經架上抽出那一卷，用黃綾包好遞給你。）去吧。"
+      }
+     }
+    },
+    "d_return": {
+     "start": "n0",
+     "resume": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "經取來了？給老衲看看。",
+       "choices": [
+        {
+         "id": "c_ok",
+         "label": "（呈上經卷）",
+         "requires": [
+          {
+           "type": "quest_var",
+           "quest": "q_sl_riyuebian",
+           "var": "sutra",
+           "value": "yaoshi"
+          }
+         ],
+         "hide_if_locked": true,
+         "do": [
+          {
+           "do": "take",
+           "item": "i_sl_jingjuan",
+           "n": 1
+          },
+          {
+           "do": "complete",
+           "obj": "o_return"
+          }
+         ],
+         "goto": "n_ok"
+        },
+        {
+         "id": "c_bad",
+         "label": "（呈上經卷）",
+         "requires": [
+          {
+           "type": "any_of",
+           "options": [
+            [
+             {
+              "type": "quest_var",
+              "quest": "q_sl_riyuebian",
+              "var": "sutra",
+              "value": "jingang"
+             }
+            ],
+            [
+             {
+              "type": "quest_var",
+              "quest": "q_sl_riyuebian",
+              "var": "sutra",
+              "value": "lengyan"
+             }
+            ]
+           ]
+          }
+         ],
+         "hide_if_locked": true,
+         "do": [
+          {
+           "do": "take",
+           "item": "i_sl_jingjuan",
+           "n": 1
+          },
+          {
+           "do": "fail",
+           "reason": "fail_q_sl_riyuebian_jing"
+          }
+         ],
+         "goto": "n_bad"
+        }
+       ]
+      },
+      "n_ok": {
+       "speaker": "npc",
+       "text": "藥師琉璃光如來，發十二大願，拔眾生之苦。鞭子在你手上，也要記得這個願。日月鞭法，老衲傳你了。"
+      },
+      "n_bad": {
+       "speaker": "npc",
+       "text": "（玄淨搖搖頭，把經卷放到一旁。）這不是老衲要的那一部。心不定，眼就不明。改日夜裡再來吧。"
+      }
+     }
+    }
+   },
+   "outcomes": {
+    "default": {
+     "label": "玄淨答應傳授日月鞭法",
+     "rewards": {
+      "flags": [
+       "sl_riyuebian_ok"
+      ]
+     },
+     "src_note": "旗標 sl_riyuebian_ok 由 art_patches 加進日月鞭法 requires；鞭法本身照既有玄淨消點（ms_xuanjing_riyuebian）"
+    }
+   },
+   "rumors": {
+    "first": "rmr_q_sl_riyuebian_first"
+   }
+  },
+  {
+   "id": "q_xh_huagong",
+   "name": "化功大法",
+   "chapter": "星宿派",
+   "group": "sect_stories",
+   "giver": "n_weixiaobao",
+   "era": "1.0A",
+   "src": "verified",
+   "dialogue_src": "proposal",
+   "src_note": "研究 化功大法 2001-08-25 n412_328407（上海 GS1）：入派後找大理韋小寶學「拍馬屁神功」到 5 級 → 雙兒 → 拍丁春秋馬屁（仍不高興）→ 雙兒請韋小寶教到 10 級 → 丁春秋 → 化功大法（要星宿心法 5）；拍馬屁神功等級改用門派技能 諂媚（chanmei）【設計提案，STORY_PLAN §7.3】",
+   "text": "星宿弟子都知道，師父丁春秋最愛聽人吹捧。可你的馬屁總拍不到點子上……聽說大理衙門的韋小寶有一門「拍馬屁神功」，天下無雙。",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "xingxiu"
+    },
+    {
+     "type": "skill_min",
+     "skill": "xh_xinfa",
+     "value": 5
+    }
+   ],
+   "give_items": [],
+   "repeat": {
+    "max": 1,
+    "cooldown_days": 0
+   },
+   "abandon": true,
+   "party_credit": true,
+   "start": "s_shuanger",
+   "offer": "d_offer",
+   "stages": [
+    {
+     "id": "s_shuanger",
+     "title": "雙兒的提點",
+     "log": "韋小寶教了你拍馬屁神功（諂媚 5 級）。旁邊的雙兒好像有話要說，跟她談談。",
+     "objectives": [
+      {
+       "id": "o_shuanger",
+       "type": "TALK",
+       "npc": "n_shuanger",
+       "dialogue": "d_shuanger",
+       "text": "和大理衙門的雙兒談談"
+      }
+     ],
+     "hint_room": "dl_yamen",
+     "next": "s_flatter"
+    },
+    {
+     "id": "s_flatter",
+     "title": "吹捧星宿老仙",
+     "log": "回星宿海，到大殿拍師父的馬屁。從大理出北門往北到城北河畔，過河石橋沿河川古道往西北到綠洲，再往北經沙漠山洞外、大漠邊緣到沙丘邊緣，往西經蛇骨小徑、星宿海邊到星宿海外景，往北就是大殿。",
+     "objectives": [
+      {
+       "id": "o_flatter",
+       "type": "TALK",
+       "npc": "n_xh_dingchunqiu",
+       "dialogue": "d_flatter",
+       "text": "到星宿大殿吹捧丁春秋"
+      }
+     ],
+     "hint_room": "xh_hall",
+     "next": "s_shuanger2"
+    },
+    {
+     "id": "s_shuanger2",
+     "title": "再求雙兒",
+     "log": "師父還是不高興。回大理衙門求雙兒幫忙（路線倒過來走）。",
+     "objectives": [
+      {
+       "id": "o_shuanger2",
+       "type": "TALK",
+       "npc": "n_shuanger",
+       "dialogue": "d_shuanger2",
+       "text": "回大理衙門求雙兒幫忙"
+      }
+     ],
+     "hint_room": "dl_yamen",
+     "next": "s_wxb2"
+    },
+    {
+     "id": "s_wxb2",
+     "title": "神功十級",
+     "log": "雙兒替你說了好話。找韋小寶把拍馬屁神功學到 10 級（諂媚 10 級）。",
+     "objectives": [
+      {
+       "id": "o_wxb2",
+       "type": "TALK",
+       "npc": "n_weixiaobao",
+       "dialogue": "d_wxb2",
+       "text": "請韋小寶把拍馬屁神功教到十級"
+      },
+      {
+       "id": "o_cm10",
+       "type": "STATE",
+       "requires": [
+        {
+         "type": "skill_min",
+         "skill": "chanmei",
+         "value": 10
+        }
+       ],
+       "text": "諂媚練到 10 級"
+      }
+     ],
+     "hint_room": "dl_yamen",
+     "next": "s_ding"
+    },
+    {
+     "id": "s_ding",
+     "title": "老仙大悅",
+     "log": "回星宿大殿，再拍一次師父的馬屁。",
+     "objectives": [
+      {
+       "id": "o_ding",
+       "type": "TALK",
+       "npc": "n_xh_dingchunqiu",
+       "dialogue": "d_ding",
+       "text": "回星宿大殿再吹捧丁春秋"
+      }
+     ],
+     "hint_room": "xh_hall",
+     "next": "END"
+    }
+   ],
+   "dialogues": {
+    "d_offer": {
+     "start": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "（韋小寶一見你這身打扮就樂了。）喲，星宿派的！你們丁老怪最愛聽人拍馬屁，偏偏你們這些徒弟拍得難聽死了，是不是？",
+       "src_note": "研究 化功大法 2001-08-25：入派後找韋小寶學拍馬屁神功到 5 級；對白【設計提案】",
+       "choices": [
+        {
+         "id": "c_yes",
+         "label": "韋爵爺明鑑，求您指點一二。",
+         "goto": "n1"
+        },
+        {
+         "id": "c_no",
+         "label": "我不是來聽這些的。",
+         "goto": "END"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "拍馬屁也是門學問！要拍得對方渾身舒坦，又不能拍得太露骨。來，韋爵爺今天心情好，先傳你五成功力。",
+       "choices": [
+        {
+         "id": "c_learn",
+         "label": "（洗耳恭聽）",
+         "do": [
+          {
+           "do": "accept"
+          },
+          {
+           "do": "learn",
+           "skill": "chanmei",
+           "level": 5
+          }
+         ],
+         "goto": "n2"
+        }
+       ]
+      },
+      "n2": {
+       "speaker": "npc",
+       "text": "記住三句真言：「說好話不用本錢」、「越肉麻越管用」、「臉皮要比城牆厚」。去吧去吧！"
+      }
+     }
+    },
+    "d_shuanger": {
+     "start": "n0",
+     "resume": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "（雙兒輕聲說。）這位……大哥，相公教的法子，是拍他自己那些朋友用的。你們師父那樣的人，恐怕不太一樣。",
+       "choices": [
+        {
+         "id": "c_ask",
+         "label": "雙兒姑娘的意思是？",
+         "goto": "n1"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "我也說不上來。你先回去試試，要是不成，再來找我，我求相公把壓箱底的本事教你。",
+       "do": [
+        {
+         "do": "complete",
+         "obj": "o_shuanger"
+        }
+       ]
+      }
+     }
+    },
+    "d_flatter": {
+     "start": "n0",
+     "resume": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "（丁春秋半閉著眼。）你有什麼事？",
+       "choices": [
+        {
+         "id": "c_a",
+         "label": "師父武功蓋世，天下無敵，弟子佩服得五體投地！",
+         "goto": "n1"
+        },
+        {
+         "id": "c_b",
+         "label": "星宿老仙，法駕中原，神通廣大，與天同壽！",
+         "goto": "n1"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "（丁春秋眉頭一皺。）就這幾句？門口那些弟子天天在喊，老夫耳朵都長繭了。沒點新鮮的，就別來煩我。",
+       "do": [
+        {
+         "do": "complete",
+         "obj": "o_flatter"
+        }
+       ]
+      }
+     }
+    },
+    "d_shuanger2": {
+     "start": "n0",
+     "resume": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "（雙兒看你垂頭喪氣的樣子，抿嘴一笑。）果然不成？",
+       "choices": [
+        {
+         "id": "c_yes",
+         "label": "雙兒姑娘，求妳幫幫忙。",
+         "goto": "n1"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "相公最聽我的話。我去跟他說，叫他把拍馬屁神功的十成功夫都教你。",
+       "do": [
+        {
+         "do": "complete",
+         "obj": "o_shuanger2"
+        }
+       ]
+      }
+     }
+    },
+    "d_wxb2": {
+     "start": "n0",
+     "resume": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "（韋小寶嘆了口氣。）雙兒開口，我還能不答應嗎？好，這回教你真本事：拍馬屁要拍到對方心坎裡，他自己都不知道的好處，你要先替他說出來。",
+       "choices": [
+        {
+         "id": "c_learn",
+         "label": "（洗耳恭聽）",
+         "do": [
+          {
+           "do": "learn",
+           "skill": "chanmei",
+           "level": 10
+          },
+          {
+           "do": "complete",
+           "obj": "o_wxb2"
+          }
+         ],
+         "goto": "n1"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "你們師父最怕什麼？怕老！最想要什麼？想天下人都怕他！你就照這個意思去拍，包他樂得合不攏嘴。"
+      }
+     }
+    },
+    "d_ding": {
+     "start": "n0",
+     "resume": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "（丁春秋瞟了你一眼。）又來了？",
+       "choices": [
+        {
+         "id": "c_good",
+         "label": "師父容光煥發，比弟子剛入門時又年輕了十歲！中原那些什麼少林武當，聽見星宿老仙的名號，哪個不嚇得屁滾尿流？",
+         "requires": [
+          {
+           "type": "skill_min",
+           "skill": "chanmei",
+           "value": 10
+          }
+         ],
+         "do": [
+          {
+           "do": "complete",
+           "obj": "o_ding"
+          }
+         ],
+         "goto": "n1"
+        },
+        {
+         "id": "c_bad",
+         "label": "師父武功天下第一！",
+         "goto": "n_bad"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "（丁春秋撫鬚大笑。）哈哈哈！好徒兒，說得好！老夫今日高興，傳你一門化功大法——中了此功的人，內力就像雪遇著了火，一點一點化掉。"
+      },
+      "n_bad": {
+       "speaker": "npc",
+       "text": "（丁春秋揮揮手。）老調重彈，滾。"
+      }
+     }
+    }
+   },
+   "outcomes": {
+    "default": {
+     "label": "丁春秋傳了化功大法",
+     "rewards": {
+      "flags": [
+       "xh_huagong_ok"
+      ],
+      "learn": {
+       "xh_huagong": 1
+      }
+     },
+     "src_note": "2001-08-25：丁春秋 → 化功大法"
+    }
+   },
+   "rumors": {
+    "first": "rmr_q_xh_huagong_first"
+   }
+  },
+  {
+   "id": "q_xd_xuehai",
+   "name": "血海魔功的試鍊",
+   "chapter": "血刀門",
+   "group": "sect_stories",
+   "giver": "n_xd_laozu",
+   "era": "1.0A",
+   "src": "later",
+   "dialogue_src": "proposal",
+   "src_note": "研究 血海魔功：2001-08-18（內功60、刀法50、威嚇50、門派威信50）；後期試鍊：只殺血刀叛徒 → 打老祖 → 血海老祖教 30–60；門派威信沒有對應數值 → 用江湖歷練 100 代替【設計提案】；饒過叛徒＝失敗可再接【設計提案】",
+   "text": "血刀老祖要試試你夠不夠狠：有個叛徒偷了本門刀譜往雪原逃了。先除叛徒，再接老祖一刀，過得了，才配學血海魔功。",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "xuedao"
+    },
+    {
+     "type": "skill_min",
+     "skill": "basic_inner",
+     "value": 60
+    },
+    {
+     "type": "skill_min",
+     "skill": "basic_blade",
+     "value": 50
+    },
+    {
+     "type": "skill_min",
+     "skill": "weihe",
+     "value": 50
+    },
+    {
+     "type": "lilian_min",
+     "value": 100
+    }
+   ],
+   "give_items": [],
+   "repeat": {
+    "max": 1,
+    "cooldown_days": 0
+   },
+   "abandon": true,
+   "party_credit": true,
+   "start": "s_hunt",
+   "offer": "d_offer",
+   "stages": [
+    {
+     "id": "s_hunt",
+     "title": "雪原追叛徒",
+     "log": "出血刀門口往東到雪谷，往東北上大雪山，再往西就是雪原。找到叛徒，清理門戶。",
+     "objectives": [
+      {
+       "id": "o_find",
+       "type": "TALK",
+       "npc": "n_xd_pantu",
+       "dialogue": "d_pantu",
+       "text": "在雪原找到血刀叛徒"
+      },
+      {
+       "id": "o_kill",
+       "type": "FIGHT",
+       "win": "WIN",
+       "text": "除掉叛徒"
+      }
+     ],
+     "hint_room": "xd_snowfield",
+     "next": "s_laozu",
+     "on_complete": [
+      {
+       "do": "give",
+       "item": "i_xd_pantu_dao",
+       "n": 1
+      },
+      {
+       "do": "tell",
+       "key": "tell_xd_xuehai_dao"
+      }
+     ]
+    },
+    {
+     "id": "s_laozu",
+     "title": "接老祖一刀",
+     "log": "把叛徒的血刀帶回本堂交給血刀老祖，接下老祖的試鍊。撐不住就退開，老祖只看你有沒有膽子。",
+     "objectives": [
+      {
+       "id": "o_laozu",
+       "type": "TALK",
+       "npc": "n_xd_laozu",
+       "dialogue": "d_laozu",
+       "text": "回本堂接受血刀老祖的試鍊"
+      },
+      {
+       "id": "o_trial",
+       "type": "FIGHT",
+       "win": "ANY",
+       "text": "接下血刀老祖的刀"
+      }
+     ],
+     "hint_room": "xd_hall",
+     "next": "s_xuehai"
+    },
+    {
+     "id": "s_xuehai",
+     "title": "血池",
+     "log": "到本堂後面的血池見血海老祖（本堂往北）。",
+     "objectives": [
+      {
+       "id": "o_xuehai",
+       "type": "TALK",
+       "npc": "n_xd_xuehai",
+       "dialogue": "d_xuehai",
+       "text": "到血池拜見血海老祖"
+      }
+     ],
+     "hint_room": "xd_pool",
+     "next": "END"
+    }
+   ],
+   "dialogues": {
+    "d_offer": {
+     "start": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "（血刀老祖舔了舔刀口。）內功、刀法、威嚇都有點樣子了。想學血海魔功？",
+       "src_note": "研究 血海魔功 2001-08-18 門檻；後期試鍊；對白【設計提案】",
+       "choices": [
+        {
+         "id": "c_yes",
+         "label": "求老祖成全。",
+         "goto": "n1"
+        },
+        {
+         "id": "c_no",
+         "label": "弟子還沒準備好。",
+         "goto": "END"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "血刀門的規矩：先除叛徒，再殺敵人。昨夜有個不成材的東西偷了刀譜往雪原跑了。把他的刀帶回來，人嘛……你看著辦，嘿嘿。",
+       "choices": [
+        {
+         "id": "c_ok",
+         "label": "弟子明白。",
+         "do": [
+          {
+           "do": "accept"
+          }
+         ],
+         "goto": "END"
+        }
+       ]
+      }
+     }
+    },
+    "d_pantu": {
+     "start": "n0",
+     "resume": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "（那紅衣僧人一見你的打扮，臉色煞白，撲通跪在雪裡。）師兄！師兄饒命！刀譜我還你，我……我只是想回中原老家看看我娘！",
+       "choices": [
+        {
+         "id": "c_kill",
+         "label": "替老祖清理門戶。",
+         "do": [
+          {
+           "do": "complete",
+           "obj": "o_find"
+          },
+          {
+           "do": "fight",
+           "monsters": [
+            "m_xd_pantu"
+           ],
+           "obj": "o_kill",
+           "npc": "n_xd_pantu"
+          }
+         ],
+         "goto": "END"
+        },
+        {
+         "id": "c_spare",
+         "label": "把刀譜留下，你走吧。",
+         "goto": "n_spare"
+        },
+        {
+         "id": "c_wait",
+         "label": "（先不動手。）",
+         "goto": "END"
+        }
+       ]
+      },
+      "n_spare": {
+       "speaker": "npc",
+       "text": "（他磕了幾個頭，連滾帶爬地消失在風雪裡。你手裡只剩一本刀譜——老祖要的是他的刀，不是刀譜。）",
+       "do": [
+        {
+         "do": "fail",
+         "reason": "fail_q_xd_xuehai_spare"
+        }
+       ]
+      }
+     }
+    },
+    "d_laozu": {
+     "start": "n0",
+     "resume": "n1",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "（血刀老祖接過叛徒的血刀，看了看刀柄上的記號。）好，夠狠，是血刀門的人。",
+       "choices": [
+        {
+         "id": "c_next",
+         "label": "請老祖試鍊。",
+         "goto": "n1"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "現在，接老祖一刀！撐不住就滾到一邊去，老祖只看你有沒有這個膽。",
+       "choices": [
+        {
+         "id": "c_go",
+         "label": "請老祖賜教！",
+         "do": [
+          {
+           "do": "take",
+           "item": "i_xd_pantu_dao",
+           "n": 1
+          },
+          {
+           "do": "complete",
+           "obj": "o_laozu"
+          },
+          {
+           "do": "fight",
+           "monsters": [
+            "m_xd_laozu_trial"
+           ],
+           "obj": "o_trial",
+           "solo": true,
+           "npc": "n_xd_laozu"
+          }
+         ],
+         "goto": "END"
+        },
+        {
+         "id": "c_wait",
+         "label": "（先調勻氣息。）",
+         "goto": "END"
+        }
+       ]
+      }
+     }
+    },
+    "d_xuehai": {
+     "start": "n0",
+     "resume": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "（血池邊的老人頭也不回。）老祖說你接了他一刀還沒死。不錯。",
+       "choices": [
+        {
+         "id": "c_ask",
+         "label": "求師祖傳授血海魔功。",
+         "goto": "n1"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "血海魔功以血養氣，練成了內力兇猛無比，練不成，就是一池血水。入門的一層傳你，自己練到三十，再來找我。",
+       "do": [
+        {
+         "do": "complete",
+         "obj": "o_xuehai"
+        }
+       ]
+      }
+     }
+    }
+   },
+   "outcomes": {
+    "default": {
+     "label": "通過血海魔功的試鍊",
+     "rewards": {
+      "flags": [
+       "xd_xuehai_lv1"
+      ],
+      "learn": {
+       "xd_xuehai": 1
+      }
+     },
+     "src_note": "後期：取得 1 級、自修到 30 再向血海老祖消點；武功列其他門檻照 martial_arts.json"
+    }
+   },
+   "rumors": {
+    "first": "rmr_q_xd_xuehai_first"
+   }
+  },
+  {
+   "id": "q_lj_chengqingshuang",
+   "name": "程清霜的煩惱",
+   "chapter": "靈鷲宮",
+   "group": "sect_stories",
+   "giver": "n_lj_chengqingshuang",
+   "era": "1.0A",
+   "src": "verified",
+   "dialogue_src": "proposal",
+   "src_note": "研究 程清霜的煩惱：2001-08-16/17 預告；2001-08-18 攻略（弟子限定、戌時 1–6 刻點程清霜 → 答應 → 大理肉攤與食堂附近 → 白勇說霍（歐）島主不在、把藥收下 → 千年人參）",
+   "text": "西側織房的程清霜，每到戌時就對著藥包發愁：海外的霍島主病了，她配好了藥，卻不能下山。",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "lingjiu"
+    },
+    {
+     "type": "hour_in",
+     "hours": [
+      "戌"
+     ]
+    }
+   ],
+   "give_items": [],
+   "repeat": {
+    "max": 1,
+    "cooldown_days": 0
+   },
+   "abandon": true,
+   "party_credit": true,
+   "start": "s_deliver",
+   "offer": "d_offer",
+   "stages": [
+    {
+     "id": "s_deliver",
+     "title": "送藥到大理",
+     "log": "把藥送到大理，交給五華樓前肉攤旁的白勇。出靈鷲宮山門往南到縹緲峰山腳，往東南到獵戶小屋，往東經雪原小徑、雪地到城北山坡，往南經胡楊林到荒草坡，再往南經小溪邊、南坡、溪口淺灘、沙丘邊緣、大漠邊緣到綠洲，沿河川古道往東南過石橋到大理城北，往南進北門。",
+     "objectives": [
+      {
+       "id": "o_deliver",
+       "type": "TALK",
+       "npc": "n_lj_baiyong",
+       "dialogue": "d_baiyong",
+       "text": "把藥交給大理五華樓前的白勇"
+      }
+     ],
+     "hint_room": "dl_square",
+     "next": "END"
+    }
+   ],
+   "dialogues": {
+    "d_offer": {
+     "start": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "（戌時的燈下，程清霜捧著一包藥發呆。）師妹，妳……能幫我一個忙嗎？",
+       "src_note": "研究 程清霜的煩惱 2001-08-18：戌時 1–6 刻點程清霜 → 答應；對白【設計提案】；戌時限定（offer 用 hour_in）",
+       "choices": [
+        {
+         "id": "c_ask",
+         "label": "師姐請說。",
+         "goto": "n1"
+        },
+        {
+         "id": "c_no",
+         "label": "我還有事，改天吧。",
+         "goto": "END"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "海外的霍島主是我們靈鷲宮的舊識，聽說他病了。我配了一帖藥，可童姥不許我們隨便下山……他的人在大理接應，叫白勇。",
+       "choices": [
+        {
+         "id": "c_yes",
+         "label": "我替師姐跑這一趟。",
+         "do": [
+          {
+           "do": "accept"
+          },
+          {
+           "do": "give",
+           "item": "i_lj_yao",
+           "n": 1
+          }
+         ],
+         "goto": "n_yes"
+        },
+        {
+         "id": "c_no2",
+         "label": "童姥知道了會怪罪的。",
+         "goto": "n_no"
+        }
+       ]
+      },
+      "n_yes": {
+       "speaker": "npc",
+       "text": "謝謝妳！白勇在五華樓前肉攤那一帶等著。路上小心，藥包別淋濕了。"
+      },
+      "n_no": {
+       "speaker": "npc",
+       "text": "嗯……也是，那就算了吧。"
+      }
+     }
+    },
+    "d_baiyong": {
+     "start": "n0",
+     "resume": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "（白勇上下打量你。）靈鷲宮來的？是程姑娘叫妳來的？",
+       "src_note": "研究：白勇說霍（歐）島主不在、把藥收下 → 千年人參",
+       "choices": [
+        {
+         "id": "c_give",
+         "label": "這是程師姐給霍島主配的藥。",
+         "do": [
+          {
+           "do": "take",
+           "item": "i_lj_yao",
+           "n": 1
+          }
+         ],
+         "goto": "n1"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "島主出海去了，不在大理。藥我先收著，等島主回來一定交到他手上。程姑娘有心了。",
+       "goto": "n2"
+      },
+      "n2": {
+       "speaker": "npc",
+       "text": "這支老山參是島主留下的，說要是靈鷲宮有人來，就當作謝禮。妳收下吧。",
+       "do": [
+        {
+         "do": "complete",
+         "obj": "o_deliver"
+        }
+       ]
+      }
+     }
+    }
+   },
+   "outcomes": {
+    "default": {
+     "label": "把藥送到了大理",
+     "rewards": {
+      "items": [
+       {
+        "id": "r_lj_qiannian_renshen",
+        "n": 1
+       }
+      ]
+     },
+     "src_note": "2001-08-18：千年人參"
+    }
+   },
+   "rumors": {
+    "first": "rmr_q_lj_chengqingshuang_first"
+   }
+  },
+  {
+   "id": "q_gm_limochou",
+   "name": "情侶的眼淚",
+   "chapter": "古墓派",
+   "group": "sect_stories",
+   "giver": "n_dl_limochou",
+   "era": "1.0A",
+   "src": "verified",
+   "dialogue_src": "proposal",
+   "src_note": "研究 李莫愁任務 2001-09-19：歷練 ≥ 1000、善惡約 0、古墓弟子 → 大理天龍寺的李莫愁 → 打大理藥鋪旁一對情侶 5 次 → 情侶的眼淚 ×5 → 李莫愁 → 基本毒術 +100、基本暗器 +80；天龍寺 → 洱海岸、藥鋪 → 雜貨鋪（1.0 資料沒有）【設計提案】；「善惡約 0」= −99～99【設計提案】",
+   "text": "洱海岸邊的杏黃道袍女子，是古墓派的棄徒李莫愁。她說只要你替她收集五份「情侶的眼淚」，就傳你幾手毒術和暗器的功夫。",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "gumu"
+    },
+    {
+     "type": "lilian_min",
+     "value": 1000
+    },
+    {
+     "type": "morality_min",
+     "value": -99
+    },
+    {
+     "type": "morality_max",
+     "value": 99
+    }
+   ],
+   "give_items": [],
+   "repeat": {
+    "max": 1,
+    "cooldown_days": 0
+   },
+   "abandon": true,
+   "party_credit": true,
+   "start": "s_tears",
+   "offer": "d_offer",
+   "stages": [
+    {
+     "id": "s_tears",
+     "title": "情侶的眼淚",
+     "log": "李莫愁要五份情侶的眼淚。大理城裡雜貨鋪（五華樓前往東南）門口常有一對小情侶，到那裡按「找那對情侶麻煩」。每打一場，就能收到一份眼淚。從洱海岸往東到北門外大道，往南進北門。",
+     "objectives": [
+      {
+       "id": "o_tears",
+       "type": "KILL",
+       "monster": "m_gm_qinglv_nv",
+       "count": 5,
+       "text": "收集情侶的眼淚"
+      }
+     ],
+     "room_actions": [
+      {
+       "id": "a_couple",
+       "room": "dl_shop",
+       "label": "找那對情侶麻煩",
+       "hours": [],
+       "requires": [],
+       "repeat": true,
+       "do": [
+        {
+         "do": "fight",
+         "monsters": [
+          "m_gm_qinglv_nan",
+          "m_gm_qinglv_nv"
+         ],
+         "obj": ""
+        }
+       ]
+      }
+     ],
+     "hint_room": "dl_shop",
+     "next": "s_back"
+    },
+    {
+     "id": "s_back",
+     "title": "回洱海岸",
+     "log": "帶著五份情侶的眼淚回洱海岸找李莫愁（北門外大道往西）。",
+     "objectives": [
+      {
+       "id": "o_back",
+       "type": "TALK",
+       "npc": "n_dl_limochou",
+       "dialogue": "d_back",
+       "text": "把情侶的眼淚交給洱海岸的李莫愁"
+      }
+     ],
+     "hint_room": "dlw_lake",
+     "next": "END"
+    }
+   ],
+   "dialogues": {
+    "d_offer": {
+     "start": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "（她背對著你，望著湖水低唱。）問世間，情是何物，直教生死相許……古墓派的小丫頭？師父的那一套，還在教你們不准動情？",
+       "src_note": "研究 李莫愁任務 2001-09-19：李莫愁給任務；對白【設計提案】，取材《神鵰俠侶》李莫愁",
+       "choices": [
+        {
+         "id": "c_ask",
+         "label": "師叔……有何指教？",
+         "goto": "n1"
+        },
+        {
+         "id": "c_leave",
+         "label": "（不理她，轉身離開。）",
+         "goto": "END"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "你去大理城裡，那家雜貨鋪門口常有一對小情侶卿卿我我。替我收五份他們的眼淚回來。我就教你些師父不肯教的東西。",
+       "choices": [
+        {
+         "id": "c_yes",
+         "label": "……好。",
+         "do": [
+          {
+           "do": "accept"
+          }
+         ],
+         "goto": "END"
+        },
+        {
+         "id": "c_no",
+         "label": "這種事我不做。",
+         "goto": "n_no"
+        }
+       ]
+      },
+      "n_no": {
+       "speaker": "npc",
+       "text": "（李莫愁冷笑一聲。）裝什麼清高？等你嚐過被人辜負的滋味，就懂了。"
+      }
+     }
+    },
+    "d_back": {
+     "start": "n0",
+     "resume": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "眼淚收齊了？",
+       "choices": [
+        {
+         "id": "c_give",
+         "label": "（交出五瓶眼淚）",
+         "do": [
+          {
+           "do": "take",
+           "item": "i_gm_qinglv_lei",
+           "n": 5
+          }
+         ],
+         "goto": "n1"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "（她把瓶子一一舉到眼前，看著看著，竟笑出了聲。）你看，說好要生死相許的人，一挨打就哭成這樣。情，算什麼東西。",
+       "goto": "n2"
+      },
+      "n2": {
+       "speaker": "npc",
+       "text": "說話算話。這幾手毒術和暗器的竅門，你那個死板的師父一輩子也不會教你。滾吧。",
+       "do": [
+        {
+         "do": "complete",
+         "obj": "o_back"
+        }
+       ]
+      }
+     }
+    }
+   },
+   "outcomes": {
+    "default": {
+     "label": "替李莫愁收齊了情侶的眼淚",
+     "rewards": {
+      "skill_prof": {
+       "basic_poison": 100,
+       "basic_hidden": 80
+      }
+     },
+     "src_note": "2001-09-19：+100 基本毒術、+80 基本暗器（熟練）"
+    }
+   },
+   "rumors": {
+    "first": "rmr_q_gm_limochou_first"
+   }
+  },
+  {
+   "id": "q_hg_lincai",
+   "name": "恆山事件",
+   "chapter": "恆山派",
+   "group": "sect_stories",
+   "giver": "n_hg_lincai",
+   "era": "1.0A",
+   "src": "proposal",
+   "dialogue_src": "proposal",
+   "src_note": "研究 恆山：2001-08-08 預告「恆山事件」（琳彩學裁縫）只有標題；步驟、于嫂教縫、贈袍選擇全部【設計提案】；原定獎勵「裁縫熟練」：專案還沒有裁縫生活技能 → 改給慈悲熟練＋歷練＋棉僧袍（擁有者決定）",
+   "text": "第一間屋裡的小尼姑琳彩，想替師姊妹縫幾件過冬的棉僧袍，可她的針線活實在不成樣子。",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "hengshan"
+    }
+   ],
+   "give_items": [],
+   "repeat": {
+    "max": 1,
+    "cooldown_days": 0
+   },
+   "abandon": true,
+   "party_credit": true,
+   "start": "s_skin",
+   "offer": "d_offer",
+   "stages": [
+    {
+     "id": "s_skin",
+     "title": "袍子的裡子",
+     "log": "琳彩要三張大兔皮做袍子的裡子。恆山山道（山門往南）和恆山岔路一帶有大野兔，打來大兔皮再回第一間屋（練劍坪往西）。",
+     "objectives": [
+      {
+       "id": "o_skin",
+       "type": "TALK",
+       "npc": "n_hg_lincai",
+       "dialogue": "d_skin",
+       "text": "把三張大兔皮交給琳彩"
+      }
+     ],
+     "hint_room": "hg_shandao",
+     "next": "s_yusao"
+    },
+    {
+     "id": "s_yusao",
+     "title": "請教于嫂",
+     "log": "琳彩不會縫皮裡子。到灶房（練劍坪往東）請于嫂教教她。",
+     "objectives": [
+      {
+       "id": "o_yusao",
+       "type": "TALK",
+       "npc": "n_hg_yusao",
+       "dialogue": "d_yusao",
+       "text": "到灶房請教于嫂"
+      }
+     ],
+     "hint_room": "hg_kitchen",
+     "next": "s_back"
+    },
+    {
+     "id": "s_back",
+     "title": "第一件棉僧袍",
+     "log": "把于嫂教的法子帶回第一間屋，告訴琳彩。",
+     "objectives": [
+      {
+       "id": "o_back",
+       "type": "TALK",
+       "npc": "n_hg_lincai",
+       "dialogue": "d_back",
+       "text": "回第一間屋教琳彩縫袍子"
+      }
+     ],
+     "hint_room": "hg_first",
+     "next": [
+      {
+       "if": [
+        {
+         "type": "quest_var",
+         "quest": "q_hg_lincai",
+         "var": "gift",
+         "value": "yilin"
+        }
+       ],
+       "goto": "END:yilin"
+      },
+      {
+       "goto": "END:dingxian"
+      }
+     ]
+    }
+   ],
+   "dialogues": {
+    "d_offer": {
+     "start": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "（琳彩把縫歪了的袖子拆了第三遍，眼圈都紅了。）恆山的冬天好冷，師姊妹們的僧袍都薄得透風……我想給大家縫棉袍，可我怎麼都縫不好。",
+       "src_note": "研究 恆山：「恆山事件」（琳彩學裁縫）2001-08-08 預告；對白【設計提案】",
+       "choices": [
+        {
+         "id": "c_help",
+         "label": "我幫妳想想辦法。",
+         "goto": "n1"
+        },
+        {
+         "id": "c_no",
+         "label": "我也不會針線，幫不上忙。",
+         "goto": "END"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "真的？那……能不能先替我找三張大兔皮？襯在裡面最暖和了。山道上就有大野兔。",
+       "choices": [
+        {
+         "id": "c_yes",
+         "label": "包在我身上。",
+         "do": [
+          {
+           "do": "accept"
+          }
+         ],
+         "goto": "END"
+        }
+       ]
+      }
+     }
+    },
+    "d_skin": {
+     "start": "n0",
+     "resume": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "兔皮找到了嗎？",
+       "choices": [
+        {
+         "id": "c_give",
+         "label": "三張大兔皮，都在這裡。",
+         "do": [
+          {
+           "do": "take",
+           "item": "r_bigrabbitskin",
+           "n": 3
+          },
+          {
+           "do": "complete",
+           "obj": "o_skin"
+          }
+         ],
+         "goto": "n1"
+        },
+        {
+         "id": "c_not",
+         "label": "還差一些，我再去找。",
+         "goto": "END"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "好厚的皮毛！可是……皮子要怎麼縫進布裡，我一點也不會。灶房的于嫂手最巧了，你能幫我去問問她嗎？"
+      }
+     }
+    },
+    "d_yusao": {
+     "start": "n0",
+     "resume": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "（于嫂在灶前擦著手。）琳彩那孩子要縫棉袍？阿彌陀佛，她那雙手拿劍還行，拿針可就要人命了。",
+       "choices": [
+        {
+         "id": "c_ask",
+         "label": "于嫂，皮裡子要怎麼縫才好？",
+         "goto": "n1"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "皮子要先用溫水泡軟，毛朝裡，邊上留一指寬，針腳要密，線要拉緊，最後在領口、袖口各壓一道。你記清楚了，回去慢慢說給她聽。",
+       "goto": "n2"
+      },
+      "n2": {
+       "speaker": "npc",
+       "text": "出家人縫衣，一針一線都是慈悲。手裡做著，心也就靜了。",
+       "do": [
+        {
+         "do": "complete",
+         "obj": "o_yusao"
+        }
+       ]
+      }
+     }
+    },
+    "d_back": {
+     "start": "n0",
+     "resume": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "（你把于嫂的法子一句一句說給琳彩聽，她照著縫了一整個下午。）縫好了！第一件棉僧袍……你說，該先給誰穿？",
+       "choices": [
+        {
+         "id": "c_dingxian",
+         "label": "先給掌門定閒師太，她年紀大了，最怕冷。",
+         "do": [
+          {
+           "do": "var",
+           "name": "gift",
+           "value": "dingxian"
+          },
+          {
+           "do": "complete",
+           "obj": "o_back"
+          }
+         ],
+         "goto": "n_ding"
+        },
+        {
+         "id": "c_yilin",
+         "label": "給最怕冷的儀琳小師妹吧。",
+         "do": [
+          {
+           "do": "var",
+           "name": "gift",
+           "value": "yilin"
+          },
+          {
+           "do": "complete",
+           "obj": "o_back"
+          }
+         ],
+         "goto": "n_yilin"
+        }
+       ]
+      },
+      "n_ding": {
+       "speaker": "npc",
+       "text": "嗯！師太一定會很高興的。這件多出來的皮子，我也給你縫了一件，你穿著下山，就不怕冷了。"
+      },
+      "n_yilin": {
+       "speaker": "npc",
+       "text": "儀琳師姊一定會笑出來的！……這件是給你的，裡子我特別多襯了一層。謝謝你。"
+      }
+     }
+    }
+   },
+   "outcomes": {
+    "dingxian": {
+     "label": "第一件棉僧袍給了定閒師太",
+     "rewards": {
+      "skill_prof": {
+       "cibei": 30
+      },
+      "lilian": 10,
+      "items": [
+       {
+        "id": "a_hg_mianpao",
+        "n": 1
+       }
+      ]
+     },
+     "src_note": "【設計提案】；裁縫熟練待生活技能裁縫加入後補（擁有者決定）"
+    },
+    "yilin": {
+     "label": "第一件棉僧袍給了儀琳",
+     "rewards": {
+      "skill_prof": {
+       "cibei": 30
+      },
+      "lilian": 10,
+      "items": [
+       {
+        "id": "a_hg_mianpao",
+        "n": 1
+       }
+      ]
+     },
+     "src_note": "同上"
+    }
+   },
+   "rumors": {
+    "first": "rmr_q_hg_lincai_first"
+   }
+  }
+ ],
+ "npcs": [
+  {
+   "id": "n_hn_longmen",
+   "name": "龍門遺孤",
+   "kind": "STORY",
+   "region": "hengshan_s",
+   "room": "hn_teahouse",
+   "alignment": "GOOD",
+   "talk": "talk_n_hn_longmen",
+   "services": [],
+   "night_closed": false,
+   "appear": {
+    "hours": [
+     "卯",
+     "辰",
+     "巳",
+     "午",
+     "未",
+     "申"
+    ],
+    "requires": []
+   },
+   "desc": "龍門鏢局滅門那夜僥倖逃出的孤兒，如今在衡山小茶店幫忙打雜，提起當年的事眼神就變得很冷。",
+   "era": "1.0A",
+   "src": "later",
+   "src_note": "研究 龍門遺案：龍門遺孤 at 衡山 lower right (time-gated)；gaoshou/23「衡山小茶店右上龍門遺孤旁」；白天限定（STORY_PLAN §7.3）"
+  },
+  {
+   "id": "n_wd_yuanyin",
+   "name": "圓音",
+   "kind": "STORY",
+   "region": "songshan_road",
+   "room": "sy_teahouse",
+   "alignment": "NEUTRAL",
+   "talk": "talk_n_wd_yuanyin",
+   "services": [],
+   "night_closed": false,
+   "appear": {
+    "hours": [
+     "辰",
+     "巳"
+    ],
+    "requires": []
+   },
+   "desc": "少林寺的中年僧人，一身灰布僧袍，說話時總要先唸一聲佛號。",
+   "era": "1.0A",
+   "src": "later",
+   "src_note": "研究 龍門遺案：圓音/圓業 by the inn right of 華山 (≈ 辰時)；1.0 華山右邊沒有客棧 → 嵩陽茶棚【設計提案】"
+  },
+  {
+   "id": "n_wd_yuanye",
+   "name": "圓業",
+   "kind": "STORY",
+   "region": "songshan_road",
+   "room": "sy_teahouse",
+   "alignment": "NEUTRAL",
+   "talk": "talk_n_wd_yuanye",
+   "services": [],
+   "night_closed": false,
+   "appear": {
+    "hours": [
+     "辰",
+     "巳"
+    ],
+    "requires": []
+   },
+   "desc": "和圓音同行的少林僧，脾氣火爆，一提武當二字就吹鬍子瞪眼。",
+   "era": "1.0A",
+   "src": "later",
+   "src_note": "同 圓音"
+  },
+  {
+   "id": "n_wd_zhaomin",
+   "name": "趙敏",
+   "kind": "STORY",
+   "region": "xixia_wild",
+   "room": "xw_wood",
+   "alignment": "NEUTRAL",
+   "talk": "talk_n_wd_zhaomin",
+   "services": [],
+   "night_closed": false,
+   "desc": "一身男裝、手搖摺扇的俊俏公子，細看才發覺是個明豔照人的姑娘。",
+   "era": "1.0A",
+   "src": "later",
+   "src_note": "研究 黑玉：郡主手令 → 趙敏（綠柳莊，後期地點）；1.0 沒有綠柳莊 → 西夏城外胡楊林【設計提案】"
+  },
+  {
+   "id": "n_ym_hufei",
+   "name": "胡斐",
+   "kind": "STORY",
+   "region": "yanmen",
+   "room": "ym_inner",
+   "alignment": "GOOD",
+   "talk": "talk_n_ym_hufei",
+   "services": [],
+   "night_closed": false,
+   "desc": "濃眉大眼、滿腮虯髯的漢子，腰間一柄單刀，坐在關內石階上擦刀。",
+   "era": "1.0A",
+   "src": "verified",
+   "src_note": "研究 世界：胡斐、阿朱在雁門關內（gaoshou/23）；拜訪名人 2001-09-02"
+  },
+  {
+   "id": "n_xx_qiaofeng",
+   "name": "喬峰",
+   "kind": "STORY",
+   "region": "xixia",
+   "room": "xx_inn",
+   "alignment": "GOOD",
+   "talk": "talk_n_xx_qiaofeng",
+   "services": [],
+   "night_closed": false,
+   "desc": "身材魁偉、粗布衣衫的大漢，桌上擺著一罈又一罈的烈酒，一碗接一碗地喝。",
+   "era": "1.0A",
+   "src": "verified",
+   "src_note": "研究 拜訪名人 2001-09-02：喬峰 + 阿紫（西夏客棧）drinking duel"
+  },
+  {
+   "id": "n_xx_azi",
+   "name": "阿紫",
+   "kind": "STORY",
+   "region": "xixia",
+   "room": "xx_inn",
+   "alignment": "EVIL",
+   "talk": "talk_n_xx_azi",
+   "services": [],
+   "night_closed": false,
+   "desc": "一身紫衫的少女，眉目如畫，嘴角卻總掛著一絲不懷好意的笑，寸步不離喬峰身邊。",
+   "era": "1.0A",
+   "src": "verified",
+   "src_note": "研究 拜訪名人 2001-09-02：阿紫在西夏客棧"
+  },
+  {
+   "id": "n_dl_limochou",
+   "name": "李莫愁",
+   "kind": "EVIL_NPC",
+   "region": "dali_wild",
+   "room": "dlw_lake",
+   "alignment": "EVIL",
+   "talk": "talk_n_dl_limochou",
+   "services": [
+    "QUEST"
+   ],
+   "night_closed": false,
+   "desc": "杏黃道袍、手持拂塵的美貌道姑，口中低低唱著「問世間，情是何物」，聽得人背脊發涼。",
+   "era": "1.0A",
+   "src": "verified",
+   "src_note": "研究 李莫愁任務 2001-09-19：李莫愁 at 大理 天龍寺；1.0 沒有天龍寺 → dlw_lake（STORY_PLAN §3.2）",
+   "quests": [
+    "q_gm_limochou"
+   ]
+  },
+  {
+   "id": "n_lj_baiyong",
+   "name": "白勇",
+   "kind": "STORY",
+   "region": "dali",
+   "room": "dl_square",
+   "alignment": "NEUTRAL",
+   "talk": "talk_n_lj_baiyong",
+   "services": [],
+   "night_closed": false,
+   "desc": "皮膚黝黑的精壯漢子，站在五華樓前肉攤旁，自稱是海外霍島主手下的人。",
+   "era": "1.0A",
+   "src": "verified",
+   "src_note": "研究 程清霜的煩惱 2001-08-18：白勇 near the meat stall and 食堂 in 大理；1.0 大理沒有肉攤房間 → 五華樓前"
+  },
+  {
+   "id": "n_xd_pantu",
+   "name": "形跡可疑的僧人",
+   "kind": "STORY",
+   "region": "xuedao_road",
+   "room": "xd_snowfield",
+   "alignment": "EVIL",
+   "talk": "talk_n_xd_pantu",
+   "services": [],
+   "night_closed": false,
+   "appear": {
+    "hours": [],
+    "requires": [
+     {
+      "type": "quest_stage",
+      "quest": "q_xd_xuehai",
+      "stage": [
+       "s_hunt"
+      ]
+     }
+    ]
+   },
+   "desc": "一個裹著破皮襖的紅衣僧人，背上的包袱鼓鼓的，看見有人來，手立刻按到了刀柄上。",
+   "era": "1.0A",
+   "src": "later",
+   "src_note": "研究 血海：血刀叛徒（後期試鍊）；只在 q_xd_xuehai 追捕階段出現"
+  },
+  {
+   "id": "n_hg_lincai",
+   "name": "琳彩",
+   "kind": "STORY",
+   "region": "hengshan",
+   "room": "hg_first",
+   "alignment": "GOOD",
+   "talk": "talk_n_hg_lincai",
+   "services": [
+    "QUEST"
+   ],
+   "night_closed": false,
+   "desc": "圓圓臉蛋的小尼姑，膝上攤著一件縫了一半的僧袍，手指上纏著好幾道布條。",
+   "era": "1.0A",
+   "src": "verified",
+   "src_note": "研究 恆山：恆山事件（琳彩學裁縫，2001-08-08 預告）；位置與細節【設計提案】",
+   "quests": [
+    "q_hg_lincai"
+   ]
+  }
+ ],
+ "npc_links": [
+  {
+   "npc": "n_wd_yinliting",
+   "add_quests": [
+    "q_wd_yinliu"
+   ]
+  },
+  {
+   "npc": "n_wd_zhangsanfeng",
+   "add_quests": [
+    "q_wd_heiyu",
+    "q_wd_yitian"
+   ]
+  },
+  {
+   "npc": "n_wd_moshenggu",
+   "add_quests": [
+    "q_wd_longmen"
+   ]
+  },
+  {
+   "npc": "n_wd_zhangsongxi",
+   "add_quests": [
+    "q_wd_taiji"
+   ]
+  },
+  {
+   "npc": "n_em_jingzhao",
+   "add_quests": [
+    "q_em_shougongsha"
+   ]
+  },
+  {
+   "npc": "n_em_dingminjun",
+   "add_quests": [
+    "q_em_shandu"
+   ]
+  },
+  {
+   "npc": "n_em_miejue",
+   "add_quests": [
+    "q_em_baifang"
+   ]
+  },
+  {
+   "npc": "n_em_jingguan",
+   "add_quests": [
+    "q_em_lianhuan"
+   ]
+  },
+  {
+   "npc": "n_sl_xuanjing",
+   "add_quests": [
+    "q_sl_riyuebian"
+   ]
+  },
+  {
+   "npc": "n_weixiaobao",
+   "add_quests": [
+    "q_xh_huagong"
+   ]
+  },
+  {
+   "npc": "n_xd_laozu",
+   "add_quests": [
+    "q_xd_xuehai"
+   ]
+  },
+  {
+   "npc": "n_lj_chengqingshuang",
+   "add_quests": [
+    "q_lj_chengqingshuang"
+   ]
+  }
+ ],
+ "shop_patches": [],
+ "art_patches": [
+  {
+   "id": "sl_riyuebian",
+   "add_requires": [
+    {
+     "type": "quest_flag",
+     "flag": "sl_riyuebian_ok"
+    }
+   ]
+  }
+ ],
+ "items": [
+  {
+   "id": "i_wd_yinli_xin",
+   "name": "殷梨亭的信",
+   "tab": "OTHER",
+   "slot": "",
+   "atk": 0,
+   "def": 0,
+   "weight": 0,
+   "price": 0,
+   "stack": 1,
+   "spoil_days": 0,
+   "effects": [],
+   "usable": false,
+   "usable_in_battle": false,
+   "no_sell": true,
+   "quest_item": true,
+   "sect_only": "wudang",
+   "desc": "殷梨亭親筆寫給紀曉芙的信，封口壓得平平整整，看得出寫了又改、改了又寫。",
+   "era": "1.0A",
+   "src": "proposal"
+  },
+  {
+   "id": "i_wd_jixiaofu_xin",
+   "name": "紀曉芙的回信",
+   "tab": "OTHER",
+   "slot": "",
+   "atk": 0,
+   "def": 0,
+   "weight": 0,
+   "price": 0,
+   "stack": 1,
+   "spoil_days": 0,
+   "effects": [],
+   "usable": false,
+   "usable_in_battle": false,
+   "no_sell": true,
+   "quest_item": true,
+   "sect_only": "wudang",
+   "desc": "紀曉芙寫給殷梨亭的回信，字跡有幾處被淚水暈開了。",
+   "era": "1.0A",
+   "src": "proposal"
+  },
+  {
+   "id": "i_wd_weituoxin",
+   "name": "張三丰的委託信",
+   "tab": "OTHER",
+   "slot": "",
+   "atk": 0,
+   "def": 0,
+   "weight": 0,
+   "price": 0,
+   "stack": 1,
+   "spoil_days": 0,
+   "effects": [],
+   "usable": false,
+   "usable_in_battle": false,
+   "no_sell": true,
+   "quest_item": true,
+   "sect_only": "wudang",
+   "desc": "張三丰親筆的委託信，請持信人代武當向汝陽王府討一盒黑玉斷續膏。",
+   "era": "1.0A",
+   "src": "proposal"
+  },
+  {
+   "id": "i_wd_jiagao",
+   "name": "假黑玉斷續膏",
+   "tab": "OTHER",
+   "slot": "",
+   "atk": 0,
+   "def": 0,
+   "weight": 0,
+   "price": 0,
+   "stack": 1,
+   "spoil_days": 0,
+   "effects": [],
+   "usable": false,
+   "usable_in_battle": false,
+   "no_sell": true,
+   "quest_item": true,
+   "desc": "一盒烏黑的藥膏，聞起來卻有一股說不出的腥氣。",
+   "era": "1.0A",
+   "src": "proposal"
+  },
+  {
+   "id": "i_wd_bingweiling",
+   "name": "病危令",
+   "tab": "OTHER",
+   "slot": "",
+   "atk": 0,
+   "def": 0,
+   "weight": 0,
+   "price": 0,
+   "stack": 1,
+   "spoil_days": 0,
+   "effects": [],
+   "usable": false,
+   "usable_in_battle": false,
+   "no_sell": true,
+   "quest_item": true,
+   "sect_only": "wudang",
+   "desc": "張三丰寫下的病危令：俞三俠傷勢轉危，見令者務必取回真藥。",
+   "era": "1.0A",
+   "src": "proposal"
+  },
+  {
+   "id": "i_wd_heiyugao",
+   "name": "黑玉斷續膏",
+   "tab": "OTHER",
+   "slot": "",
+   "atk": 0,
+   "def": 0,
+   "weight": 0,
+   "price": 0,
+   "stack": 1,
+   "spoil_days": 0,
+   "effects": [],
+   "usable": false,
+   "usable_in_battle": false,
+   "no_sell": true,
+   "quest_item": true,
+   "desc": "真正的黑玉斷續膏，烏黑發亮，有一股清香，能續接斷骨。",
+   "era": "1.0A",
+   "src": "proposal"
+  },
+  {
+   "id": "i_wd_junzhu_shouling",
+   "name": "郡主手令",
+   "tab": "OTHER",
+   "slot": "",
+   "atk": 0,
+   "def": 0,
+   "weight": 0,
+   "price": 0,
+   "stack": 1,
+   "spoil_days": 0,
+   "effects": [],
+   "usable": false,
+   "usable_in_battle": false,
+   "no_sell": true,
+   "quest_item": true,
+   "desc": "蓋著汝陽王府紹敏郡主印信的手令。",
+   "era": "1.0A",
+   "src": "proposal"
+  },
+  {
+   "id": "i_wd_simuhan",
+   "name": "思慕函",
+   "tab": "OTHER",
+   "slot": "",
+   "atk": 0,
+   "def": 0,
+   "weight": 0,
+   "price": 0,
+   "stack": 1,
+   "spoil_days": 0,
+   "effects": [],
+   "usable": false,
+   "usable_in_battle": false,
+   "no_sell": true,
+   "quest_item": true,
+   "desc": "趙敏託你帶給「那位大夫」的信，信封上一個字也沒寫，卻灑了淡淡的香粉。",
+   "era": "1.0A",
+   "src": "proposal"
+  },
+  {
+   "id": "i_wd_qihua",
+   "name": "七色奇花",
+   "tab": "OTHER",
+   "slot": "",
+   "atk": 0,
+   "def": 0,
+   "weight": 0,
+   "price": 0,
+   "stack": 1,
+   "spoil_days": 0,
+   "effects": [],
+   "usable": false,
+   "usable_in_battle": false,
+   "no_sell": true,
+   "quest_item": true,
+   "desc": "在蒼山林道採來的七種奇花，紅橙黃綠青藍紫各一朵，用油紙仔細包著。",
+   "era": "1.0A",
+   "src": "proposal"
+  },
+  {
+   "id": "i_wd_yaoyin",
+   "name": "續骨藥引",
+   "tab": "OTHER",
+   "slot": "",
+   "atk": 0,
+   "def": 0,
+   "weight": 0,
+   "price": 0,
+   "stack": 1,
+   "spoil_days": 0,
+   "effects": [],
+   "usable": false,
+   "usable_in_battle": false,
+   "no_sell": true,
+   "quest_item": true,
+   "desc": "張無忌以七蟲七花調成的藥引，要和黑玉斷續膏同用。",
+   "era": "1.0A",
+   "src": "proposal"
+  },
+  {
+   "id": "i_wd_ganxiehan",
+   "name": "感謝函",
+   "tab": "OTHER",
+   "slot": "",
+   "atk": 0,
+   "def": 0,
+   "weight": 0,
+   "price": 0,
+   "stack": 1,
+   "spoil_days": 0,
+   "effects": [],
+   "usable": false,
+   "usable_in_battle": false,
+   "no_sell": true,
+   "quest_item": true,
+   "sect_only": "wudang",
+   "desc": "俞岱巖口述、請人代筆的感謝函，要呈給師父張三丰。",
+   "era": "1.0A",
+   "src": "proposal"
+  },
+  {
+   "id": "i_wd_longmenling",
+   "name": "龍門事件令",
+   "tab": "OTHER",
+   "slot": "",
+   "atk": 0,
+   "def": 0,
+   "weight": 0,
+   "price": 0,
+   "stack": 1,
+   "spoil_days": 0,
+   "effects": [],
+   "usable": false,
+   "usable_in_battle": false,
+   "no_sell": true,
+   "quest_item": true,
+   "sect_only": "wudang",
+   "desc": "莫聲谷交給你的令牌，憑它可以向知情人打聽當年龍門鏢局的血案。",
+   "era": "1.0A",
+   "src": "proposal"
+  },
+  {
+   "id": "i_wd_tiezheng1",
+   "name": "鐵證（一）",
+   "tab": "OTHER",
+   "slot": "",
+   "atk": 0,
+   "def": 0,
+   "weight": 0,
+   "price": 0,
+   "stack": 1,
+   "spoil_days": 0,
+   "effects": [],
+   "usable": false,
+   "usable_in_battle": false,
+   "no_sell": true,
+   "quest_item": true,
+   "desc": "圓音和尚交出的一頁口供，記著當年龍門鏢局滿門被殺那一夜的情形。",
+   "era": "1.0A",
+   "src": "proposal"
+  },
+  {
+   "id": "i_wd_tiezheng2",
+   "name": "鐵證（二）",
+   "tab": "OTHER",
+   "slot": "",
+   "atk": 0,
+   "def": 0,
+   "weight": 0,
+   "price": 0,
+   "stack": 1,
+   "spoil_days": 0,
+   "effects": [],
+   "usable": false,
+   "usable_in_battle": false,
+   "no_sell": true,
+   "quest_item": true,
+   "desc": "圓業和尚交出的一枚暗器殘片，形制與武當武功全不相干。",
+   "era": "1.0A",
+   "src": "proposal"
+  },
+  {
+   "id": "i_wd_xuexiling",
+   "name": "學習令",
+   "tab": "OTHER",
+   "slot": "",
+   "atk": 0,
+   "def": 0,
+   "weight": 0,
+   "price": 0,
+   "stack": 1,
+   "spoil_days": 0,
+   "effects": [],
+   "usable": false,
+   "usable_in_battle": false,
+   "no_sell": true,
+   "quest_item": true,
+   "sect_only": "wudang",
+   "desc": "宋遠橋頒下的學習令，持令者可隨他修習真武七截陣。",
+   "era": "1.0A",
+   "src": "proposal"
+  },
+  {
+   "id": "i_em_shougongsha_zheng",
+   "name": "守宮砂證明",
+   "tab": "OTHER",
+   "slot": "",
+   "atk": 0,
+   "def": 0,
+   "weight": 0,
+   "price": 0,
+   "stack": 1,
+   "spoil_days": 0,
+   "effects": [],
+   "usable": false,
+   "usable_in_battle": false,
+   "no_sell": true,
+   "quest_item": true,
+   "sect_only": "emei",
+   "desc": "靜照師太親筆寫下的證明：此弟子冰清玉潔、守宮砂完好。",
+   "era": "1.0A",
+   "src": "proposal"
+  },
+  {
+   "id": "i_em_zhangmen_zhihuan",
+   "name": "掌門指環",
+   "tab": "OTHER",
+   "slot": "",
+   "atk": 0,
+   "def": 0,
+   "weight": 0,
+   "price": 0,
+   "stack": 1,
+   "spoil_days": 0,
+   "effects": [],
+   "usable": false,
+   "usable_in_battle": false,
+   "no_sell": true,
+   "quest_item": true,
+   "sect_only": "emei",
+   "desc": "一枚樸素的鐵指環，丁敏君說是師父當年的舊物。（與 2001-12 的鐵指環不是同一件）",
+   "era": "1.0A",
+   "src": "verified",
+   "src_note": "研究 善妒之女：丁敏君給「掌門指環」（2001-08-13）；後期部落格稱鐵指環庸品"
+  },
+  {
+   "id": "i_em_titian_ling",
+   "name": "替天行道令",
+   "tab": "OTHER",
+   "slot": "",
+   "atk": 0,
+   "def": 0,
+   "weight": 0,
+   "price": 0,
+   "stack": 1,
+   "spoil_days": 0,
+   "effects": [],
+   "usable": false,
+   "usable_in_battle": false,
+   "no_sell": true,
+   "quest_item": true,
+   "sect_only": "emei",
+   "desc": "靜觀師姐頒下的令牌，持令者奉峨嵋之命剷除江湖上的兇徒。",
+   "era": "1.0A",
+   "src": "verified",
+   "src_note": "研究 替天行道 2001-09-01：靜觀發替天行道令"
+  },
+  {
+   "id": "i_em_hufei_xin",
+   "name": "胡斐的書信",
+   "tab": "OTHER",
+   "slot": "",
+   "atk": 0,
+   "def": 0,
+   "weight": 0,
+   "price": 0,
+   "stack": 1,
+   "spoil_days": 0,
+   "effects": [],
+   "usable": false,
+   "usable_in_battle": false,
+   "no_sell": true,
+   "quest_item": true,
+   "desc": "胡斐寫給滅絕師太的一封短信，信封上的字龍飛鳳舞。",
+   "era": "1.0A",
+   "src": "proposal"
+  },
+  {
+   "id": "i_em_qiaofeng_xin",
+   "name": "喬峰的書信",
+   "tab": "OTHER",
+   "slot": "",
+   "atk": 0,
+   "def": 0,
+   "weight": 0,
+   "price": 0,
+   "stack": 1,
+   "spoil_days": 0,
+   "effects": [],
+   "usable": false,
+   "usable_in_battle": false,
+   "no_sell": true,
+   "quest_item": true,
+   "desc": "喬峰託你帶給三弟虛竹的信，字寫得粗豪，信紙上還帶著酒氣。",
+   "era": "1.0A",
+   "src": "proposal"
+  },
+  {
+   "id": "a_em_wxb_jiezhi",
+   "name": "韋小寶的金戒指",
+   "tab": "OTHER",
+   "slot": "",
+   "atk": 0,
+   "def": 0,
+   "weight": 0,
+   "price": 200,
+   "stack": 1,
+   "spoil_days": 0,
+   "effects": [],
+   "usable": false,
+   "usable_in_battle": false,
+   "no_sell": false,
+   "quest_item": false,
+   "desc": "韋小寶隨手從指頭上褪下來送你的金戒指，成色倒是十足。",
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "研究 拜訪名人 2001-09-02：韋小寶給錢和戒指；戒指沒有屬性【設計提案】"
+  },
+  {
+   "id": "i_sl_jingjuan",
+   "name": "藏經閣經卷",
+   "tab": "OTHER",
+   "slot": "",
+   "atk": 0,
+   "def": 0,
+   "weight": 0,
+   "price": 0,
+   "stack": 1,
+   "spoil_days": 0,
+   "effects": [],
+   "usable": false,
+   "usable_in_battle": false,
+   "no_sell": true,
+   "quest_item": true,
+   "sect_only": "shaolin",
+   "desc": "從藏經閣取來的一卷佛經，用黃綾包著。",
+   "era": "1.0A",
+   "src": "proposal"
+  },
+  {
+   "id": "i_xd_pantu_dao",
+   "name": "叛徒的血刀",
+   "tab": "OTHER",
+   "slot": "",
+   "atk": 0,
+   "def": 0,
+   "weight": 0,
+   "price": 0,
+   "stack": 1,
+   "spoil_days": 0,
+   "effects": [],
+   "usable": false,
+   "usable_in_battle": false,
+   "no_sell": true,
+   "quest_item": true,
+   "sect_only": "xuedao",
+   "desc": "從叛徒身上奪回的一柄血刀，刀柄上刻著本門的記號，拿去給老祖驗明正身。",
+   "era": "1.0A",
+   "src": "proposal"
+  },
+  {
+   "id": "i_lj_yao",
+   "name": "程清霜的藥",
+   "tab": "OTHER",
+   "slot": "",
+   "atk": 0,
+   "def": 0,
+   "weight": 0,
+   "price": 0,
+   "stack": 1,
+   "spoil_days": 0,
+   "effects": [],
+   "usable": false,
+   "usable_in_battle": false,
+   "no_sell": true,
+   "quest_item": true,
+   "sect_only": "lingjiu",
+   "desc": "程清霜細心包好的一包藥，要送去大理給霍島主。",
+   "era": "1.0A",
+   "src": "verified",
+   "src_note": "研究 程清霜的煩惱 2001-08-18：把藥送去大理給霍島主"
+  },
+  {
+   "id": "r_lj_qiannian_renshen",
+   "name": "千年人參",
+   "tab": "OTHER",
+   "slot": "",
+   "atk": 0,
+   "def": 0,
+   "weight": 1,
+   "price": 2000,
+   "stack": 10,
+   "spoil_days": 0,
+   "effects": [
+    {
+     "type": "restore",
+     "stat": "jing",
+     "value": 500
+    },
+    {
+     "type": "restore",
+     "stat": "qi",
+     "value": 500
+    },
+    {
+     "type": "restore",
+     "stat": "shen",
+     "value": 500
+    }
+   ],
+   "usable": true,
+   "usable_in_battle": true,
+   "no_sell": false,
+   "quest_item": false,
+   "desc": "鬚根完整、形如小人的老山參，據說有上千年火候。吃下去精、氣、神都大有補益。",
+   "era": "1.0A",
+   "src": "verified",
+   "src_note": "研究 程清霜的煩惱 2001-08-18：獎勵千年人參；效果與價格【設計提案】"
+  },
+  {
+   "id": "i_gm_qinglv_lei",
+   "name": "情侶的眼淚",
+   "tab": "OTHER",
+   "slot": "",
+   "atk": 0,
+   "def": 0,
+   "weight": 0,
+   "price": 0,
+   "stack": 5,
+   "spoil_days": 0,
+   "effects": [],
+   "usable": false,
+   "usable_in_battle": false,
+   "no_sell": true,
+   "quest_item": true,
+   "desc": "一小瓶晶瑩的淚水，據說是有情人生離死別時流下的。李莫愁要它做什麼，沒人敢問。",
+   "era": "1.0A",
+   "src": "verified",
+   "src_note": "研究 李莫愁任務 2001-09-19：情侶的眼淚 ×5"
+  },
+  {
+   "id": "a_hg_mianpao",
+   "name": "恆山棉僧袍",
+   "tab": "ARMOR",
+   "slot": "ARMOR",
+   "atk": 0,
+   "def": 5,
+   "weight": 3,
+   "price": 150,
+   "stack": 1,
+   "spoil_days": 0,
+   "effects": [],
+   "usable": false,
+   "usable_in_battle": false,
+   "no_sell": false,
+   "quest_item": false,
+   "desc": "琳彩一針一線縫成的棉僧袍，裡子襯了大兔皮，穿上去暖烘烘的。",
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "恆山事件（琳彩學裁縫）的謝禮【設計提案】"
+  }
+ ],
+ "monsters": [
+  {
+   "id": "m_wd_ada",
+   "name": "阿大",
+   "short": "阿大",
+   "kind": "ELITE",
+   "alignment": "EVIL",
+   "desc": "汝陽王府的老家人，模樣枯槁，出手卻快得驚人，奉郡主之命看守黑玉斷續膏。（2001：阿大站在西夏皇宮前廣場右下；黑玉任務對手：後期結構）",
+   "stats": {
+    "qi": 800,
+    "neili": 100,
+    "jing": 300,
+    "str": 6,
+    "guts": 24,
+    "wit": 15,
+    "luck": 15,
+    "cal": 20,
+    "agi": 12,
+    "con": 15
+   },
+   "skills": {
+    "basic_dodge": 5,
+    "basic_parry": 5,
+    "basic_inner": 20
+   },
+   "arts": [
+    {
+     "art": "mon_blade",
+     "level": 40
+    }
+   ],
+   "weapon_type": "BLADE",
+   "weapon_power": 0,
+   "armor_power": 5,
+   "combat_xp_ref": 8000,
+   "combat_xp": 120,
+   "learn_points": 60,
+   "drops": [],
+   "money": {
+    "min": 150,
+    "max": 300
+   },
+   "morality_on_kill": 0,
+   "killing_intent_on_kill": 0,
+   "ai": "melee_basic",
+   "no_rewards": false,
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "研究 黑玉：阿大 fight ×2（後期結構）；gaoshou/23 阿大位置；數值照既有級距 m_bandit_chief（combat_xp_ref 8000）【設計提案】"
+  },
+  {
+   "id": "m_wd_fengyi",
+   "name": "蜂蟻",
+   "short": "蜂蟻",
+   "kind": "MONSTER",
+   "alignment": "NEUTRAL",
+   "desc": "一窩黑壓壓的毒蜂與紅蟻，螫一口又麻又痛。（七蟲之一：後期結構）",
+   "stats": {
+    "qi": 250,
+    "neili": 0,
+    "jing": 80,
+    "str": 10,
+    "guts": 12,
+    "wit": 8,
+    "luck": 10,
+    "cal": 12,
+    "agi": 22,
+    "con": 15
+   },
+   "skills": {
+    "basic_dodge": 15,
+    "basic_parry": 5,
+    "basic_inner": 0
+   },
+   "arts": [
+    {
+     "art": "xh_mon_venom",
+     "level": 8
+    }
+   ],
+   "weapon_type": "FIST",
+   "weapon_power": 0,
+   "armor_power": 28,
+   "combat_xp_ref": 500,
+   "combat_xp": 15,
+   "learn_points": 6,
+   "drops": [],
+   "money": {
+    "min": 0,
+    "max": 5
+   },
+   "morality_on_kill": 0,
+   "killing_intent_on_kill": 0,
+   "ai": "melee_basic",
+   "no_rewards": false,
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "研究 黑玉：七蟲 蜂蟻；數值照既有級距 m_wolf（combat_xp_ref 500）【設計提案】"
+  },
+  {
+   "id": "m_wd_caie",
+   "name": "彩蛾",
+   "short": "彩蛾",
+   "kind": "MONSTER",
+   "alignment": "NEUTRAL",
+   "desc": "翅膀五彩斑斕的大毒蛾，撲撲飛動時灑下一陣毒粉。（七蟲之一：後期結構）",
+   "stats": {
+    "qi": 250,
+    "neili": 0,
+    "jing": 80,
+    "str": 10,
+    "guts": 12,
+    "wit": 8,
+    "luck": 10,
+    "cal": 12,
+    "agi": 22,
+    "con": 15
+   },
+   "skills": {
+    "basic_dodge": 15,
+    "basic_parry": 5,
+    "basic_inner": 0
+   },
+   "arts": [
+    {
+     "art": "xh_mon_venom",
+     "level": 8
+    }
+   ],
+   "weapon_type": "FIST",
+   "weapon_power": 0,
+   "armor_power": 28,
+   "combat_xp_ref": 500,
+   "combat_xp": 15,
+   "learn_points": 6,
+   "drops": [],
+   "money": {
+    "min": 0,
+    "max": 5
+   },
+   "morality_on_kill": 0,
+   "killing_intent_on_kill": 0,
+   "ai": "melee_basic",
+   "no_rewards": false,
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "研究 黑玉：七蟲 彩蛾；2001 七毒「彩蛛」出沒點；數值照既有級距 m_wolf（combat_xp_ref 500）【設計提案】"
+  },
+  {
+   "id": "m_wd_xiang",
+   "name": "野象",
+   "short": "野象",
+   "kind": "MONSTER",
+   "alignment": "NEUTRAL",
+   "desc": "從南方林子裡闖出來的野象，鼻子一甩就能把人掃倒。（龍門遺案七獸之一：後期結構）",
+   "stats": {
+    "qi": 900,
+    "neili": 120,
+    "jing": 250,
+    "str": 22,
+    "guts": 24,
+    "wit": 16,
+    "luck": 15,
+    "cal": 20,
+    "agi": 22,
+    "con": 22
+   },
+   "skills": {
+    "basic_dodge": 35,
+    "basic_parry": 35,
+    "basic_inner": 20,
+    "basic_blade": 35
+   },
+   "arts": [
+    {
+     "art": "mon_ram",
+     "level": 35
+    }
+   ],
+   "weapon_type": "FIST",
+   "weapon_power": 15,
+   "armor_power": 35,
+   "combat_xp_ref": 6000,
+   "combat_xp": 70,
+   "learn_points": 25,
+   "drops": [],
+   "money": {
+    "min": 0,
+    "max": 0
+   },
+   "morality_on_kill": 0,
+   "killing_intent_on_kill": 0,
+   "ai": "melee_basic",
+   "no_rewards": false,
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "研究 龍門：七獸 象；數值照既有級距 m_wd_buyi（combat_xp_ref 6000）【設計提案】"
+  },
+  {
+   "id": "m_wd_elang",
+   "name": "惡狼",
+   "short": "惡狼",
+   "kind": "MONSTER",
+   "alignment": "NEUTRAL",
+   "desc": "狼群的頭狼，比一般野狼兇猛得多，眼露綠光。（七獸之一）",
+   "stats": {
+    "qi": 600,
+    "neili": 50,
+    "jing": 150,
+    "str": 20,
+    "guts": 22,
+    "wit": 15,
+    "luck": 15,
+    "cal": 18,
+    "agi": 20,
+    "con": 20
+   },
+   "skills": {
+    "basic_dodge": 25,
+    "basic_parry": 25,
+    "basic_inner": 10
+   },
+   "arts": [
+    {
+     "art": "mon_claw",
+     "level": 25
+    }
+   ],
+   "weapon_type": "FIST",
+   "weapon_power": 10,
+   "armor_power": 30,
+   "combat_xp_ref": 3000,
+   "combat_xp": 40,
+   "learn_points": 15,
+   "drops": [],
+   "money": {
+    "min": 0,
+    "max": 0
+   },
+   "morality_on_kill": 0,
+   "killing_intent_on_kill": 0,
+   "ai": "melee_basic",
+   "no_rewards": false,
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "研究 龍門：七獸 惡狼；數值照既有級距 m_bandit（combat_xp_ref 3000）【設計提案】"
+  },
+  {
+   "id": "m_wd_baiyuan",
+   "name": "白猿",
+   "short": "白猿",
+   "kind": "MONSTER",
+   "alignment": "NEUTRAL",
+   "desc": "竹林間縱躍如飛的白猿，力大爪利。（七獸之一）",
+   "stats": {
+    "qi": 520,
+    "neili": 0,
+    "jing": 140,
+    "str": 18,
+    "guts": 22,
+    "wit": 8,
+    "luck": 10,
+    "cal": 18,
+    "agi": 14,
+    "con": 24
+   },
+   "skills": {
+    "basic_dodge": 15,
+    "basic_parry": 20,
+    "basic_inner": 10
+   },
+   "arts": [
+    {
+     "art": "em_mon_yuanzhua",
+     "level": 25
+    }
+   ],
+   "weapon_type": "FIST",
+   "weapon_power": 0,
+   "armor_power": 34,
+   "combat_xp_ref": 3500,
+   "combat_xp": 40,
+   "learn_points": 16,
+   "drops": [],
+   "money": {
+    "min": 0,
+    "max": 5
+   },
+   "morality_on_kill": 0,
+   "killing_intent_on_kill": 0,
+   "ai": "melee_basic",
+   "no_rewards": false,
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "研究 龍門：七獸 白猿；數值照既有級距 m_xh_toad（combat_xp_ref 3500）【設計提案】"
+  },
+  {
+   "id": "m_wd_menghu",
+   "name": "猛虎",
+   "short": "猛虎",
+   "kind": "MONSTER",
+   "alignment": "NEUTRAL",
+   "desc": "斑斕大蟲，一聲虎嘯震得松針簌簌落下。（七獸之一）",
+   "stats": {
+    "qi": 800,
+    "neili": 100,
+    "jing": 300,
+    "str": 6,
+    "guts": 24,
+    "wit": 15,
+    "luck": 15,
+    "cal": 20,
+    "agi": 12,
+    "con": 15
+   },
+   "skills": {
+    "basic_dodge": 5,
+    "basic_parry": 5,
+    "basic_inner": 20
+   },
+   "arts": [
+    {
+     "art": "mon_claw",
+     "level": 40
+    }
+   ],
+   "weapon_type": "FIST",
+   "weapon_power": 0,
+   "armor_power": 5,
+   "combat_xp_ref": 8000,
+   "combat_xp": 120,
+   "learn_points": 60,
+   "drops": [],
+   "money": {
+    "min": 0,
+    "max": 0
+   },
+   "morality_on_kill": 0,
+   "killing_intent_on_kill": 0,
+   "ai": "melee_basic",
+   "no_rewards": false,
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "研究 龍門：七獸 猛虎；數值照既有級距 m_bandit_chief（combat_xp_ref 8000）【設計提案】"
+  },
+  {
+   "id": "m_wd_heixiong",
+   "name": "黑熊",
+   "short": "黑熊",
+   "kind": "MONSTER",
+   "alignment": "NEUTRAL",
+   "desc": "在雪谷裡覓食的大黑熊，皮糙肉厚。（七獸之一）",
+   "stats": {
+    "qi": 900,
+    "neili": 120,
+    "jing": 250,
+    "str": 22,
+    "guts": 24,
+    "wit": 16,
+    "luck": 15,
+    "cal": 20,
+    "agi": 22,
+    "con": 22
+   },
+   "skills": {
+    "basic_dodge": 35,
+    "basic_parry": 35,
+    "basic_inner": 20,
+    "basic_blade": 35
+   },
+   "arts": [
+    {
+     "art": "mon_claw",
+     "level": 35
+    }
+   ],
+   "weapon_type": "FIST",
+   "weapon_power": 15,
+   "armor_power": 35,
+   "combat_xp_ref": 6000,
+   "combat_xp": 70,
+   "learn_points": 25,
+   "drops": [],
+   "money": {
+    "min": 0,
+    "max": 0
+   },
+   "morality_on_kill": 0,
+   "killing_intent_on_kill": 0,
+   "ai": "melee_basic",
+   "no_rewards": false,
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "研究 龍門：七獸 黑熊；數值照既有級距 m_wd_buyi（combat_xp_ref 6000）【設計提案】"
+  },
+  {
+   "id": "m_wd_liebao",
+   "name": "獵豹",
+   "short": "獵豹",
+   "kind": "MONSTER",
+   "alignment": "NEUTRAL",
+   "desc": "身形矯健的花豹，撲擊快得只看見一道黃影。（七獸之一）",
+   "stats": {
+    "qi": 520,
+    "neili": 0,
+    "jing": 140,
+    "str": 18,
+    "guts": 22,
+    "wit": 8,
+    "luck": 10,
+    "cal": 18,
+    "agi": 14,
+    "con": 24
+   },
+   "skills": {
+    "basic_dodge": 15,
+    "basic_parry": 20,
+    "basic_inner": 10
+   },
+   "arts": [
+    {
+     "art": "mon_claw",
+     "level": 25
+    }
+   ],
+   "weapon_type": "FIST",
+   "weapon_power": 0,
+   "armor_power": 34,
+   "combat_xp_ref": 3500,
+   "combat_xp": 40,
+   "learn_points": 16,
+   "drops": [],
+   "money": {
+    "min": 0,
+    "max": 5
+   },
+   "morality_on_kill": 0,
+   "killing_intent_on_kill": 0,
+   "ai": "melee_basic",
+   "no_rewards": false,
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "研究 龍門：七獸 獵豹；數值照既有級距 m_xh_toad（combat_xp_ref 3500）【設計提案】"
+  },
+  {
+   "id": "m_wd_dadushe",
+   "name": "大毒蛇",
+   "short": "毒蛇",
+   "kind": "MONSTER",
+   "alignment": "NEUTRAL",
+   "desc": "盤在毒沼爛泥裡的大蟒，口中毒涎滴落處草葉都枯了。（七獸之一）",
+   "stats": {
+    "qi": 900,
+    "neili": 120,
+    "jing": 250,
+    "str": 22,
+    "guts": 24,
+    "wit": 16,
+    "luck": 15,
+    "cal": 20,
+    "agi": 22,
+    "con": 22
+   },
+   "skills": {
+    "basic_dodge": 35,
+    "basic_parry": 35,
+    "basic_inner": 20,
+    "basic_blade": 35
+   },
+   "arts": [
+    {
+     "art": "xh_mon_venom",
+     "level": 35
+    }
+   ],
+   "weapon_type": "FIST",
+   "weapon_power": 15,
+   "armor_power": 35,
+   "combat_xp_ref": 6000,
+   "combat_xp": 70,
+   "learn_points": 25,
+   "drops": [],
+   "money": {
+    "min": 0,
+    "max": 0
+   },
+   "morality_on_kill": 0,
+   "killing_intent_on_kill": 0,
+   "ai": "melee_basic",
+   "no_rewards": false,
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "研究 龍門：七獸 大毒蛇；數值照既有級距 m_wd_buyi（combat_xp_ref 6000）【設計提案】"
+  },
+  {
+   "id": "m_wd_zhangsongxi",
+   "name": "張松溪",
+   "short": "張松溪",
+   "kind": "ELITE",
+   "alignment": "GOOD",
+   "desc": "武當四俠張松溪，出拳綿綿不斷，只守不攻，看你能不能找到破綻。（考較，不給戰鬥獎勵）",
+   "stats": {
+    "qi": 3200,
+    "neili": 400,
+    "jing": 650,
+    "str": 30,
+    "guts": 30,
+    "wit": 22,
+    "luck": 20,
+    "cal": 32,
+    "agi": 32,
+    "con": 30
+   },
+   "skills": {
+    "basic_dodge": 85,
+    "basic_parry": 85,
+    "basic_inner": 65,
+    "basic_sword": 85,
+    "basic_fist": 70
+   },
+   "arts": [
+    {
+     "art": "wd_changquan",
+     "level": 85
+    },
+    {
+     "art": "wd_mianzhang",
+     "level": 70
+    }
+   ],
+   "weapon_type": "FIST",
+   "weapon_power": 40,
+   "armor_power": 60,
+   "combat_xp_ref": 70000,
+   "combat_xp": 0,
+   "learn_points": 0,
+   "drops": [],
+   "money": {
+    "min": 0,
+    "max": 0
+   },
+   "morality_on_kill": 0,
+   "killing_intent_on_kill": 0,
+   "ai": "melee_basic",
+   "no_rewards": true,
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "研究 太極：張松溪 duel（後期結構）；數值照既有級距 m_em_guard（combat_xp_ref 70000）【設計提案】"
+  },
+  {
+   "id": "m_wd_yulianzhou",
+   "name": "俞蓮舟",
+   "short": "俞蓮舟",
+   "kind": "ELITE",
+   "alignment": "GOOD",
+   "desc": "武當二俠俞蓮舟，劍招沉穩，一劍一劍都在畫圓。（考較，勝負不拘，不給戰鬥獎勵）",
+   "stats": {
+    "qi": 3200,
+    "neili": 400,
+    "jing": 650,
+    "str": 30,
+    "guts": 30,
+    "wit": 22,
+    "luck": 20,
+    "cal": 32,
+    "agi": 32,
+    "con": 30
+   },
+   "skills": {
+    "basic_dodge": 85,
+    "basic_parry": 85,
+    "basic_inner": 65,
+    "basic_sword": 85,
+    "basic_fist": 70
+   },
+   "arts": [
+    {
+     "art": "wd_raozhi",
+     "level": 85
+    },
+    {
+     "art": "wd_rouyun",
+     "level": 70
+    }
+   ],
+   "weapon_type": "SWORD",
+   "weapon_power": 40,
+   "armor_power": 60,
+   "combat_xp_ref": 70000,
+   "combat_xp": 0,
+   "learn_points": 0,
+   "drops": [],
+   "money": {
+    "min": 0,
+    "max": 0
+   },
+   "morality_on_kill": 0,
+   "killing_intent_on_kill": 0,
+   "ai": "melee_basic",
+   "no_rewards": true,
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "研究 太極：俞蓮舟 test fight, win or lose（後期結構）；數值照既有級距 m_em_guard（combat_xp_ref 70000）【設計提案】"
+  },
+  {
+   "id": "m_em_hufei",
+   "name": "胡斐",
+   "short": "胡斐",
+   "kind": "ELITE",
+   "alignment": "GOOD",
+   "desc": "「雪山飛狐」胡斐，一柄單刀使得出神入化，對峨嵋派似乎頗有成見。（拜訪名人：勝負不拘）",
+   "stats": {
+    "qi": 3200,
+    "neili": 400,
+    "jing": 650,
+    "str": 30,
+    "guts": 30,
+    "wit": 22,
+    "luck": 20,
+    "cal": 32,
+    "agi": 32,
+    "con": 30
+   },
+   "skills": {
+    "basic_dodge": 85,
+    "basic_parry": 85,
+    "basic_inner": 65,
+    "basic_sword": 85,
+    "basic_fist": 70
+   },
+   "arts": [
+    {
+     "art": "mon_blade",
+     "level": 85
+    }
+   ],
+   "weapon_type": "BLADE",
+   "weapon_power": 40,
+   "armor_power": 60,
+   "combat_xp_ref": 70000,
+   "combat_xp": 0,
+   "learn_points": 0,
+   "drops": [],
+   "money": {
+    "min": 0,
+    "max": 0
+   },
+   "morality_on_kill": 0,
+   "killing_intent_on_kill": 0,
+   "ai": "melee_basic",
+   "no_rewards": true,
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "研究 拜訪名人 2001-09-02：胡斐 fight win or lose；數值照既有級距 m_em_guard（combat_xp_ref 70000）【設計提案】"
+  },
+  {
+   "id": "m_em_sharenwang",
+   "name": "殺人王",
+   "short": "殺人王",
+   "kind": "ELITE",
+   "alignment": "EVIL",
+   "desc": "在衡山城外殺人越貨、惡名昭彰的兇徒，滿臉橫肉，刀口還帶著血。（替天行道目標）",
+   "stats": {
+    "qi": 800,
+    "neili": 100,
+    "jing": 300,
+    "str": 6,
+    "guts": 24,
+    "wit": 15,
+    "luck": 15,
+    "cal": 20,
+    "agi": 12,
+    "con": 15
+   },
+   "skills": {
+    "basic_dodge": 5,
+    "basic_parry": 5,
+    "basic_inner": 20
+   },
+   "arts": [
+    {
+     "art": "mon_blade",
+     "level": 35
+    }
+   ],
+   "weapon_type": "BLADE",
+   "weapon_power": 0,
+   "armor_power": 5,
+   "combat_xp_ref": 8000,
+   "combat_xp": 120,
+   "learn_points": 60,
+   "drops": [
+    {
+     "item": "c_qiyao",
+     "chance": 1.0,
+     "min": 1,
+     "max": 1
+    }
+   ],
+   "money": {
+    "min": 150,
+    "max": 300
+   },
+   "morality_on_kill": 10,
+   "killing_intent_on_kill": 5,
+   "ai": "melee_basic",
+   "no_rewards": false,
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "研究 替天行道 2001-09-01：殺人王 衡山城外；數值照既有級距 m_bandit_chief（combat_xp_ref 8000）【設計提案】"
+  },
+  {
+   "id": "m_em_tufei",
+   "name": "土匪大當家",
+   "short": "大當家",
+   "kind": "ELITE",
+   "alignment": "EVIL",
+   "desc": "盤據在大理左邊山腳的土匪頭子，手下散了，自己還不肯收手。（替天行道目標）",
+   "stats": {
+    "qi": 800,
+    "neili": 100,
+    "jing": 300,
+    "str": 6,
+    "guts": 24,
+    "wit": 15,
+    "luck": 15,
+    "cal": 20,
+    "agi": 12,
+    "con": 15
+   },
+   "skills": {
+    "basic_dodge": 5,
+    "basic_parry": 5,
+    "basic_inner": 20
+   },
+   "arts": [
+    {
+     "art": "mon_blade",
+     "level": 35
+    }
+   ],
+   "weapon_type": "BLADE",
+   "weapon_power": 0,
+   "armor_power": 5,
+   "combat_xp_ref": 8000,
+   "combat_xp": 120,
+   "learn_points": 60,
+   "drops": [
+    {
+     "item": "c_qiyao",
+     "chance": 1.0,
+     "min": 1,
+     "max": 1
+    }
+   ],
+   "money": {
+    "min": 150,
+    "max": 300
+   },
+   "morality_on_kill": 10,
+   "killing_intent_on_kill": 5,
+   "ai": "melee_basic",
+   "no_rewards": false,
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "研究 替天行道 2001-09-01：強盜大當家／2001-09-02：土匪大當家；數值照既有級距 m_bandit_chief（combat_xp_ref 8000）【設計提案】"
+  },
+  {
+   "id": "m_em_yinzei",
+   "name": "淫賊",
+   "short": "淫賊",
+   "kind": "EVIL_NPC",
+   "alignment": "EVIL",
+   "desc": "在雁門關外橋下出沒、專門欺負落單女子的淫賊，輕功不錯。（替天行道目標）",
+   "stats": {
+    "qi": 900,
+    "neili": 120,
+    "jing": 250,
+    "str": 22,
+    "guts": 24,
+    "wit": 16,
+    "luck": 15,
+    "cal": 20,
+    "agi": 22,
+    "con": 22
+   },
+   "skills": {
+    "basic_dodge": 35,
+    "basic_parry": 35,
+    "basic_inner": 20,
+    "basic_blade": 35
+   },
+   "arts": [
+    {
+     "art": "mon_blade",
+     "level": 35
+    }
+   ],
+   "weapon_type": "BLADE",
+   "weapon_power": 15,
+   "armor_power": 35,
+   "combat_xp_ref": 6000,
+   "combat_xp": 70,
+   "learn_points": 25,
+   "drops": [],
+   "money": {
+    "min": 30,
+    "max": 90
+   },
+   "morality_on_kill": 10,
+   "killing_intent_on_kill": 5,
+   "ai": "melee_basic",
+   "no_rewards": false,
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "研究 連環殺人案 2001-09-02：淫賊 near 雁門關；gaoshou/23 淫魔在強盜下方；數值照既有級距 m_wd_buyi（combat_xp_ref 6000）【設計提案】"
+  },
+  {
+   "id": "m_xd_pantu",
+   "name": "血刀叛徒",
+   "short": "叛徒",
+   "kind": "ELITE",
+   "alignment": "EVIL",
+   "desc": "偷了本門刀譜想逃往中原的血刀門叛徒，刀法帶著本門的狠勁。（血海魔功試鍊：後期結構）",
+   "stats": {
+    "qi": 800,
+    "neili": 100,
+    "jing": 300,
+    "str": 6,
+    "guts": 24,
+    "wit": 15,
+    "luck": 15,
+    "cal": 20,
+    "agi": 12,
+    "con": 15
+   },
+   "skills": {
+    "basic_dodge": 5,
+    "basic_parry": 5,
+    "basic_inner": 20
+   },
+   "arts": [
+    {
+     "art": "xd_daofa",
+     "level": 40
+    }
+   ],
+   "weapon_type": "BLADE",
+   "weapon_power": 0,
+   "armor_power": 5,
+   "combat_xp_ref": 8000,
+   "combat_xp": 120,
+   "learn_points": 60,
+   "drops": [],
+   "money": {
+    "min": 150,
+    "max": 300
+   },
+   "morality_on_kill": 0,
+   "killing_intent_on_kill": 10,
+   "ai": "melee_basic",
+   "no_rewards": false,
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "研究 血海：kill only the 血刀叛徒（後期試鍊）；數值照既有級距 m_bandit_chief（combat_xp_ref 8000）【設計提案】"
+  },
+  {
+   "id": "m_xd_laozu_trial",
+   "name": "血刀老祖",
+   "short": "老祖",
+   "kind": "ELITE",
+   "alignment": "EVIL",
+   "desc": "血刀老祖親自下場試你的刀，一柄血刀舞得紅光滿室。（試鍊：撐過去或退開都算，不給戰鬥獎勵）",
+   "stats": {
+    "qi": 3000,
+    "neili": 300,
+    "jing": 600,
+    "str": 30,
+    "guts": 32,
+    "wit": 18,
+    "luck": 18,
+    "cal": 28,
+    "agi": 28,
+    "con": 30
+   },
+   "skills": {
+    "basic_dodge": 80,
+    "basic_parry": 80,
+    "basic_inner": 60,
+    "basic_blade": 80
+   },
+   "arts": [
+    {
+     "art": "xd_daofa",
+     "level": 90
+    }
+   ],
+   "weapon_type": "BLADE",
+   "weapon_power": 40,
+   "armor_power": 60,
+   "combat_xp_ref": 60000,
+   "combat_xp": 0,
+   "learn_points": 0,
+   "drops": [],
+   "money": {
+    "min": 0,
+    "max": 0
+   },
+   "morality_on_kill": 0,
+   "killing_intent_on_kill": 0,
+   "ai": "melee_basic",
+   "no_rewards": true,
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "研究 血海：beat 老祖（後期試鍊；2002 版是擊中老祖 2 萬以上）；數值照既有級距 m_xd_guard（combat_xp_ref 60000）【設計提案】"
+  },
+  {
+   "id": "m_gm_qinglv_nan",
+   "name": "癡情男子",
+   "short": "男子",
+   "kind": "MONSTER",
+   "alignment": "GOOD",
+   "desc": "和心上人並肩說笑的年輕男子，一見有人來意不善，便把她護在身後。",
+   "stats": {
+    "qi": 250,
+    "neili": 0,
+    "jing": 80,
+    "str": 10,
+    "guts": 12,
+    "wit": 8,
+    "luck": 10,
+    "cal": 12,
+    "agi": 22,
+    "con": 15
+   },
+   "skills": {
+    "basic_dodge": 15,
+    "basic_parry": 5,
+    "basic_inner": 0
+   },
+   "arts": [
+    {
+     "art": "mon_blade",
+     "level": 10
+    }
+   ],
+   "weapon_type": "BLADE",
+   "weapon_power": 0,
+   "armor_power": 28,
+   "combat_xp_ref": 500,
+   "combat_xp": 15,
+   "learn_points": 6,
+   "drops": [],
+   "money": {
+    "min": 0,
+    "max": 5
+   },
+   "morality_on_kill": -10,
+   "killing_intent_on_kill": 5,
+   "ai": "melee_basic",
+   "no_rewards": false,
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "研究 李莫愁任務 2001-09-19：大理藥鋪旁的一對情侶；數值照既有級距 m_wolf（combat_xp_ref 500）【設計提案】"
+  },
+  {
+   "id": "m_gm_qinglv_nv",
+   "name": "癡心女子",
+   "short": "女子",
+   "kind": "MONSTER",
+   "alignment": "GOOD",
+   "desc": "依偎在情郎身邊的姑娘，眼眶含淚卻不肯退開。",
+   "stats": {
+    "qi": 250,
+    "neili": 0,
+    "jing": 80,
+    "str": 10,
+    "guts": 12,
+    "wit": 8,
+    "luck": 10,
+    "cal": 12,
+    "agi": 22,
+    "con": 15
+   },
+   "skills": {
+    "basic_dodge": 15,
+    "basic_parry": 5,
+    "basic_inner": 0
+   },
+   "arts": [
+    {
+     "art": "mon_claw",
+     "level": 8
+    }
+   ],
+   "weapon_type": "FIST",
+   "weapon_power": 0,
+   "armor_power": 28,
+   "combat_xp_ref": 500,
+   "combat_xp": 15,
+   "learn_points": 6,
+   "drops": [
+    {
+     "item": "i_gm_qinglv_lei",
+     "chance": 100,
+     "min": 1,
+     "max": 1,
+     "requires": [
+      {
+       "type": "quest_stage",
+       "quest": "q_gm_limochou",
+       "stage": [
+        "s_tears"
+       ]
+      }
+     ]
+    }
+   ],
+   "money": {
+    "min": 0,
+    "max": 5
+   },
+   "morality_on_kill": -10,
+   "killing_intent_on_kill": 5,
+   "ai": "melee_basic",
+   "no_rewards": false,
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "研究 李莫愁任務 2001-09-19：情侶的眼淚 ×5；數值照既有級距 m_wolf（combat_xp_ref 500）【設計提案】"
+  }
+ ],
+ "martial_arts": [
+  {
+   "id": "xh_huagong",
+   "name": "化功大法",
+   "sect_id": "xingxiu",
+   "category": "FIST",
+   "base_skill": "basic_fist",
+   "difficulty": 1.5,
+   "tier": "QUEST",
+   "self_study_until": 30,
+   "self_study_cap": 0,
+   "party_size": 0,
+   "monster_only": false,
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "xingxiu"
+    },
+    {
+     "type": "quest_flag",
+     "flag": "xh_huagong_ok"
+    },
+    {
+     "type": "skill_min",
+     "skill": "xh_xinfa",
+     "value": 5
+    }
+   ],
+   "desc": "丁春秋的獨門邪功，掌力沾身，對方的內力便如雪遇火，一點一點化去。",
+   "era": "1.0A",
+   "src": "verified",
+   "src_note": "研究 化功大法 2001-08-25 n412_328407：要星宿心法 5，1 級吸 1–5 內力與 1–5 氣；化內力機制引擎沒有 → 以「氣血失調」狀態代替【設計提案】（STORY_PLAN 缺漏）；係數、自修到 30、招式全部【設計提案】",
+   "moves": [
+    {
+     "id": "xh_hg_1",
+     "name": "化功銷骨",
+     "unlock_level": 1,
+     "power": 24,
+     "range": 1,
+     "aoe": "SINGLE",
+     "cost_inner": 6,
+     "cost_jing": 0,
+     "status": "qixue",
+     "status_chance": 0.15,
+     "flavor": "move_palm_poison",
+     "src": "proposal"
+    },
+    {
+     "id": "xh_hg_2",
+     "name": "雪消冰融",
+     "unlock_level": 30,
+     "power": 36,
+     "range": 1,
+     "aoe": "SINGLE",
+     "cost_inner": 12,
+     "cost_jing": 0,
+     "status": "qixue",
+     "status_chance": 0.2,
+     "flavor": "move_palm_poison",
+     "src": "proposal"
+    },
+    {
+     "id": "xh_hg_3",
+     "name": "百川化盡",
+     "unlock_level": 60,
+     "power": 48,
+     "range": 1,
+     "aoe": "SINGLE",
+     "cost_inner": 20,
+     "cost_jing": 0,
+     "status": "qixue",
+     "status_chance": 0.25,
+     "flavor": "move_palm_poison",
+     "src": "proposal"
+    }
+   ]
+  }
+ ],
+ "masters": [
+  {
+   "id": "ms_xh_dingchunqiu_huagong",
+   "npc_id": "n_xh_dingchunqiu",
+   "skill_id": "xh_huagong",
+   "cap": 100,
+   "price": 0,
+   "tool": "",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "xingxiu"
+    }
+   ],
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "研究 星宿：「此門派功夫由丁春秋一人傳授」；化功大法 1.0 上限不明【待考證】，cap 100＝【設計提案】"
+  }
+ ],
+ "text_templates": [
+  {
+   "id": "talk_n_hn_longmen",
+   "era": "1.0A",
+   "self": "{npc_name}低頭擦著桌子：「客官要喝茶？……武當派的？」他手上的抹布停了一下。",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_hn_longmen@NIGHT",
+   "era": "1.0A",
+   "self": "{npc_name}早就回後頭睡了，桌上只剩一盞油燈。",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_wd_yuanyin",
+   "era": "1.0A",
+   "self": "{npc_name}合十道：「阿彌陀佛，施主請坐。出家人喝的是清茶，說的是實話。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_wd_yuanyin@NIGHT",
+   "era": "1.0A",
+   "self": "{npc_name}在角落裡閉目誦經，不理旁人。",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_wd_yuanye",
+   "era": "1.0A",
+   "self": "{npc_name}把茶碗往桌上一頓：「看什麼看？沒見過和尚喝茶？」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_wd_yuanye@NIGHT",
+   "era": "1.0A",
+   "self": "{npc_name}打著呼嚕，鼾聲震得茶碗都在響。",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_wd_zhaomin",
+   "era": "1.0A",
+   "self": "{npc_name}搖著摺扇，似笑非笑：「這位兄台，林子裡風大，小心別迷了路。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_wd_zhaomin@NIGHT",
+   "era": "1.0A",
+   "self": "{npc_name}倚著胡楊樹，望著西夏城的燈火出神，不知在想誰。",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_ym_hufei",
+   "era": "1.0A",
+   "self": "{npc_name}把刀往鞘裡一送：「雁門關外風沙大，兄弟要出關，可得把刀磨利了。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_ym_hufei@NIGHT",
+   "era": "1.0A",
+   "self": "{npc_name}坐在火堆旁烤著乾糧，刀就擱在手邊。",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_xx_qiaofeng",
+   "era": "1.0A",
+   "self": "{npc_name}端起一大碗酒：「兄弟，相逢就是有緣，先乾了這碗再說！」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_xx_qiaofeng@NIGHT",
+   "era": "1.0A",
+   "self": "{npc_name}還在喝，桌上的空罈子已經疊成了小山。",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_xx_azi",
+   "era": "1.0A",
+   "self": "{npc_name}眨眨眼：「你看我做什麼？再看，我叫姐夫把你眼珠子挖出來。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_xx_azi@NIGHT",
+   "era": "1.0A",
+   "self": "{npc_name}趴在桌上，一邊玩著一隻小毒蟲，一邊等喬峰喝完。",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_dl_limochou",
+   "era": "1.0A",
+   "self": "{npc_name}輕撫拂塵，柔聲道：「問世間，情是何物……你也是來問我的嗎？」說話間眼神冷得像冰。",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_dl_limochou@NIGHT",
+   "era": "1.0A",
+   "self": "月下的洱海邊，{npc_name}的歌聲飄得很遠，聽見的人都不敢靠近。",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_lj_baiyong",
+   "era": "1.0A",
+   "self": "{npc_name}拍拍胸口：「俺是霍島主手下的，在大理等人。妳是靈鷲宮的？」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_lj_baiyong@NIGHT",
+   "era": "1.0A",
+   "self": "{npc_name}靠在肉攤的柱子上打盹，手卻始終按在腰間的包袱上。",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_xd_pantu",
+   "era": "1.0A",
+   "self": "{npc_name}按著刀柄，一步一步往後退：「別過來！我……我不想跟同門動手！」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_hg_lincai",
+   "era": "1.0A",
+   "self": "{npc_name}捏著針，愁眉苦臉：「為什麼針老是扎到手指，就是扎不進布裡呢？」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_hg_lincai@NIGHT",
+   "era": "1.0A",
+   "self": "{npc_name}點著油燈，還在一針一針地縫，打了好幾個呵欠。",
+   "src": "proposal"
+  },
+  {
+   "id": "tell_wd_heiyu_hua",
+   "era": "1.0A",
+   "self": "你在蒼山林道間採齊了紅、橙、黃、綠、青、藍、紫七色奇花，用油紙仔細包好。",
+   "src": "proposal"
+  },
+  {
+   "id": "tell_wd_heiyu_jiagao",
+   "era": "1.0A",
+   "self": "阿大扔給你一個小盒：「黑玉斷續膏，拿去！」盒子裡的藥膏烏黑發亮。",
+   "src": "proposal"
+  },
+  {
+   "id": "tell_wd_heiyu_zhengao",
+   "era": "1.0A",
+   "self": "阿大又掏出一盒藥膏和一張蓋了王府印信的手令：「真藥在此。要用它，先去見郡主。」",
+   "src": "proposal"
+  },
+  {
+   "id": "tell_em_baifang_hufei",
+   "era": "1.0A",
+   "self": "胡斐收刀大笑：「峨嵋派也有好樣的！」他寫了一封短信交給你：「替我帶給你師父。」",
+   "src": "proposal"
+  },
+  {
+   "id": "tell_xd_xuehai_dao",
+   "era": "1.0A",
+   "self": "你從叛徒身上奪回了那柄刻著本門記號的血刀。",
+   "src": "proposal"
+  },
+  {
+   "id": "fail_q_sl_riyuebian_jing",
+   "era": "1.0A",
+   "self": "玄淨大師說你取錯了經。改日戌時、亥時再去羅漢堂求見吧。",
+   "src": "proposal"
+  },
+  {
+   "id": "fail_q_xd_xuehai_spare",
+   "era": "1.0A",
+   "self": "你放走了叛徒。血刀老祖要的是叛徒的刀——這次試鍊，你沒有通過。",
+   "src": "proposal"
+  },
+  {
+   "id": "rmr_q_wd_yinliu_first",
+   "era": "1.0A",
+   "self": "聽說武當殷六俠託{name}往峨嵋送了一封信，回來之後，殷六俠在後山松林站了一整夜。",
+   "src": "proposal"
+  },
+  {
+   "id": "rmr_q_wd_heiyu_first",
+   "era": "1.0A",
+   "self": "江湖傳言：{name}兩闖西夏皇宮門口，討回了真正的黑玉斷續膏，武當俞三俠癱了二十年的手，竟然動了！",
+   "src": "proposal"
+  },
+  {
+   "id": "rmr_q_wd_longmen_first",
+   "era": "1.0A",
+   "self": "聽說{name}查清了當年龍門鏢局的血案，兇手根本不是武當張五俠。少林的兩位大師至今不肯多說一句。",
+   "src": "proposal"
+  },
+  {
+   "id": "rmr_q_wd_yitian_first",
+   "era": "1.0A",
+   "self": "有人看見{name}在武當書房裡臨帖，筆筆如刀，那二十四個字寫得殺氣騰騰。",
+   "src": "proposal"
+  },
+  {
+   "id": "rmr_q_wd_taiji_first",
+   "era": "1.0A",
+   "self": "聽說{name}接下了武當張四俠、俞二俠的考較，從此也練起了太極拳劍。",
+   "src": "proposal"
+  },
+  {
+   "id": "rmr_q_em_shougongsha_first",
+   "era": "1.0A",
+   "self": "峨嵋山上傳出消息：滅絕師太把九陽功傳給了{name}。",
+   "src": "proposal"
+  },
+  {
+   "id": "rmr_q_em_shandu_first",
+   "era": "1.0A",
+   "self": "聽說峨嵋丁敏君把師父的掌門指環交給了{name}，臉色難看了好幾天。",
+   "src": "proposal"
+  },
+  {
+   "id": "rmr_q_em_baifang_first",
+   "era": "1.0A",
+   "self": "峨嵋弟子{name}下山遍訪名人，連喬峰都和她喝了三大碗。",
+   "src": "proposal"
+  },
+  {
+   "id": "rmr_q_em_lianhuan_first",
+   "era": "1.0A",
+   "self": "替天行道！峨嵋弟子{name}接連剷除了殺人王、土匪大當家和雁門關外的淫賊。",
+   "src": "proposal"
+  },
+  {
+   "id": "rmr_q_em_lianhuan_each",
+   "era": "1.0A",
+   "self": "又有兇徒伏誅——峨嵋{name}繳回了替天行道令。",
+   "src": "proposal"
+  },
+  {
+   "id": "rmr_q_sl_riyuebian_first",
+   "era": "1.0A",
+   "self": "少林羅漢堂的玄淨大師，夜裡收了{name}學日月鞭法。",
+   "src": "proposal"
+  },
+  {
+   "id": "rmr_q_xh_huagong_first",
+   "era": "1.0A",
+   "self": "聽說星宿派的{name}一記馬屁拍得丁春秋眉開眼笑，當場傳了化功大法。江湖上的人聽了，都不寒而慄。",
+   "src": "proposal"
+  },
+  {
+   "id": "rmr_q_xd_xuehai_first",
+   "era": "1.0A",
+   "self": "雪原上又多了一具屍首。血刀門的{name}過了老祖的試鍊，學了血海魔功。",
+   "src": "proposal"
+  },
+  {
+   "id": "rmr_q_lj_chengqingshuang_first",
+   "era": "1.0A",
+   "self": "大理五華樓前，有個靈鷲宮的姑娘{name}送了一包藥給海外來的人。",
+   "src": "proposal"
+  },
+  {
+   "id": "rmr_q_gm_limochou_first",
+   "era": "1.0A",
+   "self": "大理城裡有對小情侶被人欺負得哭了好幾回。有人說，下手的是古墓派的{name}，還有人說，看見李莫愁在洱海邊笑。",
+   "src": "proposal"
+  },
+  {
+   "id": "rmr_q_hg_lincai_first",
+   "era": "1.0A",
+   "self": "恆山派的小尼姑們今年冬天都穿上了棉僧袍，聽說是{name}幫琳彩縫的。",
+   "src": "proposal"
+  },
+  {
+   "id": "rmr_fs_wd_heiyu",
+   "era": "1.0A",
+   "self": "聽說汝陽王府的人在西夏皇宮門口出入，手上有一盒能續斷骨的黑玉斷續膏。",
+   "src": "proposal"
+  },
+  {
+   "id": "rmr_fs_wd_longmen",
+   "era": "1.0A",
+   "self": "衡山小茶店有個打雜的少年，聽說是當年龍門鏢局滅門那一夜唯一活下來的人。",
+   "src": "proposal"
+  },
+  {
+   "id": "rmr_fs_xh_huagong",
+   "era": "1.0A",
+   "self": "大理衙門的韋小寶到處吹噓，說他有一門「拍馬屁神功」，連星宿老仙都會愛聽。",
+   "src": "proposal"
+  },
+  {
+   "id": "rmr_fs_gm_limochou",
+   "era": "1.0A",
+   "self": "洱海邊夜裡常有女子唱歌，唱的是「問世間，情是何物」，聽過的人都說心裡發毛。",
+   "src": "proposal"
+  }
+ ],
+ "rumors": [
+  {
+   "id": "rmr_row_fs_wd_heiyu",
+   "kind": "FORESHADOW",
+   "quest": "q_wd_heiyu",
+   "text": "rmr_fs_wd_heiyu",
+   "requires_world": {
+    "not_first": "q_wd_heiyu"
+   },
+   "hours": [],
+   "weight": 1,
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "系統傳聞【設計提案・非原作】（研究：原作沒有系統謠言）"
+  },
+  {
+   "id": "rmr_row_fs_wd_longmen",
+   "kind": "FORESHADOW",
+   "quest": "q_wd_longmen",
+   "text": "rmr_fs_wd_longmen",
+   "requires_world": {
+    "not_first": "q_wd_longmen"
+   },
+   "hours": [],
+   "weight": 1,
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "系統傳聞【設計提案・非原作】（研究：原作沒有系統謠言）"
+  },
+  {
+   "id": "rmr_row_fs_xh_huagong",
+   "kind": "FORESHADOW",
+   "quest": "q_xh_huagong",
+   "text": "rmr_fs_xh_huagong",
+   "requires_world": {
+    "not_first": "q_xh_huagong"
+   },
+   "hours": [],
+   "weight": 1,
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "系統傳聞【設計提案・非原作】（研究：原作沒有系統謠言）"
+  },
+  {
+   "id": "rmr_row_fs_gm_limochou",
+   "kind": "FORESHADOW",
+   "quest": "q_gm_limochou",
+   "text": "rmr_fs_gm_limochou",
+   "requires_world": {
+    "not_first": "q_gm_limochou"
+   },
+   "hours": [
+    "戌",
+    "亥",
+    "子"
+   ],
+   "weight": 1,
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "系統傳聞【設計提案・非原作】（研究：原作沒有系統謠言）"
+  }
+ ],
+ "ambient": [],
+ "art_requests": {
+  "units": [
+   {
+    "id": "n_hn_longmen",
+    "alias": "n_xe_miner",
+    "prompt": "十五六歲的瘦削少年，粗布短打、肩搭抹布，眼神冷硬，衡山茶店打雜，水墨武俠立繪"
+   },
+   {
+    "id": "n_wd_yuanyin",
+    "alias": "n_sl_zhike",
+    "prompt": "中年少林僧，灰布僧袍、手持念珠、神情沉鬱，水墨武俠立繪"
+   },
+   {
+    "id": "n_wd_yuanye",
+    "alias": "n_sl_zhike",
+    "prompt": "粗壯少林僧，灰布僧袍、濃眉怒目、脾氣火爆，水墨武俠立繪"
+   },
+   {
+    "id": "n_wd_zhaomin",
+    "alias": "n_em_yingyueer",
+    "prompt": "女扮男裝的蒙古郡主，白色公子袍、手搖摺扇、明豔狡黠，水墨武俠立繪"
+   },
+   {
+    "id": "n_ym_hufei",
+    "alias": "n_chenjialuo",
+    "prompt": "濃眉大眼、滿腮虯髯的豪俠，粗布勁裝、腰掛單刀，雁門關背景，水墨武俠立繪"
+   },
+   {
+    "id": "n_xx_qiaofeng",
+    "alias": "n_chenjialuo",
+    "prompt": "身材魁偉的丐幫英雄，粗布衣衫、虎目方臉、手捧酒碗，水墨武俠立繪"
+   },
+   {
+    "id": "n_xx_azi",
+    "alias": "n_em_yingyueer",
+    "prompt": "紫衫少女，眉目如畫、嘴角帶著邪氣的笑，手裡玩著毒蟲，水墨武俠立繪"
+   },
+   {
+    "id": "n_dl_limochou",
+    "alias": "n_em_jixiaofu",
+    "prompt": "杏黃道袍的美貌道姑，手持拂塵、眼神冷豔，赤練仙子，水墨武俠立繪"
+   },
+   {
+    "id": "n_lj_baiyong",
+    "alias": "n_xe_miner",
+    "prompt": "皮膚黝黑的精壯海島漢子，短褂、腰纏包袱，水墨武俠立繪"
+   },
+   {
+    "id": "n_xd_pantu",
+    "alias": "n_xd_shanyong",
+    "prompt": "裹著破皮襖的血刀門紅衣僧，背著包袱、手按刀柄、驚慌失措，雪原背景，水墨武俠立繪"
+   },
+   {
+    "id": "n_hg_lincai",
+    "alias": "n_hg_yilin",
+    "prompt": "圓臉小尼姑，灰色僧袍、膝上攤著縫了一半的僧袍、手指纏著布條，水墨武俠立繪"
+   }
+  ],
+  "backgrounds": []
+ },
+ "test_plan": [
+  {
+   "quest": "q_wd_yinliu",
+   "outcome": "truth",
+   "setup": {
+    "sect": "wudang",
+    "skills": {
+     "wd_shenfa": 40
+    },
+    "attrs": {
+     "cal": 22,
+     "con": 22
+    }
+   },
+   "path": [
+    "walk@wd_houshan",
+    "accept@n_wd_yinliting",
+    "walk@em_road4",
+    "talk@n_em_jixiaofu",
+    "choose@n_em_jixiaofu:n0:c_letter",
+    "choose@n_em_jixiaofu:n2:c_take",
+    "walk@wd_houshan",
+    "talk@n_wd_yinliting",
+    "choose@n_wd_yinliting:n0:c_give",
+    "choose@n_wd_yinliting:n1:c_truth"
+   ],
+   "save_reload_at": "s_back",
+   "expect": {
+    "flags": [
+     "wd_q_yinliu"
+    ],
+    "skills": {
+     "wd_tiyun": 1
+    }
+   }
+  },
+  {
+   "quest": "q_wd_yinliu",
+   "outcome": "comfort",
+   "setup": {
+    "sect": "wudang",
+    "skills": {
+     "wd_shenfa": 40
+    },
+    "attrs": {
+     "cal": 22,
+     "con": 22
+    }
+   },
+   "path": [
+    "walk@wd_houshan",
+    "accept@n_wd_yinliting",
+    "walk@em_road4",
+    "talk@n_em_jixiaofu",
+    "choose@n_em_jixiaofu:n0:c_letter",
+    "choose@n_em_jixiaofu:n2:c_take",
+    "walk@wd_houshan",
+    "talk@n_wd_yinliting",
+    "choose@n_wd_yinliting:n0:c_give",
+    "choose@n_wd_yinliting:n1:c_comfort"
+   ],
+   "expect": {
+    "flags": [
+     "wd_q_yinliu"
+    ],
+    "skills": {
+     "wd_tiyun": 1
+    }
+   }
+  },
+  {
+   "quest": "q_wd_heiyu",
+   "outcome": "default",
+   "setup": {
+    "sect": "wudang",
+    "skills": {
+     "wd_xinfa": 40
+    },
+    "attrs": {
+     "wit": 28,
+     "con": 25
+    }
+   },
+   "path": [
+    "walk@wd_neitang",
+    "accept@n_wd_zhangsanfeng",
+    "walk@xx_palace",
+    "talk@n_xx_ada",
+    "choose@n_xx_ada:n0:c_letter",
+    "choose@n_xx_ada:n1:c_fight",
+    "fight:WIN",
+    "walk@wd_square",
+    "talk@n_wd_yudaiyan",
+    "choose@n_wd_yudaiyan:n0:c_give",
+    "walk@wd_neitang",
+    "talk@n_wd_zhangsanfeng",
+    "choose@n_wd_zhangsanfeng:n0:c_sorry",
+    "walk@xx_palace",
+    "talk@n_xx_ada",
+    "choose@n_xx_ada:n0:c_ling",
+    "choose@n_xx_ada:n1:c_fight",
+    "fight:WIN",
+    "walk@xw_wood",
+    "talk@n_wd_zhaomin",
+    "choose@n_wd_zhaomin:n0:c_ling",
+    "choose@n_wd_zhaomin:n1:c_why",
+    "walk@xx_inn_2f",
+    "talk@n_zhangwuji",
+    "choose@n_zhangwuji:n0:c_letter",
+    "choose@n_zhangwuji:n1:c_ask",
+    "walk@xe_heilong",
+    "act@q_wd_heiyu:a_banchan",
+    "fight:WIN",
+    "walk@xn_slope",
+    "act@q_wd_heiyu:a_wugong",
+    "fight:WIN",
+    "walk@ts_road1",
+    "act@q_wd_heiyu:a_fengyi",
+    "fight:WIN",
+    "walk@xh_marsh",
+    "act@q_wd_heiyu:a_chixie",
+    "fight:WIN",
+    "walk@dlw_river",
+    "act@q_wd_heiyu:a_qingshe",
+    "fight:WIN",
+    "walk@dlw_forest",
+    "act@q_wd_heiyu:a_hua",
+    "walk@wd_woods",
+    "act@q_wd_heiyu:a_heizhu",
+    "fight:WIN",
+    "walk@hf_fork",
+    "act@q_wd_heiyu:a_caie",
+    "fight:WIN",
+    "walk@xx_inn_2f",
+    "talk@n_zhangwuji",
+    "choose@n_zhangwuji:n0:c_give",
+    "walk@wd_square",
+    "talk@n_wd_yudaiyan",
+    "choose@n_wd_yudaiyan:n0:c_give",
+    "walk@wd_neitang",
+    "talk@n_wd_zhangsanfeng",
+    "choose@n_wd_zhangsanfeng:n0:c_give"
+   ],
+   "save_reload_at": "s_seven",
+   "expect": {
+    "flags": [
+     "wd_q_heiyu"
+    ],
+    "skills": {
+     "wd_chunyang": 1
+    }
+   }
+  },
+  {
+   "quest": "q_wd_longmen",
+   "outcome": "default",
+   "setup": {
+    "sect": "wudang",
+    "attrs": {
+     "wit": 26,
+     "cal": 25
+    }
+   },
+   "path": [
+    "walk@wd_houshan",
+    "accept@n_wd_moshenggu",
+    "wait:hour=辰",
+    "walk@hn_teahouse",
+    "talk@n_hn_longmen",
+    "choose@n_hn_longmen:n0:c_ask",
+    "choose@n_hn_longmen:n1:c_who",
+    "walk@sy_teahouse",
+    "wait:hour=辰",
+    "talk@n_wd_yuanyin",
+    "choose@n_wd_yuanyin:n0:c_ask",
+    "choose@n_wd_yuanyin:n1:c_proof",
+    "talk@n_wd_yuanye",
+    "choose@n_wd_yuanye:n0:c_calm",
+    "choose@n_wd_yuanye:n1:c_look",
+    "walk@wd_tanqiang",
+    "talk@n_wd_yulianzhou",
+    "choose@n_wd_yulianzhou:n0:c_give",
+    "walk@dlw_eastwood",
+    "act@q_wd_longmen:a_xiang",
+    "fight:WIN",
+    "walk@em_road2",
+    "act@q_wd_longmen:a_baiyuan",
+    "fight:WIN",
+    "walk@zn_backhill",
+    "act@q_wd_longmen:a_liebao",
+    "fight:WIN",
+    "walk@sy_pines",
+    "act@q_wd_longmen:a_menghu",
+    "fight:WIN",
+    "walk@xw_hill",
+    "act@q_wd_longmen:a_elang",
+    "fight:WIN",
+    "walk@ts_xuegu",
+    "act@q_wd_longmen:a_heixiong",
+    "fight:WIN",
+    "walk@xh_marsh",
+    "act@q_wd_longmen:a_dadushe",
+    "fight:WIN",
+    "walk@wd_dadian",
+    "talk@n_wd_songyuanqiao",
+    "choose@n_wd_songyuanqiao:n0:c_humble"
+   ],
+   "expect": {
+    "flags": [
+     "wd_q_longmen"
+    ]
+   }
+  },
+  {
+   "quest": "q_wd_yitian",
+   "outcome": "default",
+   "setup": {
+    "sect": "wudang",
+    "quests_done": [
+     "q_wd_heiyu"
+    ],
+    "skills": {
+     "wd_chunyang": 30,
+     "basic_literacy": 40
+    },
+    "attrs": {
+     "wit": 30
+    }
+   },
+   "path": [
+    "walk@wd_neitang",
+    "accept@n_wd_zhangsanfeng",
+    "walk@wd_shufang",
+    "talk@n_wd_zhangsongxi",
+    "choose@n_wd_zhangsongxi:n0:c_watch",
+    "wait:days=0.5",
+    "walk@wd_neitang",
+    "talk@n_wd_zhangsanfeng",
+    "choose@n_wd_zhangsanfeng:n0:c_right",
+    "choose@n_wd_zhangsanfeng:n1:c_right2"
+   ],
+   "expect": {
+    "flags": [
+     "wd_q_yitian"
+    ],
+    "skills": {
+     "wd_yitian": 1
+    }
+   }
+  },
+  {
+   "quest": "q_wd_taiji",
+   "outcome": "default",
+   "setup": {
+    "sect": "wudang",
+    "attrs": {
+     "wit": 26,
+     "cal": 22,
+     "agi": 22,
+     "con": 22
+    }
+   },
+   "path": [
+    "walk@wd_shufang",
+    "accept@n_wd_zhangsongxi",
+    "talk@n_wd_zhangsongxi",
+    "choose@n_wd_zhangsongxi:n0:c_ready",
+    "choose@n_wd_zhangsongxi:n1:c_go",
+    "fight:FLEE",
+    "walk@wd_tanqiang",
+    "talk@n_wd_yulianzhou",
+    "choose@n_wd_yulianzhou:n0:c_ready",
+    "choose@n_wd_yulianzhou:n1:c_go",
+    "fight:FLEE",
+    "walk@wd_shufang",
+    "talk@n_wd_zhangsongxi",
+    "choose@n_wd_zhangsongxi:n0:c_b"
+   ],
+   "expect": {
+    "flags": [
+     "wd_q_taiji"
+    ]
+   }
+  },
+  {
+   "quest": "q_em_shougongsha",
+   "outcome": "default",
+   "setup": {
+    "sect": "emei",
+    "flags": [
+     "em_bmy_letter"
+    ],
+    "skills": {
+     "basic_inner": 40,
+     "em_xinfa": 40,
+     "duane": 50
+    },
+    "lilian": 80
+   },
+   "path": [
+    "walk@em_jingzhao",
+    "accept@n_em_jingzhao",
+    "talk@n_em_jingzhao",
+    "choose@n_em_jingzhao:n0:c_thanks",
+    "walk@em_miejue",
+    "talk@n_em_miejue",
+    "choose@n_em_miejue:n0:c_kill"
+   ],
+   "expect": {
+    "flags": [
+     "em_shougongsha"
+    ],
+    "skills": {
+     "em_jiuyang": 1
+    }
+   }
+  },
+  {
+   "quest": "q_em_shandu",
+   "outcome": "default",
+   "setup": {
+    "sect": "emei",
+    "skills": {
+     "em_huifeng": 30,
+     "em_jiuyang": 10
+    }
+   },
+   "path": [
+    "walk@em_square",
+    "accept@n_em_dingminjun",
+    "talk@n_em_dingminjun",
+    "choose@n_em_dingminjun:n0:c_honest",
+    "wait:days=0.5",
+    "talk@n_em_dingminjun",
+    "choose@n_em_dingminjun:n0:c_firm",
+    "walk@em_miejue",
+    "talk@n_em_miejue",
+    "choose@n_em_miejue:n0:c_give"
+   ],
+   "expect": {
+    "flags": [
+     "em_miejian_ok"
+    ],
+    "skills": {
+     "em_miejian": 1
+    }
+   },
+   "note": "另一條：c_flatter 直接拿到指環，略過等待"
+  },
+  {
+   "quest": "q_em_baifang",
+   "outcome": "default",
+   "setup": {
+    "sect": "emei"
+   },
+   "path": [
+    "walk@em_miejue",
+    "accept@n_em_miejue",
+    "walk@dl_yamen",
+    "talk@n_weixiaobao",
+    "choose@n_weixiaobao:n0:c_q1b",
+    "choose@n_weixiaobao:n1:c_q2a",
+    "choose@n_weixiaobao:n2:c_q3b",
+    "walk@ym_inner",
+    "talk@n_ym_hufei",
+    "choose@n_ym_hufei:n0:c_spar",
+    "choose@n_ym_hufei:n1:c_go",
+    "fight:FLEE",
+    "walk@xx_yamen",
+    "talk@n_xx_xuzhu",
+    "choose@n_xx_xuzhu:n0:c_ask",
+    "choose@n_xx_xuzhu:n1:c_yes",
+    "walk@xx_inn",
+    "talk@n_xx_qiaofeng",
+    "choose@n_xx_qiaofeng:n0:c_drink",
+    "choose@n_xx_qiaofeng:n2:c_more",
+    "choose@n_xx_qiaofeng:n3:c_last",
+    "walk@xx_yamen",
+    "talk@n_xx_xuzhu",
+    "choose@n_xx_xuzhu:n0:c_give",
+    "walk@em_miejue",
+    "talk@n_em_miejue",
+    "choose@n_em_miejue:n0:c_report"
+   ],
+   "expect": {
+    "learn_points": 60,
+    "lilian": 20,
+    "money": 200,
+    "items": {
+     "a_em_wxb_jiezhi": 1
+    }
+   }
+  },
+  {
+   "quest": "q_em_lianhuan",
+   "outcome": "default",
+   "setup": {
+    "sect": "emei",
+    "skills": {
+     "em_xinfa": 20
+    }
+   },
+   "path": [
+    "walk@em_dadian",
+    "accept@n_em_jingguan",
+    "walk@dlw_forest",
+    "act@q_em_lianhuan:a_tufei",
+    "fight:WIN",
+    "walk@hn_road2",
+    "act@q_em_lianhuan:a_sharen",
+    "fight:WIN",
+    "walk@ym_bridge",
+    "act@q_em_lianhuan:a_yinzei",
+    "fight:WIN",
+    "walk@em_dadian",
+    "talk@n_em_jingguan",
+    "choose@n_em_jingguan:n0:c_give",
+    "accept@n_em_jingguan",
+    "wait:days=1",
+    "accept@n_em_jingguan"
+   ],
+   "expect": {
+    "skill_prof": {
+     "duane": 375
+    },
+    "lilian": 10,
+    "second_accept": "quest_cooldown"
+   }
+  },
+  {
+   "quest": "q_sl_riyuebian",
+   "outcome": "default",
+   "setup": {
+    "sect": "shaolin",
+    "skills": {
+     "basic_literacy": 50,
+     "sl_xinfa": 50,
+     "foxa": 70
+    }
+   },
+   "path": [
+    "walk@sl_luohan",
+    "wait:hour=戌",
+    "accept@n_sl_xuanjing",
+    "walk@sl_cangjing",
+    "talk@n_sl_due",
+    "choose@n_sl_due:n0:c_yaoshi",
+    "walk@sl_luohan",
+    "talk@n_sl_xuanjing",
+    "choose@n_sl_xuanjing:n0:c_ok"
+   ],
+   "expect": {
+    "flags": [
+     "sl_riyuebian_ok"
+    ]
+   },
+   "note": "失敗路線：選 c_jingang → 玄淨 c_bad → quest_fail，可再接"
+  },
+  {
+   "quest": "q_xh_huagong",
+   "outcome": "default",
+   "setup": {
+    "sect": "xingxiu",
+    "skills": {
+     "xh_xinfa": 5
+    }
+   },
+   "path": [
+    "walk@dl_yamen",
+    "accept@n_weixiaobao",
+    "talk@n_shuanger",
+    "choose@n_shuanger:n0:c_ask",
+    "walk@xh_hall",
+    "talk@n_xh_dingchunqiu",
+    "choose@n_xh_dingchunqiu:n0:c_a",
+    "walk@dl_yamen",
+    "talk@n_shuanger",
+    "choose@n_shuanger:n0:c_yes",
+    "talk@n_weixiaobao",
+    "choose@n_weixiaobao:n0:c_learn",
+    "walk@xh_hall",
+    "talk@n_xh_dingchunqiu",
+    "choose@n_xh_dingchunqiu:n0:c_good"
+   ],
+   "expect": {
+    "flags": [
+     "xh_huagong_ok"
+    ],
+    "skills": {
+     "xh_huagong": 1,
+     "chanmei": 10
+    }
+   }
+  },
+  {
+   "quest": "q_xd_xuehai",
+   "outcome": "default",
+   "setup": {
+    "sect": "xuedao",
+    "skills": {
+     "basic_inner": 60,
+     "basic_blade": 50,
+     "weihe": 50
+    },
+    "lilian": 100
+   },
+   "path": [
+    "walk@xd_hall",
+    "accept@n_xd_laozu",
+    "walk@xd_snowfield",
+    "talk@n_xd_pantu",
+    "choose@n_xd_pantu:n0:c_kill",
+    "fight:WIN",
+    "walk@xd_hall",
+    "talk@n_xd_laozu",
+    "choose@n_xd_laozu:n0:c_next",
+    "choose@n_xd_laozu:n1:c_go",
+    "fight:FLEE",
+    "walk@xd_pool",
+    "talk@n_xd_xuehai",
+    "choose@n_xd_xuehai:n0:c_ask"
+   ],
+   "expect": {
+    "flags": [
+     "xd_xuehai_lv1"
+    ]
+   },
+   "note": "失敗路線：c_spare → quest_fail，可再接"
+  },
+  {
+   "quest": "q_lj_chengqingshuang",
+   "outcome": "default",
+   "setup": {
+    "sect": "lingjiu"
+   },
+   "path": [
+    "walk@lj_west",
+    "wait:hour=戌",
+    "accept@n_lj_chengqingshuang",
+    "walk@dl_square",
+    "talk@n_lj_baiyong",
+    "choose@n_lj_baiyong:n0:c_give"
+   ],
+   "expect": {
+    "items": {
+     "r_lj_qiannian_renshen": 1
+    }
+   }
+  },
+  {
+   "quest": "q_gm_limochou",
+   "outcome": "default",
+   "setup": {
+    "sect": "gumu",
+    "lilian": 1000,
+    "morality": 0
+   },
+   "path": [
+    "walk@dlw_lake",
+    "accept@n_dl_limochou",
+    "walk@dl_shop",
+    "act@q_gm_limochou:a_couple",
+    "fight:WIN",
+    "act@q_gm_limochou:a_couple",
+    "fight:WIN",
+    "act@q_gm_limochou:a_couple",
+    "fight:WIN",
+    "act@q_gm_limochou:a_couple",
+    "fight:WIN",
+    "act@q_gm_limochou:a_couple",
+    "fight:WIN",
+    "walk@dlw_lake",
+    "talk@n_dl_limochou",
+    "choose@n_dl_limochou:n0:c_give"
+   ],
+   "expect": {
+    "skill_prof": {
+     "basic_poison": 100,
+     "basic_hidden": 80
+    }
+   }
+  },
+  {
+   "quest": "q_hg_lincai",
+   "outcome": "dingxian",
+   "setup": {
+    "sect": "hengshan",
+    "items": {
+     "r_bigrabbitskin": 3
+    }
+   },
+   "path": [
+    "walk@hg_first",
+    "accept@n_hg_lincai",
+    "talk@n_hg_lincai",
+    "choose@n_hg_lincai:n0:c_give",
+    "walk@hg_kitchen",
+    "talk@n_hg_yusao",
+    "choose@n_hg_yusao:n0:c_ask",
+    "walk@hg_first",
+    "talk@n_hg_lincai",
+    "choose@n_hg_lincai:n0:c_dingxian"
+   ],
+   "expect": {
+    "items": {
+     "a_hg_mianpao": 1
+    },
+    "lilian": 10
+   }
+  },
+  {
+   "quest": "q_hg_lincai",
+   "outcome": "yilin",
+   "setup": {
+    "sect": "hengshan",
+    "items": {
+     "r_bigrabbitskin": 3
+    }
+   },
+   "path": [
+    "walk@hg_first",
+    "accept@n_hg_lincai",
+    "talk@n_hg_lincai",
+    "choose@n_hg_lincai:n0:c_give",
+    "walk@hg_kitchen",
+    "talk@n_hg_yusao",
+    "choose@n_hg_yusao:n0:c_ask",
+    "walk@hg_first",
+    "talk@n_hg_lincai",
+    "choose@n_hg_lincai:n0:c_yilin"
+   ],
+   "expect": {
+    "items": {
+     "a_hg_mianpao": 1
+    },
+    "lilian": 10
+   }
+  }
+ ],
+ "todo_verify": [
+  "【待考證】殷六俠的迷思：信→紀曉芙→回信→殷梨亭 的步驟是後期結構；2001 只確認「找殷梨亭接任務，做完學得梯雲縱1級」與門檻 武當身法40 定22 根22",
+  "【待考證】真假黑玉斷續膏：整條步驟是後期結構；趙敏原在綠柳莊（後期地點），改放西夏胡楊林；七蟲出沒點以 2001 楚禮子七毒座標對應既有房間，蜂蟻沒有對應座標（放雪原小徑）",
+  "【待考證】真假黑玉斷續膏：2001 門檻「武當心法40（+基內40?）」中基內 40 是否存在，未採用",
+  "【待考證】龍門遺案：步驟後期結構；圓音／圓業「華山右邊的客棧」1.0 沒有，改嵩陽茶棚、辰巳時出現；七獸位置全部【設計提案】",
+  "【待考證】龍門遺孤的出現時辰：研究只說 time-gated，採白天卯～申",
+  "【待考證】倚天屠龍筆法：無任何步驟來源，整條【設計提案】；純陽無極功 30 級的「mastery」門檻是推定",
+  "【待考證】太極拳與太極劍：考較勝負不拘；張松溪那場原文只說 duel；任務只給旗標，武功由張松溪、俞蓮舟消點",
+  "【待考證】守宮砂：滅絕師太的問答【設計提案】",
+  "【待考證】善妒之女：迴風門檻 30（2001-08-13）vs 45（2001-09-10）採 30；丁敏君心事與等待分支【設計提案】；回部短劍（迴風45、每遊戲日一次）未做",
+  "【待考證】拜訪名人：韋小寶三題的原題文字不存；賞銀 200 兩、戒指無屬性、歷練 20 為【設計提案】；段譽一段略去",
+  "【待考證】連環殺人案：可重複與冷卻、斷惡 375（四目標 500 去掉高昌迷宮）",
+  "【待考證】日月鞭法：取經是後期（jyfreeonline）；隨機經卷改成玩家自選",
+  "【待考證】化功大法：1.0 自修上限、係數、招式；化內力機制以氣血失調代替",
+  "【待考證】血海魔功：「門派威信 50」沒有對應數值，以江湖歷練 100 代替；老祖試鍊勝負不拘",
+  "【待考證】程清霜的煩惱：「戌時 1–6 刻」只做到戌時整個時辰；千年人參效果與價格",
+  "【待考證】李莫愁任務：「善惡約 0」取 −99～99；殺情侶的善惡懲罰（每隻 −10）",
+  "【待考證】恆山事件：只有標題，整條【設計提案】；原獎勵裁縫熟練待裁縫生活技能"
+ ],
+ "owner_decisions": [
+  "D2：除了連環殺人案（可重複、冷卻 1 遊戲日）以外，門派故事任務每角色一次；失敗（日月鞭法拿錯經、血海饒過叛徒）可以再接",
+  "D17：對白稱「靜觀師姐」，NPC 名稱 靜觀師太 不變",
+  "新預設：恆山事件獎勵「裁縫熟練」改成 慈悲熟練 30＋歷練 10＋恆山棉僧袍（專案沒有裁縫生活技能）；裁縫加入後應補 skill_prof",
+  "新預設：連環殺人案斷惡熟練 375（去掉 1.0B 高昌迷宮目標，按 3/4 計）",
+  "新預設：血海魔功門檻「門派威信 50」改為江湖歷練 100",
+  "新預設：趙敏放在西夏胡楊林（取代後期的綠柳莊）；圓音、圓業放嵩陽茶棚（取代「華山右邊的客棧」）；白勇放大理五華樓前；李莫愁任務的情侶放大理雜貨鋪",
+  "新預設：師父考較類戰鬥（張松溪、俞蓮舟、胡斐、血刀老祖）用 FIGHT win=ANY，提示玩家可以逃；被打敗仍照一般死亡規則（引擎沒有切磋不死的戰鬥）",
+  "新預設：太極拳與太極劍只設旗標，不直接給 1 級（兩位師父既有消點列）；其餘解鎖任務照研究給 1 級（learn）"
+ ],
+ "notes": "WP-C-sect_stories。15 條門派故事任務（STORY_PLAN §1.1 門派表）。# STORY_PLAN 缺漏：(1) 動作 reward 的欄位名契約沒寫，本碎片用 {\"do\":\"reward\",\"rewards\":{...}}；(2) npc_links 只追加 quests，但部分給予者（殷梨亭、莫聲谷、張松溪、丁敏君、靜觀、玄淨、韋小寶、血刀老祖、程清霜、張三丰、滅絕）的 services 沒有 QUEST，WP-MERGE 合併 npc_links 時請一併補 QUEST 服務（若選單依服務判斷）；(3) 切磋類戰鬥沒有不死選項（見 owner_decisions）；(4) 化功大法的「化內力」沒有引擎機制，暫用氣血失調狀態；(5) 用到其他碎片的資料：怪物 m_lf_wugong、m_lf_zhizhu（ev_lanfenghuang），房間 xx_palace、hn_teahouse、hn_road2、ym_inner、ym_bridge（_world），NPC n_xx_ada、n_xx_xuzhu（ev_xuzhu）；(6) 動作 learn 用在門派技能 chanmei（化功大法「拍馬屁神功」）；若 learn 只接受武功，WP-ENGINE 請放寬或改成 skill_prof；(7) 李莫愁 n_dl_limochou 沒有 FIGHT 服務與怪物列，ev_misc_2001 的全真李莫愁戰鬥請自建怪物並用 fight 動作；(8) 阿大兩場戰鬥用本碎片的 m_wd_ada（ev_xuzhu 沒有阿大的怪物列）。test_plan 的 setup 欄是給 story bot 的 debug 前置（門派、技能、屬性、旗標、歷練），bot 只用 debug 滿足門檻。"
+}

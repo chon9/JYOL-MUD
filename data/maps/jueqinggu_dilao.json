@@ -1,0 +1,9 @@
+{
+  "region_id": "jueqinggu_dilao", "era": "1.0B", "src": "proposal", "desc": "書房暗門底下的地牢與地底石窟，陰濕不見天日，深處是一口養著鱷魚的寒潭，谷中人人不敢提起。", "escape_tiles_hint": 2,
+  "rooms": [
+    {"id": "jq_dilao1", "name": "地牢石階", "desc": "暗門後一道石階盤旋而下，石壁滲著水珠，寒氣直透骨髓。往南回書房，往北越走越深。", "exits": [{"dir": "S", "to": "jq_shufang"}, {"dir": "N", "to": "jq_dilao2"}], "npcs": [], "features": [], "requires": [{"type": "any_of", "options": [[{"type": "quest_stage", "quest": "q_jq_liumei", "stage": ["s_eyu", "s_qiu", "s_back"]}], [{"type": "quest_done", "quest": "q_jq_liumei"}]]}], "encounter": {"rate": 0.3, "table": [{"monster": "m_jq_dilao_shuishe", "w": 60, "count": [1, 1]}, {"monster": "m_jq_dilao_qiutu", "w": 40, "count": [1, 1]}]}},
+    {"id": "jq_dilao2", "name": "地牢甬道", "desc": "甬道兩旁是一間間鐵柵牢房，有的空著，有的關著蓬頭垢面的囚徒，對著你嘿嘿怪笑。往北傳來嘩嘩水聲。", "exits": [{"dir": "S", "to": "jq_dilao1"}, {"dir": "N", "to": "jq_eyuchi"}], "npcs": [], "features": [], "requires": [], "encounter": {"rate": 0.3, "table": [{"monster": "m_jq_dilao_shuishe", "w": 40, "count": [1, 1]}, {"monster": "m_jq_dilao_qiutu", "w": 60, "count": [1, 1]}]}},
+    {"id": "jq_eyuchi", "name": "鱷魚池", "desc": "一口黑沉沉的寒潭橫在石窟中間，水面上浮著幾截「枯木」，細看卻是鱷魚的背脊。往東涉過淺灘有個石洞，往南回甬道。", "exits": [{"dir": "S", "to": "jq_dilao2"}, {"dir": "E", "to": "jq_dilao3"}], "npcs": [], "features": [], "requires": [], "encounter": {"rate": 0.3, "table": [{"monster": "m_jq_eyu", "w": 70, "count": [1, 1]}, {"monster": "m_jq_dilao_shuishe", "w": 30, "count": [1, 1]}]}},
+    {"id": "jq_dilao3", "name": "地底石窟", "desc": "潭邊一個天然石洞，洞頂有個小孔漏下一線天光，孔下長著一株棗樹，地上散著棗核。一個禿頭老婦盤坐在洞底。往西回鱷魚池。", "exits": [{"dir": "W", "to": "jq_eyuchi"}], "npcs": ["n_jq_qiuqianchi"], "features": [], "requires": []}
+  ]
+}

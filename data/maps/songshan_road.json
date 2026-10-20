@@ -1,0 +1,36 @@
+{
+  "region_id": "songshan_road",
+  "era": "1.0A",
+  "src": "proposal",
+  "desc": "從華山往東到少林的古道，翻過幾道山嶺，越走松柏越多。",
+  "escape_tiles_hint": 2,
+  "rooms": [
+    { "id": "sy_road", "name": "東行古道", "desc": "古道往東穿過丘陵，路邊的石碑寫著「東去嵩山少林」。",
+      "exits": [{"dir": "W", "to": "hy_pond"}, {"dir": "E", "to": "sy_wdfork"}], "npcs": [], "features": [],
+      "requires": [],
+      "encounter": { "rate": 0.1,
+        "table": [
+          {"monster": "m_bigrabbit", "w": 50, "count": [1, 1]},
+          {"monster": "m_rabbit", "w": 20, "count": [1, 1]},
+          {"monster": "m_wolf", "w": 20, "count": [1, 1]},
+          {"monster": "m_boar", "w": 10, "count": [1, 1]}
+        ] } },
+    { "id": "sy_wdfork", "name": "武當岔路", "desc": "往南的岔路通往武當山，山崩的巨石已經清開，石階上偶有道童往來。這一帶林深，偶爾有山賊出沒。",
+      "exits": [{"dir": "W", "to": "sy_road"}, {"dir": "E", "to": "sy_teahouse"}, {"dir": "S", "to": "wd_road1"}],
+      "npcs": [], "features": [], "requires": [],
+      "encounter": { "rate": 0.12,
+        "table": [
+          {"monster": "m_wolf", "w": 35, "count": [1, 1]},
+          {"monster": "m_bigrabbit", "w": 40, "count": [1, 1]},
+          {"monster": "m_bandit", "w": 10, "count": [1, 1]},
+          {"monster": "m_boar", "w": 15, "count": [1, 1]}
+        ] } },
+    {"id": "sy_teahouse", "name": "嵩陽茶棚", "desc": "古道邊的竹棚下支著一口大茶壺，過往的香客在這裡喝碗涼茶、換換腳力。", "exits": [{"dir": "W", "to": "sy_wdfork"}, {"dir": "E", "to": "sy_pines"}], "npcs": ["n_sy_teaman", "n_wd_yuanyin", "n_wd_yuanye"], "features": [], "requires": []},
+    {"id": "sy_pines", "name": "嵩山松林", "desc": "松林遮天蔽日，地上鋪滿松針，風一吹滿林都是松濤聲。", "exits": [{"dir": "W", "to": "sy_teahouse"}, {"dir": "E", "to": "sy_foot"}, {"dir": "N", "to": "jcw_songshan", "era": "1.0B"}], "npcs": ["n_amb_etou_ss"], "features": ["WOOD"], "requires": [], "encounter": {"rate": 0.1, "table": [{"monster": "m_bigrabbit", "w": 40, "count": [1, 1]}, {"monster": "m_wolf", "w": 40, "count": [1, 1]}, {"monster": "m_boar", "w": 20, "count": [1, 1]}]}, "desc_1_0b": "松林遮天蔽日，地上鋪滿松針，風一吹滿林都是松濤聲。往北的山路通到京城南郊。"},
+    { "id": "sy_foot", "name": "少室山腳", "desc": "少室山腳下，石板路兩旁是給香客歇腳的石凳，往東再走幾步就是少林山門。山腳的茅屋裡住著一位採藥的姑娘。",
+      "exits": [{"dir": "W", "to": "sy_pines"}, {"dir": "E", "to": "sl_gate"}], "npcs": [], "features": [],
+      "requires": [],
+      "encounter": { "rate": 0.1,
+        "table": [{"monster": "m_rabbit", "w": 70, "count": [1, 1]}, {"monster": "m_bigrabbit", "w": 30, "count": [1, 1]}] } }
+  ]
+}

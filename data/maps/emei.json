@@ -1,0 +1,47 @@
+{
+  "region_id": "emei",
+  "era": "1.0A",
+  "src": "proposal",
+  "desc": "峨嵋天下秀。峨嵋派建在金頂之下，門下弟子都是女子，掌門滅絕師太以嚴厲出名。",
+  "escape_tiles_hint": 2,
+  "rooms": [
+    { "id": "em_gate", "name": "峨嵋山門", "desc": "山門前的石坊上刻著「峨嵋派」三字，兩名峨嵋弟子按劍守門。門邊的老先生正替香客記錄落腳處。往南下山。",
+      "exits": [{"dir": "S", "to": "em_foot"}, {"dir": "N", "to": "em_square"}], "npcs": ["n_em_cha", "n_em_gatedizi"],
+      "features": [], "requires": [] },
+    { "id": "em_square", "name": "練武場", "desc": "青石鋪成的廣場上，女弟子們正練掌法劍法，一位師太在旁指點。場邊有一堵高牆，常有弟子在牆上練踏牆的輕身功夫。",
+      "exits": [
+        {"dir": "S", "to": "em_gate"},
+        {"dir": "N", "to": "em_dadian"},
+        {"dir": "E", "to": "em_jingzhao"},
+        {"dir": "W", "to": "em_caiyuan"}
+      ],
+      "npcs": ["n_em_jingjia", "n_em_spar", "n_em_beimianyi", "n_em_dingminjun"], "features": [], "requires": [] },
+    { "id": "em_jingzhao", "name": "易理房", "desc": "房裡擺滿經書與卦象圖，靜照師太在這裡教弟子讀書、研習易理，也替師父考核弟子的斷惡修為。",
+      "exits": [{"dir": "W", "to": "em_square"}], "npcs": ["n_em_jingzhao"], "features": [], "requires": [] },
+    { "id": "em_caiyuan", "name": "菜園", "desc": "練武場西邊開墾出一片菜園，種著青菜蘿蔔，是峨嵋自給自足的地方。一位農夫正在田裡忙活。",
+      "exits": [{"dir": "E", "to": "em_square"}], "npcs": ["n_em_nongfu"], "features": ["FIELD"], "requires": [] },
+    { "id": "em_dadian", "name": "金頂大殿", "desc": "大殿供奉普賢菩薩，香煙繚繞，鐘聲悠悠。靜玄師太在殿中傳授本門基本武學。往北是滅絕師太的住處。",
+      "exits": [
+        {"dir": "S", "to": "em_square"},
+        {"dir": "N", "to": "em_miejue"},
+        {"dir": "E", "to": "em_chanfang"},
+        {"dir": "W", "to": "em_kitchen"}
+      ],
+      "npcs": ["n_em_jingxuan", "n_em_jingguan"], "features": [], "requires": [] },
+    { "id": "em_chanfang", "name": "禪房", "desc": "幾個蒲團排在窗下，屋裡靜得只聽得見念珠聲。蓮香在固定的時辰帶弟子禪修，消去心中殺氣。往北是思過處。",
+      "exits": [{"dir": "W", "to": "em_dadian"}, {"dir": "N", "to": "em_siguo"}], "npcs": ["n_em_lianxiang"],
+      "features": [], "requires": [] },
+    { "id": "em_kitchen", "name": "廚房", "desc": "灶上蒸籠冒著白氣，案上擺著素菜。金小妹圍著圍裙，一邊切菜一邊哼著小曲。",
+      "exits": [{"dir": "E", "to": "em_dadian"}], "npcs": ["n_em_jinxiaomei"], "features": ["STOVE", "WATER"],
+      "requires": [] },
+    { "id": "em_miejue", "name": "滅絕師太居所", "desc": "簡樸的屋子裡只有一張木榻、一張經案，牆上掛著一柄長劍。滅絕師太神色冷峻，正打量著來人。",
+      "exits": [{"dir": "S", "to": "em_dadian"}, {"dir": "E", "to": "em_zhou"}], "npcs": ["n_em_miejue"],
+      "features": [], "requires": [] },
+    { "id": "em_zhou", "name": "周芷若的房間", "desc": "收拾得一塵不染的小屋，窗邊擺著一盆蘭花。只有本門弟子可以進來。",
+      "exits": [{"dir": "W", "to": "em_miejue"}], "npcs": ["n_em_zhouzhiruo"], "features": [],
+      "requires": [{"type": "sect", "sect": "emei"}] },
+    { "id": "em_siguo", "name": "思過處", "desc": "後山崖邊的一間石屋，只有一扇小窗。違反門規的弟子被關在這裡面壁思過，看守的師姐寸步不離。",
+      "exits": [{"dir": "S", "to": "em_chanfang"}], "npcs": ["n_em_jailer"], "features": [],
+      "requires": [{"type": "sect", "sect": "emei"}], "jail": true }
+  ]
+}

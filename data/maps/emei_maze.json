@@ -1,0 +1,28 @@
+{
+  "region_id": "emei_maze",
+  "era": "1.0A",
+  "src": "later",
+  "desc": "峨嵋西林南邊的密林迷宮，林中毒蛇與白猿出沒，原作是十層的線性迷宮，這裡縮成四間。",
+  "escape_tiles_hint": 2,
+  "rooms": [
+    { "id": "em_mz_1", "name": "迷林入口", "desc": "密林中的小徑忽左忽右，樹上刻著前人留下的記號。往北可以回到峨嵋西林。",
+      "exits": [{"dir": "N", "to": "em_road4"}, {"dir": "S", "to": "em_mz_2"}], "npcs": [], "features": ["WOOD"],
+      "requires": [],
+      "encounter": { "rate": 0.25,
+        "table": [{"monster": "m_em_mz_snake", "w": 60, "count": [1, 1]}, {"monster": "m_em_mz_ape", "w": 40, "count": [1, 1]}] } },
+    { "id": "em_mz_2", "name": "迷林深處", "desc": "四周的樹長得一模一樣，地上的腳印繞了一圈又回到原處。草叢裡不時傳來嘶嘶聲。",
+      "exits": [{"dir": "N", "to": "em_mz_1"}, {"dir": "S", "to": "em_mz_3"}], "npcs": [], "features": ["WOOD"],
+      "requires": [],
+      "encounter": { "rate": 0.3,
+        "table": [{"monster": "m_em_mz_snake", "w": 50, "count": [1, 1]}, {"monster": "m_em_mz_ape", "w": 50, "count": [1, 1]}] } },
+    { "id": "em_mz_3", "name": "猿啼谷", "desc": "林子在這裡開成一道山谷，猿啼聲此起彼落，回音不絕。",
+      "exits": [{"dir": "N", "to": "em_mz_2"}, {"dir": "S", "to": "em_mz_4"}], "npcs": [],
+      "features": ["WOOD", "WATER"], "requires": [],
+      "encounter": { "rate": 0.3,
+        "table": [{"monster": "m_em_mz_ape", "w": 60, "count": [1, 1]}, {"monster": "m_em_mz_snake", "w": 40, "count": [1, 1]}] } },
+    { "id": "em_mz_4", "name": "迷林盡頭", "desc": "一道斷崖擋住去路，崖下雲霧翻騰，再也走不下去了。", "exits": [{"dir": "N", "to": "em_mz_3"}],
+      "npcs": [], "features": ["WOOD"], "requires": [],
+      "encounter": { "rate": 0.3,
+        "table": [{"monster": "m_em_mz_ape", "w": 70, "count": [1, 1]}, {"monster": "m_em_mz_snake", "w": 30, "count": [1, 1]}] } }
+  ]
+}

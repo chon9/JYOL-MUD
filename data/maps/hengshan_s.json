@@ -1,0 +1,14 @@
+{
+  "region_id": "hengshan_s",
+  "era": "1.0A",
+  "src": "proposal",
+  "escape_tiles_hint": 2,
+  "desc": "南嶽衡山，七十二峰連綿，衡山派劉正風便住在山下。",
+  "rooms": [
+    {"id": "hn_foot", "name": "衡山下", "desc": "衡山腳下有一方池塘，岸邊幾個衡山弟子在迎送賓客。往北回湘江渡口，往東是小茶店，東北是上山路口，東南有座石橋。", "exits": [{"dir": "N", "to": "hn_road2"}, {"dir": "E", "to": "hn_teahouse"}, {"dir": "NE", "to": "hn_shore"}, {"dir": "SE", "to": "hn_bridge"}], "npcs": ["n_hn_liugongzi", "n_hn_dizi"], "features": ["WATER"], "requires": [], "safe": true, "encounter": {"rate": 0.08, "table": [{"monster": "m_rabbit", "w": 60, "count": [1, 1]}, {"monster": "m_bigrabbit", "w": 40, "count": [1, 1]}]}},
+    {"id": "hn_teahouse", "name": "衡山小茶店", "desc": "路邊一間小茶店，竹桌竹凳，往來的江湖人都在這裡歇腳打聽消息。往西出門就是衡山下。", "exits": [{"dir": "W", "to": "hn_foot"}], "npcs": ["n_hn_teaman", "n_hn_mimike", "n_hn_longmen"], "features": [], "requires": [], "safe": true},
+    {"id": "hn_shore", "name": "上山路口海邊", "desc": "上山的路口緊挨著一大片水面，黃昏時常有胡琴聲從水邊傳來。往西南回衡山下。", "exits": [{"dir": "SW", "to": "hn_foot"}], "npcs": ["n_hn_moda"], "features": ["WATER"], "requires": [], "encounter": {"rate": 0.08, "table": [{"monster": "m_rabbit", "w": 100, "count": [1, 1]}]}},
+    {"id": "hn_bridge", "name": "小島石橋", "desc": "一道窄窄的石橋通往池塘中的小島，橋面長滿青苔。往西北回衡山下，往南過橋上島。", "exits": [{"dir": "NW", "to": "hn_foot"}, {"dir": "S", "to": "hn_island"}], "npcs": [], "features": [], "requires": [], "encounter": {"rate": 0.05, "table": [{"monster": "m_rabbit", "w": 100, "count": [1, 1]}]}},
+    {"id": "hn_island", "name": "衡山下方小島", "desc": "小島上幾株老柳，柳下一塊大石，像是常有人在這裡打坐養傷。往北過橋回岸上。", "exits": [{"dir": "N", "to": "hn_bridge"}], "npcs": ["n_hn_lulianrong"], "features": [], "requires": [], "safe": true}
+  ]
+}

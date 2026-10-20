@@ -1,0 +1,18 @@
+{
+  "region_id": "xixia_east", "era": "1.0A", "src": "proposal",
+  "desc": "西夏城東北一帶山丘起伏，礦坑和深潭散落在往恆山的官道兩旁。",
+  "escape_tiles_hint": 2,
+  "rooms": [
+    { "id": "xe_road", "name": "東北官道",
+      "desc": "官道離開荒原折向東北，路邊一塊里程碑刻著「東至恆山、華山」，碑腳長滿了駱駝刺。",
+      "exits": [ { "dir": "SW", "to": "xw_road" }, { "dir": "E", "to": "xe_mine" } ],
+      "npcs": [], "features": [], "requires": [],
+      "encounter": { "rate": 0.1, "table": [
+        { "monster": "m_rabbit", "w": 70, "count": [1, 1] },
+        { "monster": "m_bigrabbit", "w": 30, "count": [1, 1] } ] } },
+    {"id": "xe_mine", "name": "礦區", "desc": "山坡上挖了好幾個礦坑，礦工推著獨輪車進進出出。北邊陡壁上有個黑黝黝的洞口。", "exits": [{"dir": "W", "to": "xe_road"}, {"dir": "N", "to": "xe_xuedao"}, {"dir": "E", "to": "xe_heilong"}], "npcs": ["n_xe_miner", "n_amb_etou_xe", "n_ls_kuanggong"], "features": ["MINE"], "requires": [], "encounter": {"rate": 0.1, "table": [{"monster": "m_bigrabbit", "w": 90, "count": [1, 1]}, {"monster": "m_wolf", "w": 10, "count": [1, 1]}]}},
+    {"id": "xe_xuedao", "name": "血刀洞口", "desc": "陡壁上裂開一道洞口，陰風從裡頭直往外灌。礦工都說洞裡是座迷宮，深處住著鬼王，沒有萬點實戰的本事千萬別進去。", "exits": [{"dir": "S", "to": "xe_mine"}, {"dir": "W", "to": "xn_snow"}, {"dir": "IN", "to": "gw_entrance"}], "npcs": [], "features": [], "requires": [], "encounter": {"rate": 0.12, "table": [{"monster": "m_wolf", "w": 40, "count": [1, 1]}, {"monster": "m_bigrabbit", "w": 60, "count": [1, 1]}]}},
+    {"id": "xe_heilong", "name": "黑龍潭", "desc": "一泓深黑的潭水，傳說潭底住著黑龍。潭水往東流出，順著走可以到河邊。", "exits": [{"dir": "W", "to": "xe_mine"}, {"dir": "E", "to": "xe_river"}], "npcs": [], "features": ["WATER"], "requires": [], "encounter": {"rate": 0.1, "table": [{"monster": "m_bigrabbit", "w": 80, "count": [1, 1]}, {"monster": "m_wolf", "w": 20, "count": [1, 1]}]}},
+    {"id": "xe_river", "name": "潭東河岸", "desc": "潭水匯成小河向東南流去，岸邊蘆葦叢生，常有野狼下來喝水。", "exits": [{"dir": "W", "to": "xe_heilong"}, {"dir": "SE", "to": "hf_paddy"}], "npcs": [], "features": ["WATER"], "requires": [], "encounter": {"rate": 0.12, "table": [{"monster": "m_bigrabbit", "w": 70, "count": [1, 1]}, {"monster": "m_wolf", "w": 30, "count": [1, 1]}]}}
+  ]
+}

@@ -1,0 +1,638 @@
+{
+  "fragment": "ev_guhongzi",
+  "version": 1,
+  "author": "WP-C-ev_guhongzi",
+  "quests": [
+    {
+      "id": "q_guhongzi",
+      "name": "孤鴻子師伯的死因",
+      "chapter": "峨嵋派",
+      "group": "ev_guhongzi",
+      "giver": "n_em_jingguan",
+      "era": "1.0A",
+      "src": "verified",
+      "dialogue_src": "proposal",
+      "src_note": "研究 孤鴻子：官方 2001-07-18 簡介「靜觀師姐的家裡發生了一些事，想請玩家幫忙送封家書回去，卻因此牽連出峨嵋派與明教的恩怨」（tishi.htm）；步驟依 17173 2001-9-1 n959_875542（殺佛）、2001-9-2 n589_506081（GS1）、YouTube SQow-9z0DZo；門檻 峨嵋心法 5／實戰 1000／名聲 100 與獎勵 學點 50／名聲 10／歷練 10 出自後期攻略 jy2001 t/300（src later）。對白全部【設計提案】",
+      "text": "靜觀師姐的俗家捎來口信，想請你幫忙把一封家書送回西夏。沒想到這封家書，竟牽連出峨嵋派與明教的一段舊恩怨。",
+      "requires": [
+        { "type": "sect", "sect": "emei" },
+        { "type": "skill_min", "skill": "em_xinfa", "value": 5 },
+        { "type": "combat_xp_min", "value": 1000 },
+        { "type": "fame_min", "value": 100 }
+      ],
+      "give_items": [ { "id": "i_gh_jiashu", "n": 1 } ],
+      "repeat": { "max": 1, "cooldown_days": 0 },
+      "abandon": true,
+      "party_credit": true,
+      "start": "s_letter",
+      "offer": "d_offer",
+      "stages": [
+        {
+          "id": "s_letter",
+          "title": "送家書到西夏",
+          "log": "把靜觀師姐的家書送到西夏，交給她俗家的妹妹雲兒。出峨嵋山門往南到峨嵋山腳，往西經峨嵋西林、清音閣山道、峨嵋茶棚、竹林山徑，過崆峒橋到崆峒道口，再往西穿過東邊樹林、陶耘稻田到大理北門外大道。進大理北門，五華樓前廣場西邊的驛站有馬車到西夏；不坐車的話，從大理北門往北過石橋，沿河川古道經綠洲、大漠邊緣、西夏南坡，順著小溪走到荒草坡，往西就是西夏東門。雲兒住在東門進城左手邊（往南）第一間民房。",
+          "hint_room": "xx_minfang",
+          "objectives": [
+            { "id": "o_yuner", "type": "TALK", "npc": "n_xx_yuner", "dialogue": "d_yuner", "text": "把家書交給西夏民房的雲兒" }
+          ],
+          "next": "s_reveal"
+        },
+        {
+          "id": "s_reveal",
+          "title": "雲兒的回信",
+          "log": "雲兒託你把回信帶回峨嵋，交給金頂大殿的靜觀師姐。回程可在西夏驛站搭車到大理，再從大理北門外大道往東，經陶耘稻田、東邊樹林到崆峒道口，往東北過崆峒橋、竹林山徑、峨嵋茶棚、清音閣山道、峨嵋西林回到峨嵋山腳，往北進山門，穿過練武場就是大殿。",
+          "hint_room": "em_dadian",
+          "objectives": [
+            { "id": "o_reveal", "type": "TALK", "npc": "n_em_jingguan", "dialogue": "d_reveal", "text": "把雲兒的信交給靜觀師姐" }
+          ],
+          "next": "s_villager"
+        },
+        {
+          "id": "s_villager",
+          "title": "大理打聽消息",
+          "log": "靜觀師姐要你到大理查探明教的動靜。照原路下山到崆峒道口，往西經東邊樹林、陶耘稻田到北門外大道，往南進大理北門，在五華樓前的廣場向村民打聽。",
+          "hint_room": "dl_square",
+          "objectives": [
+            { "id": "o_cunmin", "type": "TALK", "npc": "n_dl_cunmin", "dialogue": "d_cunmin", "text": "在五華樓前向大理村民打聽" }
+          ],
+          "next": "s_official"
+        },
+        {
+          "id": "s_official",
+          "title": "再問一個人",
+          "log": "村民說城西的沙漠洞窟常有白袍怪人出入。再找個消息靈通的人問問：五華樓前廣場往南就是大理衙門，捕快和那個油嘴滑舌的少年韋小寶都在堂上，問其中一個就行。",
+          "hint_room": "dl_yamen",
+          "any": true,
+          "objectives": [
+            { "id": "o_bukuai", "type": "TALK", "npc": "n_dl_bukuai", "dialogue": "d_bukuai", "text": "向衙門的捕快打聽沙漠洞窟" },
+            { "id": "o_wxb", "type": "TALK", "npc": "n_weixiaobao", "dialogue": "d_wxb", "text": "或者向韋小寶打聽沙漠洞窟" }
+          ],
+          "next": "s_cave"
+        },
+        {
+          "id": "s_cave",
+          "title": "沙漠洞窟裡的人",
+          "log": "出大理北門到北門外大道，往西到洱海岸，再一直往西走到底，就是大理西邊的沙漠洞窟。洞裡有野狼和山賊出沒，帶夠金創藥。找到洞窟深處那個詭異的人。",
+          "hint_room": "dlw_desertcave",
+          "objectives": [
+            { "id": "o_meet", "type": "TALK", "npc": "n_dlw_guiyi", "dialogue": "d_guiyi_1", "text": "到大理西沙漠洞窟找詭異的人" }
+          ],
+          "next": "s_fight"
+        },
+        {
+          "id": "s_fight",
+          "title": "明教分舵主",
+          "log": "詭異的人原來是明教的分舵主。在大理西沙漠洞窟裡打敗他。打輸了就回城養好傷，再回洞窟找他動手。",
+          "hint_room": "dlw_desertcave",
+          "objectives": [
+            { "id": "o_fight", "type": "FIGHT", "win": "WIN", "text": "打敗明教分舵主" }
+          ],
+          "room_actions": [
+            {
+              "id": "a_refight", "room": "dlw_desertcave", "label": "再找詭異的人動手", "hours": [], "requires": [], "repeat": true,
+              "do": [ { "do": "fight", "monsters": ["m_dl_mingjiao"], "obj": "o_fight", "npc": "n_dlw_guiyi" } ]
+            }
+          ],
+          "next": "s_after"
+        },
+        {
+          "id": "s_after",
+          "title": "他並不壞？",
+          "log": "明教分舵主落敗，似乎還有話要說。在沙漠洞窟裡再跟詭異的人談一談。",
+          "hint_room": "dlw_desertcave",
+          "objectives": [
+            { "id": "o_after", "type": "TALK", "npc": "n_dlw_guiyi", "dialogue": "d_guiyi_2", "text": "再跟詭異的人談一談" }
+          ],
+          "next": "s_report"
+        },
+        {
+          "id": "s_report",
+          "title": "回報靜觀師姐",
+          "log": "回峨嵋金頂大殿，把大理的經過告訴靜觀師姐。從洱海岸往東到北門外大道，經陶耘稻田、東邊樹林到崆峒道口，往東北過崆峒橋、竹林山徑、峨嵋茶棚、清音閣山道、峨嵋西林，回到峨嵋山腳往北上山。",
+          "hint_room": "em_dadian",
+          "objectives": [
+            { "id": "o_report", "type": "TALK", "npc": "n_em_jingguan", "dialogue": "d_report", "text": "向靜觀師姐回報" }
+          ],
+          "next": "s_miejue"
+        },
+        {
+          "id": "s_miejue",
+          "title": "稟報師父",
+          "log": "靜觀師姐要你親自向師父稟報。金頂大殿往北就是滅絕師太的居所。",
+          "hint_room": "em_miejue",
+          "objectives": [
+            { "id": "o_miejue", "type": "TALK", "npc": "n_em_miejue", "dialogue": "d_miejue", "text": "向滅絕師太稟報" }
+          ],
+          "next": [
+            { "if": [ { "type": "quest_var", "quest": "q_guhongzi", "var": "report", "value": "truth" } ], "goto": "END:truth" },
+            { "goto": "END:silent" }
+          ]
+        }
+      ],
+      "dialogues": {
+        "d_offer": {
+          "start": "n0",
+          "nodes": {
+            "n0": {
+              "speaker": "npc",
+              "text": "（靜觀放下手中的念珠）師妹，你來得正好。貧尼俗家捎來口信，說家裡出了些事。我身在佛門，不便下山，你可願替我把一封家書送回西夏？",
+              "choices": [
+                { "id": "c_ask", "label": "師姐家裡出了什麼事？", "goto": "n1" },
+                { "id": "c_help", "label": "師姐放心，這封家書我替你送到。", "do": [ { "do": "accept" } ], "goto": "n_accept" },
+                { "id": "c_no", "label": "師妹還有事在身，改日吧。", "goto": "n_no" }
+              ]
+            },
+            "n1": {
+              "speaker": "npc",
+              "text": "說來也不是什麼大事。我那俗家妹子雲兒到了出閣的年紀，爹娘拿不定主意，來信問我的意思。只是信裡還提了一句，近來西夏、大理一帶，常有些來路不明的人走動……",
+              "choices": [
+                { "id": "c_help", "label": "師姐放心，這封家書我替你送到。", "do": [ { "do": "accept" } ], "goto": "n_accept" },
+                { "id": "c_no", "label": "師妹還有事在身，改日吧。", "goto": "n_no" }
+              ]
+            },
+            "n_accept": {
+              "speaker": "npc",
+              "text": "阿彌陀佛，有勞師妹了。雲兒住在西夏東門進城左手邊第一間民房。路途遙遠，從大理搭驛站的馬車過去最省腳力。一路小心。",
+              "goto": "END"
+            },
+            "n_no": {
+              "speaker": "npc",
+              "text": "也罷，這事原也不急。師妹得空了再來找我。",
+              "goto": "END"
+            }
+          }
+        },
+        "d_yuner": {
+          "start": "n0",
+          "resume": "n0",
+          "nodes": {
+            "n0": {
+              "speaker": "npc",
+              "text": "（雲兒聽見叩門聲，探出頭來）你是……峨嵋派的師姐？莫不是我姐姐託你來的？",
+              "choices": [
+                {
+                  "id": "c_give", "label": "靜觀師姐託我送家書來。",
+                  "do": [
+                    { "do": "take", "item": "i_gh_jiashu", "n": 1 },
+                    { "do": "give", "item": "i_gh_yunerxin", "n": 1 },
+                    { "do": "give", "item": "c_water", "n": 3 },
+                    { "do": "give", "item": "c_niuroubing", "n": 5 },
+                    { "do": "complete", "obj": "o_yuner" }
+                  ],
+                  "goto": "n1"
+                },
+                { "id": "c_leave", "label": "對不住，我走錯門了。", "goto": "END" }
+              ]
+            },
+            "n1": {
+              "speaker": "npc",
+              "text": "（雲兒拆開家書，看著看著眼眶就紅了）姐姐出家這麼多年，心裡還記掛著我……我這就寫封回信，勞煩你帶回峨嵋。",
+              "goto": "n2"
+            },
+            "n2": {
+              "speaker": "npc",
+              "text": "還有一件事，要請姐姐留心。前些日子有大理來的客商說，城西那片沙地的洞窟裡，常有穿白袍的怪人進出，胸前繡著一團火，自稱是什麼『明教』的人。我想姐姐她們峨嵋派，該知道這些人的來歷。",
+              "goto": "n3"
+            },
+            "n3": {
+              "speaker": "npc",
+              "text": "路上風沙大，這幾囊清水和牛肉餅你帶著，餓了渴了也好墊墊肚子。替我問姐姐好。",
+              "choices": [
+                { "id": "c_thanks", "label": "多謝雲兒姑娘，回信我一定送到。", "goto": "END" }
+              ]
+            }
+          }
+        },
+        "d_reveal": {
+          "start": "n0",
+          "resume": "n0",
+          "nodes": {
+            "n0": {
+              "speaker": "npc",
+              "text": "你回來了。雲兒那丫頭……可還好？",
+              "choices": [
+                { "id": "c_letter", "label": "雲兒姑娘很好，這是她的回信。", "do": [ { "do": "take", "item": "i_gh_yunerxin", "n": 1 }, { "do": "complete", "obj": "o_reveal" } ], "goto": "n1" },
+                { "id": "c_later", "label": "我待會兒再來。", "goto": "END" }
+              ]
+            },
+            "n1": {
+              "speaker": "npc",
+              "text": "（靜觀讀著讀著，臉色忽然一變）白袍、胸前繡火……明教？竟在大理城西的沙漠洞窟出沒？",
+              "goto": "n2"
+            },
+            "n2": {
+              "speaker": "npc",
+              "text": "師妹，你可知道孤鴻子師伯是怎麼死的？",
+              "choices": [
+                { "id": "c_ask", "label": "師妹不知，請師姐明示。", "goto": "n3" },
+                { "id": "c_rumor", "label": "聽說……是給人活活氣死的？", "goto": "n2b" }
+              ]
+            },
+            "n2b": {
+              "speaker": "npc",
+              "text": "江湖上都這麼傳，話說得難聽，卻也相去不遠。你坐下，我從頭說給你聽。",
+              "goto": "n3"
+            },
+            "n3": {
+              "speaker": "npc",
+              "text": "孤鴻子師伯是師父的師兄。當年明教光明左使楊逍目中無人，師伯向師父借了本門的倚天劍，前去找他較量。哪知道……劍還沒出鞘，便讓楊逍奪了去。",
+              "goto": "n4"
+            },
+            "n4": {
+              "speaker": "npc",
+              "text": "楊逍把那劍看了幾眼，冷笑幾聲，當作廢銅爛鐵似的往地下一擲，揚長而去。師伯一生心高氣傲，哪受得了這等羞辱？歸途中便一病不起，就此去了。連那倚天劍，也落到了官府手裡。",
+              "goto": "n5"
+            },
+            "n5": {
+              "speaker": "npc",
+              "text": "師父自此恨明教入骨。如今明教的人竟在大理出沒，不知又有什麼圖謀。師妹，你到大理去打聽打聽，查清這些人的底細。明教中人武功詭異，千萬小心，莫要逞強。",
+              "choices": [
+                { "id": "c_go", "label": "師妹這就動身去大理。", "goto": "END" }
+              ]
+            }
+          }
+        },
+        "d_cunmin": {
+          "start": "n0",
+          "resume": "n0",
+          "nodes": {
+            "n0": {
+              "speaker": "npc",
+              "text": "（一個挑著扁擔的村民停下腳步）外地來的姑娘？想打聽什麼？",
+              "choices": [
+                { "id": "c_ask", "label": "老鄉，近來城外可有什麼怪事？", "do": [ { "do": "complete", "obj": "o_cunmin" } ], "goto": "n1" },
+                { "id": "c_bye", "label": "沒什麼，打擾了。", "goto": "END" }
+              ]
+            },
+            "n1": {
+              "speaker": "npc",
+              "text": "怪事？嘿，可多啦。城西洱海過去那片沙地，有個沙漠洞窟，從前只有野狼在裡頭做窩。這幾個月常有穿白袍的人進進出出，半夜裡還看得見洞口有火光。",
+              "goto": "n2"
+            },
+            "n2": {
+              "speaker": "npc",
+              "text": "上回我家小子到洞口撿柴，給一個怪模怪樣的人趕了出來，那人說話忽高忽低、陰陽怪氣，聽得人渾身發毛。你真要打聽，往南到衙門問問捕快大爺，官府總該知道些什麼。",
+              "choices": [
+                { "id": "c_thanks", "label": "多謝老鄉。", "goto": "END" }
+              ]
+            }
+          }
+        },
+        "d_bukuai": {
+          "start": "n0",
+          "resume": "n0",
+          "nodes": {
+            "n0": {
+              "speaker": "npc",
+              "text": "峨嵋派的？到衙門來有何貴幹？",
+              "choices": [
+                { "id": "c_ask", "label": "捕快大哥，聽說城西沙漠洞窟有明教的人出沒？", "do": [ { "do": "complete", "obj": "o_bukuai" } ], "goto": "n1" },
+                { "id": "c_bye", "label": "沒事，路過看看。", "goto": "END" }
+              ]
+            },
+            "n1": {
+              "speaker": "npc",
+              "text": "噓——小聲點！上頭交代過，明教的事能不碰就不碰。那洞裡有個說話陰陽怪氣的傢伙，咱們弟兄都管他叫「詭異的人」。前陣子派了兩個兄弟去查，一個都沒討著便宜，鼻青臉腫地爬回來。",
+              "goto": "n2"
+            },
+            "n2": {
+              "speaker": "npc",
+              "text": "你真要去，出北門到北門外大道，往西到洱海岸，再往西走到底就是沙漠洞窟。洞裡還有野狼、山賊，你自己掂量掂量。",
+              "choices": [
+                { "id": "c_thanks", "label": "多謝捕快大哥指點。", "goto": "END" }
+              ]
+            }
+          }
+        },
+        "d_wxb": {
+          "start": "n0",
+          "resume": "n0",
+          "nodes": {
+            "n0": {
+              "speaker": "npc",
+              "text": "（韋小寶眼珠骨碌碌一轉）喲，這位姐姐生得好俊！找小寶我有什麼事？先說好，打聽消息可是要算銀子的。",
+              "choices": [
+                { "id": "c_ask", "label": "小兄弟，城西沙漠洞窟裡住著什麼人？", "do": [ { "do": "complete", "obj": "o_wxb" } ], "goto": "n1" },
+                { "id": "c_bye", "label": "我身上沒銀子，告辭。", "goto": "END" }
+              ]
+            },
+            "n1": {
+              "speaker": "npc",
+              "text": "嘿嘿，這你可問對人了。那洞裡的傢伙一身白袍，胸口繡著一團火，八成是明教的。這種人最不好惹，打起架來不要命，小寶我向來是能躲就躲。",
+              "goto": "n2"
+            },
+            "n2": {
+              "speaker": "npc",
+              "text": "洞窟在洱海岸往西，一路走到底就是。姐姐要是打贏了，回頭可別忘了小寶這份功勞，賞個三五百兩的，也不算多……",
+              "choices": [
+                { "id": "c_thanks", "label": "（懶得理他，轉身就走）", "goto": "END" }
+              ]
+            }
+          }
+        },
+        "d_guiyi_1": {
+          "start": "n0",
+          "resume": "n0",
+          "nodes": {
+            "n0": {
+              "speaker": "npc",
+              "text": "（洞窟深處，一個白袍人背對著你，聲音忽高忽低，在石壁間嗡嗡迴響）嘿嘿……峨嵋派的女娃兒，也敢闖到這裡來？",
+              "choices": [
+                { "id": "c_ask", "label": "你們明教的人在大理鬼鬼祟祟，究竟有何圖謀？", "goto": "n1" },
+                { "id": "c_leave", "label": "（悄悄退出洞窟）", "goto": "END" }
+              ]
+            },
+            "n1": {
+              "speaker": "npc",
+              "text": "（白袍人緩緩轉過身來，胸前一團火焰繡得殷紅）圖謀？滅絕老尼的徒子徒孫，開口閉口就是「魔教」。想問話，先問過我手裡這口彎刀！",
+              "choices": [
+                {
+                  "id": "c_fight", "label": "那就得罪了！",
+                  "do": [
+                    { "do": "complete", "obj": "o_meet" },
+                    { "do": "fight", "monsters": ["m_dl_mingjiao"], "obj": "o_fight", "npc": "n_dlw_guiyi" }
+                  ],
+                  "goto": "END"
+                },
+                { "id": "c_wait", "label": "（還是先回去準備準備）", "goto": "n_back" }
+              ]
+            },
+            "n_back": {
+              "speaker": "npc",
+              "text": "（白袍人冷笑一聲，又轉過身去）怕了？想清楚了再來。本座就在這兒，哪兒也不去。",
+              "goto": "END"
+            }
+          }
+        },
+        "d_guiyi_2": {
+          "start": "n0",
+          "resume": "n0",
+          "nodes": {
+            "n0": {
+              "speaker": "npc",
+              "text": "（白袍人按著胸口喘了幾口氣，竟然笑了）好，好身手。峨嵋派總算出了個像樣的人物。",
+              "choices": [
+                { "id": "c_ask", "label": "你輸了。說吧，明教在大理做什麼？", "do": [ { "do": "var", "name": "heard", "value": true }, { "do": "complete", "obj": "o_after" } ], "goto": "n1" },
+                { "id": "c_scorn", "label": "魔教妖人，還有什麼好說的！", "do": [ { "do": "var", "name": "heard", "value": false }, { "do": "complete", "obj": "o_after" } ], "goto": "n1b" }
+              ]
+            },
+            "n1": {
+              "speaker": "npc",
+              "text": "本座在此，不過是替教中兄弟打探些消息，從沒動過大理一草一木。……孤鴻子的事，我也聽說過。",
+              "goto": "n2"
+            },
+            "n1b": {
+              "speaker": "npc",
+              "text": "（他也不惱）要殺我，容易得很。只是你回去問問你師父，孤鴻子當年是怎麼死的——是死在楊左使手上，還是死在他自己那口氣上？",
+              "goto": "n2"
+            },
+            "n2": {
+              "speaker": "npc",
+              "text": "楊左使當年連他一根頭髮也沒傷。說到底，是他自己咽不下那口氣。你們峨嵋恨了我們這麼多年，可曾想過這一層？",
+              "goto": "n3"
+            },
+            "n3": {
+              "speaker": "npc",
+              "text": "回去告訴你師父：明教的人，並不壞。信不信，由她。",
+              "choices": [
+                { "id": "c_go", "label": "……我會把話帶到。", "goto": "END" }
+              ]
+            }
+          }
+        },
+        "d_report": {
+          "start": "n0",
+          "resume": "n0",
+          "nodes": {
+            "n0": {
+              "speaker": "npc",
+              "text": "師妹，你回來了！大理那邊怎麼樣？",
+              "choices": [
+                { "id": "c_tell", "label": "師妹在沙漠洞窟打敗了明教分舵主。", "do": [ { "do": "complete", "obj": "o_report" } ], "goto": "n1" }
+              ]
+            },
+            "n1": {
+              "speaker": "npc",
+              "text": "（靜觀聽你說完，默然良久）他說……明教的人，並不壞？",
+              "goto": "n2"
+            },
+            "n2": {
+              "speaker": "npc",
+              "text": "這話你在我面前說說也就罷了。此事干係重大，你須親自向師父稟報。師父就在大殿後面的居所。至於怎麼說……你自己斟酌。",
+              "choices": [
+                { "id": "c_ok", "label": "是，師妹這就去見師父。", "goto": "END" }
+              ]
+            }
+          }
+        },
+        "d_miejue": {
+          "start": "n0",
+          "resume": "n0",
+          "nodes": {
+            "n0": {
+              "speaker": "npc",
+              "text": "（滅絕師太抬起眼來，目光如電）靜觀說你去了大理一趟，有話要稟報？",
+              "choices": [
+                { "id": "c_truth", "label": "弟子打敗了明教分舵主。他要弟子轉告師父：明教的人並不壞。", "do": [ { "do": "var", "name": "report", "value": "truth" }, { "do": "complete", "obj": "o_miejue" } ], "goto": "n_truth" },
+                { "id": "c_silent", "label": "弟子已將明教妖人擊退，大理一帶暫時無事。", "do": [ { "do": "var", "name": "report", "value": "silent" }, { "do": "complete", "obj": "o_miejue" } ], "goto": "n_silent" }
+              ]
+            },
+            "n_truth": {
+              "speaker": "npc",
+              "text": "（滅絕師太臉色鐵青，冷冷地道）魔教妖人花言巧語，你也信？孤鴻子師兄的仇，峨嵋派一日也不會忘。往後再讓我聽見這種話，門規處置！",
+              "goto": "n_reward"
+            },
+            "n_silent": {
+              "speaker": "npc",
+              "text": "（滅絕師太微微點頭）嗯。魔教妖人，除惡務盡。你做得很好。",
+              "goto": "n_reward"
+            },
+            "n_reward": {
+              "speaker": "npc",
+              "text": "你孤身闖洞，勝了魔教的分舵主，這份膽識倒還不錯。以後就可以跟我學劍了——但要你的功夫練到了火候，我才會教你。",
+              "choices": [
+                { "id": "c_bow", "label": "多謝師父！", "goto": "END" }
+              ]
+            }
+          }
+        }
+      },
+      "outcomes": {
+        "truth": {
+          "label": "把「明教並不壞」的話帶給了滅絕師太",
+          "rewards": { "learn_points": 50, "fame": 10, "lilian": 10, "flags": ["em_juejian_ok"] },
+          "src": "later",
+          "src_note": "數值：jy2001 t/300 後期攻略；「以後就可以和她學劍了，但要你等級達到要求」：2001-9-1 n959_875542 → 以 em_juejian_ok 實作【設計提案】；兩個結局獎勵相同，分支只影響對白與結局名【設計提案】"
+        },
+        "silent": {
+          "label": "對滅絕師太隱瞞了分舵主的話",
+          "rewards": { "learn_points": 50, "fame": 10, "lilian": 10, "flags": ["em_juejian_ok"] },
+          "src": "later",
+          "src_note": "同 truth；隱瞞分支【設計提案】"
+        }
+      },
+      "rumors": { "first": "rmr_q_guhongzi_first", "foreshadow": "rmr_q_guhongzi_foreshadow" }
+    }
+  ],
+  "npcs": [
+    {
+      "id": "n_dl_cunmin", "name": "大理村民", "kind": "STORY", "region": "dali", "room": "dl_square",
+      "alignment": "GOOD", "talk": "talk_n_dl_cunmin", "services": [], "night_closed": false,
+      "desc": "挑著扁擔進城趕集的村民，皮膚曬得黝黑，城裡城外的大小事都知道一些。",
+      "era": "1.0A", "src": "proposal",
+      "src_note": "研究 孤鴻子：2021 影片「裝備店附近的村民」；2001 攻略問的是礦石大王、王大富人、李裁縫、樵夫（現有資料無這些人），依 STORY_PLAN §3.2 合成一位村民放在五華樓前【設計提案】"
+    },
+    {
+      "id": "n_dlw_guiyi", "name": "詭異的人", "kind": "STORY", "region": "dali_wild", "room": "dlw_desertcave",
+      "alignment": "NEUTRAL", "talk": "talk_n_dlw_guiyi", "services": [], "night_closed": false,
+      "desc": "洞窟深處的白袍人，胸前繡著一團火焰，說話忽高忽低，叫人捉摸不透。他是明教的分舵主。",
+      "era": "1.0A", "src": "verified",
+      "src_note": "研究 孤鴻子：YouTube SQow-9z0DZo 點「詭異的人」開打、勝後再點；2001-9-1「大理左面的沙漠洞窟」最左邊。房間 dlw_desertcave 為【設計提案】（_world 建立）"
+    }
+  ],
+  "npc_links": [ { "npc": "n_em_jingguan", "add_quests": ["q_guhongzi"] } ],
+  "shop_patches": [],
+  "art_patches": [],
+  "items": [
+    {
+      "id": "i_gh_jiashu", "name": "靜觀的家書", "tab": "OTHER", "slot": "", "atk": 0, "def": 0, "weight": 0, "price": 0,
+      "stack": 1, "spoil_days": 0, "effects": [], "usable": false, "usable_in_battle": false, "no_sell": true,
+      "quest_item": true, "sect_only": "emei",
+      "desc": "靜觀師姐寫給俗家妹妹雲兒的家書，信封上寫著「雲兒吾妹親啟」。",
+      "era": "1.0A", "src": "verified", "src_note": "研究 孤鴻子：2001-07-18 簡介「送封家書回去」；收信人雲兒、姊妹關係【設計提案】"
+    },
+    {
+      "id": "i_gh_yunerxin", "name": "雲兒的信", "tab": "OTHER", "slot": "", "atk": 0, "def": 0, "weight": 0, "price": 0,
+      "stack": 1, "spoil_days": 0, "effects": [], "usable": false, "usable_in_battle": false, "no_sell": true,
+      "quest_item": true, "sect_only": "emei",
+      "desc": "雲兒託你帶回峨嵋的回信，信裡提到大理城西有明教的人出沒。",
+      "era": "1.0A", "src": "later", "src_note": "研究 孤鴻子：jy2001 t/300「雲兒的信」；2001 攻略寫「雲兒的回信」"
+    },
+    {
+      "id": "c_niuroubing", "name": "牛肉餅", "tab": "OTHER", "slot": "", "atk": 0, "def": 0, "weight": 1, "price": 8,
+      "stack": 20, "spoil_days": 3, "effects": [ { "type": "restore", "stat": "food", "value": 30 } ], "usable": true,
+      "usable_in_battle": false, "no_sell": false, "quest_item": false,
+      "desc": "煎得兩面金黃的牛肉餅，咬一口滿嘴肉香，比饅頭頂飽。",
+      "era": "1.0A", "src": "later", "src_note": "研究 孤鴻子：jy2001 t/300 雲兒給 3 清水 + 5 牛肉餅；價格與回復量比照 c_mantou 級距【設計提案】"
+    }
+  ],
+  "monsters": [
+    {
+      "id": "m_dl_mingjiao", "name": "明教分舵主", "short": "分舵主", "kind": "EVIL_NPC", "alignment": "NEUTRAL",
+      "desc": "一身白袍、胸前繡著火焰的明教分舵主，手中一口彎刀使得又快又怪。（存在：已證實 2001-09-01；數值：設計提案）",
+      "stats": { "qi": 1100, "neili": 200, "jing": 300, "str": 24, "guts": 26, "wit": 18, "luck": 15, "cal": 22, "agi": 24, "con": 24 },
+      "skills": { "basic_dodge": 40, "basic_parry": 40, "basic_inner": 30, "basic_blade": 40 },
+      "arts": [ { "art": "mon_blade", "level": 40 } ],
+      "weapon_type": "BLADE", "weapon_power": 18, "armor_power": 38,
+      "combat_xp_ref": 6000, "combat_xp": 90, "learn_points": 35,
+      "drops": [], "money": { "min": 50, "max": 120 },
+      "morality_on_kill": 0, "killing_intent_on_kill": 0,
+      "ai": "melee_basic", "no_rewards": false,
+      "era": "1.0A", "src": "proposal",
+      "src_note": "STORY_PLAN §3.4 級距 6000（研究：接任務門檻實戰 1000）；數值比照 m_wd_buyi 上調；明教並非惡人，擊敗不加善惡【設計提案】"
+    }
+  ],
+  "martial_arts": [],
+  "masters": [],
+  "text_templates": [
+    { "id": "talk_n_dl_cunmin", "era": "1.0A", "self": "{npc_name}擦了把汗：「今年雨水好，田裡的稻子長得旺。就是城西那片沙地，近來怪得很，沒事最好別往那邊跑。」", "src": "proposal" },
+    { "id": "talk_n_dl_cunmin@NIGHT", "era": "1.0A", "self": "{npc_name}收拾著扁擔，壓低了聲音：「天黑了還在外頭晃？聽說城西沙漠洞窟那邊，夜裡又冒火光了。」", "src": "proposal" },
+    { "id": "talk_n_dlw_guiyi", "era": "1.0A", "self": "{npc_name}背對著你，聲音忽高忽低地在洞裡迴響：「嘿嘿……是誰闖進來了？」", "src": "proposal" },
+    { "id": "talk_n_dlw_guiyi@NIGHT", "era": "1.0A", "self": "洞窟深處燃著一盆火，{npc_name}對著火光盤膝而坐，口中念念有詞，聽不清在念些什麼。", "src": "proposal" },
+    { "id": "rmr_q_guhongzi_first", "era": "1.0A", "self": "峨嵋派{name}孤身闖進大理城西的沙漠洞窟，擊敗了明教分舵主。孤鴻子當年借劍挑戰楊逍的舊事，又在江湖上傳開了。", "src": "proposal" },
+    { "id": "rmr_q_guhongzi_foreshadow", "era": "1.0A", "self": "聽說大理城西的沙漠洞窟裡，常有身穿白袍、胸前繡火的怪人出入，夜裡洞口還看得見火光。", "src": "proposal" },
+    { "id": "amb_gh_desertcave_night", "era": "1.0A", "self": "洞窟深處隱隱透出火光，石壁上映著一個人影，一動也不動。", "src": "proposal" },
+    { "id": "amb_gh_dl_square", "era": "1.0A", "self": "兩個趕集的村民湊在一起嘀咕：「……白袍子，胸口一團火，就在城西那個洞裡……」見你走近，便住了口。", "src": "proposal" }
+  ],
+  "rumors": [
+    {
+      "id": "rmr_row_q_guhongzi", "kind": "FORESHADOW", "quest": "q_guhongzi", "text": "rmr_q_guhongzi_foreshadow",
+      "requires_world": { "not_first": "q_guhongzi" }, "hours": [], "weight": 1,
+      "era": "1.0A", "src": "proposal", "src_note": "系統傳聞【設計提案・非原作】（D14）"
+    }
+  ],
+  "ambient": [
+    {
+      "id": "amb_ev_guhongzi_cave_night", "room": "dlw_desertcave", "periods": ["NIGHT"], "requires": [], "weight": 1,
+      "text": "amb_gh_desertcave_night", "era": "1.0A", "src": "proposal", "src_note": "環境句【設計提案・非原作】（§5.3）"
+    },
+    {
+      "id": "amb_ev_guhongzi_square", "room": "dl_square", "periods": ["DAY", "DUSK"],
+      "requires": [ { "type": "quest_stage", "quest": "q_guhongzi", "stage": ["s_villager", "s_official", "s_cave"] } ], "weight": 1,
+      "text": "amb_gh_dl_square", "era": "1.0A", "src": "proposal", "src_note": "環境句【設計提案・非原作】，只在任務進行到大理打聽時出現"
+    }
+  ],
+  "art_requests": {
+    "units": [
+      { "id": "n_dl_cunmin", "alias": "n_taoyun", "prompt": "Sun-darkened Dali (Yunnan) villager in a blue-dyed cotton short jacket and head wrap, carrying a bamboo shoulder pole with two baskets of vegetables, curious gossipy expression; wuxia RPG unit sprite." },
+      { "id": "n_dlw_guiyi", "alias": "m_bandit", "prompt": "Mysterious Ming Cult (明教) branch leader in a flowing white robe with a red flame emblem embroidered on the chest, curved sabre at his hip, half-shadowed gaunt face with an eerie smile, standing in a dim desert cave; wuxia RPG unit sprite." },
+      { "id": "m_dl_mingjiao", "alias": "m_bandit", "prompt": "Same Ming Cult branch leader as n_dlw_guiyi in battle stance, white robe flaring, curved sabre (彎刀) drawn, red flame emblem on chest; wuxia RPG battle sprite." }
+    ],
+    "backgrounds": []
+  },
+  "test_plan": [
+    {
+      "quest": "q_guhongzi", "outcome": "truth", "save_reload_at": "s_cave",
+      "setup": { "sect": "emei", "skills": { "em_xinfa": 5 }, "combat_xp": 1000, "fame": 100 },
+      "path": [
+        "walk@em_dadian", "accept@n_em_jingguan", "choose@n_em_jingguan:n0:c_ask", "choose@n_em_jingguan:n1:c_help",
+        "walk@xx_minfang", "talk@n_xx_yuner", "choose@n_xx_yuner:n0:c_give", "choose@n_xx_yuner:n3:c_thanks",
+        "walk@em_dadian", "talk@n_em_jingguan", "choose@n_em_jingguan:n0:c_letter", "choose@n_em_jingguan:n2:c_rumor", "choose@n_em_jingguan:n5:c_go",
+        "walk@dl_square", "talk@n_dl_cunmin", "choose@n_dl_cunmin:n0:c_ask", "choose@n_dl_cunmin:n2:c_thanks",
+        "walk@dl_yamen", "talk@n_dl_bukuai", "choose@n_dl_bukuai:n0:c_ask", "choose@n_dl_bukuai:n2:c_thanks",
+        "walk@dlw_desertcave", "talk@n_dlw_guiyi", "choose@n_dlw_guiyi:n0:c_ask", "choose@n_dlw_guiyi:n1:c_fight", "fight:WIN",
+        "talk@n_dlw_guiyi", "choose@n_dlw_guiyi:n0:c_ask", "choose@n_dlw_guiyi:n3:c_go",
+        "walk@em_dadian", "talk@n_em_jingguan", "choose@n_em_jingguan:n0:c_tell", "choose@n_em_jingguan:n2:c_ok",
+        "walk@em_miejue", "talk@n_em_miejue", "choose@n_em_miejue:n0:c_truth", "choose@n_em_miejue:n_reward:c_bow"
+      ],
+      "expect": { "outcome": "truth", "learn_points": 50, "fame": 10, "lilian": 10, "flags": ["em_juejian_ok"], "items": { "i_gh_jiashu": 0, "i_gh_yunerxin": 0, "c_water": 3, "c_niuroubing": 5 }, "rumor": "rmr_q_guhongzi_first" }
+    },
+    {
+      "quest": "q_guhongzi", "outcome": "silent", "save_reload_at": "s_fight",
+      "setup": { "sect": "emei", "skills": { "em_xinfa": 5 }, "combat_xp": 1000, "fame": 100 },
+      "path": [
+        "walk@em_dadian", "accept@n_em_jingguan", "choose@n_em_jingguan:n0:c_help",
+        "walk@xx_minfang", "talk@n_xx_yuner", "choose@n_xx_yuner:n0:c_give", "choose@n_xx_yuner:n3:c_thanks",
+        "walk@em_dadian", "talk@n_em_jingguan", "choose@n_em_jingguan:n0:c_letter", "choose@n_em_jingguan:n2:c_ask", "choose@n_em_jingguan:n5:c_go",
+        "walk@dl_square", "talk@n_dl_cunmin", "choose@n_dl_cunmin:n0:c_ask", "choose@n_dl_cunmin:n2:c_thanks",
+        "walk@dl_yamen", "talk@n_weixiaobao", "choose@n_weixiaobao:n0:c_ask", "choose@n_weixiaobao:n2:c_thanks",
+        "walk@dlw_desertcave", "talk@n_dlw_guiyi", "choose@n_dlw_guiyi:n0:c_ask", "choose@n_dlw_guiyi:n1:c_fight", "fight:FLEE",
+        "act@q_guhongzi:a_refight", "fight:WIN",
+        "talk@n_dlw_guiyi", "choose@n_dlw_guiyi:n0:c_scorn", "choose@n_dlw_guiyi:n3:c_go",
+        "walk@em_dadian", "talk@n_em_jingguan", "choose@n_em_jingguan:n0:c_tell", "choose@n_em_jingguan:n2:c_ok",
+        "walk@em_miejue", "talk@n_em_miejue", "choose@n_em_miejue:n0:c_silent", "choose@n_em_miejue:n_reward:c_bow"
+      ],
+      "expect": { "outcome": "silent", "learn_points": 50, "fame": 10, "lilian": 10, "flags": ["em_juejian_ok"] }
+    }
+  ],
+  "todo_verify": [
+    "【待考證】原作逐字對白：研究確認沒有留存，全部對白為【設計提案】，依 2001-07-18 官方簡介與 2001-09-01／09-02 攻略、2021 影片改寫。",
+    "【待考證】雲兒與靜觀的關係：簡介只說「靜觀師姐的家裡」、攻略只說送家書給西夏的雲兒；本碎片寫成俗家姊妹【設計提案】。",
+    "【待考證】雲兒回信的內容：攻略只說回信後靜觀才說出明教在大理的動靜；「大理客商見到白袍火紋的人」是【設計提案】的銜接。",
+    "【待考證】2001 年大理問話對象：2001 攻略是礦石大王、王大富人、李裁縫、樵夫，2021 影片是裝備店附近的村民；本碎片依 STORY_PLAN §7.3 改成「大理村民＋（捕快或韋小寶）」。",
+    "【待考證】沙漠洞窟的位置與樣貌：2001「大理左面的沙漠洞窟，往最左邊走」；2019 留言的座標是改版後的；dlw_desertcave 為【設計提案】。",
+    "【待考證】明教分舵主的數值與能否逃跑、輸了的後果（本碎片：可逃、可在洞內房間動作重打；FIGHT 要求 WIN）。",
+    "【待考證】門檻 峨嵋心法 5／實戰 1000／名聲 100 與獎勵 學點 50／名聲 10／歷練 10 出自後期攻略（src later）；2001 年的數值未知。",
+    "【待考證】滅絕「以後就可以和她學劍了，但要你等級達到要求」實際解鎖的是哪一門劍法；本碎片設 em_juejian_ok（絕劍，迴風拂柳劍 50 的既有門檻當「等級要求」）。",
+    "【待考證】孤鴻子死因的小說細節：楊逍奪劍後的原話、倚天劍落入官府後如何回到滅絕手中；對白只寫「冷笑幾聲、往地下一擲」與「落到了官府手裡」，不引原文。",
+    "【待考證】是否限峨嵋弟子：後期門檻含峨嵋心法 5，等同限峨嵋；本碎片另加 sect emei 條件。",
+    "【待考證】是否有善惡變化、是否可重複：攻略未記錄；依 D2 每角色一次、不改善惡。"
+  ],
+  "owner_decisions": [
+    "D1：事件日期採官方 TW 2001-07-18 簡介；17173 攻略日期記在 src_note。",
+    "D2：每角色一次（repeat.max = 1）。",
+    "D17：對白稱「靜觀師姐」，NPC 名稱 靜觀師太 不改。",
+    "D18：獎勵含 lilian 10。",
+    "研究預設：靜觀說小說版死因（借倚天劍、劍未出鞘被楊逍奪去擲地、歸途病故、劍落官府），不採「師伯與師姪」玩笑說法。",
+    "研究預設：明教洞窟用提案房間 dlw_desertcave（_world 建立，無座標）。",
+    "研究預設：替天行道丙（明教追捕）併入本任務，不另做。",
+    "新預設：門檻採後期數值並加 sect emei（src later）；四個條件全寫在 requires。",
+    "新預設：雲兒是靜觀的俗家妹妹，與 ev_yuner 的「爹娘催嫁」設定呼應；q_yuner 與本任務互相獨立，不要求先後。",
+    "新預設：大理問話分兩階段——先問五華樓前的村民，再於衙門問捕快或韋小寶（any，任一即可）。",
+    "新預設：明教分舵主落敗不死（NPC 詭異的人留在洞窟），擊敗不加善惡（morality_on_kill 0）；可拉隊友（party_credit，非 solo）；打輸或逃跑可用房間動作「再找詭異的人動手」重打。",
+    "新預設：滅絕處新增「說實話／隱瞞」選擇，兩個結局（truth、silent）獎勵完全相同，只差對白與結局名；說實話會被滅絕斥責（呼應原著性格）。",
+    "新預設（需擁有者確認）：完成時設 em_juejian_ok 旗標，把 2001 攻略「以後就可以和她學劍了，但要你等級達到要求」落實為解鎖絕劍（仍要迴風拂柳劍 50 才能學）。若擁有者不同意，刪掉兩個結局 rewards.flags 即可。",
+    "新預設：雲兒給的 3 清水、5 牛肉餅照後期攻略（src later），用 give 動作在交信的同一個選項裡發放；家書與回信都設 sect_only emei。"
+  ],
+  "notes": "STORY_PLAN 缺漏：(1) FIGHT 目標沒有 npc 欄位，因此「找詭異的人 → 開打」拆成 s_cave（TALK，對話選項先 complete o_meet 再 fight，obj 指向下一階段的 o_fight）與 s_fight（FIGHT WIN＋房間動作 a_refight 可重打）；若引擎在開戰時就檢查 obj 必須屬於目前階段，請 WP-ENGINE 讓 on_battle_settled 以結算時的階段為準。(2) 所有關鍵的 take/give/complete 都放在選項的 do 裡（不放在後面的節點），避免對話游標不存檔造成拿走物品卻沒推進。(3) n_em_jingguan 既有 services 是空陣列，npc_links 只追加 quests；若選單需要 QUEST 服務才顯示任務項，請 WP-MERGE 追加（不屬本碎片權限）。(4) n_dl_cunmin、n_dlw_guiyi 的房間 npcs 陣列由 WP-MERGE 依 room 欄位補上；dlw_desertcave 由 _world 建立。(5) test_plan 的 setup 是 bot 前置（門派、技能、實戰、名聲），可用 debug intent 設定；明教分舵主 combat_xp_ref 6000，門檻角色（實戰 1000）單打不一定贏，bot 可能需要 debug 強化或組隊。(6) 傳聞與環境句模板沿用 text_templates 的 self 欄位，傳聞參數 {name}。(7) test_plan 的 expect 數值是本任務帶來的差額。"
+}

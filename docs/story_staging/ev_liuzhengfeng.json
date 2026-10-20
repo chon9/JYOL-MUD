@@ -1,0 +1,551 @@
+{
+  "fragment": "ev_liuzhengfeng",
+  "version": 1,
+  "author": "WP-C-ev_liuzhengfeng",
+  "quests": [
+    {
+      "id": "q_liu_jinpen",
+      "name": "劉二爺金盆洗手（上）",
+      "chapter": "衡山・劉二爺金盆洗手",
+      "group": "ev_liuzhengfeng",
+      "giver": "n_hn_liugongzi",
+      "era": "1.0A",
+      "src": "verified",
+      "dialogue_src": "proposal",
+      "src_note": "研究 劉二爺金盆洗手：17173 tishi.htm 2001-07-18（官方簡介原文）；17173 2001-08-29「劉正風事件」n215_132057（劉公子、黃昏、莫大、1000 元）；2004 攻略給予者為衡山弟子／申時（D3 取 2001 版）",
+      "text": "衡山派第二把交椅的劉正風決心退隱江湖，正準備大發武林帖給諸位武林同道，素聞莫掌門與劉二爺不和，正巧莫先生不知到了哪去，以致帖子無法傳達。衡山在武當山的東南：從武當山下往北到古道南岔，再往東南走衡陽古道、過湘江渡口，往南就是衡山下，劉公子就在池塘邊。",
+      "requires": [],
+      "give_items": [ { "id": "i_hn_wulintie", "n": 1 } ],
+      "repeat": { "max": 1, "cooldown_days": 0 },
+      "abandon": true,
+      "party_credit": true,
+      "start": "s_moda",
+      "offer": "d_offer",
+      "stages": [
+        {
+          "id": "s_moda",
+          "title": "黃昏海邊的琴聲",
+          "log": "劉公子把武林帖交給你，要你送到衡山掌門莫大先生手上。莫大先生行蹤不定，只在黃昏時分（申時、酉時）到上山路口的海邊獨坐拉胡琴。從衡山下往東北走到上山路口海邊候著；別的時辰去只見江風不見人，黃昏時分再來。",
+          "hint_room": "hn_shore",
+          "objectives": [
+            { "id": "o_moda", "type": "TALK", "npc": "n_hn_moda", "dialogue": "d_moda", "hours": ["申", "酉"], "text": "申、酉時到上山路口海邊，把武林帖交給莫大先生" }
+          ],
+          "next": "s_return"
+        },
+        {
+          "id": "s_return",
+          "title": "帖子留在衡山",
+          "log": "莫大先生不肯收帖，只說「衡山派的帖子，留在衡山便是」。從海邊往西南回到衡山下，把武林帖交還池塘邊的劉公子。",
+          "hint_room": "hn_foot",
+          "objectives": [
+            { "id": "o_return", "type": "TALK", "npc": "n_hn_liugongzi", "dialogue": "d_return", "text": "回衡山下，把武林帖交還劉公子" }
+          ],
+          "next": "END"
+        }
+      ],
+      "dialogues": {
+        "d_offer": {
+          "start": "n0",
+          "nodes": {
+            "n0": {
+              "speaker": "npc",
+              "src_note": "依 17173 tishi.htm 2001-07-18 官方簡介改寫；劉公子之名出自 2001-08-29 攻略【設計提案】",
+              "text": "（池塘邊一位錦衣少年拱手為禮。）這位{name}請了。在下姓劉，家父便是衡山派的劉二爺。家父厭倦了江湖上的打打殺殺，決意擇個吉日金盆洗手，從此退隱林泉。武林帖都已寫好，各路英雄的帖子也陸續送出了，只是……本派掌門莫大師伯這一份，卻怎麼也送不出去。師伯行蹤飄忽，誰也不知道他人在哪裡。",
+              "choices": [
+                { "id": "c_why", "label": "聽說莫掌門與令尊不和？", "goto": "n_why" },
+                { "id": "c_help", "label": "這份帖子，我替你送去。", "do": [ { "do": "accept" } ], "goto": "n_ok" },
+                { "id": "c_no", "label": "我還有要事在身。", "goto": "n_no" }
+              ]
+            },
+            "n_why": {
+              "speaker": "npc",
+              "text": "（劉公子苦笑一聲。）師伯和家父性子不合，一個愛清靜，一個好結交朋友，這些年是少了往來。可同門終究是同門，金盆洗手這等大事，總不能不知會掌門一聲。",
+              "choices": [
+                { "id": "c_help2", "label": "既是如此，帖子交給我吧。", "do": [ { "do": "accept" } ], "goto": "n_ok" },
+                { "id": "c_no2", "label": "這是你們衡山派的家務事，我不便插手。", "goto": "n_no" }
+              ]
+            },
+            "n_ok": {
+              "speaker": "npc",
+              "text": "多謝！聽本派弟子說，莫師伯黃昏時分常在衡山北邊大江口、上山路口的海邊獨坐拉琴。申時、酉時到那裡候著，或許碰得上他老人家。",
+              "goto": "END"
+            },
+            "n_no": {
+              "speaker": "npc",
+              "text": "是在下唐突了。閣下若是改了主意，我一直在這池塘邊等著。",
+              "goto": "END"
+            }
+          }
+        },
+        "d_moda": {
+          "start": "n0",
+          "resume": "n0",
+          "nodes": {
+            "n0": {
+              "speaker": "npc",
+              "src_note": "2001-08-29 攻略：黃昏在衡山北邊大江邊等劉正風，來的卻是莫大先生；胡琴與〈瀟湘夜雨〉取自《笑傲江湖》第 6–7 回【設計提案】",
+              "text": "（礁石上坐著一個瘦削的老者，身穿洗得發白的青布長衫，手裡一把破舊胡琴，咿咿呀呀拉著一曲〈瀟湘夜雨〉。琴聲淒淒切切，像一場下不完的夜雨。）",
+              "choices": [
+                { "id": "c_tie", "label": "晚輩奉劉公子之託，送劉二爺的武林帖給莫掌門。", "goto": "n1" },
+                { "id": "c_leave", "label": "（不敢打擾，悄悄退開）", "goto": "END" }
+              ]
+            },
+            "n1": {
+              "speaker": "npc",
+              "text": "（琴聲一停。老者瞇著眼瞧了瞧帖上的字，嘿嘿冷笑。）金盆洗手？洗手便洗手，大宴賓客、廣發帖子，鬧得天下皆知，這也叫洗手麼？江湖上的事，從來不是一盆清水洗得乾淨的。劉師弟交朋友交得太雜，總有一天要吃大虧。",
+              "choices": [
+                { "id": "c_ask", "label": "莫掌門這話是什麼意思？", "goto": "n2" },
+                { "id": "c_take", "label": "那這份帖子……", "goto": "n3" }
+              ]
+            },
+            "n2": {
+              "speaker": "npc",
+              "text": "（莫大搖了搖頭，又拉了兩下胡琴。）小娃兒，有些事你不知道，比知道的好。",
+              "choices": [
+                { "id": "c_take2", "label": "晚輩明白。那這份帖子……", "goto": "n3" }
+              ]
+            },
+            "n3": {
+              "speaker": "npc",
+              "text": "帖子我不收。你拿回去，就說衡山派的帖子，留在衡山便是。到了那一天，我莫大自會知道。（話聲未落，琴聲又起。你一轉眼，礁石上已空無一人，只剩江風颯颯。）",
+              "do": [ { "do": "complete", "obj": "o_moda" } ],
+              "goto": "END"
+            }
+          }
+        },
+        "d_return": {
+          "start": "n0",
+          "resume": "n0",
+          "nodes": {
+            "n0": {
+              "speaker": "npc",
+              "src_note": "2001-08-29 攻略：莫大要你把信留在衡山，回去找劉公子，得 1000 元",
+              "text": "（劉公子迎了上來。）怎麼樣？見著莫師伯了麼？",
+              "choices": [
+                { "id": "c_give", "label": "莫掌門不肯收帖，要我把帖子留在衡山。", "requires": [ { "type": "has_item", "item": "i_hn_wulintie", "n": 1 } ], "do": [ { "do": "take", "item": "i_hn_wulintie", "n": 1 }, { "do": "complete", "obj": "o_return" } ], "goto": "n1" },
+                { "id": "c_later", "label": "還沒找著，我再去候候看。", "goto": "n_later" }
+              ]
+            },
+            "n1": {
+              "speaker": "npc",
+              "text": "（劉公子接過帖子，怔了半晌，長嘆一聲。）師伯肯見你一面，也就算是知道了。他不來便不來，家父那邊，我自會稟明。這一趟辛苦了，這一千兩銀子是家父的一點心意，請務必收下。洗手那天，閣下若路過衡山城，也來喝一杯水酒。",
+              "goto": "END"
+            },
+            "n_later": {
+              "speaker": "npc",
+              "text": "莫師伯只在黃昏時分出沒，申時、酉時到東北邊上山路口的海邊候著便是。",
+              "goto": "END"
+            }
+          }
+        }
+      },
+      "outcomes": {
+        "default": {
+          "label": "武林帖留在了衡山",
+          "rewards": { "money": 1000 },
+          "src": "verified",
+          "src_note": "17173 2001-08-29 n215_132057：回劉公子處得「1000元」；無學點（§1.4 取代 GDD 的 300 兩 + 50 學點提案）"
+        }
+      },
+      "rumors": { "first": "rmr_q_liu_jinpen_first", "each": "rmr_q_liu_jinpen_each", "foreshadow": "rmr_fs_q_liu_jinpen" }
+    },
+    {
+      "id": "q_liu_jinpen_2",
+      "name": "劉二爺金盆洗手（下）",
+      "chapter": "衡山・劉二爺金盆洗手",
+      "group": "ev_liuzhengfeng",
+      "giver": "n_hn_lulianrong",
+      "era": "1.0A",
+      "src": "later",
+      "dialogue_src": "proposal",
+      "src_note": "研究 劉二爺金盆洗手（下）：巴哈 G2 sn=352；jy2001 t/1876「魯連榮秘密客任務」；17173 gaoshou/23（魯連榮 23262.18034 衡山下方小島過橋旁、秘密客在衡山小茶店右上龍門遺孤旁）。上線日期【待考證】，最早確證 2004-09-06",
+      "text": "衡山派的魯連榮聽說江湖上冒出一個秘密組織，要趁劉二爺金盆洗手、群雄齊聚衡山的時候搞出名堂，想找個信得過的人去探個究竟。魯連榮在衡山下方的小島上：從衡山下往東南過小島石橋，再往南就到。",
+      "requires": [ { "type": "quest_done", "quest": "q_liu_jinpen" } ],
+      "give_items": [],
+      "repeat": { "max": 1, "cooldown_days": 0 },
+      "abandon": true,
+      "party_credit": true,
+      "start": "s_rest",
+      "offer": "d_offer",
+      "stages": [
+        {
+          "id": "s_rest",
+          "title": "茶店候客",
+          "log": "魯連榮打聽到那秘密組織在衡山小茶店接頭。從衡山下往東走進小茶店，坐下「休息」，等他們自己找上門來。暗語：問你天上兩盞燈，答「太陽月亮」；問你遇上對頭怎麼辦，答「剷平他」。",
+          "hint_room": "hn_teahouse",
+          "room_actions": [
+            {
+              "id": "a_rest",
+              "room": "hn_teahouse",
+              "label": "休息",
+              "hours": [],
+              "requires": [],
+              "repeat": false,
+              "do": [
+                { "do": "tell", "key": "tell_q_liu_jinpen_2_rest" },
+                { "do": "var", "name": "rested", "value": true },
+                { "do": "complete", "obj": "o_rest" }
+              ]
+            }
+          ],
+          "objectives": [
+            { "id": "o_rest", "type": "STATE", "requires": [ { "type": "quest_var", "quest": "q_liu_jinpen_2", "var": "rested", "value": true } ], "text": "在衡山小茶店坐下「休息」" }
+          ],
+          "next": "s_mimike"
+        },
+        {
+          "id": "s_mimike",
+          "title": "對暗語",
+          "log": "茶店角落多了一個頭戴斗笠的秘密客。上前搭話，對上魯連榮給的暗語。答錯了他便不理你，再找他搭話重來一次。",
+          "hint_room": "hn_teahouse",
+          "objectives": [
+            { "id": "o_mimike", "type": "TALK", "npc": "n_hn_mimike", "dialogue": "d_mimike", "text": "在衡山小茶店找秘密客對暗語" }
+          ],
+          "next": "s_fight"
+        },
+        {
+          "id": "s_fight",
+          "title": "魔教伏擊",
+          "log": "秘密組織是魔教設下的圈套！魔教教徒一擁而上，打不過就逃，逃出去也算數。若是被打倒了，回衡山小茶店再找秘密客算帳。",
+          "hint_room": "hn_teahouse",
+          "on_enter": [
+            { "do": "tell", "key": "tell_q_liu_jinpen_2_ambush" },
+            { "do": "fight", "monsters": ["m_hn_mojiao", "m_hn_mojiao", "m_hn_mojiao", "m_hn_mojiao", "m_hn_mojiao", "m_hn_mojiao"], "no_flee": false, "solo": false, "obj": "o_fight", "npc": "n_hn_mimike" }
+          ],
+          "room_actions": [
+            {
+              "id": "a_refight",
+              "room": "hn_teahouse",
+              "label": "找秘密客算帳",
+              "hours": [],
+              "requires": [],
+              "repeat": true,
+              "do": [
+                { "do": "tell", "key": "tell_q_liu_jinpen_2_ambush" },
+                { "do": "fight", "monsters": ["m_hn_mojiao", "m_hn_mojiao", "m_hn_mojiao", "m_hn_mojiao", "m_hn_mojiao", "m_hn_mojiao"], "no_flee": false, "solo": false, "obj": "o_fight", "npc": "n_hn_mimike" }
+              ]
+            }
+          ],
+          "objectives": [
+            { "id": "o_fight", "type": "FIGHT", "win": "WIN_OR_FLEE", "text": "擊退或逃離 6 名魔教教徒" }
+          ],
+          "next": "s_report"
+        },
+        {
+          "id": "s_report",
+          "title": "魔教的圈套",
+          "log": "不管打贏還是逃脫，都得讓魯連榮知道這是魔教的圈套。從衡山小茶店往西回衡山下，再往東南過小島石橋，往南到小島上找他。",
+          "hint_room": "hn_island",
+          "objectives": [
+            { "id": "o_report", "type": "TALK", "npc": "n_hn_lulianrong", "dialogue": "d_lu_report", "text": "回衡山下方小島，告訴魯連榮這是魔教的圈套" }
+          ],
+          "next": "END"
+        }
+      ],
+      "dialogues": {
+        "d_offer": {
+          "start": "n0",
+          "nodes": {
+            "n0": {
+              "speaker": "npc",
+              "src_note": "巴哈 G2 sn=352：魯連榮談起秘密組織，選「幫他」再選「明白」，他給暗語提示；魯連榮口吻取自《笑傲江湖》金眼雕【設計提案】",
+              "text": "（一個身材魁梧的漢子盤坐在島上大石上，一雙金眼滴溜溜亂轉，正自生悶氣。）哼！你就是替劉師弟送帖子的那個？算你還有點用處。老子跟你說件事：這些日子江湖上傳得沸沸揚揚，說有個秘密組織專在衡山一帶聚頭，要趁劉師弟金盆洗手、各路英雄齊聚的時候搞出名堂。衡山派的地頭，豈容這些鼠輩撒野？",
+              "choices": [
+                { "id": "c_help", "label": "幫他", "goto": "n1" },
+                { "id": "c_refuse", "label": "不關我的事。", "goto": "n_no" }
+              ]
+            },
+            "n1": {
+              "speaker": "npc",
+              "text": "好！有骨氣！不過這事半點聲張不得。劉師弟的大日子在即，要是走漏了風聲、嚇跑了魚兒，老子唯你是問。聽清楚了沒有？",
+              "choices": [
+                { "id": "c_ming", "label": "明白", "do": [ { "do": "accept" } ], "goto": "n2" },
+                { "id": "c_bu", "label": "這……我得再想想。", "goto": "n_no" }
+              ]
+            },
+            "n2": {
+              "speaker": "npc",
+              "text": "老子打聽到了，那些人在衡山小茶店接頭，見了面要對兩句暗語：人家問你天上兩盞燈，你答『太陽月亮』；問你遇上對頭怎麼辦，你答『剷平他』。你去茶店坐下歇著，等他們自己找上門來，摸清楚是什麼來頭，再回來告訴我。",
+              "goto": "END"
+            },
+            "n_no": {
+              "speaker": "npc",
+              "text": "哼，膽小鬼！滾滾滾，別礙著老子。",
+              "goto": "END"
+            }
+          }
+        },
+        "d_mimike": {
+          "start": "n0",
+          "resume": "n0",
+          "nodes": {
+            "n0": {
+              "speaker": "npc",
+              "src_note": "巴哈 G2 sn=352、jy2001 t/1876：答「太陽月亮..」再答「剷平他」（原文截斷，補完部分【待考證】）",
+              "text": "（角落裡一個頭戴斗笠的漢子放下茶碗，壓低了嗓子。）朋友，天上兩盞燈，一盞白日亮，一盞夜裡明，照的是哪一家？",
+              "choices": [
+                { "id": "c_sun", "label": "太陽月亮，一統江湖。", "goto": "n1" },
+                { "id": "c_w1", "label": "天地日月，正氣長存。", "goto": "n_bad" },
+                { "id": "c_w2", "label": "我只是來喝茶的。", "goto": "n_bad" }
+              ]
+            },
+            "n1": {
+              "speaker": "npc",
+              "text": "（斗笠下的目光一閃。）嘿，自己人。那我再問你：路上遇著了對頭，怎麼辦？",
+              "choices": [
+                { "id": "c_chan", "label": "剷平他！", "goto": "n2" },
+                { "id": "c_w3", "label": "能饒人處且饒人。", "goto": "n_bad" },
+                { "id": "c_w4", "label": "繞道走就是了。", "goto": "n_bad" }
+              ]
+            },
+            "n_bad": {
+              "speaker": "npc",
+              "text": "（那漢子端起茶碗自顧自地喝茶，再也不朝你看一眼。）",
+              "goto": "END"
+            },
+            "n2": {
+              "speaker": "npc",
+              "text": "（秘密客仰天大笑，一把掀開斗笠。）好，好一個『剷平他』！可惜啊可惜——",
+              "choices": [
+                { "id": "c_what", "label": "可惜什麼？", "goto": "n3" }
+              ]
+            },
+            "n3": {
+              "speaker": "npc",
+              "text": "什麼秘密組織？那是教主故意放出去的風聲！暗語也是咱們自己洩出去的。對得上暗語的，全是自以為是、送上門來的正道蠢材——今日正好拿你祭旗！兄弟們，動手！",
+              "do": [ { "do": "complete", "obj": "o_mimike" } ],
+              "goto": "END"
+            }
+          }
+        },
+        "d_lu_report": {
+          "start": "n0",
+          "resume": "n0",
+          "nodes": {
+            "n0": {
+              "speaker": "npc",
+              "src_note": "巴哈 G2 sn=352：回魯連榮處，他受了傷、要你稍等；jy2001 t/1876：「我跟他說是魔教的圈套」",
+              "text": "（魯連榮臉色蠟黃，左肩纏著布條，滲出一大片血跡。）你……你也回來了？他奶奶的，老子在島上被幾個蒙面人偷襲，挨了一掌。",
+              "choices": [
+                { "id": "c_trap", "label": "這是魔教的圈套！", "goto": "n1" },
+                { "id": "c_wait", "label": "前輩傷勢要緊麼？", "goto": "n_wait" }
+              ]
+            },
+            "n_wait": {
+              "speaker": "npc",
+              "text": "死不了！你等等，讓老子先運一口氣……（他盤膝坐下，閉目調息了好一會兒，才睜開眼來。）說吧，茶店那邊怎麼樣了？",
+              "choices": [
+                { "id": "c_trap2", "label": "這是魔教的圈套！", "goto": "n1" }
+              ]
+            },
+            "n1": {
+              "speaker": "npc",
+              "text": "什麼？那秘密組織根本是魔教放的風聲，暗語也是他們故意洩的？……好毒的計策！專釣我們這些愛管閒事的正道中人。偷襲老子的那幾個，八成也是一夥的。",
+              "choices": [
+                { "id": "c_next", "label": "前輩打算怎麼辦？", "goto": "n2" }
+              ]
+            },
+            "n2": {
+              "speaker": "npc",
+              "text": "（魯連榮一拳搥在石上。）劉師弟的大日子就要到了，魔教的人卻在衡山出沒，這事決不簡單。老子這就去稟告掌門師兄。你這回立了功，衡山派上下都記下了。",
+              "do": [ { "do": "complete", "obj": "o_report" } ],
+              "goto": "END"
+            }
+          }
+        }
+      },
+      "outcomes": {
+        "default": {
+          "label": "識破魔教的圈套",
+          "rewards": { "fame": 40, "lilian": 40 },
+          "src": "later",
+          "src_note": "巴哈 G2 sn=352：名聲 +40、江湖歷練 +40；無銀兩、物品、善惡。D4：逃跑也算完成，獎勵照給"
+        }
+      },
+      "rumors": { "first": "rmr_q_liu_jinpen_2_first", "each": "rmr_q_liu_jinpen_2_each", "foreshadow": "rmr_fs_q_liu_jinpen_2" }
+    }
+  ],
+  "npcs": [
+    {
+      "id": "n_hn_liugongzi", "name": "劉公子", "kind": "QUEST", "region": "hengshan_s", "room": "hn_foot", "alignment": "GOOD",
+      "talk": "talk_n_hn_liugongzi", "services": ["QUEST"], "night_closed": false, "quests": ["q_liu_jinpen"],
+      "desc": "錦衣玉帶的少年公子，站在衡山下的池塘邊，眉宇間帶著幾分憂色。",
+      "era": "1.0A", "src": "verified",
+      "src_note": "17173 2001-08-29 n215_132057：衡山大門對面池塘旁的劉公子；是否即小說中劉正風之子劉芹【待考證】"
+    },
+    {
+      "id": "n_hn_dizi", "name": "衡山弟子", "kind": "STORY", "region": "hengshan_s", "room": "hn_foot", "alignment": "GOOD",
+      "talk": "talk_n_hn_dizi", "services": [], "night_closed": false,
+      "desc": "腰懸長劍的衡山派弟子，正忙著招呼往衡山城道賀的江湖客。",
+      "era": "1.0A", "src": "later",
+      "src_note": "2004 攻略的劉二爺（上）給予者為衡山弟子（申時）；本作 D3 給予者改為劉公子，衡山弟子只負責指路【設計提案】"
+    },
+    {
+      "id": "n_hn_moda", "name": "莫大先生", "kind": "STORY", "region": "hengshan_s", "room": "hn_shore", "alignment": "GOOD",
+      "talk": "talk_n_hn_moda", "services": [], "night_closed": false,
+      "appear": { "hours": ["申", "酉"], "requires": [] },
+      "desc": "衡山派掌門，瘦削的老者，一襲洗得發白的青布長衫，手裡總拿著一把破舊的胡琴。",
+      "era": "1.0A", "src": "verified",
+      "src_note": "17173 2001-08-29：黃昏在衡山北邊大江邊遇莫大先生；D3：只在申、酉時出現；胡琴取自《笑傲江湖》"
+    },
+    {
+      "id": "n_hn_lulianrong", "name": "魯連榮", "kind": "STORY", "region": "hengshan_s", "room": "hn_island", "alignment": "GOOD",
+      "talk": "talk_n_hn_lulianrong", "services": ["QUEST"], "night_closed": false, "quests": ["q_liu_jinpen_2"],
+      "desc": "衡山派的魯連榮，人稱「金眼雕」，身材魁梧，一雙金眼目光閃爍，說話粗聲粗氣。",
+      "era": "1.0A", "src": "later",
+      "src_note": "17173 gaoshou/23：衡山派魯連榮 23262.18034 衡山下方小島過橋旁邊；巴哈 G2 sn=352；綽號金眼雕取自《笑傲江湖》"
+    },
+    {
+      "id": "n_hn_mimike", "name": "秘密客", "kind": "STORY", "region": "hengshan_s", "room": "hn_teahouse", "alignment": "EVIL",
+      "talk": "talk_n_hn_mimike", "services": [], "night_closed": false,
+      "appear": { "hours": [], "requires": [ { "type": "quest_stage", "quest": "q_liu_jinpen_2", "stage": ["s_mimike", "s_fight"] } ] },
+      "desc": "頭戴斗笠、壓低帽簷的漢子，獨自坐在茶店角落，茶碗裡的茶早就涼了。",
+      "era": "1.0A", "src": "later",
+      "src_note": "17173 gaoshou/23：衡山小茶店右上龍門遺孤旁；巴哈 G2 sn=352：休息後點秘密客"
+    }
+  ],
+  "npc_links": [],
+  "shop_patches": [],
+  "art_patches": [],
+  "items": [
+    {
+      "id": "i_hn_wulintie", "name": "武林帖", "tab": "OTHER", "slot": "", "atk": 0, "def": 0, "weight": 0, "price": 0, "stack": 1, "spoil_days": 0,
+      "effects": [], "usable": false, "usable_in_battle": false, "no_sell": true, "quest_item": true,
+      "desc": "大紅灑金的請帖，上書「衡山劉正風謹擇吉日金盆洗手，恭請光臨」，是要送給衡山派掌門莫大先生的那一份。",
+      "era": "1.0A", "src": "verified",
+      "src_note": "17173 tishi.htm 2001-07-18：「大發武林帖給諸位武林同道」；帖上文字【設計提案】"
+    }
+  ],
+  "monsters": [
+    {
+      "id": "m_hn_mojiao", "name": "魔教教徒", "short": "教徒", "kind": "EVIL_NPC", "alignment": "EVIL",
+      "desc": "黑巾裹頭的魔教教徒，出手狠辣，向來成群結隊。（存在：原作 6–7 人圍攻；數值：設計提案，6 隻同場，設計上可逃）",
+      "stats": { "qi": 1100, "neili": 150, "jing": 280, "str": 23, "guts": 24, "wit": 16, "luck": 15, "cal": 20, "agi": 23, "con": 22 },
+      "skills": { "basic_dodge": 40, "basic_parry": 40, "basic_inner": 25, "basic_blade": 40 },
+      "arts": [ { "art": "mon_blade", "level": 40 } ],
+      "weapon_type": "BLADE", "weapon_power": 18, "armor_power": 40,
+      "combat_xp_ref": 8000, "combat_xp": 80, "learn_points": 30,
+      "drops": [ { "item": "c_qiyao", "chance": 0.2, "min": 1, "max": 1 } ],
+      "money": { "min": 30, "max": 90 },
+      "morality_on_kill": 5, "killing_intent_on_kill": 5,
+      "ai": "melee_basic", "no_rewards": false,
+      "era": "1.0A", "src": "proposal",
+      "src_note": "巴哈 G2 sn=352、jy2001 t/1876：6–7 名 NPC 圍攻、可逃；STORY_PLAN §3.4 級距 8000；數值比照 m_wd_buyi（6000）上調【設計提案】"
+    }
+  ],
+  "martial_arts": [],
+  "masters": [],
+  "text_templates": [
+    { "id": "talk_n_hn_liugongzi", "era": "1.0A", "self": "{npc_name}望著池塘裡的游魚出神：「家父常說，人在江湖，身不由己。如今他老人家總算想通了，只盼那一天平平安安地過去。」", "src": "proposal" },
+    { "id": "talk_n_hn_liugongzi@NIGHT", "era": "1.0A", "self": "{npc_name}提著一盞燈籠，還守在池塘邊：「這麼晚了還在趕路？衡山城裡的客店早住滿了道賀的客人，閣下可得另尋地方歇腳。」", "src": "proposal" },
+    { "id": "talk_n_hn_dizi", "era": "1.0A", "self": "{npc_name}抱拳道：「劉師叔金盆洗手的日子近了，衡山城裡天天有各路英雄來道賀。掌門師伯？他老人家神出鬼沒，聽說黃昏申、酉時分，常在東北邊上山路口的海邊拉胡琴。」", "src": "proposal" },
+    { "id": "talk_n_hn_dizi@NIGHT", "era": "1.0A", "self": "{npc_name}打了個呵欠：「白天迎客，晚上巡夜。最近衡山一帶生面孔多，閣下夜裡也小心些。」", "src": "proposal" },
+    { "id": "talk_n_hn_moda", "era": "1.0A", "self": "{npc_name}自顧自地拉著胡琴，琴聲淒淒切切，像一場下不完的夜雨。他頭也不抬：「聽琴就站遠些。」", "src": "proposal" },
+    { "id": "talk_n_hn_moda@DUSK", "era": "1.0A", "self": "夕陽沉進江心，{npc_name}的琴聲忽高忽低。曲子未完，他已收起胡琴，望著江水淡淡地道：「天要黑了，年輕人早些回去。」", "src": "proposal" },
+    { "id": "talk_n_hn_lulianrong", "era": "1.0A", "self": "{npc_name}瞪了你一眼：「看什麼看？老子金眼雕魯連榮，衡山派的，沒聽過？」", "src": "proposal" },
+    { "id": "talk_n_hn_lulianrong@NIGHT", "era": "1.0A", "self": "{npc_name}抱著膀子坐在石上，盯著黑漆漆的江面：「哼，夜裡這島上清靜，正好讓老子想想，是哪個王八蛋在背後嚼舌根。」", "src": "proposal" },
+    { "id": "talk_n_hn_mimike", "era": "1.0A", "self": "{npc_name}把斗笠壓得更低：「茶涼了，話也就少了。」", "src": "proposal" },
+    { "id": "tell_q_liu_jinpen_2_rest", "era": "1.0A", "self": "你在茶店角落揀了張空桌坐下，叫了一壺粗茶，慢慢喝著。過了好一陣子，一個頭戴斗笠的漢子走了進來，在隔壁桌坐下，有意無意地朝你看了幾眼。", "src": "proposal" },
+    { "id": "tell_q_liu_jinpen_2_ambush", "era": "1.0A", "self": "茶店門口人影一晃，六名黑巾裹頭的魔教教徒刀光霍霍，把你團團圍住！打不過就快逃！", "src": "proposal" },
+    { "id": "rmr_q_liu_jinpen_first", "era": "1.0A", "self": "{name}替衡山劉公子把武林帖送到了莫大先生跟前。莫大先生不肯收帖，只撂下一句「衡山派的帖子，留在衡山便是」。", "src": "proposal" },
+    { "id": "rmr_q_liu_jinpen_each", "era": "1.0A", "self": "又有人替劉公子奔走送帖。衡山劉二爺金盆洗手的日子，越來越近了。", "src": "proposal" },
+    { "id": "rmr_fs_q_liu_jinpen", "era": "1.0A", "self": "聽說衡山劉正風要金盆洗手了，莫大先生卻不知去向，劉家的武林帖送不出去。", "src": "proposal" },
+    { "id": "rmr_q_liu_jinpen_2_first", "era": "1.0A", "self": "衡山小茶店一場混戰！{name}識破了魔教假託秘密組織的圈套，魯連榮放話，要衡山派上下嚴加提防。", "src": "proposal" },
+    { "id": "rmr_q_liu_jinpen_2_each", "era": "1.0A", "self": "衡山腳下又有人跟魔教教徒動上了手。看來劉二爺的金盆洗手大會，不會太平。", "src": "proposal" },
+    { "id": "rmr_fs_q_liu_jinpen_2", "era": "1.0A", "self": "衡山一帶傳言，有個秘密組織要在劉二爺金盆洗手時搞出名堂。魯連榮正四處找幫手。", "src": "proposal" },
+    { "id": "amb_hn_shore_huqin", "era": "1.0A", "self": "江風裡隱隱傳來一陣胡琴聲，咿咿呀呀，說不出的淒涼。", "src": "proposal" },
+    { "id": "amb_hn_foot_guests", "era": "1.0A", "self": "幾個佩刀帶劍的江湖客說說笑笑地往衡山城去，口裡都在談論劉二爺金盆洗手的排場。", "src": "proposal" },
+    { "id": "amb_hn_teahouse_whisper", "era": "1.0A", "self": "茶店角落有人壓低了嗓門說話，見你望過去，立刻閉上了嘴。", "src": "proposal" }
+  ],
+  "rumors": [
+    { "id": "rm_fs_q_liu_jinpen", "kind": "FORESHADOW", "quest": "q_liu_jinpen", "text": "rmr_fs_q_liu_jinpen", "requires_world": { "not_first": "q_liu_jinpen" }, "hours": [], "weight": 1, "era": "1.0A", "src": "proposal", "src_note": "改寫自 17173 tishi.htm 2001-07-18 官方簡介；系統傳聞本身【設計提案・非原作】" },
+    { "id": "rm_fs_q_liu_jinpen_2", "kind": "FORESHADOW", "quest": "q_liu_jinpen_2", "text": "rmr_fs_q_liu_jinpen_2", "requires_world": { "not_first": "q_liu_jinpen_2" }, "hours": [], "weight": 1, "era": "1.0A", "src": "proposal", "src_note": "系統傳聞【設計提案・非原作】" }
+  ],
+  "ambient": [
+    { "id": "amb_hn_shore_huqin", "room": "hn_shore", "periods": ["DAY", "DUSK"], "requires": [ { "type": "hour_in", "hours": ["申", "酉"] } ], "weight": 2, "text": "amb_hn_shore_huqin", "era": "1.0A", "src": "proposal", "src_note": "莫大出現時段的線索【設計提案・非原作】" },
+    { "id": "amb_hn_foot_guests", "room": "hn_foot", "periods": ["DAWN", "DAY"], "requires": [], "weight": 1, "text": "amb_hn_foot_guests", "era": "1.0A", "src": "proposal" },
+    { "id": "amb_hn_teahouse_whisper", "room": "hn_teahouse", "periods": ["DUSK", "NIGHT"], "requires": [], "weight": 1, "text": "amb_hn_teahouse_whisper", "era": "1.0A", "src": "proposal" }
+  ],
+  "art_requests": {
+    "units": [
+      { "id": "n_hn_liugongzi", "alias": "n_wd_yinjian", "prompt": "劉公子：十七八歲的錦衣少年，月白長衫、腰繫玉帶，手捧一封大紅請帖，眉間帶著憂色。" },
+      { "id": "n_hn_dizi", "alias": "huashan_m", "prompt": "衡山弟子：青灰色勁裝、腰懸長劍的年輕男弟子，抱拳迎客。" },
+      { "id": "n_hn_moda", "alias": "n_xx_cha", "prompt": "莫大先生：瘦削枯槁的老者，洗得發白的青布長衫，懷抱一把破舊胡琴，神情落寞。" },
+      { "id": "n_hn_lulianrong", "alias": "n_liangfa", "prompt": "魯連榮（金眼雕）：身材魁梧的中年漢子，濃眉、一雙發黃的金眼，粗布短打，神情倨傲。" },
+      { "id": "n_hn_mimike", "alias": "m_bandit", "prompt": "秘密客：頭戴寬邊斗笠遮住半張臉的黑衣漢子，坐姿微傾，一手按著桌下的刀柄。" },
+      { "id": "m_hn_mojiao", "alias": "m_bandit", "prompt": "魔教教徒：黑巾裹頭、黑色勁裝、手持鬼頭刀的兇悍漢子。" }
+    ],
+    "backgrounds": []
+  },
+  "test_plan": [
+    {
+      "quest": "q_liu_jinpen", "outcome": "default",
+      "path": [
+        "walk@hn_foot", "accept@n_hn_liugongzi", "choose@n_hn_liugongzi:n0:c_help",
+        "walk@hn_shore", "wait:hour=申", "talk@n_hn_moda", "choose@n_hn_moda:n0:c_tie", "choose@n_hn_moda:n1:c_ask", "choose@n_hn_moda:n2:c_take2",
+        "walk@hn_foot", "talk@n_hn_liugongzi", "choose@n_hn_liugongzi:n0:c_give"
+      ],
+      "expect": { "money_gain": 1000, "items_absent": ["i_hn_wulintie"], "done": "q_liu_jinpen" }
+    },
+    {
+      "quest": "q_liu_jinpen", "outcome": "default", "note": "莫大不在時辰時不出現；換時辰後出現",
+      "path": [
+        "walk@hn_foot", "accept@n_hn_liugongzi", "choose@n_hn_liugongzi:n0:c_why", "choose@n_hn_liugongzi:n_why:c_help2",
+        "wait:hour=午", "walk@hn_shore", "expect_absent@n_hn_moda",
+        "wait:hour=酉", "talk@n_hn_moda", "choose@n_hn_moda:n0:c_tie", "choose@n_hn_moda:n1:c_take",
+        "walk@hn_foot", "talk@n_hn_liugongzi", "choose@n_hn_liugongzi:n0:c_give"
+      ],
+      "expect": { "money_gain": 1000 }
+    },
+    {
+      "quest": "q_liu_jinpen_2", "outcome": "default", "note": "逃跑路線（D4：逃跑也算完成）；含一次答錯暗語重試",
+      "path": [
+        "walk@hn_island", "accept@n_hn_lulianrong", "choose@n_hn_lulianrong:n0:c_help", "choose@n_hn_lulianrong:n1:c_ming",
+        "walk@hn_teahouse", "act@q_liu_jinpen_2:a_rest",
+        "talk@n_hn_mimike", "choose@n_hn_mimike:n0:c_w1",
+        "talk@n_hn_mimike", "choose@n_hn_mimike:n0:c_sun", "choose@n_hn_mimike:n1:c_chan", "choose@n_hn_mimike:n2:c_what",
+        "fight:FLEE",
+        "walk@hn_island", "talk@n_hn_lulianrong", "choose@n_hn_lulianrong:n0:c_wait", "choose@n_hn_lulianrong:n_wait:c_trap2", "choose@n_hn_lulianrong:n1:c_next"
+      ],
+      "expect": { "fame_gain": 40, "lilian_gain": 40, "money_gain": 0, "done": "q_liu_jinpen_2" }
+    },
+    {
+      "quest": "q_liu_jinpen_2", "outcome": "default", "note": "打贏路線（bot 需高等角色或 debug 強化）",
+      "path": [
+        "walk@hn_island", "accept@n_hn_lulianrong", "choose@n_hn_lulianrong:n0:c_help", "choose@n_hn_lulianrong:n1:c_ming",
+        "walk@hn_teahouse", "act@q_liu_jinpen_2:a_rest",
+        "talk@n_hn_mimike", "choose@n_hn_mimike:n0:c_sun", "choose@n_hn_mimike:n1:c_chan", "choose@n_hn_mimike:n2:c_what",
+        "fight:WIN",
+        "walk@hn_island", "talk@n_hn_lulianrong", "choose@n_hn_lulianrong:n0:c_trap", "choose@n_hn_lulianrong:n1:c_next"
+      ],
+      "expect": { "fame_gain": 40, "lilian_gain": 40 }
+    },
+    {
+      "quest": "q_liu_jinpen_2", "outcome": "none", "note": "前置未完成時魯連榮不提供任務；選「不關我的事」不接任務",
+      "path": [ "walk@hn_island", "expect_menu_absent@n_hn_lulianrong:q_liu_jinpen_2" ],
+      "expect": { "active_absent": ["q_liu_jinpen_2"] }
+    }
+  ],
+  "todo_verify": [
+    "【待考證】劉公子是否即《笑傲江湖》劉正風之子劉芹；對白中「家父」的稱呼是推定（2001 攻略只寫「劉公子」）。",
+    "【待考證】密語原文截斷：「太陽月亮..」補完為「太陽月亮，一統江湖。」；「剷平他」前的提問句「路上遇著了對頭，怎麼辦？」與第一問「天上兩盞燈……照的是哪一家？」皆為建造者補寫。",
+    "【待考證】劉二爺（下）上線日期：2001 官方事件表未收，最早確證 2004-09-06（巴哈 G2 sn=352）；本碎片 era 1.0A、src later。",
+    "【待考證】魔教伏擊人數：研究為 6–7 人，本碎片固定 6 名（依 STORY_PLAN §3.4）。",
+    "【待考證】莫大出現地點：2001 攻略寫「衡山北邊的大江邊」，本作放在 hn_shore（上山路口海邊，衡山下東北）；時辰 2001 寫「黃昏」、2004 寫「申時」，D3 取申、酉。",
+    "【待考證】魯連榮受傷的原因原作只寫「受了傷」，「被蒙面人偷襲」為【設計提案】。",
+    "【待考證】劉二爺（下）是否有門派、實戰門檻：研究無記載，D4 不限門派，本碎片無門檻。",
+    "【待考證】武林帖的帖面文字、莫大的對白（〈瀟湘夜雨〉、拒收理由）皆為依小說與攻略的【設計提案】。"
+  ],
+  "owner_decisions": [
+    "D1：日期以官方 TW 事件表為準（上 2001-07-18）。",
+    "D2：兩條任務皆每角色一次（repeat.max 1）。",
+    "D3：給予者劉公子；莫大以 appear 限申、酉時，log 與目標 hours 皆寫明時辰。",
+    "D4：（下）逃跑也算完成（FIGHT win=WIN_OR_FLEE）、獎勵照給；「太陽月亮」只暗示日月神教，對白只說「教主」「魔教」，不點名日月神教；交付句「這是魔教的圈套！」；不限門派。",
+    "D18：（下）獎勵使用新欄位 lilian 40。",
+    "新預設：莫大不收帖，玩家把武林帖交還劉公子（TALK 對話內 take），再得 1000 兩；武林帖由 give_items 於接任務時給，放棄／失敗時引擎收回。",
+    "新預設：秘密客答錯任一句即 END（不理你），重新交談從第一問開始。",
+    "新預設：魔教伏擊在 s_fight 的 on_enter 自動開打；若戰敗（DEFEAT），在 hn_teahouse 用房間動作「找秘密客算帳」重打，可無限次。",
+    "新預設：魔教教徒 6 隻同場、不 solo（隊友可一起被拉進戰鬥，party_credit 依 §4.11 各自完成）。"
+  ],
+  "notes": "STORY_PLAN 缺漏：(1) 「休息」房間動作與 hn_teahouse 的 INN 服務「休息」同名，UI 上兩個按鈕並存；按研究原文保留標籤「休息」，若整合者覺得混淆可改成「坐下休息」。(2) s_rest 的目標用 STATE（quest_var rested=true），房間動作同時做 var 與 complete，兩種引擎實作都能推進。(3) 對話節點凡非終點都有明確選項，只有終點節點用 goto END，避免引擎對「只有 goto 的中間節點」行為未定義。(4) test_plan 中 accept@npc 表示打開 offer 對話，接著用 choose 選接受選項；另用了兩個額外語彙 expect_absent@npc（appear 過濾）與 expect_menu_absent@npc:qid，若 story bot 不支援可略過。(5) d_mimike 的 n3 在 complete 後立即進入 s_fight 的 on_enter 開戰，對話會隨開戰關閉（§4.5）。(6) 傳聞與 tell 模板沿用既有 text_templates 的 self 欄位、{name} 參數。(7) ambient 的 hour_in 在沒有 ctx 時視為成立（requirements.gd），若 AmbientSystem 不帶 shichen，胡琴句會在整個 DAY／DUSK 出現，影響僅是氛圍。(8) 魯連榮以 STORY kind 掛 QUEST 服務與 quests 欄位（§3.2 kind=STORY）。"
+}

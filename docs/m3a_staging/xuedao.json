@@ -1,0 +1,1618 @@
+{
+  "fragment": "xuedao",
+  "version": 1,
+  "author": "WP-SECT-xuedao",
+  "sect": {
+    "id": "xuedao",
+    "name": "血刀門",
+    "home_city": "dali",
+    "gate_region": "xuedao",
+    "prefix": "xd",
+    "gate_room": "xd_gate",
+    "head_npc": "n_xd_laozu",
+    "gender": [
+      "M"
+    ],
+    "join_requires": [
+      {
+        "type": "morality_max",
+        "value": -100
+      },
+      {
+        "type": "no_sect"
+      },
+      {
+        "type": "not_enemy_of",
+        "sect": "xuedao"
+      }
+    ],
+    "teach_requires": [
+      {
+        "type": "morality_max",
+        "value": -100
+      }
+    ],
+    "sect_skill": "weihe",
+    "sect_skill_name": "威嚇",
+    "sect_skill_effect": {
+      "effect": "HEAVY"
+    },
+    "sect_skill_cost": [
+      "jing",
+      "neili"
+    ],
+    "sect_skill_cap": 100,
+    "sect_skill_limits_arts": false,
+    "sect_art_cap_bonus": 10,
+    "sect_skill_gain": [],
+    "sect_skill_penalties": [],
+    "personal_master": false,
+    "forbid_meat": false,
+    "enforcer": false,
+    "enforcers": [],
+    "jail_room": "",
+    "hostile_entry": [
+      {
+        "if": [
+          {
+            "type": "enemy_of",
+            "sect": "xuedao"
+          }
+        ],
+        "rooms": "ALL",
+        "monster": "m_xd_guard",
+        "count": [
+          1,
+          2
+        ],
+        "chance": 1.0,
+        "no_flee": true,
+        "capture": false
+      },
+      {
+        "if": [
+          {
+            "type": "morality_min",
+            "value": 1
+          }
+        ],
+        "rooms": "INNER",
+        "monster": "m_xd_guard",
+        "count": [
+          1,
+          1
+        ],
+        "chance": 1.0,
+        "no_flee": false,
+        "capture": false
+      }
+    ],
+    "visitors": "OPEN",
+    "meal_npc": "",
+    "src_note": "研究 血刀門：威嚇＝重擊、耗精與內力（官方 index_jy2-25）；門規「嚴禁弒師犯上」、執法者「無（因為不會被蓄意開除）」（index_jy2-22）；入派善惡 ≤ −100（2003 攻略「−99 以下」，M3A D7）；只收男（jyhj）；正善惡進血刀門被攻擊、血刀公敵自動被攻擊（jy16、門派介紹）；可吃肉喝酒",
+    "era": "1.0A",
+    "src": "verified"
+  },
+  "sect_rules": [],
+  "regions": [
+    {
+      "id": "xuedao_road",
+      "name": "大漠雪山道",
+      "type": "WILD",
+      "city": "dali",
+      "map": "res://data/maps/xuedao_road.json",
+      "world_pos": [
+        85,
+        440
+      ],
+      "suggested_xp": [
+        0,
+        3000
+      ],
+      "pk_allowed": true,
+      "birth_allowed": false,
+      "birth_room": "",
+      "night_closed": [],
+      "era": "1.0A",
+      "src": "proposal"
+    },
+    {
+      "id": "xuedao",
+      "name": "血刀門",
+      "type": "SECT",
+      "city": "dali",
+      "map": "res://data/maps/xuedao.json",
+      "world_pos": [
+        20,
+        520
+      ],
+      "suggested_xp": [
+        0,
+        0
+      ],
+      "pk_allowed": false,
+      "birth_allowed": false,
+      "birth_room": "",
+      "night_closed": [],
+      "era": "1.0A",
+      "src": "verified"
+    }
+  ],
+  "maps": {
+    "xuedao": {
+      "region_id": "xuedao",
+      "era": "1.0A",
+      "src": "proposal",
+      "desc": "大雪山深處的血刀門，門人多是紅袍喇嘛，行事狠辣，江湖上人人避之唯恐不及。",
+      "escape_tiles_hint": 2,
+      "rooms": [
+        {
+          "id": "xd_gate",
+          "name": "血刀門口",
+          "desc": "雪谷盡頭的山壁上鑿出一座石門，門楣漆成暗紅色，兩名披著紅袍的血刀弟子按刀守著。門邊一位老先生縮著脖子在簿子上記事。",
+          "exits": [
+            {
+              "dir": "E",
+              "to": "xd_road4"
+            },
+            {
+              "dir": "N",
+              "to": "xd_hall"
+            }
+          ],
+          "npcs": [
+            "n_xd_guard",
+            "n_xd_cha"
+          ],
+          "features": [],
+          "requires": []
+        },
+        {
+          "id": "xd_hall",
+          "name": "血刀本堂",
+          "desc": "堂內燒著酥油燈，四壁掛著猙獰的護法畫像，空氣裡有股血腥味。一名枯瘦的老喇嘛盤坐在虎皮上，眼神比刀還冷。",
+          "exits": [
+            {
+              "dir": "S",
+              "to": "xd_gate"
+            },
+            {
+              "dir": "W",
+              "to": "xd_yard"
+            },
+            {
+              "dir": "N",
+              "to": "xd_pool"
+            },
+            {
+              "dir": "E",
+              "to": "xd_mishi"
+            }
+          ],
+          "npcs": [
+            "n_xd_laozu",
+            "n_xd_shanyong",
+            "n_xd_buliu",
+            "n_xd_buzou"
+          ],
+          "features": [],
+          "requires": []
+        },
+        {
+          "id": "xd_yard",
+          "name": "練刀場",
+          "desc": "本堂西邊的雪地被踩得結實，木樁上滿是刀痕。弟子們赤著上身練刀，呼出的氣一團團地白。",
+          "exits": [
+            {
+              "dir": "E",
+              "to": "xd_hall"
+            }
+          ],
+          "npcs": [
+            "n_xd_shengdi",
+            "n_xd_kuji",
+            "n_xd_spar"
+          ],
+          "features": [],
+          "requires": []
+        },
+        {
+          "id": "xd_pool",
+          "name": "血池",
+          "desc": "本堂後方的山洞裡有一方暗紅色的水池，池水微溫，冒著淡淡的腥氣。血刀弟子在這裡比武，輸的人常被打進池裡。",
+          "exits": [
+            {
+              "dir": "S",
+              "to": "xd_hall"
+            }
+          ],
+          "npcs": [
+            "n_xd_xuehai"
+          ],
+          "features": [],
+          "requires": [
+            {
+              "type": "sect",
+              "sect": "xuedao"
+            }
+          ]
+        },
+        {
+          "id": "xd_mishi",
+          "name": "密室",
+          "desc": "本堂東側的一道暗門後是間不透光的石室，堆著酒罈、乾肉和幾把用油布包著的彎刀。只有本門弟子知道怎麼進來。",
+          "exits": [
+            {
+              "dir": "W",
+              "to": "xd_hall"
+            }
+          ],
+          "npcs": [
+            "n_xd_jingqi",
+            "n_xd_aihui"
+          ],
+          "features": [],
+          "requires": [
+            {
+              "type": "sect",
+              "sect": "xuedao"
+            }
+          ]
+        }
+      ]
+    },
+    "xuedao_road": {
+      "region_id": "xuedao_road",
+      "era": "1.0A",
+      "src": "proposal",
+      "desc": "從大漠西緣一路往西南，穿過戈壁、翻過大雪山，便到血刀門所在的雪谷。",
+      "escape_tiles_hint": 2,
+      "rooms": [
+        {
+          "id": "xd_road1",
+          "name": "大漠深處",
+          "desc": "黃沙越走越細，風一吹就迷了眼，只有幾堆駱駝骨指著西去的方向。往東回到風蝕石山下的山洞，往西隱約看得見雪山的影子。",
+          "exits": [
+            {
+              "dir": "E",
+              "to": "de_cave"
+            },
+            {
+              "dir": "W",
+              "to": "xd_road2"
+            }
+          ],
+          "npcs": [],
+          "features": [],
+          "requires": [],
+          "encounter": {
+            "rate": 0.1,
+            "table": [
+              {
+                "monster": "m_bigrabbit",
+                "w": 50,
+                "count": [
+                  1,
+                  1
+                ]
+              },
+              {
+                "monster": "m_wolf",
+                "w": 30,
+                "count": [
+                  1,
+                  1
+                ]
+              },
+              {
+                "monster": "m_rabbit",
+                "w": 20,
+                "count": [
+                  1,
+                  1
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "xd_road2",
+          "name": "雪山腳下",
+          "desc": "沙地到這裡變成碎石坡，寒風從雪山上直灌下來。西南方的坡下有一頂冒著炊煙的牧民帳篷。",
+          "exits": [
+            {
+              "dir": "E",
+              "to": "xd_road1"
+            },
+            {
+              "dir": "SW",
+              "to": "xd_tent"
+            }
+          ],
+          "npcs": [],
+          "features": [],
+          "requires": [],
+          "encounter": {
+            "rate": 0.1,
+            "table": [
+              {
+                "monster": "m_bigrabbit",
+                "w": 60,
+                "count": [
+                  1,
+                  1
+                ]
+              },
+              {
+                "monster": "m_wolf",
+                "w": 30,
+                "count": [
+                  1,
+                  1
+                ]
+              },
+              {
+                "monster": "m_rabbit",
+                "w": 10,
+                "count": [
+                  1,
+                  1
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "xd_tent",
+          "name": "牧民帳篷",
+          "desc": "一頂厚氈帳篷搭在背風的山坳裡，裡頭燒著牛糞火，奶茶的香味飄了出來。牧民說再往西南翻過大雪山就是血刀門，勸人別去。",
+          "exits": [
+            {
+              "dir": "NE",
+              "to": "xd_road2"
+            },
+            {
+              "dir": "SW",
+              "to": "xd_road3"
+            }
+          ],
+          "npcs": [
+            "n_xd_herder"
+          ],
+          "features": [
+            "WATER"
+          ],
+          "requires": []
+        },
+        {
+          "id": "xd_road3",
+          "name": "大雪山",
+          "desc": "終年不化的積雪沒過腳踝，每走一步都要先探探深淺。往西是一大片白茫茫的雪原，山路則往西南的雪谷繞下去。",
+          "exits": [
+            {
+              "dir": "NE",
+              "to": "xd_tent"
+            },
+            {
+              "dir": "SW",
+              "to": "xd_road4"
+            },
+            {
+              "dir": "W",
+              "to": "xd_snowfield"
+            }
+          ],
+          "npcs": [],
+          "features": [],
+          "requires": [],
+          "encounter": {
+            "rate": 0.12,
+            "table": [
+              {
+                "monster": "m_bigrabbit",
+                "w": 50,
+                "count": [
+                  1,
+                  1
+                ]
+              },
+              {
+                "monster": "m_wolf",
+                "w": 30,
+                "count": [
+                  1,
+                  1
+                ]
+              },
+              {
+                "monster": "m_rabbit",
+                "w": 20,
+                "count": [
+                  1,
+                  1
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "xd_snowfield",
+          "name": "雪原",
+          "desc": "一望無際的雪原，雪地上滿是野獸的爪印，偶爾還有幾行人的腳印，不知是獵戶還是強人。這裡沒有別的路，只能回頭往東。",
+          "exits": [
+            {
+              "dir": "E",
+              "to": "xd_road3"
+            }
+          ],
+          "npcs": [],
+          "features": [],
+          "requires": [],
+          "encounter": {
+            "rate": 0.15,
+            "table": [
+              {
+                "monster": "m_wolf",
+                "w": 40,
+                "count": [
+                  1,
+                  1
+                ]
+              },
+              {
+                "monster": "m_boar",
+                "w": 25,
+                "count": [
+                  1,
+                  1
+                ]
+              },
+              {
+                "monster": "m_bigrabbit",
+                "w": 25,
+                "count": [
+                  1,
+                  1
+                ]
+              },
+              {
+                "monster": "m_bandit",
+                "w": 10,
+                "count": [
+                  1,
+                  1
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "xd_road4",
+          "name": "雪谷",
+          "desc": "兩側雪峰夾著一道窄谷，谷底的積雪被踩出一條小徑。往西望去，雪地上插著一面暗紅色的旗子。",
+          "exits": [
+            {
+              "dir": "NE",
+              "to": "xd_road3"
+            },
+            {
+              "dir": "W",
+              "to": "xd_gate"
+            }
+          ],
+          "npcs": [],
+          "features": [],
+          "requires": [],
+          "encounter": {
+            "rate": 0.08,
+            "table": [
+              {
+                "monster": "m_bigrabbit",
+                "w": 60,
+                "count": [
+                  1,
+                  1
+                ]
+              },
+              {
+                "monster": "m_rabbit",
+                "w": 40,
+                "count": [
+                  1,
+                  1
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "extra_rooms": {},
+  "exit_patches": [
+    {
+      "room": "de_cave",
+      "add_exits": [
+        {
+          "dir": "W",
+          "to": "xd_road1"
+        }
+      ],
+      "desc": "風蝕的石山下有個山洞，洞口被沙堵了一半，暫時進不去。往西是更深的大漠，再過去是終年積雪的大雪山，血刀門就在雪山裡。"
+    }
+  ],
+  "npcs": [
+    {
+      "id": "n_xd_guard",
+      "name": "血刀弟子",
+      "kind": "GUARD",
+      "region": "xuedao",
+      "room": "xd_gate",
+      "alignment": "EVIL",
+      "talk": "talk_n_xd_guard",
+      "services": [],
+      "night_closed": false,
+      "desc": "守在血刀門口的兩名紅袍弟子，腰間彎刀從不離手。想拜入血刀門，得先過他們這一關。",
+      "era": "1.0A",
+      "src": "verified"
+    },
+    {
+      "id": "n_xd_cha",
+      "name": "查小鏞",
+      "kind": "FUNC",
+      "region": "xuedao",
+      "room": "xd_gate",
+      "alignment": "GOOD",
+      "talk": "talk_n_xd_cha",
+      "services": [
+        "RESPAWN"
+      ],
+      "night_closed": false,
+      "desc": "不知怎麼在血刀門口落腳的老先生，替江湖人記錄落腳處。",
+      "era": "1.0A",
+      "src": "later"
+    },
+    {
+      "id": "n_xd_laozu",
+      "name": "血刀老祖",
+      "kind": "MASTER",
+      "region": "xuedao",
+      "room": "xd_hall",
+      "alignment": "EVIL",
+      "talk": "talk_n_xd_laozu",
+      "services": [
+        "JOIN",
+        "BETRAY",
+        "TEACH"
+      ],
+      "night_closed": false,
+      "join_sect": "xuedao",
+      "desc": "血刀門掌門，枯瘦的老喇嘛，一柄血刀殺人無數。收徒與傳授威嚇都由他親自主持。",
+      "era": "1.0A",
+      "src": "verified"
+    },
+    {
+      "id": "n_xd_shengdi",
+      "name": "勝諦",
+      "kind": "MASTER",
+      "region": "xuedao",
+      "room": "xd_yard",
+      "alignment": "EVIL",
+      "talk": "talk_n_xd_shengdi",
+      "services": [
+        "TEACH"
+      ],
+      "night_closed": false,
+      "desc": "血刀老祖的弟子，負責傳授新入門弟子血刀心法、血刀刀法、滅仙掌與雪遁步行。",
+      "era": "1.0A",
+      "src": "verified"
+    },
+    {
+      "id": "n_xd_kuji",
+      "name": "苦集",
+      "kind": "MASTER",
+      "region": "xuedao",
+      "room": "xd_yard",
+      "alignment": "EVIL",
+      "talk": "talk_n_xd_kuji",
+      "services": [
+        "TEACH"
+      ],
+      "night_closed": false,
+      "desc": "血刀老祖的弟子，沉默寡言，負責傳授本門弟子各項基本武學。",
+      "era": "1.0A",
+      "src": "proposal"
+    },
+    {
+      "id": "n_xd_spar",
+      "name": "寶象",
+      "kind": "FUNC",
+      "region": "xuedao",
+      "room": "xd_yard",
+      "alignment": "EVIL",
+      "talk": "talk_n_xd_spar",
+      "services": [
+        "FIGHT"
+      ],
+      "night_closed": false,
+      "fight": {
+        "monster": "m_xd_dizi",
+        "requires": [
+          {
+            "type": "sect",
+            "sect": "xuedao"
+          }
+        ]
+      },
+      "desc": "身材肥大的血刀僧，最愛找新來的師弟練刀，下手從不留情。",
+      "era": "1.0A",
+      "src": "proposal"
+    },
+    {
+      "id": "n_xd_xuehai",
+      "name": "血海老祖",
+      "kind": "MASTER",
+      "region": "xuedao",
+      "room": "xd_pool",
+      "alignment": "EVIL",
+      "talk": "talk_n_xd_xuehai",
+      "services": [
+        "TEACH"
+      ],
+      "night_closed": false,
+      "desc": "終年坐在血池邊的老喇嘛，據說血海魔功只有他能指點。",
+      "era": "1.0A",
+      "src": "proposal"
+    },
+    {
+      "id": "n_xd_shanyong",
+      "name": "善勇",
+      "kind": "STORY",
+      "region": "xuedao",
+      "room": "xd_hall",
+      "alignment": "EVIL",
+      "talk": "talk_n_xd_shanyong",
+      "services": [],
+      "night_closed": false,
+      "desc": "替老祖清理門戶的弟子，專管追殺本門叛徒。",
+      "era": "1.0A",
+      "src": "later"
+    },
+    {
+      "id": "n_xd_jingqi",
+      "name": "淨歧",
+      "kind": "SHOP",
+      "region": "xuedao",
+      "room": "xd_mishi",
+      "alignment": "EVIL",
+      "talk": "talk_n_xd_jingqi",
+      "services": [
+        "SHOP"
+      ],
+      "night_closed": false,
+      "shop": {
+        "items": [
+          "c_xd_jiu",
+          "c_xd_rougan",
+          "w_xd_miandao"
+        ]
+      },
+      "desc": "管密室酒肉與兵器的血刀僧，一身酒氣。",
+      "era": "1.0A",
+      "src": "proposal"
+    },
+    {
+      "id": "n_xd_aihui",
+      "name": "哀晦",
+      "kind": "STORY",
+      "region": "xuedao",
+      "room": "xd_mishi",
+      "alignment": "EVIL",
+      "talk": "talk_n_xd_aihui",
+      "services": [],
+      "night_closed": false,
+      "desc": "眼神陰沉的血刀僧，常在半夜下山，不知去做什麼勾當。",
+      "era": "1.0A",
+      "src": "later"
+    },
+    {
+      "id": "n_xd_buliu",
+      "name": "不留",
+      "kind": "STORY",
+      "region": "xuedao",
+      "room": "xd_hall",
+      "alignment": "EVIL",
+      "talk": "talk_n_xd_buliu",
+      "services": [],
+      "night_closed": false,
+      "desc": "血刀門的畢業考官（出師制度是後期版內容，現在只能聊聊）。",
+      "era": "1.0A",
+      "src": "later"
+    },
+    {
+      "id": "n_xd_buzou",
+      "name": "不走",
+      "kind": "STORY",
+      "region": "xuedao",
+      "room": "xd_hall",
+      "alignment": "EVIL",
+      "talk": "talk_n_xd_buzou",
+      "services": [],
+      "night_closed": false,
+      "desc": "負責接回出師弟子的血刀僧（出師制度是後期版內容，現在只能聊聊）。",
+      "era": "1.0A",
+      "src": "later"
+    },
+    {
+      "id": "n_xd_herder",
+      "name": "牧民",
+      "kind": "FUNC",
+      "region": "xuedao_road",
+      "room": "xd_tent",
+      "alignment": "NEUTRAL",
+      "talk": "talk_n_xd_herder",
+      "services": [
+        "INN",
+        "SHOP"
+      ],
+      "night_closed": false,
+      "inn_price": 15,
+      "shop": {
+        "items": [
+          "c_mantou",
+          "c_water",
+          "c_qiyao",
+          "c_xd_rougan"
+        ]
+      },
+      "desc": "在雪山腳下放牧的牧民，帳篷供過路人歇腳。",
+      "era": "1.0A",
+      "src": "proposal"
+    }
+  ],
+  "masters": [
+    {
+      "id": "ms_xd_laozu_weihe",
+      "npc_id": "n_xd_laozu",
+      "skill_id": "weihe",
+      "cap": 50,
+      "price": 0,
+      "tool": "",
+      "requires": [
+        {
+          "type": "sect",
+          "sect": "xuedao"
+        }
+      ],
+      "era": "1.0A",
+      "src": "proposal",
+      "src_note": "M3A 3.2：門派技能師父 cap 50；研究 2003 威嚇另靠血池比武、恐嚇指令修練（未實作）"
+    },
+    {
+      "id": "ms_xd_shengdi_xinfa",
+      "npc_id": "n_xd_shengdi",
+      "skill_id": "xd_xinfa",
+      "cap": 100,
+      "price": 0,
+      "tool": "",
+      "requires": [
+        {
+          "type": "sect",
+          "sect": "xuedao"
+        }
+      ],
+      "era": "1.0A",
+      "src": "verified",
+      "src_note": "研究 血刀門：入門 4 套由勝諦傳授，拜入即可學、無其他條件（jytzst menpai/12）；上限設計提案"
+    },
+    {
+      "id": "ms_xd_shengdi_daofa",
+      "npc_id": "n_xd_shengdi",
+      "skill_id": "xd_daofa",
+      "cap": 100,
+      "price": 0,
+      "tool": "",
+      "requires": [
+        {
+          "type": "sect",
+          "sect": "xuedao"
+        }
+      ],
+      "era": "1.0A",
+      "src": "verified",
+      "src_note": "研究 血刀門：入門 4 套由勝諦傳授，拜入即可學、無其他條件（jytzst menpai/12）；上限設計提案"
+    },
+    {
+      "id": "ms_xd_shengdi_miexian",
+      "npc_id": "n_xd_shengdi",
+      "skill_id": "xd_miexian",
+      "cap": 80,
+      "price": 0,
+      "tool": "",
+      "requires": [
+        {
+          "type": "sect",
+          "sect": "xuedao"
+        }
+      ],
+      "era": "1.0A",
+      "src": "verified",
+      "src_note": "研究 血刀門：2001-08 改版才把滅仙掌上限提高到 100，所以 2001 上限較低；80 為設計提案"
+    },
+    {
+      "id": "ms_xd_shengdi_xuedun",
+      "npc_id": "n_xd_shengdi",
+      "skill_id": "xd_xuedun",
+      "cap": 100,
+      "price": 0,
+      "tool": "",
+      "requires": [
+        {
+          "type": "sect",
+          "sect": "xuedao"
+        }
+      ],
+      "era": "1.0A",
+      "src": "verified",
+      "src_note": "研究 血刀門：入門 4 套由勝諦傳授，拜入即可學、無其他條件（jytzst menpai/12）；上限設計提案"
+    },
+    {
+      "id": "ms_xd_kuji_inner",
+      "npc_id": "n_xd_kuji",
+      "skill_id": "basic_inner",
+      "cap": 140,
+      "price": 0,
+      "tool": "",
+      "requires": [
+        {
+          "type": "sect",
+          "sect": "xuedao"
+        }
+      ],
+      "era": "1.0A",
+      "src": "later"
+    },
+    {
+      "id": "ms_xd_kuji_parry",
+      "npc_id": "n_xd_kuji",
+      "skill_id": "basic_parry",
+      "cap": 140,
+      "price": 0,
+      "tool": "",
+      "requires": [
+        {
+          "type": "sect",
+          "sect": "xuedao"
+        }
+      ],
+      "era": "1.0A",
+      "src": "later"
+    },
+    {
+      "id": "ms_xd_kuji_dodge",
+      "npc_id": "n_xd_kuji",
+      "skill_id": "basic_dodge",
+      "cap": 140,
+      "price": 0,
+      "tool": "",
+      "requires": [
+        {
+          "type": "sect",
+          "sect": "xuedao"
+        }
+      ],
+      "era": "1.0A",
+      "src": "later"
+    },
+    {
+      "id": "ms_xd_kuji_body",
+      "npc_id": "n_xd_kuji",
+      "skill_id": "basic_body",
+      "cap": 140,
+      "price": 0,
+      "tool": "",
+      "requires": [
+        {
+          "type": "sect",
+          "sect": "xuedao"
+        }
+      ],
+      "era": "1.0A",
+      "src": "later"
+    },
+    {
+      "id": "ms_xd_kuji_fist",
+      "npc_id": "n_xd_kuji",
+      "skill_id": "basic_fist",
+      "cap": 140,
+      "price": 0,
+      "tool": "",
+      "requires": [
+        {
+          "type": "sect",
+          "sect": "xuedao"
+        }
+      ],
+      "era": "1.0A",
+      "src": "later"
+    },
+    {
+      "id": "ms_xd_kuji_blade",
+      "npc_id": "n_xd_kuji",
+      "skill_id": "basic_blade",
+      "cap": 120,
+      "price": 0,
+      "tool": "",
+      "requires": [
+        {
+          "type": "sect",
+          "sect": "xuedao"
+        }
+      ],
+      "era": "1.0A",
+      "src": "later",
+      "src_note": "研究 血刀門：基本刀法 2002-10 開放到 120（後期版）"
+    },
+    {
+      "id": "ms_xd_xuehai_xuehai",
+      "npc_id": "n_xd_xuehai",
+      "skill_id": "xd_xuehai",
+      "cap": 100,
+      "price": 0,
+      "tool": "",
+      "requires": [
+        {
+          "type": "sect",
+          "sect": "xuedao"
+        },
+        {
+          "type": "quest_flag",
+          "flag": "xd_xuehai_lv1"
+        }
+      ],
+      "era": "1.0A",
+      "src": "proposal",
+      "src_note": "研究：血海魔功 1 級靠擊中血刀老祖取得，自修到 30 再消點；教者為血海老祖【待考證】"
+    }
+  ],
+  "martial_arts": [
+    {
+      "id": "xd_xinfa",
+      "name": "血刀心法",
+      "sect_id": "xuedao",
+      "category": "INNER",
+      "base_skill": "basic_inner",
+      "difficulty": 0.9,
+      "tier": "BASIC",
+      "self_study_until": 0,
+      "self_study_cap": 0,
+      "party_size": 0,
+      "monster_only": false,
+      "requires": [
+        {
+          "type": "sect",
+          "sect": "xuedao"
+        }
+      ],
+      "inner": {
+        "heal_mult": 1.0,
+        "expel_mult": 1.0
+      },
+      "desc": "血刀門入門內功，運功時血氣上湧，臉色泛紅。",
+      "era": "1.0A",
+      "src": "verified",
+      "src_note": "研究 血刀門：入門 4 套之一（勝諦）；係數 0.9 沿用專案預設（後期表 0.70+10，公式不同）【待考證】",
+      "moves": []
+    },
+    {
+      "id": "xd_daofa",
+      "name": "血刀刀法",
+      "sect_id": "xuedao",
+      "category": "BLADE",
+      "base_skill": "basic_blade",
+      "difficulty": 1.6,
+      "tier": "BASIC",
+      "self_study_until": 0,
+      "self_study_cap": 0,
+      "party_size": 0,
+      "monster_only": false,
+      "requires": [
+        {
+          "type": "sect",
+          "sect": "xuedao"
+        }
+      ],
+      "desc": "血刀門的看家刀法，刀勢詭異狠辣，專走偏鋒。2001 年初版極強，後來被削弱。",
+      "era": "1.0A",
+      "src": "verified",
+      "src_note": "研究 血刀門：入門 4 套之一；2001-07 極強、有「格」，2001-08 削弱；係數 1.6【待考證】（後期表 1.40+8）；直線形狀【設計提案】",
+      "moves": [
+        {
+          "id": "xd_df_1",
+          "name": "流星經天",
+          "unlock_level": 1,
+          "power": 25,
+          "range": 1,
+          "aoe": "SINGLE",
+          "cost_inner": 0,
+          "cost_jing": 0,
+          "status": "",
+          "status_chance": 0.0,
+          "flavor": "move_blade_basic",
+          "src": "proposal"
+        },
+        {
+          "id": "xd_df_2",
+          "name": "血浪翻湧",
+          "unlock_level": 30,
+          "power": 28,
+          "range": 2,
+          "aoe": "LINE",
+          "cost_inner": 6,
+          "cost_jing": 0,
+          "status": "",
+          "status_chance": 0.0,
+          "flavor": "move_blade_line",
+          "src": "proposal"
+        },
+        {
+          "id": "xd_df_3",
+          "name": "血河倒瀉",
+          "unlock_level": 60,
+          "power": 36,
+          "range": 3,
+          "aoe": "LINE",
+          "cost_inner": 12,
+          "cost_jing": 0,
+          "status": "bleed",
+          "status_chance": 0.1,
+          "flavor": "move_blade_line",
+          "src": "proposal"
+        }
+      ]
+    },
+    {
+      "id": "xd_miexian",
+      "name": "滅仙掌",
+      "sect_id": "xuedao",
+      "category": "FIST",
+      "base_skill": "basic_fist",
+      "difficulty": 0.9,
+      "tier": "BASIC",
+      "self_study_until": 0,
+      "self_study_cap": 0,
+      "party_size": 0,
+      "monster_only": false,
+      "requires": [
+        {
+          "type": "sect",
+          "sect": "xuedao"
+        }
+      ],
+      "desc": "血刀門掌法，掌力陰狠，專打要害。",
+      "era": "1.0A",
+      "src": "verified",
+      "src_note": "研究 血刀門：入門 4 套之一；2001 上限低於 100（2001-08 改版才提高到 100）；係數 0.9（後期表 0.92+2）",
+      "moves": [
+        {
+          "id": "xd_mx_1",
+          "name": "天魔指路",
+          "unlock_level": 1,
+          "power": 21,
+          "range": 1,
+          "aoe": "SINGLE",
+          "cost_inner": 0,
+          "cost_jing": 0,
+          "status": "",
+          "status_chance": 0.0,
+          "flavor": "move_fist_basic",
+          "src": "proposal"
+        },
+        {
+          "id": "xd_mx_2",
+          "name": "滅仙斷魂",
+          "unlock_level": 30,
+          "power": 33,
+          "range": 1,
+          "aoe": "SINGLE",
+          "cost_inner": 5,
+          "cost_jing": 0,
+          "status": "",
+          "status_chance": 0.0,
+          "flavor": "move_fist_basic",
+          "src": "proposal"
+        },
+        {
+          "id": "xd_mx_3",
+          "name": "萬佛同悲",
+          "unlock_level": 60,
+          "power": 45,
+          "range": 1,
+          "aoe": "SINGLE",
+          "cost_inner": 10,
+          "cost_jing": 0,
+          "status": "",
+          "status_chance": 0.0,
+          "flavor": "move_fist_basic",
+          "src": "proposal"
+        }
+      ]
+    },
+    {
+      "id": "xd_xuedun",
+      "name": "雪遁步行",
+      "sect_id": "xuedao",
+      "category": "LIGHTNESS",
+      "base_skill": "basic_body",
+      "difficulty": 0.9,
+      "tier": "BASIC",
+      "self_study_until": 0,
+      "self_study_cap": 0,
+      "party_size": 0,
+      "monster_only": false,
+      "requires": [
+        {
+          "type": "sect",
+          "sect": "xuedao"
+        }
+      ],
+      "desc": "在雪地裡練出來的步法，踏雪無痕，進退飄忽。",
+      "era": "1.0A",
+      "src": "verified",
+      "src_note": "研究 血刀門：入門 4 套之一；係數 0.9（後期表 0.82+2）",
+      "moves": []
+    },
+    {
+      "id": "xd_xuehai",
+      "name": "血海魔功",
+      "sect_id": "xuedao",
+      "category": "INNER",
+      "base_skill": "basic_inner",
+      "difficulty": 1.6,
+      "tier": "QUEST",
+      "self_study_until": 30,
+      "self_study_cap": 0,
+      "party_size": 0,
+      "monster_only": false,
+      "requires": [
+        {
+          "type": "sect",
+          "sect": "xuedao"
+        },
+        {
+          "type": "quest_flag",
+          "flag": "xd_xuehai_lv1"
+        },
+        {
+          "type": "skill_min",
+          "skill": "weihe",
+          "value": 60
+        },
+        {
+          "type": "skill_min",
+          "skill": "basic_inner",
+          "value": 60
+        },
+        {
+          "type": "skill_min",
+          "skill": "basic_blade",
+          "value": 60
+        },
+        {
+          "type": "skill_min",
+          "skill": "xd_xinfa",
+          "value": 80
+        },
+        {
+          "type": "skill_min",
+          "skill": "xd_daofa",
+          "value": 80
+        },
+        {
+          "type": "skill_min",
+          "skill": "xd_miexian",
+          "value": 60
+        },
+        {
+          "type": "skill_min",
+          "skill": "xd_xuedun",
+          "value": 60
+        },
+        {
+          "type": "morality_max",
+          "value": -900
+        },
+        {
+          "type": "combat_xp_min",
+          "value": 3000000
+        }
+      ],
+      "inner": {
+        "heal_mult": 1.2,
+        "expel_mult": 1.0
+      },
+      "desc": "血刀門二階內功，以血養氣，功成之後內力兇猛。",
+      "era": "1.0A",
+      "src": "verified",
+      "src_note": "研究 血刀門：2001-07 已存在但沒用，後來改版加上內力攻擊；條件是 2002-08 數字（實戰 300 萬、門技 60、基內 60、基刀 60、心法 80、刀法 80、滅仙 60、雪遁 60、善惡 −900 以下、擊中老祖 2 萬以上取得 1 級，自修到 30 再消點）【後期版】；M3b 才開任務；係數設計提案（後期表 2.75+1000）",
+      "moves": []
+    }
+  ],
+  "monsters": [
+    {
+      "id": "m_xd_dizi",
+      "name": "血刀弟子",
+      "short": "弟子",
+      "kind": "MONSTER",
+      "alignment": "EVIL",
+      "desc": "寶象手下的血刀弟子，奉命與你切磋。（設計提案）",
+      "stats": {
+        "qi": 230,
+        "neili": 25,
+        "jing": 120,
+        "str": 16,
+        "guts": 18,
+        "wit": 14,
+        "luck": 15,
+        "cal": 14,
+        "agi": 17,
+        "con": 16
+      },
+      "skills": {
+        "basic_dodge": 8,
+        "basic_parry": 8,
+        "basic_inner": 5,
+        "basic_blade": 8
+      },
+      "arts": [
+        {
+          "art": "xd_daofa",
+          "level": 8
+        }
+      ],
+      "weapon_type": "BLADE",
+      "weapon_power": 4,
+      "armor_power": 6,
+      "combat_xp_ref": 300,
+      "combat_xp": 0,
+      "learn_points": 0,
+      "drops": [],
+      "money": {
+        "min": 0,
+        "max": 0
+      },
+      "morality_on_kill": 0,
+      "killing_intent_on_kill": 0,
+      "ai": "melee_basic",
+      "no_rewards": true,
+      "sect": "xuedao",
+      "era": "1.0A",
+      "src": "proposal"
+    },
+    {
+      "id": "m_xd_guard",
+      "name": "血刀門護法",
+      "short": "護法",
+      "kind": "ELITE",
+      "alignment": "EVIL",
+      "desc": "守護血刀門的紅袍護法，見到正派人士或本門公敵便拔刀相向，新手絕非敵手。（存在：已證實；數值：設計提案，比照守城官兵）",
+      "stats": {
+        "qi": 3000,
+        "neili": 300,
+        "jing": 600,
+        "str": 30,
+        "guts": 32,
+        "wit": 18,
+        "luck": 18,
+        "cal": 28,
+        "agi": 28,
+        "con": 30
+      },
+      "skills": {
+        "basic_dodge": 80,
+        "basic_parry": 80,
+        "basic_inner": 60,
+        "basic_blade": 80
+      },
+      "arts": [
+        {
+          "art": "xd_daofa",
+          "level": 80
+        }
+      ],
+      "weapon_type": "BLADE",
+      "weapon_power": 40,
+      "armor_power": 60,
+      "combat_xp_ref": 60000,
+      "combat_xp": 0,
+      "learn_points": 0,
+      "drops": [],
+      "money": {},
+      "morality_on_kill": 0,
+      "killing_intent_on_kill": 0,
+      "ai": "melee_basic",
+      "no_rewards": true,
+      "sect": "xuedao",
+      "era": "1.0A",
+      "src": "proposal"
+    }
+  ],
+  "items": [
+    {
+      "id": "c_xd_jiu",
+      "name": "青稞酒",
+      "tab": "OTHER",
+      "slot": "",
+      "atk": 0,
+      "def": 0,
+      "weight": 1,
+      "price": 20,
+      "stack": 20,
+      "spoil_days": 0,
+      "effects": [
+        {
+          "type": "restore",
+          "stat": "water",
+          "value": 30
+        }
+      ],
+      "usable": true,
+      "usable_in_battle": false,
+      "no_sell": false,
+      "quest_item": false,
+      "desc": "雪山上釀的青稞酒，入口辛辣，喝了身子暖和。血刀門不禁酒。",
+      "era": "1.0A",
+      "src": "proposal"
+    },
+    {
+      "id": "c_xd_rougan",
+      "name": "風乾牛肉",
+      "tab": "OTHER",
+      "slot": "",
+      "atk": 0,
+      "def": 0,
+      "weight": 1,
+      "price": 15,
+      "stack": 20,
+      "spoil_days": 10,
+      "effects": [
+        {
+          "type": "restore",
+          "stat": "food",
+          "value": 40
+        }
+      ],
+      "meat": true,
+      "usable": true,
+      "usable_in_battle": false,
+      "no_sell": false,
+      "quest_item": false,
+      "desc": "在雪山寒風裡吹乾的牛肉，耐放又頂餓。",
+      "era": "1.0A",
+      "src": "proposal"
+    },
+    {
+      "id": "w_xd_miandao",
+      "name": "緬刀",
+      "tab": "WEAPON",
+      "slot": "WEAPON",
+      "weapon_type": "BLADE",
+      "atk": 28,
+      "def": 6,
+      "weight": 3,
+      "price": 2000,
+      "stack": 1,
+      "spoil_days": 0,
+      "effects": [],
+      "usable": false,
+      "usable_in_battle": false,
+      "no_sell": false,
+      "quest_item": false,
+      "sect_only": "xuedao",
+      "desc": "刀身柔韌、可以彎成圈的緬刀，血刀門人慣用，刀刃上隱隱有血光。",
+      "era": "1.0A",
+      "src": "proposal",
+      "src_note": "17173 物品表有「緬刀(血刀)」（年代不明）；數值、售價、門派專用皆設計提案【待考證】"
+    }
+  ],
+  "quests": [],
+  "text_templates": [
+    {
+      "id": "talk_n_xd_guard",
+      "era": "1.0A",
+      "self": "{npc_name}橫刀攔在門前，上下打量你：「來血刀門做什麼？要拜師，就進本堂去見老祖。手上沒沾過血的正派傢伙，進去了可別怪老祖的刀快。」",
+      "src": "verified"
+    },
+    {
+      "id": "talk_n_xd_cha",
+      "era": "1.0A",
+      "self": "{npc_name}搓著凍僵的手：「這鬼地方冷得要命，可總得有人記個落腳處。你要是在雪谷裡倒下，好歹有人知道送你回哪兒。」",
+      "src": "later"
+    },
+    {
+      "id": "talk_n_xd_laozu",
+      "era": "1.0A",
+      "self": "{npc_name}眯起眼睛冷笑：「想入我血刀門？心慈手軟的人我不收。善惡在負一百以下、沒入別的門派，再來磕頭。入了門，先除叛徒、再殺敵人，膽敢對老祖動手，就是本門公敵。」",
+      "src": "verified"
+    },
+    {
+      "id": "talk_n_xd_shengdi",
+      "era": "1.0A",
+      "self": "{npc_name}甩了甩刀上的雪水：「新來的？血刀心法、血刀刀法、滅仙掌、雪遁步行，這四門功夫我都教。先跟老祖學點威嚇，出刀才夠狠。」",
+      "src": "proposal"
+    },
+    {
+      "id": "talk_n_xd_kuji",
+      "era": "1.0A",
+      "self": "{npc_name}頭也不抬：「根基不穩，刀法再狠也白搭。基本功夫，到我這裡來練。」",
+      "src": "proposal"
+    },
+    {
+      "id": "talk_n_xd_spar",
+      "era": "1.0A",
+      "self": "{npc_name}拍著肚皮大笑：「師弟，手癢了吧？讓我手下的小子陪你過兩招，斷了胳膊可別哭。」",
+      "src": "proposal"
+    },
+    {
+      "id": "talk_n_xd_xuehai",
+      "era": "1.0A",
+      "self": "{npc_name}閉著眼睛，聲音像從池底傳上來：「血海魔功？等你能在老祖身上留下一道傷，再來找我。」",
+      "src": "proposal"
+    },
+    {
+      "id": "talk_n_xd_shanyong",
+      "era": "1.0A",
+      "self": "{npc_name}擦著刀：「本門的規矩只有一條：先除叛徒，再殺敵人。哪天叛徒出現了，我再來找你幫忙。」",
+      "src": "later"
+    },
+    {
+      "id": "talk_n_xd_jingqi",
+      "era": "1.0A",
+      "self": "{npc_name}打了個酒嗝：「酒、肉、刀，密室裡都有。只賣自家師兄弟，銀子拿來就是。」",
+      "src": "proposal"
+    },
+    {
+      "id": "talk_n_xd_aihui",
+      "era": "1.0A",
+      "self": "{npc_name}陰惻惻地笑了笑：「晚上的事，晚上再說。」",
+      "src": "later"
+    },
+    {
+      "id": "talk_n_xd_buliu",
+      "era": "1.0A",
+      "self": "{npc_name}抱著胳膊：「出師？你的刀還嫩得很。等基本內功、拆招、基本刀法都練到五十，實戰也夠了，再說。」",
+      "src": "later"
+    },
+    {
+      "id": "talk_n_xd_buzou",
+      "era": "1.0A",
+      "self": "{npc_name}懶洋洋地說：「出了師的人想回來，就找我。現在嘛，還輪不到你。」",
+      "src": "later"
+    },
+    {
+      "id": "talk_n_xd_herder",
+      "era": "1.0A",
+      "self": "{npc_name}遞來一碗熱奶茶：「再往西南翻過大雪山就是血刀門，那些紅袍喇嘛殺人不眨眼。你真要去？先在帳篷裡歇一宿吧，十五兩。」",
+      "src": "proposal"
+    }
+  ],
+  "art_requests": {
+    "units": [
+      {
+        "id": "xuedao_m",
+        "alias": "huashan_m",
+        "prompt": "血刀門男弟子：暗紅喇嘛袍、光頭或短髮、腰掛彎刀，神情兇狠。"
+      },
+      {
+        "id": "n_xd_guard",
+        "alias": "m_bandit",
+        "prompt": "血刀門守門弟子：紅袍、按著彎刀，站姿戒備。"
+      },
+      {
+        "id": "n_xd_cha",
+        "alias": "n_hs_cha",
+        "prompt": "查小鏞：裹著厚棉襖的老先生，捧著簿子，縮著脖子。"
+      },
+      {
+        "id": "n_xd_laozu",
+        "alias": "n_sl_huizhen",
+        "prompt": "血刀老祖：枯瘦的老喇嘛，暗紅僧袍、手持血紅彎刀，眼神陰冷。"
+      },
+      {
+        "id": "n_xd_shengdi",
+        "alias": "n_sl_huizhen",
+        "prompt": "勝諦：中年血刀僧，紅袍、彎刀，身形精悍。"
+      },
+      {
+        "id": "n_xd_kuji",
+        "alias": "n_sl_huizhen",
+        "prompt": "苦集：沉默的血刀僧，紅袍，雙手合十但神情冷漠。"
+      },
+      {
+        "id": "n_xd_spar",
+        "alias": "n_ludayou",
+        "prompt": "寶象：身材肥大的血刀僧，袒胸露腹，手提彎刀大笑。"
+      },
+      {
+        "id": "n_xd_xuehai",
+        "alias": "n_sl_huizhen",
+        "prompt": "血海老祖：白眉老喇嘛，盤坐在暗紅血池邊。"
+      },
+      {
+        "id": "n_xd_shanyong",
+        "alias": "n_sl_huizhen",
+        "prompt": "善勇：精壯的血刀僧，背著長刀，負責清理門戶。"
+      },
+      {
+        "id": "n_xd_jingqi",
+        "alias": "n_sl_zhaiseng",
+        "prompt": "淨歧：滿臉酒氣的胖血刀僧，抱著酒罈。"
+      },
+      {
+        "id": "n_xd_aihui",
+        "alias": "n_sl_huizhen",
+        "prompt": "哀晦：瘦削陰沉的血刀僧，黑紅袍。"
+      },
+      {
+        "id": "n_xd_buliu",
+        "alias": "n_sl_huizhen",
+        "prompt": "不留：血刀門畢業考官，抱臂的中年喇嘛。"
+      },
+      {
+        "id": "n_xd_buzou",
+        "alias": "n_sl_huizhen",
+        "prompt": "不走：懶散的血刀僧，倚牆而立。"
+      },
+      {
+        "id": "n_xd_herder",
+        "alias": "n_de_host",
+        "prompt": "雪山牧民：羊皮襖、氈帽，手捧奶茶碗。"
+      },
+      {
+        "id": "m_xd_dizi",
+        "alias": "m_hs_trainee",
+        "prompt": "血刀弟子（切磋）：年輕紅袍喇嘛，持彎刀。"
+      },
+      {
+        "id": "m_xd_guard",
+        "alias": "m_city_guard",
+        "prompt": "血刀門護法：高大紅袍喇嘛，雙手持血紅大彎刀，氣勢壓人。"
+      }
+    ],
+    "backgrounds": [
+      {
+        "id": "xuedao",
+        "alias": "shaolin",
+        "prompt": "大雪山雪谷中的石窟寺院：暗紅門楣、酥油燈、雪地練刀場、血池山洞。"
+      },
+      {
+        "id": "xuedao_road",
+        "alias": "xixia_north",
+        "prompt": "大漠西緣轉入雪山：沙地碎石坡、積雪山路、牧民氈帳。"
+      }
+    ]
+  },
+  "todo_verify": [
+    "血刀入派善惡門檻：2001 沒有數字，用 2003 攻略「−99 以下」→ ≤ −100（M3A D7）；至尊版是 < −299",
+    "威嚇觸發效果：官方表為「重擊」(HEAVY)；門派介紹與 2002 玩家另說會降低敵人攻擊（非官方變體）",
+    "威嚇的修練方式：介紹文說靠對 NPC「恐嚇」（降善惡、耗精神），2003 靠血池比武（初／中／高）；M3a 只做老祖消點（cap 50）",
+    "血刀刀法係數 1.6（不明年代部落格）vs 後期表 1.40+8（公式不同）",
+    "血刀心法／滅仙掌／雪遁步行係數用專案預設 0.9；後期表 0.70+10／0.92+2／0.82+2（公式不同）",
+    "滅仙掌 2001 上限：只知道低於 100（2001-08 改版提高到 100），80 為設計提案",
+    "血刀刀法 2001 的「格」（招架）細節與 2001-08 削弱幅度不明，未建模",
+    "所有招式名稱（流星經天、血浪翻湧、血河倒瀉、天魔指路、滅仙斷魂、萬佛同悲）皆設計提案，研究無招式名單",
+    "血刀刀法直線（LINE）形狀為設計提案；血河倒瀉附帶流血（10%）為設計提案（流血的觸發來源待考證，研究只知血魔刀法帶流血）",
+    "2001 地圖格局不明：門口、本堂、血池、密室來自 2002–2003 攻略；練刀場、雪路各房、牧民帳篷、雪原為設計提案",
+    "血海老祖是否在 2002-08 已存在；血海魔功由誰消點（暫定血海老祖，研究的試煉在血刀老祖）",
+    "血海魔功條件全是 2002-08 數字（後期版），試煉旗標 xd_xuehai_lv1 由 M3b 任務給予；係數 1.6 為設計提案（後期表 2.75+1000）",
+    "基本刀法上限 120（2002-10 後期版），其他基本武學 140（後期版通例）",
+    "緬刀（血刀）是否 2001 已有、數值與售價、是否門派專用",
+    "苦集、寶象、淨歧、哀晦、善勇的職責分配：研究只有名字（2002–2003），本碎片指派為設計提案",
+    "不留／不走（畢業考官／回派）屬後期官方頁（出師制度 M9），目前只放對話",
+    "敵對入山的護法強度與人數（比照守城官兵）為設計提案；公敵 1–2 名、正善惡 1 名",
+    "門派地區 pk_allowed 設 false（與其他門派一致）；研究說血刀門 PK 不限（系統規則照舊）",
+    "門口血刀弟子的入門對話流程（2003：先找門口弟子，再找老祖選「滅派／拜入」）只做成對話",
+    "地區 city 欄填 dali（研究：大理出生 → 血刀）；地理上雪山道接在西夏轄下的大漠邊緣"
+  ],
+  "notes": "血刀門沒有執法者（官方門規頁「無（因為不會被蓄意開除）」），所以 enforcer false、jail_room 空、sect_rules 空陣列（攻擊血刀老祖＝叛派是 M3b 的 ATTACK_SECT_NPC）。停止傳功：善惡 > −100（teach_requires morality_max −100）。敵對入山：本門公敵在全部房間 1–2 名護法、不能逃；善惡 > 0 的非本派進山門以內 1 名護法、可逃；皆不押送（無思過處）。M3b 待做：門規事件（善勇，殺血刀叛徒）、老祖想吃熊肉、哀晦寅時綁人、淨歧戌時買五壇美酒、鼓勵師兄粗布道袍跑腿、訓練小遊戲（姿式、提縱、對招、批紙削腐）、血海魔功試煉（擊中老祖 2 萬以上）、威嚇恐嚇指令。血魔刀法與血魔老祖要京城與雁門關（1.0B），不做。血刀洞迷宮（西夏東北，鬼王）與本門無關，不要混淆。雪原 xd_snowfield 是雪山道上的死路練功點（離山門 3 步，可放山賊），不在必經路線上。"
+}

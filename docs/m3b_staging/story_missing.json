@@ -1,0 +1,6102 @@
+{
+ "fragment": "story_missing",
+ "version": 1,
+ "author": "WP-C-story_missing",
+ "quests": [
+  {
+   "id": "q_sm_yuntie",
+   "name": "運鐵",
+   "chapter": "少林派",
+   "group": "story_missing",
+   "giver": "n_sm_daoxiang",
+   "era": "1.0A",
+   "src": "verified",
+   "dialogue_src": "proposal",
+   "src_note": "研究 運鐵：官方第一話（頁面標 2001-07-11）預告原文「道相師兄需要有人幫他到西夏城找冶鐵商人『張鐵』拿回少林寺訂購的精鐵，若幫忙拿回精鐵，道相師兄就會給玩家很好的報酬喔。」；步驟與獎勵 2001-07-23 攻略（單一來源、未重抓）；少林限定、一次【設計提案】；後期「紅晶鐵」不做",
+   "text": "道相師兄需要有人幫他到西夏城找冶鐵商人「張鐵」拿回少林寺訂購的精鐵，若幫忙拿回精鐵，道相師兄就會給很好的報酬。",
+   "requires": [
+    {
+     "type": "sect",
+     "sect": "shaolin"
+    }
+   ],
+   "give_items": [
+    {
+     "id": "i_sm_caigouxin",
+     "n": 1
+    }
+   ],
+   "repeat": {
+    "max": 1,
+    "cooldown_days": 0
+   },
+   "abandon": true,
+   "party_credit": true,
+   "start": "s_tie",
+   "offer": "d_offer",
+   "stages": [
+    {
+     "id": "s_tie",
+     "title": "到西夏找張鐵",
+     "hint_room": "xx_tiepu",
+     "log": "帶著精鐵採購信到西夏城找冶鐵商人張鐵。出少林山門往西到少室山腳，往西經嵩山松林、嵩陽茶棚、武當岔路、東行古道到華山水池，往西是華山腳下，再往西走華陰道，往西北到恆山岔路；往西經恆山岸邊、路邊茶棚、恆山外稻田，往西北到潭東河岸，往西經黑龍潭、礦區到東北官道，往西南到東門外官道，往西進西夏東門。進城後往西到西大街，往東南就是張鐵的打鐵舖（兵器鋪邊上）。",
+     "objectives": [
+      {
+       "id": "o_tie",
+       "type": "TALK",
+       "npc": "n_xx_zhangtie",
+       "dialogue": "d_zhangtie",
+       "text": "把採購信交給西夏打鐵舖的張鐵"
+      }
+     ],
+     "next": "s_back"
+    },
+    {
+     "id": "s_back",
+     "title": "精鐵送回少林",
+     "hint_room": "sl_court",
+     "log": "把精鐵背回少林交給道相師兄。出西夏東門到東門外官道，往東北到東北官道，往東經礦區、黑龍潭到潭東河岸，往東南到恆山外稻田，往東經路邊茶棚、恆山岸邊到恆山岔路，往東南走華陰道到華山腳下，往東經華山水池、東行古道、武當岔路、嵩陽茶棚、嵩山松林、少室山腳，就是少林山門，進門往北是少林前院。道相在十八銅人陣外左邊。",
+     "objectives": [
+      {
+       "id": "o_back",
+       "type": "TALK",
+       "npc": "n_sm_daoxiang",
+       "dialogue": "d_back",
+       "text": "把精鐵交給少林前院的道相"
+      }
+     ],
+     "next": "END:default"
+    }
+   ],
+   "dialogues": {
+    "d_offer": {
+     "start": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "src_note": "依據官方 2001-07-11 預告；對白【設計提案】",
+       "text": "道相捏著一張訂貨單站在十八銅人陣外，見你走近，合十道：「阿彌陀佛。師弟可是要下山歷練？」",
+       "choices": [
+        {
+         "id": "c_ask",
+         "label": "師兄何事煩心？",
+         "goto": "n1"
+        },
+        {
+         "id": "c_bye",
+         "label": "弟子只是路過。",
+         "goto": "END"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "「寺裡兵器房的禪杖、戒刀用了幾十年，刃口都捲了。方丈命我向西夏城的冶鐵商人張鐵訂了一批精鐵，訂金早付了，貨卻遲遲不見送來。」",
+       "choices": [
+        {
+         "id": "c_go",
+         "label": "我替師兄跑一趟西夏。",
+         "goto": "n2"
+        },
+        {
+         "id": "c_no",
+         "label": "西夏路遠，弟子分身乏術。",
+         "goto": "n_no"
+        }
+       ]
+      },
+      "n2": {
+       "speaker": "npc",
+       "do": [
+        {
+         "do": "accept"
+        }
+       ],
+       "text": "「善哉。這是精鐵採購信，蓋著本寺的朱印，張鐵見了自會交貨。他的打鐵舖在西夏西大街，就在兵器鋪邊上。」",
+       "goto": "n3"
+      },
+      "n3": {
+       "speaker": "npc",
+       "text": "「精鐵沉重，路上小心。拿回精鐵，師兄必有重謝——寺裡雖清苦，總不會虧待了自家人。」",
+       "goto": "END"
+      },
+      "n_no": {
+       "speaker": "npc",
+       "text": "道相嘆了口氣：「也罷，出家人不打誑語，貨遲早會到的……阿彌陀佛。」",
+       "goto": "END"
+      }
+     }
+    },
+    "d_zhangtie": {
+     "start": "n0",
+     "resume": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "src_note": "張鐵（西夏城內，武器店邊上）：2001-07-23 攻略（未重抓）；對白【設計提案】",
+       "text": "張鐵赤著膀子，鐵鉗夾著一塊燒紅的鐵坯，頭也不抬：「客官要打什麼？……咦，你這身打扮，是少林寺來的？」",
+       "choices": [
+        {
+         "id": "c_letter",
+         "label": "少林寺道相師兄託我來取精鐵。",
+         "requires": [
+          {
+           "type": "has_item",
+           "item": "i_sm_caigouxin",
+           "n": 1
+          }
+         ],
+         "goto": "n1"
+        },
+        {
+         "id": "c_bye",
+         "label": "隨便看看。",
+         "goto": "END"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "張鐵把鐵坯往水裡一浸，嗤的一聲冒起白煙，接過信看了看：「對對對，少林寺訂的那批精鐵！不是我張鐵拖欠，是今年礦上出鐵少，前些天才剛煉成。」",
+       "choices": [
+        {
+         "id": "c_ok",
+         "label": "那就請張老闆交貨吧。",
+         "goto": "n2"
+        }
+       ]
+      },
+      "n2": {
+       "speaker": "npc",
+       "do": [
+        {
+         "do": "take",
+         "item": "i_sm_caigouxin",
+         "n": 1
+        },
+        {
+         "do": "give",
+         "item": "i_sm_jingtie",
+         "n": 1
+        },
+        {
+         "do": "complete",
+         "obj": "o_tie"
+        }
+       ],
+       "text": "張鐵從屋角拖出一捆用油布包好的精鐵：「拿去。這批鐵我多煉了三回，打出來的禪杖保管十年不彎。替我跟道相師父賠個不是。」",
+       "goto": "END"
+      }
+     }
+    },
+    "d_back": {
+     "start": "n0",
+     "resume": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "道相遠遠就迎了上來：「師弟回來了！精鐵可拿到了？」",
+       "choices": [
+        {
+         "id": "c_give",
+         "label": "精鐵在此，張老闆說多煉了三回。",
+         "requires": [
+          {
+           "type": "has_item",
+           "item": "i_sm_jingtie",
+           "n": 1
+          }
+         ],
+         "do": [
+          {
+           "do": "take",
+           "item": "i_sm_jingtie",
+           "n": 1
+          },
+          {
+           "do": "complete",
+           "obj": "o_back"
+          }
+         ],
+         "goto": "n1"
+        },
+        {
+         "id": "c_wait",
+         "label": "還在路上，師兄稍候。",
+         "goto": "END"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "道相屈指在精鐵上一彈，錚的一聲，餘音不絕：「好鐵！聲音清越，果然是精鐵。」",
+       "goto": "n2"
+      },
+      "n2": {
+       "speaker": "npc",
+       "src_note": "獎勵：2 綠石礦＋鑄劍熟練 +100（2001-07-23 攻略，未重抓）",
+       "text": "「寺裡規矩，不敢讓師弟白跑。這兩塊綠石礦是後山挖出來的，送你。另有一點鑄劍的門道，師兄也傳了你：鐵要燒到發白，錘要落在同一處……」",
+       "goto": "END"
+      }
+     }
+    }
+   },
+   "outcomes": {
+    "default": {
+     "label": "精鐵送回了少林",
+     "rewards": {
+      "items": [
+       {
+        "id": "r_kuang_lv",
+        "n": 2
+       }
+      ],
+      "learn": {
+       "life_swordsmith": 1
+      },
+      "skill_prof": {
+       "life_swordsmith": 100
+      }
+     },
+     "src": "verified",
+     "src_note": "2001-07-23 攻略「2 綠石礦 + 鑄劍熟練 +100」（單一來源，未重抓）；先學到鑄劍 1 級再給熟練【設計提案】（M3B_PLAN §8.3）"
+    }
+   },
+   "rumors": {
+    "first": "rmr_q_sm_yuntie_first"
+   }
+  },
+  {
+   "id": "q_sm_qidu",
+   "name": "幫楚禮子尋找七毒",
+   "chapter": "星宿海・七毒",
+   "group": "story_missing",
+   "giver": "n_sm_chulizi",
+   "era": "1.0A",
+   "src": "verified",
+   "dialogue_src": "proposal",
+   "src_note": "研究 七毒：官方第四話（2001-08-08）標題「幫楚禮子尋找找七毒」（原文重複「找」）、預告「楚禮子要人幫他抓七毒，聽說他會給解毒草為報酬。」；辰時～未時、解毒草兩個：jyfreeonline 星宿頁（後期）；毒物點：2001-08-18 座標表（未重抓）；O21",
+   "text": "楚禮子要人幫他抓七毒，聽說他會給解毒草為報酬。",
+   "requires": [],
+   "give_items": [],
+   "repeat": {
+    "max": 1,
+    "cooldown_days": 0
+   },
+   "abandon": true,
+   "party_credit": true,
+   "start": "s_hunt",
+   "offer": "d_offer",
+   "stages": [
+    {
+     "id": "s_hunt",
+     "title": "七毒各一隻",
+     "hint_room": "ts_road1",
+     "log": "楚禮子要赤蝎、蝎子、蜈蚣、蟾蜍、青蛇、彩蛛、黑蛛各一隻，要活的。毒物點（每處各打一場就能抓到一隻）：赤蝎在天山道最西邊的縹緲峰山腳：出西夏東門，經東門外官道到荒草坡，往北過胡楊林、城北山坡到雪地，往西是雪原小徑，再往西到獵戶小屋，往西北就是縹緲峰山腳。蜈蚣就在雪原小徑。蟾蜍在城北山坡往北的雪地。蝎子在星宿海邊的毒沼：荒草坡往南到小溪邊、南坡，往西南過溪口淺灘，往南到沙丘邊緣，往西是蛇骨小徑，往南就是毒沼。青蛇在大理北門外往北的城北河畔，武當山下樹林也有。彩蛛在恆山山道：出西夏東門往東北上東北官道，往東經礦區、黑龍潭、潭東河岸，往東南到恆山外稻田，往東經路邊茶棚、恆山岸邊到恆山岔路，往北就是恆山山道。黑蛛在武當山下樹林：恆山岔路往東南走華陰道，往東經華山腳下、華山水池、東行古道到武當岔路，往南到古道南岔，往西就是。（從星宿海回西夏：外景往東經星宿海邊、蛇骨小徑到沙丘邊緣，往北過溪口淺灘、南坡、小溪邊到荒草坡，往西經東門外官道進西夏東門。）",
+     "objectives": [
+      {
+       "id": "o_chixie",
+       "type": "COLLECT",
+       "item": "i_sm_du_chixie",
+       "count": 1,
+       "text": "抓一隻赤蝎（縹緲峰山腳）"
+      },
+      {
+       "id": "o_xiezi",
+       "type": "COLLECT",
+       "item": "i_sm_du_xiezi",
+       "count": 1,
+       "text": "抓一隻蝎子（毒沼）"
+      },
+      {
+       "id": "o_wugong",
+       "type": "COLLECT",
+       "item": "i_sm_du_wugong",
+       "count": 1,
+       "text": "抓一隻蜈蚣（雪原小徑）"
+      },
+      {
+       "id": "o_chanchu",
+       "type": "COLLECT",
+       "item": "i_sm_du_chanchu",
+       "count": 1,
+       "text": "抓一隻蟾蜍（雪地）"
+      },
+      {
+       "id": "o_qingshe",
+       "type": "COLLECT",
+       "item": "i_sm_du_qingshe",
+       "count": 1,
+       "text": "抓一隻青蛇（城北河畔）"
+      },
+      {
+       "id": "o_caizhu",
+       "type": "COLLECT",
+       "item": "i_sm_du_caizhu",
+       "count": 1,
+       "text": "抓一隻彩蛛（恆山山道）"
+      },
+      {
+       "id": "o_heizhu",
+       "type": "COLLECT",
+       "item": "i_sm_du_heizhu",
+       "count": 1,
+       "text": "抓一隻黑蛛（武當山下樹林）"
+      }
+     ],
+     "room_actions": [
+      {
+       "id": "a_poison_chixie",
+       "room": "ts_road2",
+       "label": "捕捉赤蝎",
+       "hours": [],
+       "requires": [],
+       "repeat": true,
+       "src_note": "研究 未做的 2001 事件：2001 七毒座標表（17173 n862_778664，2001-08-18，未重抓）赤蝎 1991,713 → [83,30]，挑最近的既有野外房間 ts_road2；O21：咸楓子（出外抓毒物）與楚禮子（七毒）共用一組大地圖毒物點【設計提案：房間對應】",
+       "do": [
+        {
+         "do": "tell",
+         "key": "tell_q_sm_du_chixie"
+        },
+        {
+         "do": "fight",
+         "monsters": [
+          "m_sm_du_chixie"
+         ],
+         "obj": ""
+        }
+       ]
+      },
+      {
+       "id": "a_poison_xiezi",
+       "room": "xh_marsh",
+       "label": "捕捉蝎子",
+       "hours": [],
+       "requires": [],
+       "repeat": true,
+       "src_note": "研究 未做的 2001 事件：2001 七毒座標表（17173 n862_778664，2001-08-18，未重抓）蝎子 2634,5600 → [110,233]，挑最近的既有野外房間 xh_marsh；O21：咸楓子（出外抓毒物）與楚禮子（七毒）共用一組大地圖毒物點【設計提案：房間對應】",
+       "do": [
+        {
+         "do": "tell",
+         "key": "tell_q_sm_du_xiezi"
+        },
+        {
+         "do": "fight",
+         "monsters": [
+          "m_sm_du_xiezi"
+         ],
+         "obj": ""
+        }
+       ]
+      },
+      {
+       "id": "a_poison_wugong",
+       "room": "ts_road1",
+       "label": "捕捉蜈蚣",
+       "hours": [],
+       "requires": [],
+       "repeat": true,
+       "src_note": "研究 未做的 2001 事件：2001 七毒座標表（17173 n862_778664，2001-08-18，未重抓）蜈蚣 6090,774 → [254,32]，挑最近的既有野外房間 ts_road1；O21：咸楓子（出外抓毒物）與楚禮子（七毒）共用一組大地圖毒物點【設計提案：房間對應】",
+       "do": [
+        {
+         "do": "tell",
+         "key": "tell_q_sm_du_wugong"
+        },
+        {
+         "do": "fight",
+         "monsters": [
+          "m_sm_du_wugong"
+         ],
+         "obj": ""
+        }
+       ]
+      },
+      {
+       "id": "a_poison_chanchu",
+       "room": "xn_snow",
+       "label": "捕捉蟾蜍",
+       "hours": [],
+       "requires": [],
+       "repeat": true,
+       "src_note": "研究 未做的 2001 事件：2001 七毒座標表（17173 n862_778664，2001-08-18，未重抓）蟾蜍 9087,573 → [379,24]，挑最近的既有野外房間 xn_snow；O21：咸楓子（出外抓毒物）與楚禮子（七毒）共用一組大地圖毒物點【設計提案：房間對應】",
+       "do": [
+        {
+         "do": "tell",
+         "key": "tell_q_sm_du_chanchu"
+        },
+        {
+         "do": "fight",
+         "monsters": [
+          "m_sm_du_chanchu"
+         ],
+         "obj": ""
+        }
+       ]
+      },
+      {
+       "id": "a_poison_qingshe",
+       "room": "dlw_river",
+       "label": "捕捉青蛇",
+       "hours": [],
+       "requires": [],
+       "repeat": true,
+       "src_note": "研究 未做的 2001 事件：2001 七毒座標表（17173 n862_778664，2001-08-18，未重抓）青蛇 5990,17288 → [250,720]，挑最近的既有野外房間 dlw_river；O21：咸楓子（出外抓毒物）與楚禮子（七毒）共用一組大地圖毒物點【設計提案：房間對應】",
+       "do": [
+        {
+         "do": "tell",
+         "key": "tell_q_sm_du_qingshe"
+        },
+        {
+         "do": "fight",
+         "monsters": [
+          "m_sm_du_qingshe"
+         ],
+         "obj": ""
+        }
+       ]
+      },
+      {
+       "id": "a_poison_caizhu",
+       "room": "hg_shandao",
+       "label": "捕捉彩蛛",
+       "hours": [],
+       "requires": [],
+       "repeat": true,
+       "src_note": "研究 未做的 2001 事件：2001 七毒座標表（17173 n862_778664，2001-08-18，未重抓）彩蛛 16608,5256 → [692,219]，挑最近的既有野外房間 hg_shandao；O21：咸楓子（出外抓毒物）與楚禮子（七毒）共用一組大地圖毒物點【設計提案：房間對應】",
+       "do": [
+        {
+         "do": "tell",
+         "key": "tell_q_sm_du_caizhu"
+        },
+        {
+         "do": "fight",
+         "monsters": [
+          "m_sm_du_caizhu"
+         ],
+         "obj": ""
+        }
+       ]
+      },
+      {
+       "id": "a_poison_heizhu",
+       "room": "wd_woods",
+       "label": "捕捉黑蛛",
+       "hours": [],
+       "requires": [],
+       "repeat": true,
+       "src_note": "研究 未做的 2001 事件：2001 七毒座標表（17173 n862_778664，2001-08-18，未重抓）黑蛛 18690,10132 → [779,422]，挑最近的既有野外房間 wd_woods；O21：咸楓子（出外抓毒物）與楚禮子（七毒）共用一組大地圖毒物點【設計提案：房間對應】",
+       "do": [
+        {
+         "do": "tell",
+         "key": "tell_q_sm_du_heizhu"
+        },
+        {
+         "do": "fight",
+         "monsters": [
+          "m_sm_du_heizhu"
+         ],
+         "obj": ""
+        }
+       ]
+      },
+      {
+       "id": "a_poison_qingshe2",
+       "room": "wd_woods",
+       "label": "捕捉青蛇",
+       "hours": [],
+       "requires": [],
+       "repeat": true,
+       "src_note": "2001 七毒座標表：青蛇＋黑蛛 18690,10132 → [779,422] → wd_woods（青蛇第二個出沒點）；O21：咸楓子（出外抓毒物）與楚禮子（七毒）共用一組大地圖毒物點",
+       "do": [
+        {
+         "do": "tell",
+         "key": "tell_q_sm_du_qingshe"
+        },
+        {
+         "do": "fight",
+         "monsters": [
+          "m_sm_du_qingshe"
+         ],
+         "obj": ""
+        }
+       ]
+      }
+     ],
+     "next": "s_return"
+    },
+    {
+     "id": "s_return",
+     "title": "交給楚禮子",
+     "hint_room": "xh_left",
+     "log": "七毒抓齊了。辰時到未時之間回星宿大殿左房找楚禮子（過了未時他得去伺候師父，不在房裡）。出西夏東門到東門外官道，往東到荒草坡，往南經小溪邊到南坡，往西南過溪口淺灘，往南到沙丘邊緣，往西經蛇骨小徑、星宿海邊到星宿海外景，往北進星宿大殿。大殿往西就是左房。",
+     "objectives": [
+      {
+       "id": "o_return",
+       "type": "TALK",
+       "npc": "n_sm_chulizi",
+       "dialogue": "d_return",
+       "text": "辰時～未時把七毒交給星宿左房的楚禮子"
+      }
+     ],
+     "next": "END:default"
+    }
+   ],
+   "dialogues": {
+    "d_offer": {
+     "start": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "src_note": "依據官方預告；對白【設計提案】",
+       "text": "楚禮子一把攔住你，壓低聲音：「喂，你！別東張西望的。師父要煉一爐新毒，叫我湊齊七樣毒物，限期交差。我一個人哪裡抓得完？」",
+       "choices": [
+        {
+         "id": "c_which",
+         "label": "是哪七樣毒物？",
+         "goto": "n1"
+        },
+        {
+         "id": "c_bye",
+         "label": "不關我的事。",
+         "goto": "END"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "「赤蝎、蝎子、蜈蚣、蟾蜍、青蛇、彩蛛、黑蛛，每樣一隻，都要活的。抓死的拿來，師父連你帶我一起下了丹爐。」",
+       "choices": [
+        {
+         "id": "c_where",
+         "label": "這些毒物上哪兒抓？",
+         "goto": "n2"
+        }
+       ]
+      },
+      "n2": {
+       "speaker": "npc",
+       "text": "「天山道雪原那頭有赤蝎、蜈蚣，西夏城北雪地有蟾蜍，毒沼裡的蝎子多得是，大理城北河畔有青蛇，恆山山道有彩蛛，武當山下的樹林裡黑蛛、青蛇都有。」",
+       "choices": [
+        {
+         "id": "c_help",
+         "label": "好，我替你抓齊。",
+         "do": [
+          {
+           "do": "accept"
+          }
+         ],
+         "goto": "n3"
+        },
+        {
+         "id": "c_no",
+         "label": "七樣毒物，跑斷腿也抓不完。",
+         "goto": "n_no"
+        }
+       ]
+      },
+      "n3": {
+       "speaker": "npc",
+       "text": "楚禮子眼睛一亮：「算你識相。辰時到未時我都在這左房候著，過了未時我得去伺候師父，別來找我。抓齊了拿來，我拿解毒草跟你換。」",
+       "goto": "END"
+      },
+      "n_no": {
+       "speaker": "npc",
+       "text": "楚禮子撇撇嘴：「哼，膽小鬼。在星宿海混，連幾隻毒蟲都怕？」",
+       "goto": "END"
+      }
+     }
+    },
+    "d_return": {
+     "start": "n0",
+     "resume": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "楚禮子搓著手：「七毒都抓齊了？快拿來我瞧瞧！」",
+       "choices": [
+        {
+         "id": "c_give",
+         "label": "七樣都在這竹簍裡。",
+         "requires": [
+          {
+           "type": "has_item",
+           "item": "i_sm_du_chixie",
+           "n": 1
+          },
+          {
+           "type": "has_item",
+           "item": "i_sm_du_xiezi",
+           "n": 1
+          },
+          {
+           "type": "has_item",
+           "item": "i_sm_du_wugong",
+           "n": 1
+          },
+          {
+           "type": "has_item",
+           "item": "i_sm_du_chanchu",
+           "n": 1
+          },
+          {
+           "type": "has_item",
+           "item": "i_sm_du_qingshe",
+           "n": 1
+          },
+          {
+           "type": "has_item",
+           "item": "i_sm_du_caizhu",
+           "n": 1
+          },
+          {
+           "type": "has_item",
+           "item": "i_sm_du_heizhu",
+           "n": 1
+          }
+         ],
+         "do": [
+          {
+           "do": "take",
+           "item": "i_sm_du_chixie",
+           "n": 1
+          },
+          {
+           "do": "take",
+           "item": "i_sm_du_xiezi",
+           "n": 1
+          },
+          {
+           "do": "take",
+           "item": "i_sm_du_wugong",
+           "n": 1
+          },
+          {
+           "do": "take",
+           "item": "i_sm_du_chanchu",
+           "n": 1
+          },
+          {
+           "do": "take",
+           "item": "i_sm_du_qingshe",
+           "n": 1
+          },
+          {
+           "do": "take",
+           "item": "i_sm_du_caizhu",
+           "n": 1
+          },
+          {
+           "do": "take",
+           "item": "i_sm_du_heizhu",
+           "n": 1
+          },
+          {
+           "do": "complete",
+           "obj": "o_return"
+          }
+         ],
+         "goto": "n1"
+        },
+        {
+         "id": "c_wait",
+         "label": "還差幾樣。",
+         "goto": "END"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "楚禮子一樣一樣掀開竹簍：「赤蝎的尾巴翹得老高，黑蛛的毒囊鼓鼓的……嘿嘿，好，好！這下師父不會拿我試毒了。」",
+       "goto": "n2"
+      },
+      "n2": {
+       "speaker": "npc",
+       "src_note": "獎勵 解毒草兩個（後期）",
+       "text": "「說好的，這兩株解毒草給你。在星宿海混日子，身上不帶點解藥，怎麼死的都不知道。」",
+       "goto": "END"
+      }
+     }
+    }
+   },
+   "outcomes": {
+    "default": {
+     "label": "七毒交給了楚禮子",
+     "rewards": {
+      "items": [
+       {
+        "id": "r_sm_jieducao",
+        "n": 2
+       }
+      ]
+     },
+     "src": "later",
+     "src_note": "jyfreeonline 星宿頁「解毒草兩個」（後期）；2001 預告只說會給解毒草"
+    }
+   },
+   "rumors": {
+    "first": "rmr_q_sm_qidu_first"
+   }
+  },
+  {
+   "id": "q_sm_zhuadu",
+   "name": "出外抓毒物",
+   "chapter": "星宿海・出外抓毒物",
+   "group": "story_missing",
+   "giver": "n_sm_xianfengzi",
+   "era": "1.0A",
+   "src": "verified",
+   "dialogue_src": "proposal",
+   "src_note": "研究 出外抓毒物：官方第二話（2001-07-18）預告原文確認；卯時～未時、每種熟練 +3/+5/+7、全交 +40：後期攻略；2001 獎勵沒有數字；毒物點與七毒共用（O21）",
+   "text": "咸楓子要人出外替他抓毒物，交一樣就教一點使毒的竅門。",
+   "requires": [],
+   "give_items": [],
+   "repeat": {
+    "max": 0,
+    "cooldown_days": 1
+   },
+   "abandon": true,
+   "party_credit": true,
+   "start": "s_hunt",
+   "offer": "d_offer",
+   "stages": [
+    {
+     "id": "s_hunt",
+     "title": "出外抓毒物",
+     "hint_room": "xh_right",
+     "on_enter": [
+      {
+       "do": "var",
+       "name": "d_chixie",
+       "value": false
+      },
+      {
+       "do": "var",
+       "name": "d_xiezi",
+       "value": false
+      },
+      {
+       "do": "var",
+       "name": "d_wugong",
+       "value": false
+      },
+      {
+       "do": "var",
+       "name": "d_chanchu",
+       "value": false
+      },
+      {
+       "do": "var",
+       "name": "d_qingshe",
+       "value": false
+      },
+      {
+       "do": "var",
+       "name": "d_caizhu",
+       "value": false
+      },
+      {
+       "do": "var",
+       "name": "d_heizhu",
+       "value": false
+      }
+     ],
+     "log": "出外抓毒物，卯時到未時之間拿回星宿大殿右房交給咸楓子；抓到幾樣交幾樣，每交一種他教你一點基本毒術，七種全交齊另有好處。毒物點（每處各打一場就能抓到一隻）：赤蝎在天山道最西邊的縹緲峰山腳：出西夏東門，經東門外官道到荒草坡，往北過胡楊林、城北山坡到雪地，往西是雪原小徑，再往西到獵戶小屋，往西北就是縹緲峰山腳。蜈蚣就在雪原小徑。蟾蜍在城北山坡往北的雪地。蝎子在星宿海邊的毒沼：荒草坡往南到小溪邊、南坡，往西南過溪口淺灘，往南到沙丘邊緣，往西是蛇骨小徑，往南就是毒沼。青蛇在大理北門外往北的城北河畔，武當山下樹林也有。彩蛛在恆山山道：出西夏東門往東北上東北官道，往東經礦區、黑龍潭、潭東河岸，往東南到恆山外稻田，往東經路邊茶棚、恆山岸邊到恆山岔路，往北就是恆山山道。黑蛛在武當山下樹林：恆山岔路往東南走華陰道，往東經華山腳下、華山水池、東行古道到武當岔路，往南到古道南岔，往西就是。（從星宿海回西夏：外景往東經星宿海邊、蛇骨小徑到沙丘邊緣，往北過溪口淺灘、南坡、小溪邊到荒草坡，往西經東門外官道進西夏東門。）",
+     "objectives": [
+      {
+       "id": "o_turnin",
+       "type": "TALK",
+       "npc": "n_sm_xianfengzi",
+       "dialogue": "d_turnin",
+       "hours": [
+        "卯",
+        "辰",
+        "巳",
+        "午",
+        "未"
+       ],
+       "text": "卯時～未時把抓到的毒物交給星宿右房的咸楓子"
+      }
+     ],
+     "room_actions": [
+      {
+       "id": "a_poison_chixie",
+       "room": "ts_road2",
+       "label": "捕捉赤蝎",
+       "hours": [],
+       "requires": [],
+       "repeat": true,
+       "src_note": "研究 未做的 2001 事件：2001 七毒座標表（17173 n862_778664，2001-08-18，未重抓）赤蝎 1991,713 → [83,30]，挑最近的既有野外房間 ts_road2；O21：咸楓子（出外抓毒物）與楚禮子（七毒）共用一組大地圖毒物點【設計提案：房間對應】",
+       "do": [
+        {
+         "do": "tell",
+         "key": "tell_q_sm_du_chixie"
+        },
+        {
+         "do": "fight",
+         "monsters": [
+          "m_sm_du_chixie"
+         ],
+         "obj": ""
+        }
+       ]
+      },
+      {
+       "id": "a_poison_xiezi",
+       "room": "xh_marsh",
+       "label": "捕捉蝎子",
+       "hours": [],
+       "requires": [],
+       "repeat": true,
+       "src_note": "研究 未做的 2001 事件：2001 七毒座標表（17173 n862_778664，2001-08-18，未重抓）蝎子 2634,5600 → [110,233]，挑最近的既有野外房間 xh_marsh；O21：咸楓子（出外抓毒物）與楚禮子（七毒）共用一組大地圖毒物點【設計提案：房間對應】",
+       "do": [
+        {
+         "do": "tell",
+         "key": "tell_q_sm_du_xiezi"
+        },
+        {
+         "do": "fight",
+         "monsters": [
+          "m_sm_du_xiezi"
+         ],
+         "obj": ""
+        }
+       ]
+      },
+      {
+       "id": "a_poison_wugong",
+       "room": "ts_road1",
+       "label": "捕捉蜈蚣",
+       "hours": [],
+       "requires": [],
+       "repeat": true,
+       "src_note": "研究 未做的 2001 事件：2001 七毒座標表（17173 n862_778664，2001-08-18，未重抓）蜈蚣 6090,774 → [254,32]，挑最近的既有野外房間 ts_road1；O21：咸楓子（出外抓毒物）與楚禮子（七毒）共用一組大地圖毒物點【設計提案：房間對應】",
+       "do": [
+        {
+         "do": "tell",
+         "key": "tell_q_sm_du_wugong"
+        },
+        {
+         "do": "fight",
+         "monsters": [
+          "m_sm_du_wugong"
+         ],
+         "obj": ""
+        }
+       ]
+      },
+      {
+       "id": "a_poison_chanchu",
+       "room": "xn_snow",
+       "label": "捕捉蟾蜍",
+       "hours": [],
+       "requires": [],
+       "repeat": true,
+       "src_note": "研究 未做的 2001 事件：2001 七毒座標表（17173 n862_778664，2001-08-18，未重抓）蟾蜍 9087,573 → [379,24]，挑最近的既有野外房間 xn_snow；O21：咸楓子（出外抓毒物）與楚禮子（七毒）共用一組大地圖毒物點【設計提案：房間對應】",
+       "do": [
+        {
+         "do": "tell",
+         "key": "tell_q_sm_du_chanchu"
+        },
+        {
+         "do": "fight",
+         "monsters": [
+          "m_sm_du_chanchu"
+         ],
+         "obj": ""
+        }
+       ]
+      },
+      {
+       "id": "a_poison_qingshe",
+       "room": "dlw_river",
+       "label": "捕捉青蛇",
+       "hours": [],
+       "requires": [],
+       "repeat": true,
+       "src_note": "研究 未做的 2001 事件：2001 七毒座標表（17173 n862_778664，2001-08-18，未重抓）青蛇 5990,17288 → [250,720]，挑最近的既有野外房間 dlw_river；O21：咸楓子（出外抓毒物）與楚禮子（七毒）共用一組大地圖毒物點【設計提案：房間對應】",
+       "do": [
+        {
+         "do": "tell",
+         "key": "tell_q_sm_du_qingshe"
+        },
+        {
+         "do": "fight",
+         "monsters": [
+          "m_sm_du_qingshe"
+         ],
+         "obj": ""
+        }
+       ]
+      },
+      {
+       "id": "a_poison_caizhu",
+       "room": "hg_shandao",
+       "label": "捕捉彩蛛",
+       "hours": [],
+       "requires": [],
+       "repeat": true,
+       "src_note": "研究 未做的 2001 事件：2001 七毒座標表（17173 n862_778664，2001-08-18，未重抓）彩蛛 16608,5256 → [692,219]，挑最近的既有野外房間 hg_shandao；O21：咸楓子（出外抓毒物）與楚禮子（七毒）共用一組大地圖毒物點【設計提案：房間對應】",
+       "do": [
+        {
+         "do": "tell",
+         "key": "tell_q_sm_du_caizhu"
+        },
+        {
+         "do": "fight",
+         "monsters": [
+          "m_sm_du_caizhu"
+         ],
+         "obj": ""
+        }
+       ]
+      },
+      {
+       "id": "a_poison_heizhu",
+       "room": "wd_woods",
+       "label": "捕捉黑蛛",
+       "hours": [],
+       "requires": [],
+       "repeat": true,
+       "src_note": "研究 未做的 2001 事件：2001 七毒座標表（17173 n862_778664，2001-08-18，未重抓）黑蛛 18690,10132 → [779,422]，挑最近的既有野外房間 wd_woods；O21：咸楓子（出外抓毒物）與楚禮子（七毒）共用一組大地圖毒物點【設計提案：房間對應】",
+       "do": [
+        {
+         "do": "tell",
+         "key": "tell_q_sm_du_heizhu"
+        },
+        {
+         "do": "fight",
+         "monsters": [
+          "m_sm_du_heizhu"
+         ],
+         "obj": ""
+        }
+       ]
+      },
+      {
+       "id": "a_poison_qingshe2",
+       "room": "wd_woods",
+       "label": "捕捉青蛇",
+       "hours": [],
+       "requires": [],
+       "repeat": true,
+       "src_note": "2001 七毒座標表：青蛇＋黑蛛 18690,10132 → [779,422] → wd_woods（青蛇第二個出沒點）；O21：咸楓子（出外抓毒物）與楚禮子（七毒）共用一組大地圖毒物點",
+       "do": [
+        {
+         "do": "tell",
+         "key": "tell_q_sm_du_qingshe"
+        },
+        {
+         "do": "fight",
+         "monsters": [
+          "m_sm_du_qingshe"
+         ],
+         "obj": ""
+        }
+       ]
+      }
+     ],
+     "next": [
+      {
+       "if": [
+        {
+         "type": "quest_var",
+         "quest": "q_sm_zhuadu",
+         "var": "end",
+         "value": "all"
+        }
+       ],
+       "goto": "END:all"
+      },
+      {
+       "goto": "END:part"
+      }
+     ]
+    }
+   ],
+   "dialogues": {
+    "d_offer": {
+     "start": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "src_note": "依據官方 2001-07-18 預告；對白【設計提案】",
+       "text": "咸楓子把一隻竹簍搖了搖，側耳聽著裡頭的動靜：「你也是來找毒物的？星宿海的毒物給師兄弟們抓得差不多了，要好貨色，就得出外去抓。」",
+       "choices": [
+        {
+         "id": "c_what",
+         "label": "出外抓毒物？",
+         "goto": "n1"
+        },
+        {
+         "id": "c_bye",
+         "label": "告辭。",
+         "goto": "END"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "「咱們星宿派的毒功，靠的就是天下毒物。我這兒缺貨，你若肯出外替我抓來，交一樣，我就教你一點使毒的竅門；七樣全齊，另有好處。」",
+       "choices": [
+        {
+         "id": "c_where",
+         "label": "要抓哪些？上哪兒抓？",
+         "goto": "n2"
+        }
+       ]
+      },
+      "n2": {
+       "speaker": "npc",
+       "text": "「赤蝎、蜈蚣在天山道雪原，蟾蜍在西夏城北雪地，蝎子在毒沼，青蛇在大理城北河畔和武當山下，彩蛛在恆山山道，黑蛛在武當山下的樹林裡。」",
+       "choices": [
+        {
+         "id": "c_ok",
+         "label": "好，我去抓。",
+         "do": [
+          {
+           "do": "accept"
+          }
+         ],
+         "goto": "n3"
+        },
+        {
+         "id": "c_no",
+         "label": "我可不想被毒蟲咬。",
+         "goto": "n_no"
+        }
+       ]
+      },
+      "n3": {
+       "speaker": "npc",
+       "text": "「卯時到未時我在這右房。記住，毒物要活的；抓到幾樣就拿幾樣來，不必一次湊齊。」",
+       "goto": "END"
+      },
+      "n_no": {
+       "speaker": "npc",
+       "text": "咸楓子嘿嘿一笑：「不碰毒物，怎麼知道毒物的好處？」",
+       "goto": "END"
+      }
+     }
+    },
+    "d_turnin": {
+     "start": "n0",
+     "resume": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "src_note": "每種熟練：後期 赤蝎／斑蟾／蜈蚣 +3、七彩蛛／蜂蟻／彩蛾 +5、黑蛛 +7；蜂蟻、彩蛾 2001 沒有出沒點 → 以蝎子、青蛇代【設計提案】",
+       "text": "咸楓子伸長了脖子：「抓到什麼了？拿來給我瞧瞧。」",
+       "choices": [
+        {
+         "id": "c_chixie",
+         "label": "交上一隻赤蝎。",
+         "requires": [
+          {
+           "type": "has_item",
+           "item": "i_sm_du_chixie",
+           "n": 1
+          },
+          {
+           "type": "quest_var",
+           "quest": "q_sm_zhuadu",
+           "var": "d_chixie",
+           "value": false
+          }
+         ],
+         "hide_if_locked": true,
+         "do": [
+          {
+           "do": "take",
+           "item": "i_sm_du_chixie",
+           "n": 1
+          },
+          {
+           "do": "var",
+           "name": "d_chixie",
+           "value": true
+          },
+          {
+           "do": "reward",
+           "rewards": {
+            "skill_prof": {
+             "basic_poison": 3
+            }
+           }
+          }
+         ],
+         "goto": "n_got"
+        },
+        {
+         "id": "c_xiezi",
+         "label": "交上一隻蝎子。",
+         "requires": [
+          {
+           "type": "has_item",
+           "item": "i_sm_du_xiezi",
+           "n": 1
+          },
+          {
+           "type": "quest_var",
+           "quest": "q_sm_zhuadu",
+           "var": "d_xiezi",
+           "value": false
+          }
+         ],
+         "hide_if_locked": true,
+         "do": [
+          {
+           "do": "take",
+           "item": "i_sm_du_xiezi",
+           "n": 1
+          },
+          {
+           "do": "var",
+           "name": "d_xiezi",
+           "value": true
+          },
+          {
+           "do": "reward",
+           "rewards": {
+            "skill_prof": {
+             "basic_poison": 5
+            }
+           }
+          }
+         ],
+         "goto": "n_got"
+        },
+        {
+         "id": "c_wugong",
+         "label": "交上一隻蜈蚣。",
+         "requires": [
+          {
+           "type": "has_item",
+           "item": "i_sm_du_wugong",
+           "n": 1
+          },
+          {
+           "type": "quest_var",
+           "quest": "q_sm_zhuadu",
+           "var": "d_wugong",
+           "value": false
+          }
+         ],
+         "hide_if_locked": true,
+         "do": [
+          {
+           "do": "take",
+           "item": "i_sm_du_wugong",
+           "n": 1
+          },
+          {
+           "do": "var",
+           "name": "d_wugong",
+           "value": true
+          },
+          {
+           "do": "reward",
+           "rewards": {
+            "skill_prof": {
+             "basic_poison": 3
+            }
+           }
+          }
+         ],
+         "goto": "n_got"
+        },
+        {
+         "id": "c_chanchu",
+         "label": "交上一隻蟾蜍。",
+         "requires": [
+          {
+           "type": "has_item",
+           "item": "i_sm_du_chanchu",
+           "n": 1
+          },
+          {
+           "type": "quest_var",
+           "quest": "q_sm_zhuadu",
+           "var": "d_chanchu",
+           "value": false
+          }
+         ],
+         "hide_if_locked": true,
+         "do": [
+          {
+           "do": "take",
+           "item": "i_sm_du_chanchu",
+           "n": 1
+          },
+          {
+           "do": "var",
+           "name": "d_chanchu",
+           "value": true
+          },
+          {
+           "do": "reward",
+           "rewards": {
+            "skill_prof": {
+             "basic_poison": 3
+            }
+           }
+          }
+         ],
+         "goto": "n_got"
+        },
+        {
+         "id": "c_qingshe",
+         "label": "交上一隻青蛇。",
+         "requires": [
+          {
+           "type": "has_item",
+           "item": "i_sm_du_qingshe",
+           "n": 1
+          },
+          {
+           "type": "quest_var",
+           "quest": "q_sm_zhuadu",
+           "var": "d_qingshe",
+           "value": false
+          }
+         ],
+         "hide_if_locked": true,
+         "do": [
+          {
+           "do": "take",
+           "item": "i_sm_du_qingshe",
+           "n": 1
+          },
+          {
+           "do": "var",
+           "name": "d_qingshe",
+           "value": true
+          },
+          {
+           "do": "reward",
+           "rewards": {
+            "skill_prof": {
+             "basic_poison": 5
+            }
+           }
+          }
+         ],
+         "goto": "n_got"
+        },
+        {
+         "id": "c_caizhu",
+         "label": "交上一隻彩蛛。",
+         "requires": [
+          {
+           "type": "has_item",
+           "item": "i_sm_du_caizhu",
+           "n": 1
+          },
+          {
+           "type": "quest_var",
+           "quest": "q_sm_zhuadu",
+           "var": "d_caizhu",
+           "value": false
+          }
+         ],
+         "hide_if_locked": true,
+         "do": [
+          {
+           "do": "take",
+           "item": "i_sm_du_caizhu",
+           "n": 1
+          },
+          {
+           "do": "var",
+           "name": "d_caizhu",
+           "value": true
+          },
+          {
+           "do": "reward",
+           "rewards": {
+            "skill_prof": {
+             "basic_poison": 5
+            }
+           }
+          }
+         ],
+         "goto": "n_got"
+        },
+        {
+         "id": "c_heizhu",
+         "label": "交上一隻黑蛛。",
+         "requires": [
+          {
+           "type": "has_item",
+           "item": "i_sm_du_heizhu",
+           "n": 1
+          },
+          {
+           "type": "quest_var",
+           "quest": "q_sm_zhuadu",
+           "var": "d_heizhu",
+           "value": false
+          }
+         ],
+         "hide_if_locked": true,
+         "do": [
+          {
+           "do": "take",
+           "item": "i_sm_du_heizhu",
+           "n": 1
+          },
+          {
+           "do": "var",
+           "name": "d_heizhu",
+           "value": true
+          },
+          {
+           "do": "reward",
+           "rewards": {
+            "skill_prof": {
+             "basic_poison": 7
+            }
+           }
+          }
+         ],
+         "goto": "n_got"
+        },
+        {
+         "id": "c_all",
+         "label": "七樣都交齊了。",
+         "requires": [
+          {
+           "type": "quest_var",
+           "quest": "q_sm_zhuadu",
+           "var": "d_chixie",
+           "value": true
+          },
+          {
+           "type": "quest_var",
+           "quest": "q_sm_zhuadu",
+           "var": "d_xiezi",
+           "value": true
+          },
+          {
+           "type": "quest_var",
+           "quest": "q_sm_zhuadu",
+           "var": "d_wugong",
+           "value": true
+          },
+          {
+           "type": "quest_var",
+           "quest": "q_sm_zhuadu",
+           "var": "d_chanchu",
+           "value": true
+          },
+          {
+           "type": "quest_var",
+           "quest": "q_sm_zhuadu",
+           "var": "d_qingshe",
+           "value": true
+          },
+          {
+           "type": "quest_var",
+           "quest": "q_sm_zhuadu",
+           "var": "d_caizhu",
+           "value": true
+          },
+          {
+           "type": "quest_var",
+           "quest": "q_sm_zhuadu",
+           "var": "d_heizhu",
+           "value": true
+          }
+         ],
+         "hide_if_locked": true,
+         "do": [
+          {
+           "do": "var",
+           "name": "end",
+           "value": "all"
+          },
+          {
+           "do": "complete",
+           "obj": "o_turnin"
+          }
+         ],
+         "goto": "n_all"
+        },
+        {
+         "id": "c_part",
+         "label": "今天就交這些。",
+         "requires": [
+          {
+           "type": "any_of",
+           "options": [
+            [
+             {
+              "type": "quest_var",
+              "quest": "q_sm_zhuadu",
+              "var": "d_chixie",
+              "value": true
+             }
+            ],
+            [
+             {
+              "type": "quest_var",
+              "quest": "q_sm_zhuadu",
+              "var": "d_xiezi",
+              "value": true
+             }
+            ],
+            [
+             {
+              "type": "quest_var",
+              "quest": "q_sm_zhuadu",
+              "var": "d_wugong",
+              "value": true
+             }
+            ],
+            [
+             {
+              "type": "quest_var",
+              "quest": "q_sm_zhuadu",
+              "var": "d_chanchu",
+              "value": true
+             }
+            ],
+            [
+             {
+              "type": "quest_var",
+              "quest": "q_sm_zhuadu",
+              "var": "d_qingshe",
+              "value": true
+             }
+            ],
+            [
+             {
+              "type": "quest_var",
+              "quest": "q_sm_zhuadu",
+              "var": "d_caizhu",
+              "value": true
+             }
+            ],
+            [
+             {
+              "type": "quest_var",
+              "quest": "q_sm_zhuadu",
+              "var": "d_heizhu",
+              "value": true
+             }
+            ]
+           ]
+          }
+         ],
+         "hide_if_locked": true,
+         "do": [
+          {
+           "do": "var",
+           "name": "end",
+           "value": "part"
+          },
+          {
+           "do": "complete",
+           "obj": "o_turnin"
+          }
+         ],
+         "goto": "n_part"
+        },
+        {
+         "id": "c_bye",
+         "label": "還沒抓到，我再去轉轉。",
+         "goto": "END"
+        }
+       ]
+      },
+      "n_got": {
+       "speaker": "npc",
+       "text": "咸楓子捏起毒物，翻過來指給你看：「是活的，毒性也足。看好了，這東西的毒腺在這兒，下手取毒要這樣……」",
+       "choices": [
+        {
+         "id": "c_more",
+         "label": "我還有別的。",
+         "goto": "n0"
+        },
+        {
+         "id": "c_leave",
+         "label": "我再去抓。",
+         "goto": "END"
+        }
+       ]
+      },
+      "n_all": {
+       "speaker": "npc",
+       "src_note": "全交 +40（後期）",
+       "text": "「七樣齊了！好小子，有你的。這幾樣毒怎麼配、怎麼解，我只說一遍，你聽仔細了……」",
+       "goto": "END"
+      },
+      "n_part": {
+       "speaker": "npc",
+       "text": "「也好，貪多嚼不爛。明天再來，我這兒的毒物永遠嫌少。」",
+       "goto": "END"
+      }
+     }
+    }
+   },
+   "outcomes": {
+    "all": {
+     "label": "七種毒物全交齊了",
+     "rewards": {
+      "skill_prof": {
+       "basic_poison": 40
+      }
+     },
+     "src": "later",
+     "src_note": "後期攻略：七種全 +40"
+    },
+    "part": {
+     "label": "交了幾樣毒物",
+     "rewards": {},
+     "src": "proposal",
+     "src_note": "分次交、提早結束【設計提案】"
+    }
+   },
+   "rumors": {
+    "first": "rmr_q_sm_zhuadu_first"
+   }
+  },
+  {
+   "id": "q_sm_lengning",
+   "name": "冷凝劍事件",
+   "chapter": "峨嵋・冷凝劍",
+   "group": "story_missing",
+   "giver": "n_em_jianchi",
+   "era": "1.0A",
+   "src": "verified",
+   "dialogue_src": "proposal",
+   "src_note": "研究 冷凝劍：官方第四話（2001-08-08）預告原文確認；後期攻略原文「條件：鑄劍30級 … 若將此劍給她會得到3800兩，學點70 … 若不想給她會得到學習點數50點」",
+   "text": "峨嵋山腳的劍痴一心想看冷凝劍，要會鑄劍的人替她鑄一把。",
+   "requires": [
+    {
+     "type": "life_min",
+     "skill": "life_swordsmith",
+     "value": 30
+    }
+   ],
+   "give_items": [],
+   "repeat": {
+    "max": 1,
+    "cooldown_days": 0
+   },
+   "abandon": true,
+   "party_credit": false,
+   "start": "s_forge",
+   "offer": "d_offer",
+   "stages": [
+    {
+     "id": "s_forge",
+     "title": "鑄一把冷凝劍",
+     "hint_room": "xx_tiepu",
+     "log": "到有鑄劍爐的打鐵舖（西夏西大街往東南的打鐵舖、大理雜貨鋪往東的打鐵舖；開放神鵰大俠時京城北大街往東也有）用鐵塊和木炭鑄一把冷凝劍（鑄劍 30 級），鑄好了帶在身上。",
+     "objectives": [
+      {
+       "id": "o_sword",
+       "type": "COLLECT",
+       "item": "w_lengning",
+       "count": 1,
+       "text": "鑄一把冷凝劍帶在身上"
+      }
+     ],
+     "next": "s_show"
+    },
+    {
+     "id": "s_show",
+     "title": "給劍痴看劍",
+     "hint_room": "em_foot",
+     "log": "帶著冷凝劍到峨嵋山腳找劍痴：出大理北門到北門外大道，往東經陶耘稻田、東邊樹林到崆峒道口，往東北過崆峒橋，往東經竹林山徑、峨嵋茶棚到清音閣山道，往東北到峨嵋西林，往東就是峨嵋山腳。",
+     "objectives": [
+      {
+       "id": "o_show",
+       "type": "TALK",
+       "npc": "n_em_jianchi",
+       "dialogue": "d_show",
+       "text": "把冷凝劍拿給峨嵋山腳的劍痴看"
+      }
+     ],
+     "next": [
+      {
+       "if": [
+        {
+         "type": "quest_var",
+         "quest": "q_sm_lengning",
+         "var": "pick",
+         "value": "give"
+        }
+       ],
+       "goto": "END:give"
+      },
+      {
+       "goto": "END:keep"
+      }
+     ]
+    }
+   ],
+   "dialogues": {
+    "d_offer": {
+     "start": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "src_note": "依據官方 2001-08-08 預告；對白【設計提案】",
+       "text": "劍痴一把抓起你的手，翻來覆去地看：「虎口有繭，指節燙過……你會鑄劍？你會鑄劍！」",
+       "choices": [
+        {
+         "id": "c_what",
+         "label": "妳要找的冷凝劍，到底是什麼劍？",
+         "goto": "n1"
+        },
+        {
+         "id": "c_bye",
+         "label": "（抽回手）認錯人了。",
+         "goto": "END"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "「天下名劍我見得多了，就差一把冷凝劍。聽說那劍鑄成的時候寒氣逼人，劍身會結一層白霜，砍在鐵上只留一道細痕。」",
+       "goto": "n2"
+      },
+      "n2": {
+       "speaker": "npc",
+       "text": "「可鑄劍的師傅說了，鑄劍沒到三十級，連劍胚都燒不成。你……你肯不肯替我鑄一把？我不搶，我只要看一眼！」",
+       "choices": [
+        {
+         "id": "c_try",
+         "label": "好，我鑄成了就拿來給妳看。",
+         "do": [
+          {
+           "do": "accept"
+          }
+         ],
+         "goto": "n3"
+        },
+        {
+         "id": "c_no",
+         "label": "冷凝劍可不是說鑄就鑄的。",
+         "goto": "n_no"
+        }
+       ]
+      },
+      "n3": {
+       "speaker": "npc",
+       "text": "「真的？說好了，鑄成了一定要拿來！看一眼就好……不，看兩眼！」劍痴抱著懷裡的劍，笑得像個孩子。",
+       "goto": "END"
+      },
+      "n_no": {
+       "speaker": "npc",
+       "text": "劍痴的眼神一下子暗了：「冷凝劍……天下第一的冷凝劍……」她又抱著劍喃喃自語起來。",
+       "goto": "END"
+      }
+     }
+    },
+    "d_show": {
+     "start": "n0",
+     "resume": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "src_note": "選項「給她看」照 M3B_PLAN §8.3",
+       "text": "劍痴猛地抬起頭，鼻子嗅了嗅：「這股寒氣……你身上帶著什麼？」",
+       "choices": [
+        {
+         "id": "c_look",
+         "label": "給她看",
+         "requires": [
+          {
+           "type": "has_item",
+           "item": "w_lengning",
+           "n": 1
+          }
+         ],
+         "goto": "n1"
+        },
+        {
+         "id": "c_bye",
+         "label": "沒什麼。",
+         "goto": "END"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "劍痴雙手捧過冷凝劍，劍身一出鞘，白霜就順著劍脊爬了上去。她看得呆了，好半天才開口：「是冷凝劍……真的是冷凝劍。」",
+       "goto": "n2"
+      },
+      "n2": {
+       "speaker": "npc",
+       "text": "「我……我想要這把劍。我攢了三千八百兩，全給你，再把我這些年琢磨的劍理都說給你聽。你……你肯不肯給我？」",
+       "choices": [
+        {
+         "id": "c_give",
+         "label": "這把劍就送給妳吧。",
+         "do": [
+          {
+           "do": "take",
+           "item": "w_lengning",
+           "n": 1
+          },
+          {
+           "do": "var",
+           "name": "pick",
+           "value": "give"
+          },
+          {
+           "do": "complete",
+           "obj": "o_show"
+          }
+         ],
+         "goto": "n_give"
+        },
+        {
+         "id": "c_keep",
+         "label": "這是我親手鑄的劍，恕難割愛。",
+         "do": [
+          {
+           "do": "var",
+           "name": "pick",
+           "value": "keep"
+          },
+          {
+           "do": "complete",
+           "obj": "o_show"
+          }
+         ],
+         "goto": "n_keep"
+        }
+       ]
+      },
+      "n_give": {
+       "speaker": "npc",
+       "text": "劍痴把冷凝劍緊緊抱在懷裡，又哭又笑：「謝謝你！謝謝你！三千八百兩，一兩都不少。我跟你說，看劍先看脊，脊直則劍正……」",
+       "goto": "END"
+      },
+      "n_keep": {
+       "speaker": "npc",
+       "text": "劍痴把劍還給你，戀戀不捨地摸了摸劍鞘：「也是……也是，好劍該跟著鑄它的人。我把看劍的心得說給你聽，就當謝你讓我看了這一眼。」",
+       "goto": "END"
+      }
+     }
+    }
+   },
+   "outcomes": {
+    "give": {
+     "label": "冷凝劍送給了劍痴",
+     "rewards": {
+      "money": 3800,
+      "learn_points": 70
+     },
+     "src": "later",
+     "src_note": "後期攻略原文「若將此劍給她會得到3800兩，學點70」"
+    },
+    "keep": {
+     "label": "冷凝劍留在自己身邊",
+     "rewards": {
+      "learn_points": 50
+     },
+     "src": "later",
+     "src_note": "後期攻略原文「若不想給她會得到學習點數50點」"
+    }
+   },
+   "rumors": {
+    "first": "rmr_q_sm_lengning_first"
+   }
+  },
+  {
+   "id": "q_sm_chengwei",
+   "name": "辛勤的程薇",
+   "chapter": "恆山派",
+   "group": "story_missing",
+   "giver": "n_hg_chengwei",
+   "era": "1.0A",
+   "src": "verified",
+   "dialogue_src": "proposal",
+   "src_note": "研究 程薇：官方第三話（2001-07-26）預告原文確認；後期：條件 農夫 20 級以下、醫術 30 級以下；交 20 麻 → 基醫術 +50、殺氣 −100；申／巳時棉花事件給農務委託書；交 10 棉 → 毒龍涎、學點 +10、殺氣 −100；第一步時限沒寫",
+   "text": "恆山後山的程薇為今年的收成發愁，想種些麻、棉替師姊們織布做衣。",
+   "requires": [
+    {
+     "type": "skill_max",
+     "skill": "life_farming",
+     "value": 19
+    },
+    {
+     "type": "skill_max",
+     "skill": "basic_medic",
+     "value": 29
+    }
+   ],
+   "give_items": [],
+   "repeat": {
+    "max": 1,
+    "cooldown_days": 0
+   },
+   "abandon": true,
+   "party_credit": false,
+   "start": "s_ma",
+   "offer": "d_offer",
+   "stages": [
+    {
+     "id": "s_ma",
+     "title": "二十捆麻",
+     "hint_room": "hg_field",
+     "log": "替程薇弄來二十捆麻。種田 10 級就能種麻（菜販那裡有麻種子），或向別人收購。湊齊了回恆山後山菜田：恆山岔路往北上恆山山道到山門，往北經練劍坪、大殿到後山，往西就是菜田。",
+     "objectives": [
+      {
+       "id": "o_ma",
+       "type": "TALK",
+       "npc": "n_hg_chengwei",
+       "dialogue": "d_ma",
+       "text": "把 20 捆麻交給恆山後山菜田的程薇"
+      }
+     ],
+     "next": "s_wait"
+    },
+    {
+     "id": "s_wait",
+     "title": "棉花的事",
+     "hint_room": "hg_field",
+     "log": "程薇說棉花的事得等師太們做完功課才得空商量——巳時或申時再到後山菜田找她。",
+     "objectives": [
+      {
+       "id": "o_wait",
+       "type": "TALK",
+       "npc": "n_hg_chengwei",
+       "dialogue": "d_mian1",
+       "hours": [
+        "巳",
+        "申"
+       ],
+       "text": "巳時或申時再找程薇"
+      }
+     ],
+     "next": "s_mian"
+    },
+    {
+     "id": "s_mian",
+     "title": "十包棉花",
+     "hint_room": "dlw_paddy",
+     "any": true,
+     "log": "帶著農務委託書到大理城外找陶耘拿棉花：出大理北門到北門外大道，往東就是陶耘稻田。自己手上已經有 10 包棉花的話，直接交給程薇也行。",
+     "objectives": [
+      {
+       "id": "o_taoyun",
+       "type": "TALK",
+       "npc": "n_taoyun",
+       "dialogue": "d_taoyun",
+       "text": "拿農務委託書給陶耘稻田的陶耘看"
+      },
+      {
+       "id": "o_have",
+       "type": "COLLECT",
+       "item": "r_mianhua",
+       "count": 10,
+       "text": "或自己湊齊 10 包棉花"
+      }
+     ],
+     "next": "s_return"
+    },
+    {
+     "id": "s_return",
+     "title": "棉花交給程薇",
+     "hint_room": "hg_field",
+     "log": "帶著 10 包棉花和農務委託書回恆山後山菜田交給程薇：回大理城到大理驛站搭車回西夏，出西夏東門往東北上東北官道，往東經礦區、黑龍潭、潭東河岸，往東南到恆山外稻田，往東經路邊茶棚、恆山岸邊到恆山岔路，往北上恆山山道進山門，經練劍坪、大殿到後山，往西就是菜田。",
+     "objectives": [
+      {
+       "id": "o_return",
+       "type": "TALK",
+       "npc": "n_hg_chengwei",
+       "dialogue": "d_return",
+       "text": "把 10 包棉花交給程薇"
+      }
+     ],
+     "next": "END:default"
+    }
+   ],
+   "dialogues": {
+    "d_offer": {
+     "start": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "src_note": "依據官方 2001-07-26 預告；對白【設計提案】",
+       "text": "程薇蹲在田邊，撥開葉子看了又看，嘆了口氣：「今年雨水少，後山的菜長得稀稀落落。師太說要種些麻、棉，織布替師姊們做衣，可我只會種菜……」",
+       "choices": [
+        {
+         "id": "c_help",
+         "label": "麻的事，我替妳想辦法。",
+         "goto": "n1"
+        },
+        {
+         "id": "c_bye",
+         "label": "小師父辛苦了。",
+         "goto": "END"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "「真的？我要二十捆麻，紡了線好給師姊們縫衣。會種田的人種得出麻來，我聽說菜販那兒有麻種子賣。」",
+       "goto": "n2"
+      },
+      "n2": {
+       "speaker": "npc",
+       "text": "「施主肯幫忙，程薇先謝過了。只是……這事得慢慢來，我不急，菜也不急。」",
+       "choices": [
+        {
+         "id": "c_ok",
+         "label": "交給我吧。",
+         "do": [
+          {
+           "do": "accept"
+          }
+         ],
+         "goto": "n3"
+        },
+        {
+         "id": "c_no",
+         "label": "我連鋤頭都沒拿過。",
+         "goto": "END"
+        }
+       ]
+      },
+      "n3": {
+       "speaker": "npc",
+       "text": "「阿彌陀佛，多謝施主。我天天都在這後山菜田，你湊齊了就來。」",
+       "goto": "END"
+      }
+     }
+    },
+    "d_ma": {
+     "start": "n0",
+     "resume": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "程薇直起腰，抹了抹額上的汗：「施主來了？」",
+       "choices": [
+        {
+         "id": "c_give",
+         "label": "二十捆麻在這裡。",
+         "requires": [
+          {
+           "type": "has_item",
+           "item": "r_ma",
+           "n": 20
+          }
+         ],
+         "do": [
+          {
+           "do": "take",
+           "item": "r_ma",
+           "n": 20
+          },
+          {
+           "do": "complete",
+           "obj": "o_ma"
+          },
+          {
+           "do": "reward",
+           "rewards": {
+            "skill_prof": {
+             "basic_medic": 50
+            },
+            "killing_intent": -100
+           }
+          }
+         ],
+         "goto": "n1"
+        },
+        {
+         "id": "c_wait",
+         "label": "還沒湊齊。",
+         "goto": "END"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "程薇一捆一捆地數，數完了眼睛彎成月牙：「二十捆，一捆不少！這下師姊們冬天有衣裳穿了。」",
+       "goto": "n2"
+      },
+      "n2": {
+       "speaker": "npc",
+       "src_note": "基醫術 +50、殺氣 −100（後期）",
+       "text": "「我沒什麼好報答施主的。師太教過我辨認草藥、包紮傷口的法子，我說給你聽：止血先按這裡，敷藥要順著傷口的方向……」",
+       "goto": "n3"
+      },
+      "n3": {
+       "speaker": "npc",
+       "text": "「對了，師太說棉花也得備一些，可這事我還得請示。施主巳時或申時再來，那時師太們做完了功課。」",
+       "goto": "END"
+      }
+     }
+    },
+    "d_mian1": {
+     "start": "n0",
+     "resume": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "程薇雙手合十：「施主來得正好，我剛請示過師太。」",
+       "goto": "n1"
+      },
+      "n1": {
+       "speaker": "npc",
+       "do": [
+        {
+         "do": "give",
+         "item": "i_sm_nongwu",
+         "n": 1
+        },
+        {
+         "do": "complete",
+         "obj": "o_wait"
+        }
+       ],
+       "text": "「師太說冬衣要絮棉，得備十包棉花。可咱們恆山沒有田地種棉，師太就寫了這封農務委託書，託大理城外的陶耘代為張羅。」",
+       "goto": "n2"
+      },
+      "n2": {
+       "speaker": "npc",
+       "text": "「陶耘就在大理北門外往東的稻田。施主若手上已有棉花，直接帶來也是一樣的。」",
+       "goto": "END"
+      }
+     }
+    },
+    "d_taoyun": {
+     "start": "n0",
+     "resume": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "src_note": "委託書交給陶耘【設計提案】：程薇要求種田 ≤ 19 級，而種棉要 20 級",
+       "text": "陶耘把斗笠往後一推：「找我有事？要是來看稻子的，今年長得可好了。」",
+       "choices": [
+        {
+         "id": "c_show",
+         "label": "這是恆山派的農務委託書。",
+         "requires": [
+          {
+           "type": "has_item",
+           "item": "i_sm_nongwu",
+           "n": 1
+          }
+         ],
+         "goto": "n1"
+        },
+        {
+         "id": "c_bye",
+         "label": "路過而已。",
+         "goto": "END"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "陶耘接過委託書看了看，咧嘴一笑：「原來是恆山的師太們要棉花。我倉裡還有一些今年新收的，你等著。」",
+       "goto": "n2"
+      },
+      "n2": {
+       "speaker": "npc",
+       "do": [
+        {
+         "do": "give",
+         "item": "r_mianhua",
+         "n": 10
+        },
+        {
+         "do": "complete",
+         "obj": "o_taoyun"
+        }
+       ],
+       "text": "陶耘扛出一大包棉花：「十包，你點點。師太們吃齋念佛，我收什麼錢？替我跟程薇小師父說，種田這事急不得，看天吃飯。」",
+       "goto": "END"
+      }
+     }
+    },
+    "d_return": {
+     "start": "n0",
+     "resume": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "程薇遠遠看見你背著的大包，笑著迎上來：「是棉花嗎？」",
+       "choices": [
+        {
+         "id": "c_give",
+         "label": "十包棉花，還有委託書。",
+         "requires": [
+          {
+           "type": "has_item",
+           "item": "r_mianhua",
+           "n": 10
+          },
+          {
+           "type": "has_item",
+           "item": "i_sm_nongwu",
+           "n": 1
+          }
+         ],
+         "do": [
+          {
+           "do": "take",
+           "item": "r_mianhua",
+           "n": 10
+          },
+          {
+           "do": "take",
+           "item": "i_sm_nongwu",
+           "n": 1
+          },
+          {
+           "do": "complete",
+           "obj": "o_return"
+          }
+         ],
+         "goto": "n1"
+        },
+        {
+         "id": "c_wait",
+         "label": "還在路上。",
+         "goto": "END"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "「這麼多棉花，夠師姊們做冬衣了。施主為恆山跑了這麼多路，程薇真不知怎麼謝你。」",
+       "goto": "n2"
+      },
+      "n2": {
+       "speaker": "npc",
+       "src_note": "毒龍涎、學點 +10、殺氣 −100（後期）",
+       "text": "程薇從懷裡取出一個小瓷瓶：「這瓶毒龍涎是我上山前家裡傳下來的，聽說能以毒攻毒。我是出家人，留著也用不上，施主收下吧。」",
+       "goto": "END"
+      }
+     }
+    }
+   },
+   "outcomes": {
+    "default": {
+     "label": "替恆山備齊了麻和棉花",
+     "rewards": {
+      "items": [
+       {
+        "id": "r_sm_dulongxian",
+        "n": 1
+       }
+      ],
+      "learn_points": 10,
+      "killing_intent": -100
+     },
+     "src": "later",
+     "src_note": "後期攻略：交 10 棉 → 毒龍涎、學點 +10、殺氣 −100"
+    }
+   },
+   "rumors": {
+    "first": "rmr_q_sm_chengwei_first"
+   }
+  },
+  {
+   "id": "q_sm_dujulaoren",
+   "name": "獨居老人",
+   "chapter": "西夏・開服事件",
+   "group": "story_missing",
+   "giver": "n_sm_wanglao",
+   "era": "1.0A",
+   "src": "verified",
+   "dialogue_src": "proposal",
+   "src_note": "研究 未做的 2001 事件：「獨居老人」官方 1.0A 事件標題；王老先生在西夏錢莊旁、15 兩（2001-08-24，Wayback 未重抓）；買藥步驟與名聲、歷練各 2【未重抓】；傷藥膏改用金創藥【設計提案】",
+   "text": "西夏錢莊門口的王老先生腿上有舊傷，兒子出外做買賣多年未歸，身邊沒人照應。",
+   "requires": [],
+   "give_items": [],
+   "repeat": {
+    "max": 1,
+    "cooldown_days": 0
+   },
+   "abandon": true,
+   "party_credit": false,
+   "start": "s_buy",
+   "offer": "d_offer",
+   "stages": [
+    {
+     "id": "s_buy",
+     "title": "替老人買藥",
+     "hint_room": "xx_pharmacy",
+     "log": "到回春藥鋪替王老先生買一帖金創藥：西夏廣場往西到西大街，往北就是回春藥鋪（藥鋪晚上打烊）。",
+     "objectives": [
+      {
+       "id": "o_buy",
+       "type": "BUY",
+       "item": "c_qiyao",
+       "count": 1,
+       "npc": "n_xx_pharmacist",
+       "text": "在回春藥鋪買一帖金創藥"
+      }
+     ],
+     "next": "s_give"
+    },
+    {
+     "id": "s_give",
+     "title": "送藥",
+     "hint_room": "xx_bank",
+     "log": "把金創藥送回錢莊門口給王老先生：西大街往東回西夏廣場，往西南就是錢莊。",
+     "objectives": [
+      {
+       "id": "o_give",
+       "type": "TALK",
+       "npc": "n_sm_wanglao",
+       "dialogue": "d_give",
+       "text": "把金創藥交給錢莊門口的王老先生"
+      }
+     ],
+     "next": "END:default"
+    }
+   ],
+   "dialogues": {
+    "d_offer": {
+     "start": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "src_note": "依據研究（王老先生、西夏錢莊旁）；對白【設計提案】",
+       "text": "王老先生拄著拐杖想站起來，腿一軟又坐了回去：「咳咳……年輕人，扶我一把。」",
+       "choices": [
+        {
+         "id": "c_help",
+         "label": "老伯，您怎麼了？",
+         "goto": "n1"
+        },
+        {
+         "id": "c_bye",
+         "label": "（快步走過）",
+         "goto": "END"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "「老毛病囉，腿上的舊傷一到變天就疼。我兒子出外做買賣，好幾年沒回來了，家裡就剩我一個老頭子。」",
+       "goto": "n2"
+      },
+      "n2": {
+       "speaker": "npc",
+       "text": "「藥鋪就在西大街上，可這幾步路，我走起來比登天還難……」",
+       "choices": [
+        {
+         "id": "c_buy",
+         "label": "我替您去藥鋪買藥。",
+         "do": [
+          {
+           "do": "accept"
+          }
+         ],
+         "goto": "n3"
+        },
+        {
+         "id": "c_no",
+         "label": "您還是找街坊幫忙吧。",
+         "goto": "n_no"
+        }
+       ]
+      },
+      "n3": {
+       "speaker": "npc",
+       "text": "「好孩子……替我買一帖金創藥就好。藥錢……藥錢回頭還你。」",
+       "goto": "END"
+      },
+      "n_no": {
+       "speaker": "npc",
+       "text": "王老先生擺擺手：「也是，也是，年輕人都忙……」他又低下頭去捶腿。",
+       "goto": "END"
+      }
+     }
+    },
+    "d_give": {
+     "start": "n0",
+     "resume": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "王老先生瞇著眼看你：「是你啊……」",
+       "choices": [
+        {
+         "id": "c_give",
+         "label": "老伯，金創藥買來了。",
+         "requires": [
+          {
+           "type": "has_item",
+           "item": "c_qiyao",
+           "n": 1
+          }
+         ],
+         "do": [
+          {
+           "do": "take",
+           "item": "c_qiyao",
+           "n": 1
+          },
+          {
+           "do": "complete",
+           "obj": "o_give"
+          }
+         ],
+         "goto": "n1"
+        },
+        {
+         "id": "c_wait",
+         "label": "藥還沒買到。",
+         "goto": "END"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "你替他把藥敷上，王老先生長長吁了口氣：「唉……舒坦多了，舒坦多了。」",
+       "goto": "n2"
+      },
+      "n2": {
+       "speaker": "npc",
+       "src_note": "15 兩（2001-08-24，未重抓）",
+       "text": "「這十五兩你拿著，別推辭。老頭子沒什麼好報答的，只盼你在外頭闖蕩，有空也回家看看爹娘。」",
+       "goto": "END"
+      }
+     }
+    }
+   },
+   "outcomes": {
+    "default": {
+     "label": "替獨居老人送了藥",
+     "rewards": {
+      "money": 15,
+      "fame": 2,
+      "lilian": 2
+     },
+     "src": "verified",
+     "src_note": "15 兩＋名聲 2＋歷練 2（2001-08-24，Wayback 未重抓）"
+    }
+   },
+   "rumors": {
+    "first": "rmr_q_sm_dujulaoren_first"
+   }
+  },
+  {
+   "id": "q_sm_esi_nongfu",
+   "name": "餓肚子的農夫",
+   "chapter": "江湖小事",
+   "group": "story_missing",
+   "giver": "n_sm_qiaofu_dl",
+   "era": "1.0A",
+   "src": "verified",
+   "dialogue_src": "proposal",
+   "src_note": "研究 未做的 2001 事件：預告原文「大理和西夏的農地旁，各有一位樵夫等著吃飯」；實戰 999 以下、學點 15、實戰 50（Wayback 未重抓）；食物白飯或饅頭【設計提案】；兩位樵夫都能接",
+   "text": "大理和西夏的農地旁，各有一位樵夫等著吃飯。",
+   "requires": [
+    {
+     "type": "combat_xp_max",
+     "value": 999
+    }
+   ],
+   "give_items": [],
+   "repeat": {
+    "max": 1,
+    "cooldown_days": 0
+   },
+   "abandon": true,
+   "party_credit": false,
+   "start": "s_feed",
+   "offer": "d_offer",
+   "stages": [
+    {
+     "id": "s_feed",
+     "title": "給樵夫送飯",
+     "hint_room": "dlw_paddy",
+     "log": "給兩位樵夫各送一份吃的（白飯或饅頭；饅頭在各城客棧、路邊茶棚都買得到）。大理這位在陶耘稻田：出大理北門到北門外大道，往東就是。另一位在恆山外稻田：出西夏東門到東門外官道，往東北上東北官道，往東經礦區、黑龍潭到潭東河岸，往東南就是恆山外稻田。",
+     "objectives": [
+      {
+       "id": "o_dl",
+       "type": "TALK",
+       "npc": "n_sm_qiaofu_dl",
+       "dialogue": "d_feed_dl",
+       "text": "送吃的給陶耘稻田的樵夫"
+      },
+      {
+       "id": "o_xx",
+       "type": "TALK",
+       "npc": "n_sm_qiaofu_xx",
+       "dialogue": "d_feed_xx",
+       "text": "送吃的給恆山外稻田的樵夫"
+      }
+     ],
+     "next": "END:default"
+    }
+   ],
+   "dialogues": {
+    "d_offer": {
+     "start": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "src_note": "依據官方預告原文；對白【設計提案】",
+       "text": "樵夫揉著肚子，有氣無力地靠在柴擔上：「唉……從早上砍柴砍到現在，一口飯都還沒下肚。」",
+       "choices": [
+        {
+         "id": "c_ask",
+         "label": "怎麼沒人給你送飯？",
+         "goto": "n1"
+        },
+        {
+         "id": "c_bye",
+         "label": "（走開）",
+         "goto": "END"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "「我們兄弟倆，一個在大理城外的陶耘稻田邊砍柴，一個在恆山外稻田那頭。家裡的婆娘一塊兒回娘家去了，誰也沒想到給我們留口飯。」",
+       "goto": "n2"
+      },
+      "n2": {
+       "speaker": "npc",
+       "text": "「小兄弟，你若方便，替我們兄弟倆各弄點吃的來吧，一碗白飯、一個饅頭都好。」",
+       "choices": [
+        {
+         "id": "c_ok",
+         "label": "這個容易，我去去就來。",
+         "do": [
+          {
+           "do": "accept"
+          }
+         ],
+         "goto": "n3"
+        },
+        {
+         "id": "c_no",
+         "label": "我身上也沒帶吃的。",
+         "goto": "END"
+        }
+       ]
+      },
+      "n3": {
+       "speaker": "npc",
+       "text": "「好人哪！記得，兩頭都要送到——我那兄弟比我還能吃，餓起來是要罵人的。」",
+       "goto": "END"
+      }
+     }
+    },
+    "d_feed_dl": {
+     "start": "n0",
+     "resume": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "樵夫有氣無力地抬起頭，鼻子抽了抽：「你……你帶吃的來了？」",
+       "choices": [
+        {
+         "id": "c_baifan",
+         "label": "這碗白飯給你。",
+         "requires": [
+          {
+           "type": "has_item",
+           "item": "c_baifan",
+           "n": 1
+          }
+         ],
+         "do": [
+          {
+           "do": "take",
+           "item": "c_baifan",
+           "n": 1
+          },
+          {
+           "do": "complete",
+           "obj": "o_dl"
+          }
+         ],
+         "goto": "n1"
+        },
+        {
+         "id": "c_mantou",
+         "label": "這個饅頭給你。",
+         "requires": [
+          {
+           "type": "has_item",
+           "item": "c_mantou",
+           "n": 1
+          }
+         ],
+         "do": [
+          {
+           "do": "take",
+           "item": "c_mantou",
+           "n": 1
+          },
+          {
+           "do": "complete",
+           "obj": "o_dl"
+          }
+         ],
+         "goto": "n1"
+        },
+        {
+         "id": "c_none",
+         "label": "還沒買到，我再去找找。",
+         "goto": "END"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "樵夫接過來就往嘴裡塞，噎得直捶胸口，好不容易嚥下去，才長長出了口氣：「好吃，好吃！活過來了！」",
+       "goto": "n2"
+      },
+      "n2": {
+       "speaker": "npc",
+       "text": "「小兄弟，我沒什麼好謝你的。砍柴的時候在山裡看人打架看多了，倒有幾句心得：別光顧著出手，先看清楚對方的腳步……」",
+       "goto": "END"
+      }
+     }
+    },
+    "d_feed_xx": {
+     "start": "n0",
+     "resume": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "樵夫有氣無力地抬起頭，鼻子抽了抽：「你……你帶吃的來了？」",
+       "choices": [
+        {
+         "id": "c_baifan",
+         "label": "這碗白飯給你。",
+         "requires": [
+          {
+           "type": "has_item",
+           "item": "c_baifan",
+           "n": 1
+          }
+         ],
+         "do": [
+          {
+           "do": "take",
+           "item": "c_baifan",
+           "n": 1
+          },
+          {
+           "do": "complete",
+           "obj": "o_xx"
+          }
+         ],
+         "goto": "n1"
+        },
+        {
+         "id": "c_mantou",
+         "label": "這個饅頭給你。",
+         "requires": [
+          {
+           "type": "has_item",
+           "item": "c_mantou",
+           "n": 1
+          }
+         ],
+         "do": [
+          {
+           "do": "take",
+           "item": "c_mantou",
+           "n": 1
+          },
+          {
+           "do": "complete",
+           "obj": "o_xx"
+          }
+         ],
+         "goto": "n1"
+        },
+        {
+         "id": "c_none",
+         "label": "還沒買到，我再去找找。",
+         "goto": "END"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "樵夫接過來就往嘴裡塞，噎得直捶胸口，好不容易嚥下去，才長長出了口氣：「好吃，好吃！活過來了！」",
+       "goto": "n2"
+      },
+      "n2": {
+       "speaker": "npc",
+       "text": "「小兄弟，我沒什麼好謝你的。砍柴的時候在山裡看人打架看多了，倒有幾句心得：別光顧著出手，先看清楚對方的腳步……」",
+       "goto": "END"
+      }
+     }
+    }
+   },
+   "outcomes": {
+    "default": {
+     "label": "兩位樵夫都吃飽了",
+     "rewards": {
+      "learn_points": 15,
+      "combat_xp": 50
+     },
+     "src": "verified",
+     "src_note": "學點 15、實戰 50（Wayback 未重抓）"
+    }
+   },
+   "rumors": {
+    "first": "rmr_q_sm_esi_nongfu_first"
+   }
+  },
+  {
+   "id": "q_sm_ahuo",
+   "name": "著急的阿火",
+   "chapter": "江湖小事",
+   "group": "story_missing",
+   "giver": "n_sm_ahuo",
+   "era": "1.0A",
+   "src": "verified",
+   "dialogue_src": "proposal",
+   "src_note": "研究 未做的 2001 事件：「著急的阿火」官方 1.0A 事件；阿火 3615,8285 → 礦石送到大理礦業大王 → 名聲＋歷練各 3（Wayback 未重抓）；可重複、冷卻 1 遊戲日【設計提案】",
+   "text": "大漠邊緣礦場的阿火急著把礦石送到大理礦業大王手上。",
+   "requires": [],
+   "give_items": [
+    {
+     "id": "i_sm_kuangshi",
+     "n": 1
+    }
+   ],
+   "repeat": {
+    "max": 0,
+    "cooldown_days": 1
+   },
+   "abandon": true,
+   "party_credit": false,
+   "start": "s_send",
+   "offer": "d_offer",
+   "stages": [
+    {
+     "id": "s_send",
+     "title": "礦石送到大理",
+     "hint_room": "dl_square",
+     "log": "把阿火的一袋礦石送到大理五華樓前交給礦業大王：出礦場往東到大漠邊緣，往南到沙漠山洞外，往東南經綠洲到河川上游，往南走河川古道，往東南到河灣，往南過石橋，往東南到城北河畔，往南經北門外大道進大理北門，再往南就是五華樓前。",
+     "objectives": [
+      {
+       "id": "o_send",
+       "type": "TALK",
+       "npc": "n_sm_kuangye",
+       "dialogue": "d_kuangye",
+       "text": "把礦石交給大理五華樓前的礦業大王"
+      }
+     ],
+     "next": "END:default"
+    }
+   ],
+   "dialogues": {
+    "d_offer": {
+     "start": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "src_note": "依據官方事件標題與研究；對白【設計提案】",
+       "text": "阿火從礦坑裡鑽出來，一臉沙土，急得直跺腳：「完了完了，這下真完了！」",
+       "choices": [
+        {
+         "id": "c_ask",
+         "label": "出了什麼事？",
+         "goto": "n1"
+        },
+        {
+         "id": "c_bye",
+         "label": "（走開）",
+         "goto": "END"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "「大理的礦業大王跟我訂了一批礦石，說好今天送到，不然以後就不跟我買了！可坑道剛塌了一角，我得留下來撐住，一步也走不開……」",
+       "goto": "n2"
+      },
+      "n2": {
+       "speaker": "npc",
+       "text": "「這位朋友，你行行好，替我把這袋礦石送去大理吧！」",
+       "choices": [
+        {
+         "id": "c_ok",
+         "label": "交給我，我替你送去。",
+         "do": [
+          {
+           "do": "accept"
+          }
+         ],
+         "goto": "n3"
+        },
+        {
+         "id": "c_no",
+         "label": "大理太遠了。",
+         "goto": "END"
+        }
+       ]
+      },
+      "n3": {
+       "speaker": "npc",
+       "text": "「太好了！礦業大王就在大理城裡五華樓前，一身綢緞、手上戴三個玉扳指那個就是。袋子沉，路上小心！」",
+       "goto": "END"
+      }
+     }
+    },
+    "d_kuangye": {
+     "start": "n0",
+     "resume": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "礦業大王轉著玉扳指，斜眼看你：「什麼人？我礦業大王不跟閒人說話。」",
+       "choices": [
+        {
+         "id": "c_give",
+         "label": "阿火託我送礦石來。",
+         "requires": [
+          {
+           "type": "has_item",
+           "item": "i_sm_kuangshi",
+           "n": 1
+          }
+         ],
+         "do": [
+          {
+           "do": "take",
+           "item": "i_sm_kuangshi",
+           "n": 1
+          },
+          {
+           "do": "complete",
+           "obj": "o_send"
+          }
+         ],
+         "goto": "n1"
+        },
+        {
+         "id": "c_bye",
+         "label": "打擾了。",
+         "goto": "END"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "礦業大王解開袋口抓起一塊礦石，對著日頭照了照：「嗯，成色不錯。阿火這小子雖然冒失，挖礦倒是一把好手。」",
+       "goto": "n2"
+      },
+      "n2": {
+       "speaker": "npc",
+       "src_note": "名聲＋歷練各 3（未重抓）",
+       "text": "「回去告訴他，下回準時點！往後大理城裡有誰問起礦石，你就說是我礦業大王收的！」",
+       "goto": "END"
+      }
+     }
+    }
+   },
+   "outcomes": {
+    "default": {
+     "label": "礦石送到了礦業大王手上",
+     "rewards": {
+      "fame": 3,
+      "lilian": 3
+     },
+     "src": "verified",
+     "src_note": "名聲＋歷練各 3（Wayback 未重抓）"
+    }
+   },
+   "rumors": {
+    "first": "rmr_q_sm_ahuo_first"
+   }
+  },
+  {
+   "id": "q_sm_abao",
+   "name": "路痴的礦工",
+   "chapter": "西夏・開服事件",
+   "group": "story_missing",
+   "giver": "n_xx_abao",
+   "era": "1.0A",
+   "src": "proposal",
+   "dialogue_src": "proposal",
+   "src_note": "研究：官方第一話（2001-07-11）預告原文確認；所有來源都沒有步驟與獎勵 → 整條【設計提案】（M3B_PLAN §8.3）",
+   "text": "城北山坡的礦工阿寶天生不認路，礦場交代的差事卻得進城去辦。",
+   "requires": [],
+   "give_items": [],
+   "repeat": {
+    "max": 1,
+    "cooldown_days": 0
+   },
+   "abandon": true,
+   "party_credit": false,
+   "start": "s_go",
+   "offer": "d_offer",
+   "stages": [
+    {
+     "id": "s_go",
+     "title": "帶阿寶進城",
+     "hint_room": "xx_gate_e",
+     "log": "帶著阿寶走到西夏東門：城北山坡往南到胡楊林，往南到荒草坡，往西到東門外官道，再往西就是西夏東門。別走太快，他會跟丟。",
+     "objectives": [
+      {
+       "id": "o_go",
+       "type": "ESCORT",
+       "npc": "n_xx_abao",
+       "to_room": "xx_gate_e",
+       "text": "護送阿寶到西夏東門"
+      }
+     ],
+     "on_complete": [
+      {
+       "do": "tell",
+       "key": "tell_q_sm_abao_gate"
+      }
+     ],
+     "next": "s_back"
+    },
+    {
+     "id": "s_back",
+     "title": "送阿寶回礦坑",
+     "hint_room": "xn_slope",
+     "log": "阿寶交完了礦帳，又認不得回去的路了。帶他走回城北山坡：出東門到東門外官道，往東到荒草坡，往北經胡楊林就是城北山坡。",
+     "objectives": [
+      {
+       "id": "o_back",
+       "type": "ESCORT",
+       "npc": "n_xx_abao",
+       "to_room": "xn_slope",
+       "text": "護送阿寶回城北山坡"
+      }
+     ],
+     "on_complete": [
+      {
+       "do": "escort_end",
+       "npc": "n_xx_abao"
+      }
+     ],
+     "next": "s_thanks"
+    },
+    {
+     "id": "s_thanks",
+     "title": "阿寶的謝禮",
+     "hint_room": "xn_slope",
+     "log": "到了城北山坡，跟阿寶說一聲。",
+     "objectives": [
+      {
+       "id": "o_thanks",
+       "type": "TALK",
+       "npc": "n_xx_abao",
+       "dialogue": "d_thanks",
+       "text": "跟城北山坡的阿寶道別"
+      }
+     ],
+     "next": "END:default"
+    }
+   ],
+   "dialogues": {
+    "d_offer": {
+     "start": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "src_note": "依據官方 2001-07-11 預告；步驟與對白【設計提案】",
+       "text": "阿寶背著礦筐在岔路口轉了兩圈，看見你像看見救星：「這位朋友，你……你認得往西夏城的路嗎？」",
+       "choices": [
+        {
+         "id": "c_yes",
+         "label": "認得，怎麼了？",
+         "goto": "n1"
+        },
+        {
+         "id": "c_bye",
+         "label": "不認得。",
+         "goto": "END"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "「礦場的頭兒叫我把這個月的礦帳送到西夏東門，交給來收帳的帳房先生。可我一出礦坑就認不得路，上回在胡楊林裡繞了一整天……」",
+       "goto": "n2"
+      },
+      "n2": {
+       "speaker": "npc",
+       "text": "「你能不能帶我走一趟？去了還得回來，我……我回來的路也不認得。」",
+       "choices": [
+        {
+         "id": "c_ok",
+         "label": "跟緊我，我帶你去。",
+         "do": [
+          {
+           "do": "accept"
+          },
+          {
+           "do": "escort_start",
+           "npc": "n_xx_abao"
+          }
+         ],
+         "goto": "n3"
+        },
+        {
+         "id": "c_no",
+         "label": "你在石頭上做記號吧。",
+         "goto": "END"
+        }
+       ]
+      },
+      "n3": {
+       "speaker": "npc",
+       "text": "阿寶連連點頭，抓著礦筐的背帶跟在你身後：「你走前頭，我跟著你，一步也不敢落下。」",
+       "goto": "END"
+      }
+     }
+    },
+    "d_thanks": {
+     "start": "n0",
+     "resume": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "阿寶放下礦筐，左看看右看看：「到了到了！這不就是我的礦坑嘛！」",
+       "goto": "n1"
+      },
+      "n1": {
+       "speaker": "npc",
+       "do": [
+        {
+         "do": "complete",
+         "obj": "o_thanks"
+        }
+       ],
+       "text": "「你人真好。這塊綠石礦是我前天挖到的，成色最好的一塊，送你。」",
+       "goto": "n2"
+      },
+      "n2": {
+       "speaker": "npc",
+       "text": "「下回……下回我在路邊的石頭上刻記號，就不會迷路了。」阿寶憨憨地笑了。",
+       "goto": "END"
+      }
+     }
+    }
+   },
+   "outcomes": {
+    "default": {
+     "label": "阿寶平安回到礦坑",
+     "rewards": {
+      "items": [
+       {
+        "id": "r_kuang_lv",
+        "n": 1
+       }
+      ]
+     },
+     "src": "proposal",
+     "src_note": "綠石礦 ×1【設計提案】（M3B_PLAN §8.3）"
+    }
+   }
+  },
+  {
+   "id": "q_sm_ahong",
+   "name": "離鄉的阿鴻",
+   "chapter": "江湖小事",
+   "group": "story_missing",
+   "giver": "n_sm_ahong",
+   "era": "1.0A",
+   "src": "verified",
+   "dialogue_src": "proposal",
+   "src_note": "研究 未做的 2001 事件：「離鄉的阿鴻」官方 1.0A 事件；信送大理張箐、1000 兩、座標 5325,1755（Wayback 未重抓）；回信步驟【設計提案】；可重複（M3B_PLAN §8.3）",
+   "text": "天山腳下獵戶小屋裡的阿鴻離鄉三年，想託人捎封家書給大理的張箐。",
+   "requires": [],
+   "give_items": [
+    {
+     "id": "i_sm_ahong_xin",
+     "n": 1
+    }
+   ],
+   "repeat": {
+    "max": 0,
+    "cooldown_days": 1
+   },
+   "abandon": true,
+   "party_credit": false,
+   "start": "s_send",
+   "offer": "d_offer",
+   "stages": [
+    {
+     "id": "s_send",
+     "title": "家書送到洱海",
+     "hint_room": "dlw_lake",
+     "log": "把阿鴻的家書送到大理洱海岸給張箐：從獵戶小屋往東經雪原小徑到雪地，往南經城北山坡、胡楊林到荒草坡，往西進西夏東門，到西夏驛站搭車去大理；出大理北門到北門外大道，往西就是洱海岸。",
+     "objectives": [
+      {
+       "id": "o_send",
+       "type": "TALK",
+       "npc": "n_sm_zhangqing",
+       "dialogue": "d_zhangqing",
+       "text": "把家書交給洱海岸的張箐"
+      }
+     ],
+     "next": "s_back"
+    },
+    {
+     "id": "s_back",
+     "title": "回信",
+     "hint_room": "ts_hut",
+     "log": "把張箐的回信帶回天山道獵戶小屋給阿鴻：大理驛站搭車回西夏，出東門經東門外官道到荒草坡，往北過胡楊林、城北山坡到雪地，往西經雪原小徑就是獵戶小屋。",
+     "objectives": [
+      {
+       "id": "o_back",
+       "type": "TALK",
+       "npc": "n_sm_ahong",
+       "dialogue": "d_back",
+       "text": "把回信交給獵戶小屋的阿鴻"
+      }
+     ],
+     "next": "END:default"
+    }
+   ],
+   "dialogues": {
+    "d_offer": {
+     "start": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "src_note": "依據官方事件標題與研究；對白【設計提案】",
+       "text": "阿鴻削著箭桿，望著屋外的雪出神：「這雪原上的風，跟大理的風不一樣……大理的風是暖的，帶著洱海的水氣。」",
+       "choices": [
+        {
+         "id": "c_ask",
+         "label": "你是大理人？",
+         "goto": "n1"
+        },
+        {
+         "id": "c_bye",
+         "label": "（不打擾他）",
+         "goto": "END"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "「嗯。為了學打獵，跑到這天山腳下，跟著獵戶大叔一待就是三年。家裡有個姑娘叫張箐，說好等我回去……」",
+       "goto": "n2"
+      },
+      "n2": {
+       "speaker": "npc",
+       "text": "「我寫了封信，可這裡離大理千里迢迢，獵戶大叔又走不開。你……能替我送去嗎？」",
+       "choices": [
+        {
+         "id": "c_ok",
+         "label": "我替你送信。",
+         "do": [
+          {
+           "do": "accept"
+          }
+         ],
+         "goto": "n3"
+        },
+        {
+         "id": "c_no",
+         "label": "大理太遠了。",
+         "goto": "END"
+        }
+       ]
+      },
+      "n3": {
+       "speaker": "npc",
+       "text": "「她家在洱海岸邊，出大理北門往西就到了。這封信……拜託你了。」阿鴻把信在衣襟上擦了又擦，才交到你手上。",
+       "goto": "END"
+      }
+     }
+    },
+    "d_zhangqing": {
+     "start": "n0",
+     "resume": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "張箐停下浣紗的手：「你是誰？找我有事嗎？」",
+       "choices": [
+        {
+         "id": "c_give",
+         "label": "天山的阿鴻託我送信給妳。",
+         "requires": [
+          {
+           "type": "has_item",
+           "item": "i_sm_ahong_xin",
+           "n": 1
+          }
+         ],
+         "do": [
+          {
+           "do": "take",
+           "item": "i_sm_ahong_xin",
+           "n": 1
+          },
+          {
+           "do": "give",
+           "item": "i_sm_zhangqing_xin",
+           "n": 1
+          },
+          {
+           "do": "complete",
+           "obj": "o_send"
+          }
+         ],
+         "goto": "n1"
+        },
+        {
+         "id": "c_bye",
+         "label": "認錯人了。",
+         "goto": "END"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "張箐拆開信，看著看著眼眶就紅了：「這個呆子，三年才寫一封信……還說天山的雪好看，雪再好看，能有家裡好？」",
+       "goto": "n2"
+      },
+      "n2": {
+       "speaker": "npc",
+       "text": "她從籃子底下取出一封早就寫好的信：「我每年都寫一封，就是不知道往哪兒寄。你替我帶給他，跟他說，洱海的水年年都一樣，我也一樣。」",
+       "goto": "END"
+      }
+     }
+    },
+    "d_back": {
+     "start": "n0",
+     "resume": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "阿鴻一見你進門，箭桿都掉在地上：「信……信送到了？」",
+       "choices": [
+        {
+         "id": "c_give",
+         "label": "送到了，這是張箐的回信。",
+         "requires": [
+          {
+           "type": "has_item",
+           "item": "i_sm_zhangqing_xin",
+           "n": 1
+          }
+         ],
+         "do": [
+          {
+           "do": "take",
+           "item": "i_sm_zhangqing_xin",
+           "n": 1
+          },
+          {
+           "do": "complete",
+           "obj": "o_back"
+          }
+         ],
+         "goto": "n1"
+        },
+        {
+         "id": "c_wait",
+         "label": "還在路上。",
+         "goto": "END"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "阿鴻捧著信看了一遍又一遍，突然一拍大腿：「她還在等我！她還在等我！」",
+       "goto": "n2"
+      },
+      "n2": {
+       "speaker": "npc",
+       "src_note": "1000 兩（Wayback 未重抓）",
+       "text": "「這是我三年來賣獸皮攢的錢，本來想帶回去娶她的……你替我跑了這一趟，這一千兩你一定要收下，剩下的我再攢就是！」",
+       "goto": "END"
+      }
+     }
+    }
+   },
+   "outcomes": {
+    "default": {
+     "label": "家書與回信都送到了",
+     "rewards": {
+      "money": 1000
+     },
+     "src": "verified",
+     "src_note": "1000 兩（Wayback 未重抓；可重複時金額偏高，balance_sim 留意）"
+    }
+   },
+   "rumors": {
+    "first": "rmr_q_sm_ahong_first"
+   }
+  },
+  {
+   "id": "q_sm_rixing",
+   "name": "日行一善",
+   "chapter": "江湖小事",
+   "group": "story_missing",
+   "giver": "n_sm_shangqiaofu",
+   "era": "1.0A",
+   "src": "verified",
+   "dialogue_src": "proposal",
+   "src_note": "研究 未做的 2001 事件：「日行一善」官方 1.0A 事件（大理城外受傷的樵夫，送藥）；2001「沒好處」→ 只給善惡 +5【設計提案】",
+   "text": "大理城外東邊樹林裡，有個樵夫被山豬拱傷了腿。",
+   "requires": [],
+   "give_items": [],
+   "repeat": {
+    "max": 1,
+    "cooldown_days": 0
+   },
+   "abandon": true,
+   "party_credit": false,
+   "start": "s_med",
+   "offer": "d_offer",
+   "stages": [
+    {
+     "id": "s_med",
+     "title": "替樵夫找藥",
+     "hint_room": "dlw_eastwood",
+     "log": "替受傷的樵夫弄一帖金創藥（大理五華樓前往東南的雜貨鋪就有賣），送到東邊樹林：出大理北門到北門外大道，往東經陶耘稻田就是東邊樹林。",
+     "objectives": [
+      {
+       "id": "o_med",
+       "type": "TALK",
+       "npc": "n_sm_shangqiaofu",
+       "dialogue": "d_med",
+       "text": "把金創藥交給東邊樹林受傷的樵夫"
+      }
+     ],
+     "next": "END:default"
+    }
+   ],
+   "dialogues": {
+    "d_offer": {
+     "start": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "src_note": "依據官方事件標題；對白【設計提案】",
+       "text": "樵夫抱著小腿坐在樹下，疼得齜牙咧嘴：「哎喲……哎喲……」",
+       "choices": [
+        {
+         "id": "c_ask",
+         "label": "你的腿怎麼了？",
+         "goto": "n1"
+        },
+        {
+         "id": "c_bye",
+         "label": "（走開）",
+         "goto": "END"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "「砍柴的時候給一頭山豬拱了一下，腿上破了個大口子，血止不住，路也走不了。」",
+       "goto": "n2"
+      },
+      "n2": {
+       "speaker": "npc",
+       "text": "「好心人，你身上有沒有傷藥？沒有的話……城裡雜貨鋪有金創藥賣，我、我身上的錢不夠……」",
+       "choices": [
+        {
+         "id": "c_ok",
+         "label": "你等著，我去替你弄藥。",
+         "do": [
+          {
+           "do": "accept"
+          }
+         ],
+         "goto": "n3"
+        },
+        {
+         "id": "c_no",
+         "label": "自己的傷自己想辦法。",
+         "goto": "END"
+        }
+       ]
+      },
+      "n3": {
+       "speaker": "npc",
+       "text": "「多謝，多謝！我就在這兒等著，哪兒也去不了……」",
+       "goto": "END"
+      }
+     }
+    },
+    "d_med": {
+     "start": "n0",
+     "resume": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "樵夫抬起頭，臉色白得像紙：「你……你回來了？」",
+       "choices": [
+        {
+         "id": "c_give",
+         "label": "金創藥來了，我替你敷上。",
+         "requires": [
+          {
+           "type": "has_item",
+           "item": "c_qiyao",
+           "n": 1
+          }
+         ],
+         "do": [
+          {
+           "do": "take",
+           "item": "c_qiyao",
+           "n": 1
+          },
+          {
+           "do": "complete",
+           "obj": "o_med"
+          }
+         ],
+         "goto": "n1"
+        },
+        {
+         "id": "c_wait",
+         "label": "藥還沒買到。",
+         "goto": "END"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "你替他把傷口洗淨、敷上金創藥，再用布條紮緊。樵夫試著動了動腿：「不流血了！不流血了！」",
+       "goto": "n2"
+      },
+      "n2": {
+       "speaker": "npc",
+       "src_note": "2001「沒好處」",
+       "text": "「我身上沒什麼值錢的，連幾個銅板都湊不出來……只能給恩人磕個頭了。」你扶住他，他還是硬磕了一個。",
+       "goto": "END"
+      }
+     }
+    }
+   },
+   "outcomes": {
+    "default": {
+     "label": "救了受傷的樵夫",
+     "rewards": {
+      "morality": 5
+     },
+     "src": "proposal",
+     "src_note": "2001「沒好處」；善惡 +5【設計提案】"
+    }
+   }
+  },
+  {
+   "id": "q_sm_shepi",
+   "name": "為蛇皮困擾的武介山",
+   "chapter": "西夏・開服事件",
+   "group": "story_missing",
+   "giver": "n_wujieshan",
+   "era": "1.0A",
+   "src": "verified",
+   "dialogue_src": "proposal",
+   "src_note": "研究 未做的 2001 事件：「為蛇皮困擾的武介山」官方 1.0A 事件（武介山做裁縫生意，見狩獵事件預告）；青蛇皮 ×3、地點、銀兩【設計提案】",
+   "text": "西夏廣場的武介山又為了裁縫生意發愁，這回缺的是青蛇皮。",
+   "requires": [],
+   "give_items": [],
+   "repeat": {
+    "max": 1,
+    "cooldown_days": 0
+   },
+   "abandon": true,
+   "party_credit": true,
+   "start": "s_hunt",
+   "offer": "d_offer",
+   "stages": [
+    {
+     "id": "s_hunt",
+     "title": "三張青蛇皮",
+     "hint_room": "xw_creek",
+     "log": "到西夏城外的小溪邊抓青蛇剝皮：出西夏東門到東門外官道，往東到荒草坡，往南就是小溪邊。湊齊三張青蛇皮。",
+     "objectives": [
+      {
+       "id": "o_pi",
+       "type": "COLLECT",
+       "item": "r_sm_qingshepi",
+       "count": 3,
+       "text": "湊齊 3 張青蛇皮"
+      }
+     ],
+     "room_actions": [
+      {
+       "id": "a_shepi",
+       "room": "xw_creek",
+       "label": "抓青蛇",
+       "hours": [],
+       "requires": [],
+       "repeat": true,
+       "do": [
+        {
+         "do": "tell",
+         "key": "tell_q_sm_du_qingshe"
+        },
+        {
+         "do": "fight",
+         "monsters": [
+          "m_sm_du_qingshe"
+         ],
+         "obj": ""
+        }
+       ]
+      }
+     ],
+     "next": "s_back"
+    },
+    {
+     "id": "s_back",
+     "title": "交給武介山",
+     "hint_room": "xx_square",
+     "log": "把三張青蛇皮拿回西夏廣場給武介山。",
+     "objectives": [
+      {
+       "id": "o_back",
+       "type": "TALK",
+       "npc": "n_wujieshan",
+       "dialogue": "d_back",
+       "text": "把青蛇皮交給西夏廣場的武介山"
+      }
+     ],
+     "next": "END:default"
+    }
+   ],
+   "dialogues": {
+    "d_offer": {
+     "start": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "src_note": "依據官方事件標題；武介山做裁縫生意見狩獵事件預告；對白【設計提案】",
+       "text": "武介山捧著一條做了一半的腰帶，唉聲嘆氣：「裁縫生意不好做啊……」",
+       "choices": [
+        {
+         "id": "c_ask",
+         "label": "又遇上什麼麻煩了？",
+         "goto": "n1"
+        },
+        {
+         "id": "c_bye",
+         "label": "（走開）",
+         "goto": "END"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "「城裡的富家公子這陣子流行青蛇皮做的腰帶，我接了三條的單子，訂金都收了，可手上一張蛇皮也沒有。」",
+       "goto": "n2"
+      },
+      "n2": {
+       "speaker": "npc",
+       "text": "「城外小溪邊常有青蛇出沒，你替我弄三張青蛇皮來，皮要完整的，工錢少不了你的。」",
+       "choices": [
+        {
+         "id": "c_ok",
+         "label": "三張青蛇皮，包在我身上。",
+         "do": [
+          {
+           "do": "accept"
+          }
+         ],
+         "goto": "n3"
+        },
+        {
+         "id": "c_no",
+         "label": "我怕蛇。",
+         "goto": "END"
+        }
+       ]
+      },
+      "n3": {
+       "speaker": "npc",
+       "text": "「好極了！剝皮的時候從肚子劃開，別傷了背上的鱗。」",
+       "goto": "END"
+      }
+     }
+    },
+    "d_back": {
+     "start": "n0",
+     "resume": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "武介山抬起頭：「蛇皮弄到了？」",
+       "choices": [
+        {
+         "id": "c_give",
+         "label": "三張青蛇皮，張張完整。",
+         "requires": [
+          {
+           "type": "has_item",
+           "item": "r_sm_qingshepi",
+           "n": 3
+          }
+         ],
+         "do": [
+          {
+           "do": "take",
+           "item": "r_sm_qingshepi",
+           "n": 3
+          },
+          {
+           "do": "complete",
+           "obj": "o_back"
+          }
+         ],
+         "goto": "n1"
+        },
+        {
+         "id": "c_wait",
+         "label": "還差幾張。",
+         "goto": "END"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "武介山把蛇皮攤在桌上一張張摸過去：「鱗片青中帶亮，好皮！這下三位公子爺不會來砸我的攤子了。」",
+       "goto": "n2"
+      },
+      "n2": {
+       "speaker": "npc",
+       "src_note": "銀兩數【設計提案】",
+       "text": "「這六十兩是工錢，你收好。往後再有什麼皮子的生意，我還找你！」",
+       "goto": "END"
+      }
+     }
+    }
+   },
+   "outcomes": {
+    "default": {
+     "label": "武介山交得了貨",
+     "rewards": {
+      "money": 60,
+      "fame": 1
+     },
+     "src": "proposal",
+     "src_note": "銀兩、名聲【設計提案】"
+    }
+   }
+  },
+  {
+   "id": "q_sm_litong",
+   "name": "離派修練的李同",
+   "chapter": "華山派",
+   "group": "story_missing",
+   "giver": "n_sm_litong",
+   "era": "1.0A",
+   "src": "verified",
+   "dialogue_src": "proposal",
+   "src_note": "研究 未做的 2001 事件：預告原文「離派修練的李同「親書給他的陸師兄…盤纏當做委託金」」；委託金數額、名聲歷練【設計提案】",
+   "text": "離開華山獨自修練的李同，想託人把一封親書送給陸師兄。",
+   "requires": [],
+   "give_items": [
+    {
+     "id": "i_sm_litong_xin",
+     "n": 1
+    }
+   ],
+   "repeat": {
+    "max": 1,
+    "cooldown_days": 0
+   },
+   "abandon": true,
+   "party_credit": false,
+   "start": "s_send",
+   "offer": "d_offer",
+   "stages": [
+    {
+     "id": "s_send",
+     "title": "親書送上華山",
+     "hint_room": "hs_square",
+     "log": "把李同的親書送到華山玉女峰練武場給陸大有：華山水池往西到華山腳下，往北進華山山門，再往北就是玉女峰練武場。",
+     "objectives": [
+      {
+       "id": "o_send",
+       "type": "TALK",
+       "npc": "n_ludayou",
+       "dialogue": "d_ludayou",
+       "text": "把親書交給華山練武場的陸大有"
+      }
+     ],
+     "next": "END:default"
+    }
+   ],
+   "dialogues": {
+    "d_offer": {
+     "start": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "src_note": "依據官方預告原文；對白【設計提案】",
+       "text": "水池邊一個青年收劍而立，額上全是汗。他看了你一眼，拱手道：「這位朋友，在下李同，可否請你幫個忙？」",
+       "choices": [
+        {
+         "id": "c_ask",
+         "label": "李兄請說。",
+         "goto": "n1"
+        },
+        {
+         "id": "c_bye",
+         "label": "在下有事在身。",
+         "goto": "END"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "「在下原是華山門下，為了參悟一招劍法，向師父告了假，下山獨自修練。一晃半年，師兄弟們怕是擔心了。」",
+       "goto": "n2"
+      },
+      "n2": {
+       "speaker": "npc",
+       "text": "「我寫了一封親書給陸師兄，煩請你送上山去。這點盤纏，就當是委託金。」",
+       "choices": [
+        {
+         "id": "c_ok",
+         "label": "舉手之勞，我替你送去。",
+         "do": [
+          {
+           "do": "accept"
+          },
+          {
+           "do": "reward",
+           "rewards": {
+            "money": 50
+           }
+          }
+         ],
+         "goto": "n3"
+        },
+        {
+         "id": "c_no",
+         "label": "你自己回山一趟不就得了？",
+         "goto": "n_no"
+        }
+       ]
+      },
+      "n3": {
+       "speaker": "npc",
+       "text": "「多謝！陸師兄在玉女峰練武場帶新進的師弟切磋，一問便知。跟他說我一切都好，那一招……就快想通了。」",
+       "goto": "END"
+      },
+      "n_no": {
+       "speaker": "npc",
+       "text": "李同苦笑：「劍法不成，我沒臉回山。」他又提起劍，一遍一遍地練那一招。",
+       "goto": "END"
+      }
+     }
+    },
+    "d_ludayou": {
+     "start": "n0",
+     "resume": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "陸大有正在指點師弟練劍，見你過來，笑嘻嘻地問：「咦？你找我？」",
+       "choices": [
+        {
+         "id": "c_give",
+         "label": "山下的李同託我送一封親書給你。",
+         "requires": [
+          {
+           "type": "has_item",
+           "item": "i_sm_litong_xin",
+           "n": 1
+          }
+         ],
+         "do": [
+          {
+           "do": "take",
+           "item": "i_sm_litong_xin",
+           "n": 1
+          },
+          {
+           "do": "complete",
+           "obj": "o_send"
+          }
+         ],
+         "goto": "n1"
+        },
+        {
+         "id": "c_bye",
+         "label": "沒事。",
+         "goto": "END"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "陸大有一把搶過信：「是李師弟的字！這小子，說下山三個月，半年都沒消息……」他一面看一面笑，笑著笑著又揉了揉眼睛。",
+       "goto": "n2"
+      },
+      "n2": {
+       "speaker": "npc",
+       "text": "「他在山下的水池邊練劍？好，好，人沒事就好。多謝你跑這一趟，往後在華山有什麼事，報我陸大有的名字！」",
+       "goto": "END"
+      }
+     }
+    }
+   },
+   "outcomes": {
+    "default": {
+     "label": "親書送到了陸大有手上",
+     "rewards": {
+      "fame": 2,
+      "lilian": 3
+     },
+     "src": "proposal",
+     "src_note": "盤纏 50 兩在接任務時給（委託金）；名聲、歷練【設計提案】"
+    }
+   }
+  }
+ ],
+ "npcs": [
+  {
+   "id": "n_sm_daoxiang",
+   "name": "道相",
+   "kind": "QUEST",
+   "region": "shaolin",
+   "room": "sl_court",
+   "alignment": "GOOD",
+   "talk": "talk_n_sm_daoxiang",
+   "services": [
+    "QUEST"
+   ],
+   "night_closed": false,
+   "quests": [
+    "q_sm_yuntie"
+   ],
+   "desc": "少林寺管兵器房的中年僧人，手裡老捏著一張訂貨單，站在十八銅人陣外左邊唉聲嘆氣。",
+   "era": "1.0A",
+   "src": "verified",
+   "src_note": "研究 運鐵：官方第一話（2001-07-11）預告「道相師兄需要有人幫他到西夏城找冶鐵商人『張鐵』」；位置 2001-07-23 攻略「18銅人陣外左邊」（未重抓）→ 少林前院；管兵器房【設計提案】"
+  },
+  {
+   "id": "n_sm_chulizi",
+   "name": "楚禮子",
+   "kind": "QUEST",
+   "region": "xingxiu",
+   "room": "xh_left",
+   "alignment": "EVIL",
+   "talk": "talk_n_sm_chulizi",
+   "services": [
+    "QUEST"
+   ],
+   "night_closed": false,
+   "quests": [
+    "q_sm_qidu"
+   ],
+   "appear": {
+    "hours": [
+     "辰",
+     "巳",
+     "午",
+     "未"
+    ],
+    "requires": []
+   },
+   "desc": "星宿派的年輕弟子，袖口沾著綠斑斑的毒汁，說話時眼睛老往門外瞟，生怕師父來查。",
+   "era": "1.0A",
+   "src": "verified",
+   "src_note": "研究：官方第四話（2001-08-08）「幫楚禮子尋找找七毒」；星宿歸屬見 jyfreeonline 星宿頁（後期）；位置所有來源都沒寫 → 左房【設計提案】；辰時～未時（後期條件）做成出現時辰"
+  },
+  {
+   "id": "n_sm_xianfengzi",
+   "name": "咸楓子",
+   "kind": "QUEST",
+   "region": "xingxiu",
+   "room": "xh_right",
+   "alignment": "EVIL",
+   "talk": "talk_n_sm_xianfengzi",
+   "services": [
+    "QUEST"
+   ],
+   "night_closed": false,
+   "quests": [
+    "q_sm_zhuadu"
+   ],
+   "appear": {
+    "hours": [
+     "卯",
+     "辰",
+     "巳",
+     "午",
+     "未"
+    ],
+    "requires": []
+   },
+   "desc": "瘦得像根竹竿的星宿派弟子，身邊擺滿大大小小的竹簍，簍裡窸窸窣窣不知裝了什麼。",
+   "era": "1.0A",
+   "src": "verified",
+   "src_note": "研究：官方第二話（2001-07-18）「出外抓毒物」預告原文確認；卯時～未時（後期條件）做成出現時辰；位置【設計提案】（M3B_PLAN §8.3 指定右房）"
+  },
+  {
+   "id": "n_sm_wanglao",
+   "name": "王老先生",
+   "kind": "QUEST",
+   "region": "xixia",
+   "room": "xx_bank",
+   "alignment": "GOOD",
+   "talk": "talk_n_sm_wanglao",
+   "services": [
+    "QUEST"
+   ],
+   "night_closed": false,
+   "quests": [
+    "q_sm_dujulaoren"
+   ],
+   "desc": "鬚髮全白的老人，拄著拐杖坐在錢莊門口的石階上，一邊捶腿一邊看人來人往。",
+   "era": "1.0A",
+   "src": "verified",
+   "src_note": "研究：「獨居老人」是官方 1.0A 事件標題；王老先生在西夏錢莊旁、獎勵 15 兩（2001-08-24，Wayback 未重抓）；房間 xx_bank 由 _econ 碎片建立"
+  },
+  {
+   "id": "n_sm_qiaofu_dl",
+   "name": "樵夫",
+   "kind": "QUEST",
+   "region": "dali_wild",
+   "room": "dlw_paddy",
+   "alignment": "GOOD",
+   "talk": "talk_n_sm_qiaofu_dl",
+   "services": [
+    "QUEST"
+   ],
+   "night_closed": false,
+   "quests": [
+    "q_sm_esi_nongfu"
+   ],
+   "desc": "扛著柴擔坐在田埂上的樵夫，肚子咕嚕咕嚕地叫，眼巴巴望著大理城的方向。",
+   "era": "1.0A",
+   "src": "verified",
+   "src_note": "研究：預告原文「大理和西夏的農地旁，各有一位樵夫等著吃飯」；大理這位放陶耘稻田（M3B_PLAN §8.3）"
+  },
+  {
+   "id": "n_sm_qiaofu_xx",
+   "name": "樵夫",
+   "kind": "QUEST",
+   "region": "hengshan_foot",
+   "room": "hf_paddy",
+   "alignment": "GOOD",
+   "talk": "talk_n_sm_qiaofu_xx",
+   "services": [
+    "QUEST"
+   ],
+   "night_closed": false,
+   "quests": [
+    "q_sm_esi_nongfu"
+   ],
+   "desc": "靠在稻草堆上打盹的樵夫，柴刀擱在一邊，餓得連眼皮都懶得抬。",
+   "era": "1.0A",
+   "src": "verified",
+   "src_note": "研究：預告原文同上；「西夏的農地」在本作取恆山外稻田（西夏往東的農地，M3B_PLAN §8.3 指定）【設計提案：位置】"
+  },
+  {
+   "id": "n_sm_ahuo",
+   "name": "阿火",
+   "kind": "QUEST",
+   "region": "desert_edge",
+   "room": "de_mine",
+   "alignment": "NEUTRAL",
+   "talk": "talk_n_sm_ahuo",
+   "services": [
+    "QUEST"
+   ],
+   "night_closed": false,
+   "quests": [
+    "q_sm_ahuo"
+   ],
+   "desc": "滿臉沙塵的礦工，兩手全是繭，一會兒鑽進礦坑、一會兒又跑出來張望，急得團團轉。",
+   "era": "1.0A",
+   "src": "verified",
+   "src_note": "研究：「著急的阿火」官方 1.0A 事件；17173 other.htm 阿火的礦 3615,8285 → [151,345] → de_mine（lifeskills_content 建立）；與既有 n_xe_miner「礦工阿火」（東郊礦區，2002 洞穴表）同名，見 todo_verify"
+  },
+  {
+   "id": "n_sm_kuangye",
+   "name": "礦業大王",
+   "kind": "STORY",
+   "region": "dali",
+   "room": "dl_square",
+   "alignment": "NEUTRAL",
+   "talk": "talk_n_sm_kuangye",
+   "services": [],
+   "night_closed": false,
+   "desc": "一身綢緞的胖商人，十根指頭戴了三個玉扳指，大理城裡買賣礦石的全得看他臉色。",
+   "era": "1.0A",
+   "src": "verified",
+   "src_note": "研究：阿火的礦石送大理「礦業大王」（Wayback 未重抓）；M3B_PLAN §4.5 寫「2001 大理礦石大王」，名稱取 §8.3 的「礦業大王」"
+  },
+  {
+   "id": "n_sm_ahong",
+   "name": "阿鴻",
+   "kind": "QUEST",
+   "region": "tianshan_road",
+   "room": "ts_hut",
+   "alignment": "GOOD",
+   "talk": "talk_n_sm_ahong",
+   "services": [
+    "QUEST"
+   ],
+   "night_closed": false,
+   "quests": [
+    "q_sm_ahong"
+   ],
+   "desc": "穿著羊皮襖的大理青年，坐在獵戶小屋的火堆旁削箭桿，說話帶著南方口音。",
+   "era": "1.0A",
+   "src": "verified",
+   "src_note": "研究：「離鄉的阿鴻」官方 1.0A 事件；座標 5325,1755（未重抓）→ [222,73] → 最近的既有房間 天山道獵戶小屋【設計提案：房間】；1000 兩（未重抓）"
+  },
+  {
+   "id": "n_sm_zhangqing",
+   "name": "張箐",
+   "kind": "STORY",
+   "region": "dali_wild",
+   "room": "dlw_lake",
+   "alignment": "GOOD",
+   "talk": "talk_n_sm_zhangqing",
+   "services": [],
+   "night_closed": false,
+   "desc": "在洱海岸邊浣紗的姑娘，常常停下手來望著北方發呆。",
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "研究：阿鴻的信送大理張箐；天龍寺不存在 → 洱海岸（比照李莫愁的擺法，M3B_PLAN §8.3）"
+  },
+  {
+   "id": "n_sm_shangqiaofu",
+   "name": "受傷的樵夫",
+   "kind": "QUEST",
+   "region": "dali_wild",
+   "room": "dlw_eastwood",
+   "alignment": "GOOD",
+   "talk": "talk_n_sm_shangqiaofu",
+   "services": [
+    "QUEST"
+   ],
+   "night_closed": false,
+   "quests": [
+    "q_sm_rixing"
+   ],
+   "desc": "抱著小腿坐在樹下的樵夫，綁腿的布條滲出血來，柴擔倒在一旁。",
+   "era": "1.0A",
+   "src": "verified",
+   "src_note": "研究：「日行一善」官方 1.0A 事件（大理城外受傷的樵夫）；2001「沒好處」；東邊樹林【設計提案：房間】"
+  },
+  {
+   "id": "n_sm_litong",
+   "name": "李同",
+   "kind": "QUEST",
+   "region": "huayin_road",
+   "room": "hy_pond",
+   "alignment": "GOOD",
+   "talk": "talk_n_sm_litong",
+   "services": [
+    "QUEST"
+   ],
+   "night_closed": false,
+   "quests": [
+    "q_sm_litong"
+   ],
+   "desc": "在華山水池邊獨自練劍的青年，一招一式都是華山路數，劍穗卻已褪了色。",
+   "era": "1.0A",
+   "src": "verified",
+   "src_note": "研究：預告原文「離派修練的李同…親書給他的陸師兄…盤纏當做委託金」；位置沒有記載 → 華山水池【設計提案】"
+  }
+ ],
+ "npc_links": [
+  {
+   "npc": "n_em_jianchi",
+   "add_quests": [
+    "q_sm_lengning"
+   ]
+  },
+  {
+   "npc": "n_hg_chengwei",
+   "add_quests": [
+    "q_sm_chengwei"
+   ]
+  },
+  {
+   "npc": "n_xx_abao",
+   "add_quests": [
+    "q_sm_abao"
+   ]
+  },
+  {
+   "npc": "n_wujieshan",
+   "add_quests": [
+    "q_sm_shepi"
+   ]
+  }
+ ],
+ "shop_patches": [],
+ "items": [
+  {
+   "id": "i_sm_caigouxin",
+   "name": "精鐵採購信",
+   "tab": "OTHER",
+   "slot": "",
+   "atk": 0,
+   "def": 0,
+   "weight": 0,
+   "price": 0,
+   "stack": 1,
+   "spoil_days": 0,
+   "effects": [],
+   "usable": false,
+   "usable_in_battle": false,
+   "no_sell": true,
+   "quest_item": true,
+   "desc": "蓋著少林寺朱印的採購信，寫明向西夏冶鐵商人張鐵訂購精鐵一批，訂金已付。",
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "研究 運鐵：2001-07-23 攻略「精鐵採購信」（未重抓）；描述【設計提案】"
+  },
+  {
+   "id": "i_sm_jingtie",
+   "name": "精鐵",
+   "tab": "OTHER",
+   "slot": "",
+   "atk": 0,
+   "def": 0,
+   "weight": 5,
+   "price": 0,
+   "stack": 1,
+   "spoil_days": 0,
+   "effects": [],
+   "usable": false,
+   "usable_in_battle": false,
+   "no_sell": true,
+   "quest_item": true,
+   "desc": "沉甸甸的一捆精鐵，敲起來聲音清越，是張鐵替少林寺多煉了三回的好鐵。",
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "研究 運鐵：「拿回少林寺訂購的精鐵」（官方預告）；做成任務物（不能拿去鑄劍）【設計提案】"
+  },
+  {
+   "id": "r_sm_jieducao",
+   "name": "解毒草",
+   "tab": "OTHER",
+   "slot": "",
+   "atk": 0,
+   "def": 0,
+   "weight": 1,
+   "price": 40,
+   "stack": 99,
+   "spoil_days": 0,
+   "effects": [
+    {
+     "type": "cure",
+     "status": "poison",
+     "max_level": 3
+    }
+   ],
+   "usable": true,
+   "usable_in_battle": true,
+   "no_sell": false,
+   "quest_item": false,
+   "desc": "葉背帶紫斑的小草，嚼碎了敷在傷口上，輕微的毒傷片刻就消。",
+   "era": "1.0A",
+   "src": "later",
+   "src_note": "研究 七毒：獎勵「解毒草兩個」（jyfreeonline 星宿頁，後期）；M3B_PLAN §4.1 指定由本碎片建 r_sm_jieducao；效果（解 3 級以下中毒）與售價【設計提案】"
+  },
+  {
+   "id": "r_sm_dulongxian",
+   "name": "毒龍涎",
+   "tab": "MATERIAL",
+   "slot": "",
+   "atk": 0,
+   "def": 0,
+   "weight": 1,
+   "price": 300,
+   "stack": 20,
+   "spoil_days": 0,
+   "effects": [],
+   "usable": false,
+   "usable_in_battle": false,
+   "no_sell": false,
+   "quest_item": false,
+   "desc": "一小瓶黏稠的暗綠色液體，聞著腥甜。據說能以毒攻毒，藥鋪的老師傅見了都要多看兩眼。",
+   "era": "1.0A",
+   "src": "later",
+   "src_note": "研究 程薇：交 10 棉 → 毒龍涎（後期）；沒有既有物品 → 建 r_sm_dulongxian；用途與售價【設計提案】（目前只能賣）"
+  },
+  {
+   "id": "i_sm_nongwu",
+   "name": "農務委託書",
+   "tab": "OTHER",
+   "slot": "",
+   "atk": 0,
+   "def": 0,
+   "weight": 0,
+   "price": 0,
+   "stack": 1,
+   "spoil_days": 0,
+   "effects": [],
+   "usable": false,
+   "usable_in_battle": false,
+   "no_sell": true,
+   "quest_item": true,
+   "desc": "恆山派師太親筆寫的委託書，託大理陶耘代購棉花，落款蓋著恆山白雲庵的印。",
+   "era": "1.0A",
+   "src": "later",
+   "src_note": "研究 程薇：申／巳時棉花事件給農務委託書（後期）；委託的對象（陶耘）【設計提案】"
+  },
+  {
+   "id": "i_sm_kuangshi",
+   "name": "一袋礦石",
+   "tab": "OTHER",
+   "slot": "",
+   "atk": 0,
+   "def": 0,
+   "weight": 4,
+   "price": 0,
+   "stack": 1,
+   "spoil_days": 0,
+   "effects": [],
+   "usable": false,
+   "usable_in_battle": false,
+   "no_sell": true,
+   "quest_item": true,
+   "desc": "阿火剛從礦坑挖出來的礦石，用麻袋裝著，袋口拿草繩紮得死緊。",
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "研究 阿火：礦石送到大理礦業大王（未重抓）；物品化【設計提案】"
+  },
+  {
+   "id": "i_sm_ahong_xin",
+   "name": "阿鴻的家書",
+   "tab": "OTHER",
+   "slot": "",
+   "atk": 0,
+   "def": 0,
+   "weight": 0,
+   "price": 0,
+   "stack": 1,
+   "spoil_days": 0,
+   "effects": [],
+   "usable": false,
+   "usable_in_battle": false,
+   "no_sell": true,
+   "quest_item": true,
+   "desc": "信封上歪歪扭扭寫著「洱海岸 張箐 親啟」，封口沾著一點松脂。",
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "研究 阿鴻：信送大理張箐（未重抓）；描述【設計提案】"
+  },
+  {
+   "id": "i_sm_zhangqing_xin",
+   "name": "張箐的回信",
+   "tab": "OTHER",
+   "slot": "",
+   "atk": 0,
+   "def": 0,
+   "weight": 0,
+   "price": 0,
+   "stack": 1,
+   "spoil_days": 0,
+   "effects": [],
+   "usable": false,
+   "usable_in_battle": false,
+   "no_sell": true,
+   "quest_item": true,
+   "desc": "折得方方正正的回信，信紙上有淡淡的水漬，不知是洱海的水還是眼淚。",
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "回信步驟【設計提案】"
+  },
+  {
+   "id": "i_sm_litong_xin",
+   "name": "李同的親書",
+   "tab": "OTHER",
+   "slot": "",
+   "atk": 0,
+   "def": 0,
+   "weight": 0,
+   "price": 0,
+   "stack": 1,
+   "spoil_days": 0,
+   "effects": [],
+   "usable": false,
+   "usable_in_battle": false,
+   "no_sell": true,
+   "quest_item": true,
+   "desc": "李同寫給華山陸大有的親筆信，封皮上畫了一柄小小的劍。",
+   "era": "1.0A",
+   "src": "verified",
+   "src_note": "研究：預告原文「親書給他的陸師兄」；描述【設計提案】"
+  },
+  {
+   "id": "r_sm_qingshepi",
+   "name": "青蛇皮",
+   "tab": "OTHER",
+   "slot": "",
+   "atk": 0,
+   "def": 0,
+   "weight": 0,
+   "price": 0,
+   "stack": 99,
+   "spoil_days": 0,
+   "effects": [],
+   "usable": false,
+   "usable_in_battle": false,
+   "no_sell": true,
+   "quest_item": true,
+   "desc": "剝得完整的一張青蛇皮，鱗片青中帶亮，拿來做腰帶正好。",
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "研究：「為蛇皮困擾的武介山」官方 1.0A 事件；青蛇皮 ×3 與取得方式【設計提案】"
+  },
+  {
+   "id": "i_sm_du_chixie",
+   "name": "赤蝎",
+   "tab": "OTHER",
+   "slot": "",
+   "atk": 0,
+   "def": 0,
+   "weight": 1,
+   "price": 0,
+   "stack": 99,
+   "spoil_days": 0,
+   "effects": [],
+   "usable": false,
+   "usable_in_battle": false,
+   "no_sell": true,
+   "quest_item": true,
+   "desc": "裝在小竹簍裡的一隻活赤蝎，毒性正足，隔著竹篾都聽得到牠窸窸窣窣地爬。",
+   "era": "1.0A",
+   "src": "verified",
+   "src_note": "研究：七毒名稱照 2001 座標表（赤蝎、蝎子、蜈蚣、蟾蜍、青蛇、彩蛛、黑蛛）；任務物、描述【設計提案】；兩個毒物任務共用（O21）"
+  },
+  {
+   "id": "i_sm_du_xiezi",
+   "name": "蝎子",
+   "tab": "OTHER",
+   "slot": "",
+   "atk": 0,
+   "def": 0,
+   "weight": 1,
+   "price": 0,
+   "stack": 99,
+   "spoil_days": 0,
+   "effects": [],
+   "usable": false,
+   "usable_in_battle": false,
+   "no_sell": true,
+   "quest_item": true,
+   "desc": "裝在小竹簍裡的一隻活蝎子，毒性正足，隔著竹篾都聽得到牠窸窸窣窣地爬。",
+   "era": "1.0A",
+   "src": "verified",
+   "src_note": "研究：七毒名稱照 2001 座標表（赤蝎、蝎子、蜈蚣、蟾蜍、青蛇、彩蛛、黑蛛）；任務物、描述【設計提案】；兩個毒物任務共用（O21）"
+  },
+  {
+   "id": "i_sm_du_wugong",
+   "name": "蜈蚣",
+   "tab": "OTHER",
+   "slot": "",
+   "atk": 0,
+   "def": 0,
+   "weight": 1,
+   "price": 0,
+   "stack": 99,
+   "spoil_days": 0,
+   "effects": [],
+   "usable": false,
+   "usable_in_battle": false,
+   "no_sell": true,
+   "quest_item": true,
+   "desc": "裝在小竹簍裡的一隻活蜈蚣，毒性正足，隔著竹篾都聽得到牠窸窸窣窣地爬。",
+   "era": "1.0A",
+   "src": "verified",
+   "src_note": "研究：七毒名稱照 2001 座標表（赤蝎、蝎子、蜈蚣、蟾蜍、青蛇、彩蛛、黑蛛）；任務物、描述【設計提案】；兩個毒物任務共用（O21）"
+  },
+  {
+   "id": "i_sm_du_chanchu",
+   "name": "蟾蜍",
+   "tab": "OTHER",
+   "slot": "",
+   "atk": 0,
+   "def": 0,
+   "weight": 1,
+   "price": 0,
+   "stack": 99,
+   "spoil_days": 0,
+   "effects": [],
+   "usable": false,
+   "usable_in_battle": false,
+   "no_sell": true,
+   "quest_item": true,
+   "desc": "裝在小竹簍裡的一隻活蟾蜍，毒性正足，隔著竹篾都聽得到牠窸窸窣窣地爬。",
+   "era": "1.0A",
+   "src": "verified",
+   "src_note": "研究：七毒名稱照 2001 座標表（赤蝎、蝎子、蜈蚣、蟾蜍、青蛇、彩蛛、黑蛛）；任務物、描述【設計提案】；兩個毒物任務共用（O21）"
+  },
+  {
+   "id": "i_sm_du_qingshe",
+   "name": "青蛇",
+   "tab": "OTHER",
+   "slot": "",
+   "atk": 0,
+   "def": 0,
+   "weight": 1,
+   "price": 0,
+   "stack": 99,
+   "spoil_days": 0,
+   "effects": [],
+   "usable": false,
+   "usable_in_battle": false,
+   "no_sell": true,
+   "quest_item": true,
+   "desc": "裝在小竹簍裡的一隻活青蛇，毒性正足，隔著竹篾都聽得到牠窸窸窣窣地爬。",
+   "era": "1.0A",
+   "src": "verified",
+   "src_note": "研究：七毒名稱照 2001 座標表（赤蝎、蝎子、蜈蚣、蟾蜍、青蛇、彩蛛、黑蛛）；任務物、描述【設計提案】；兩個毒物任務共用（O21）"
+  },
+  {
+   "id": "i_sm_du_caizhu",
+   "name": "彩蛛",
+   "tab": "OTHER",
+   "slot": "",
+   "atk": 0,
+   "def": 0,
+   "weight": 1,
+   "price": 0,
+   "stack": 99,
+   "spoil_days": 0,
+   "effects": [],
+   "usable": false,
+   "usable_in_battle": false,
+   "no_sell": true,
+   "quest_item": true,
+   "desc": "裝在小竹簍裡的一隻活彩蛛，毒性正足，隔著竹篾都聽得到牠窸窸窣窣地爬。",
+   "era": "1.0A",
+   "src": "verified",
+   "src_note": "研究：七毒名稱照 2001 座標表（赤蝎、蝎子、蜈蚣、蟾蜍、青蛇、彩蛛、黑蛛）；任務物、描述【設計提案】；兩個毒物任務共用（O21）"
+  },
+  {
+   "id": "i_sm_du_heizhu",
+   "name": "黑蛛",
+   "tab": "OTHER",
+   "slot": "",
+   "atk": 0,
+   "def": 0,
+   "weight": 1,
+   "price": 0,
+   "stack": 99,
+   "spoil_days": 0,
+   "effects": [],
+   "usable": false,
+   "usable_in_battle": false,
+   "no_sell": true,
+   "quest_item": true,
+   "desc": "裝在小竹簍裡的一隻活黑蛛，毒性正足，隔著竹篾都聽得到牠窸窸窣窣地爬。",
+   "era": "1.0A",
+   "src": "verified",
+   "src_note": "研究：七毒名稱照 2001 座標表（赤蝎、蝎子、蜈蚣、蟾蜍、青蛇、彩蛛、黑蛛）；任務物、描述【設計提案】；兩個毒物任務共用（O21）"
+  }
+ ],
+ "monsters": [
+  {
+   "id": "m_sm_du_chixie",
+   "name": "赤蝎",
+   "short": "赤蝎",
+   "kind": "MONSTER",
+   "alignment": "NEUTRAL",
+   "desc": "赤紅色的大蝎子，尾鉤翹得老高，在雪地裡格外扎眼。（存在：2001 七毒座標表；數值照 m_lf_qingshe／m_xh_snake 級距：設計提案）",
+   "stats": {
+    "qi": 150,
+    "neili": 0,
+    "jing": 60,
+    "str": 9,
+    "guts": 8,
+    "wit": 5,
+    "luck": 10,
+    "cal": 8,
+    "agi": 16,
+    "con": 10
+   },
+   "skills": {
+    "basic_dodge": 8,
+    "basic_parry": 0,
+    "basic_inner": 0
+   },
+   "arts": [
+    {
+     "art": "xh_mon_venom",
+     "level": 5
+    }
+   ],
+   "weapon_type": "FIST",
+   "weapon_power": 0,
+   "armor_power": 26,
+   "combat_xp_ref": 500,
+   "combat_xp": 14,
+   "learn_points": 6,
+   "drops": [
+    {
+     "item": "i_sm_du_chixie",
+     "chance": 100,
+     "min": 1,
+     "max": 1,
+     "requires": [
+      {
+       "type": "any_of",
+       "options": [
+        [
+         {
+          "type": "quest_stage",
+          "quest": "q_sm_qidu",
+          "stage": "s_hunt"
+         }
+        ],
+        [
+         {
+          "type": "quest_stage",
+          "quest": "q_sm_zhuadu",
+          "stage": "s_hunt"
+         }
+        ]
+       ]
+      }
+     ]
+    }
+   ],
+   "money": {
+    "min": 0,
+    "max": 2
+   },
+   "morality_on_kill": 0,
+   "killing_intent_on_kill": 0,
+   "ai": "melee_basic",
+   "no_rewards": false,
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "研究 七毒／出外抓毒物：毒物點 1991,713；只由任務房間動作開戰（不放遇敵表）；數值【設計提案】"
+  },
+  {
+   "id": "m_sm_du_xiezi",
+   "name": "蝎子",
+   "short": "蝎子",
+   "kind": "MONSTER",
+   "alignment": "NEUTRAL",
+   "desc": "毒沼爛泥裡爬出來的黑蝎子，鉗子一張一合。（存在：2001 七毒座標表；數值照 m_lf_qingshe／m_xh_snake 級距：設計提案）",
+   "stats": {
+    "qi": 130,
+    "neili": 0,
+    "jing": 60,
+    "str": 9,
+    "guts": 8,
+    "wit": 5,
+    "luck": 10,
+    "cal": 8,
+    "agi": 15,
+    "con": 10
+   },
+   "skills": {
+    "basic_dodge": 8,
+    "basic_parry": 0,
+    "basic_inner": 0
+   },
+   "arts": [
+    {
+     "art": "xh_mon_venom",
+     "level": 4
+    }
+   ],
+   "weapon_type": "FIST",
+   "weapon_power": 0,
+   "armor_power": 26,
+   "combat_xp_ref": 400,
+   "combat_xp": 12,
+   "learn_points": 5,
+   "drops": [
+    {
+     "item": "i_sm_du_xiezi",
+     "chance": 100,
+     "min": 1,
+     "max": 1,
+     "requires": [
+      {
+       "type": "any_of",
+       "options": [
+        [
+         {
+          "type": "quest_stage",
+          "quest": "q_sm_qidu",
+          "stage": "s_hunt"
+         }
+        ],
+        [
+         {
+          "type": "quest_stage",
+          "quest": "q_sm_zhuadu",
+          "stage": "s_hunt"
+         }
+        ]
+       ]
+      }
+     ]
+    }
+   ],
+   "money": {
+    "min": 0,
+    "max": 2
+   },
+   "morality_on_kill": 0,
+   "killing_intent_on_kill": 0,
+   "ai": "melee_basic",
+   "no_rewards": false,
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "研究 七毒／出外抓毒物：毒物點 2634,5600；只由任務房間動作開戰（不放遇敵表）；數值【設計提案】"
+  },
+  {
+   "id": "m_sm_du_wugong",
+   "name": "蜈蚣",
+   "short": "蜈蚣",
+   "kind": "MONSTER",
+   "alignment": "NEUTRAL",
+   "desc": "一尺來長的紅頭蜈蚣，百足齊動，在石縫間鑽進鑽出。（存在：2001 七毒座標表；數值照 m_lf_qingshe／m_xh_snake 級距：設計提案）",
+   "stats": {
+    "qi": 120,
+    "neili": 0,
+    "jing": 60,
+    "str": 9,
+    "guts": 8,
+    "wit": 5,
+    "luck": 10,
+    "cal": 8,
+    "agi": 18,
+    "con": 10
+   },
+   "skills": {
+    "basic_dodge": 8,
+    "basic_parry": 0,
+    "basic_inner": 0
+   },
+   "arts": [
+    {
+     "art": "xh_mon_venom",
+     "level": 4
+    }
+   ],
+   "weapon_type": "FIST",
+   "weapon_power": 0,
+   "armor_power": 26,
+   "combat_xp_ref": 400,
+   "combat_xp": 12,
+   "learn_points": 5,
+   "drops": [
+    {
+     "item": "i_sm_du_wugong",
+     "chance": 100,
+     "min": 1,
+     "max": 1,
+     "requires": [
+      {
+       "type": "any_of",
+       "options": [
+        [
+         {
+          "type": "quest_stage",
+          "quest": "q_sm_qidu",
+          "stage": "s_hunt"
+         }
+        ],
+        [
+         {
+          "type": "quest_stage",
+          "quest": "q_sm_zhuadu",
+          "stage": "s_hunt"
+         }
+        ]
+       ]
+      }
+     ]
+    }
+   ],
+   "money": {
+    "min": 0,
+    "max": 2
+   },
+   "morality_on_kill": 0,
+   "killing_intent_on_kill": 0,
+   "ai": "melee_basic",
+   "no_rewards": false,
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "研究 七毒／出外抓毒物：毒物點 6090,774；只由任務房間動作開戰（不放遇敵表）；數值【設計提案】"
+  },
+  {
+   "id": "m_sm_du_chanchu",
+   "name": "蟾蜍",
+   "short": "蟾蜍",
+   "kind": "MONSTER",
+   "alignment": "NEUTRAL",
+   "desc": "背上長滿疙瘩的大蟾蜍，鼓著腮幫子，一受驚就噴出白漿。（存在：2001 七毒座標表；數值照 m_lf_qingshe／m_xh_snake 級距：設計提案）",
+   "stats": {
+    "qi": 140,
+    "neili": 0,
+    "jing": 60,
+    "str": 9,
+    "guts": 8,
+    "wit": 5,
+    "luck": 10,
+    "cal": 8,
+    "agi": 10,
+    "con": 10
+   },
+   "skills": {
+    "basic_dodge": 8,
+    "basic_parry": 0,
+    "basic_inner": 0
+   },
+   "arts": [
+    {
+     "art": "xh_mon_venom",
+     "level": 4
+    }
+   ],
+   "weapon_type": "FIST",
+   "weapon_power": 0,
+   "armor_power": 26,
+   "combat_xp_ref": 400,
+   "combat_xp": 12,
+   "learn_points": 5,
+   "drops": [
+    {
+     "item": "i_sm_du_chanchu",
+     "chance": 100,
+     "min": 1,
+     "max": 1,
+     "requires": [
+      {
+       "type": "any_of",
+       "options": [
+        [
+         {
+          "type": "quest_stage",
+          "quest": "q_sm_qidu",
+          "stage": "s_hunt"
+         }
+        ],
+        [
+         {
+          "type": "quest_stage",
+          "quest": "q_sm_zhuadu",
+          "stage": "s_hunt"
+         }
+        ]
+       ]
+      }
+     ]
+    }
+   ],
+   "money": {
+    "min": 0,
+    "max": 2
+   },
+   "morality_on_kill": 0,
+   "killing_intent_on_kill": 0,
+   "ai": "melee_basic",
+   "no_rewards": false,
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "研究 七毒／出外抓毒物：毒物點 9087,573；只由任務房間動作開戰（不放遇敵表）；數值【設計提案】"
+  },
+  {
+   "id": "m_sm_du_qingshe",
+   "name": "青蛇",
+   "short": "青蛇",
+   "kind": "MONSTER",
+   "alignment": "NEUTRAL",
+   "desc": "一條細長的青蛇，藏在水邊草叢裡，昂起頭來嘶嘶作響。（存在：2001 七毒座標表；數值照 m_lf_qingshe／m_xh_snake 級距：設計提案）",
+   "stats": {
+    "qi": 130,
+    "neili": 0,
+    "jing": 60,
+    "str": 9,
+    "guts": 8,
+    "wit": 5,
+    "luck": 10,
+    "cal": 8,
+    "agi": 18,
+    "con": 10
+   },
+   "skills": {
+    "basic_dodge": 8,
+    "basic_parry": 0,
+    "basic_inner": 0
+   },
+   "arts": [
+    {
+     "art": "xh_mon_venom",
+     "level": 4
+    }
+   ],
+   "weapon_type": "FIST",
+   "weapon_power": 0,
+   "armor_power": 26,
+   "combat_xp_ref": 400,
+   "combat_xp": 12,
+   "learn_points": 5,
+   "drops": [
+    {
+     "item": "i_sm_du_qingshe",
+     "chance": 100,
+     "min": 1,
+     "max": 1,
+     "requires": [
+      {
+       "type": "any_of",
+       "options": [
+        [
+         {
+          "type": "quest_stage",
+          "quest": "q_sm_qidu",
+          "stage": "s_hunt"
+         }
+        ],
+        [
+         {
+          "type": "quest_stage",
+          "quest": "q_sm_zhuadu",
+          "stage": "s_hunt"
+         }
+        ]
+       ]
+      }
+     ]
+    },
+    {
+     "item": "r_sm_qingshepi",
+     "chance": 100,
+     "min": 1,
+     "max": 1,
+     "requires": [
+      {
+       "type": "quest_stage",
+       "quest": "q_sm_shepi",
+       "stage": "s_hunt"
+      }
+     ]
+    }
+   ],
+   "money": {
+    "min": 0,
+    "max": 2
+   },
+   "morality_on_kill": 0,
+   "killing_intent_on_kill": 0,
+   "ai": "melee_basic",
+   "no_rewards": false,
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "研究 七毒／出外抓毒物：毒物點 5990,17288；只由任務房間動作開戰（不放遇敵表）；數值【設計提案】"
+  },
+  {
+   "id": "m_sm_du_caizhu",
+   "name": "彩蛛",
+   "short": "彩蛛",
+   "kind": "MONSTER",
+   "alignment": "NEUTRAL",
+   "desc": "背上花紋五顏六色的大蜘蛛，在山道兩旁的樹枝間結了好大一張網。（存在：2001 七毒座標表；數值照 m_lf_qingshe／m_xh_snake 級距：設計提案）",
+   "stats": {
+    "qi": 160,
+    "neili": 0,
+    "jing": 60,
+    "str": 9,
+    "guts": 8,
+    "wit": 5,
+    "luck": 10,
+    "cal": 8,
+    "agi": 17,
+    "con": 10
+   },
+   "skills": {
+    "basic_dodge": 8,
+    "basic_parry": 0,
+    "basic_inner": 0
+   },
+   "arts": [
+    {
+     "art": "xh_mon_venom",
+     "level": 5
+    }
+   ],
+   "weapon_type": "FIST",
+   "weapon_power": 0,
+   "armor_power": 26,
+   "combat_xp_ref": 600,
+   "combat_xp": 15,
+   "learn_points": 6,
+   "drops": [
+    {
+     "item": "i_sm_du_caizhu",
+     "chance": 100,
+     "min": 1,
+     "max": 1,
+     "requires": [
+      {
+       "type": "any_of",
+       "options": [
+        [
+         {
+          "type": "quest_stage",
+          "quest": "q_sm_qidu",
+          "stage": "s_hunt"
+         }
+        ],
+        [
+         {
+          "type": "quest_stage",
+          "quest": "q_sm_zhuadu",
+          "stage": "s_hunt"
+         }
+        ]
+       ]
+      }
+     ]
+    }
+   ],
+   "money": {
+    "min": 0,
+    "max": 2
+   },
+   "morality_on_kill": 0,
+   "killing_intent_on_kill": 0,
+   "ai": "melee_basic",
+   "no_rewards": false,
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "研究 七毒／出外抓毒物：毒物點 16608,5256；只由任務房間動作開戰（不放遇敵表）；數值【設計提案】"
+  },
+  {
+   "id": "m_sm_du_heizhu",
+   "name": "黑蛛",
+   "short": "黑蛛",
+   "kind": "MONSTER",
+   "alignment": "NEUTRAL",
+   "desc": "通體漆黑、腹下一點紅斑的毒蛛，咬一口能讓人半邊身子發麻。（存在：2001 七毒座標表；數值照 m_lf_qingshe／m_xh_snake 級距：設計提案）",
+   "stats": {
+    "qi": 200,
+    "neili": 0,
+    "jing": 60,
+    "str": 9,
+    "guts": 8,
+    "wit": 5,
+    "luck": 10,
+    "cal": 8,
+    "agi": 18,
+    "con": 10
+   },
+   "skills": {
+    "basic_dodge": 8,
+    "basic_parry": 0,
+    "basic_inner": 0
+   },
+   "arts": [
+    {
+     "art": "xh_mon_venom",
+     "level": 6
+    }
+   ],
+   "weapon_type": "FIST",
+   "weapon_power": 0,
+   "armor_power": 26,
+   "combat_xp_ref": 800,
+   "combat_xp": 18,
+   "learn_points": 7,
+   "drops": [
+    {
+     "item": "i_sm_du_heizhu",
+     "chance": 100,
+     "min": 1,
+     "max": 1,
+     "requires": [
+      {
+       "type": "any_of",
+       "options": [
+        [
+         {
+          "type": "quest_stage",
+          "quest": "q_sm_qidu",
+          "stage": "s_hunt"
+         }
+        ],
+        [
+         {
+          "type": "quest_stage",
+          "quest": "q_sm_zhuadu",
+          "stage": "s_hunt"
+         }
+        ]
+       ]
+      }
+     ]
+    }
+   ],
+   "money": {
+    "min": 0,
+    "max": 2
+   },
+   "morality_on_kill": 0,
+   "killing_intent_on_kill": 0,
+   "ai": "melee_basic",
+   "no_rewards": false,
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "研究 七毒／出外抓毒物：毒物點 18690,10132；只由任務房間動作開戰（不放遇敵表）；數值【設計提案】"
+  }
+ ],
+ "martial_arts": [],
+ "masters": [],
+ "text_templates": [
+  {
+   "id": "talk_n_sm_daoxiang",
+   "era": "1.0A",
+   "self": "{npc_name}捏著一張訂貨單直嘆氣：「兵器房的禪杖戒刀都鈍了，精鐵卻還沒到……阿彌陀佛，急不得，急不得。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_sm_daoxiang@NIGHT",
+   "era": "1.0A",
+   "self": "{npc_name}已回禪房做晚課，前院只剩十八銅人陣的木樁在月光下立著。",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_sm_chulizi",
+   "era": "1.0A",
+   "self": "{npc_name}壓低聲音：「師父的毒經上說，七毒齊聚，方成一爐。七樣毒物，我才湊了一樣……噓，別讓大師兄聽見。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_sm_chulizi@NIGHT",
+   "era": "1.0A",
+   "self": "左房裡黑燈瞎火，{npc_name}早被師父叫去伺候了。",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_sm_xianfengzi",
+   "era": "1.0A",
+   "self": "{npc_name}把竹簍搖了搖，側耳聽裡頭的動靜：「星宿海的毒物給師兄弟們抓得差不多了，要好貨色，就得出外去抓。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_sm_xianfengzi@NIGHT",
+   "era": "1.0A",
+   "self": "右房的竹簍窸窸窣窣響個不停，{npc_name}卻不在，大概是出外抓毒物去了。",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_sm_wanglao",
+   "era": "1.0A",
+   "self": "{npc_name}捶著膝蓋：「人老了，腿腳不中用囉。錢莊裡存的那點銀子，是我兒子出門前留下的……他好幾年沒回來了。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_sm_wanglao@NIGHT",
+   "era": "1.0A",
+   "self": "{npc_name}拄著拐杖慢慢往家走，嘴裡念著：「天黑了，該點燈了……」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_sm_qiaofu_dl",
+   "era": "1.0A",
+   "self": "{npc_name}揉著肚子：「從早上砍柴砍到現在，家裡那口子回娘家去了，連口飯都沒得吃。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_sm_qiaofu_dl@NIGHT",
+   "era": "1.0A",
+   "self": "{npc_name}餓得睡不著，坐在田埂上數星星。",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_sm_qiaofu_xx",
+   "era": "1.0A",
+   "self": "{npc_name}有氣無力地說：「餓……餓得連柴刀都拿不動了。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_sm_qiaofu_xx@NIGHT",
+   "era": "1.0A",
+   "self": "{npc_name}縮在稻草堆裡打呼，肚子卻還在咕嚕咕嚕地叫。",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_sm_ahuo",
+   "era": "1.0A",
+   "self": "{npc_name}從礦坑裡探出頭來，一臉黑灰：「這礦脈挖下去全是好東西，就是人手不夠！」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_sm_ahuo@NIGHT",
+   "era": "1.0A",
+   "self": "{npc_name}點著油燈還在礦坑裡敲敲打打，叮叮噹噹的聲音傳得老遠。",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_sm_kuangye",
+   "era": "1.0A",
+   "self": "{npc_name}轉著手上的玉扳指：「大理城裡的礦石，十斤有九斤要經我的手。有好礦，儘管拿來！」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_sm_kuangye@NIGHT",
+   "era": "1.0A",
+   "self": "{npc_name}的轎子早抬回府了，五華樓前只剩幾個收攤的小販。",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_sm_ahong",
+   "era": "1.0A",
+   "self": "{npc_name}削著箭桿，望著火堆出神：「天山的雪，大理人一輩子也見不著幾回……可我還是想家。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_sm_ahong@NIGHT",
+   "era": "1.0A",
+   "self": "{npc_name}抱著獵弓靠在牆邊睡著了，嘴裡含含糊糊地喊著一個名字。",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_sm_zhangqing",
+   "era": "1.0A",
+   "self": "{npc_name}低頭浣紗，輕聲唱著一支大理小調，唱到一半就停了，望著北方發呆。",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_sm_zhangqing@NIGHT",
+   "era": "1.0A",
+   "self": "{npc_name}提著紗籃往家走，回頭又望了一眼黑沉沉的洱海。",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_sm_shangqiaofu",
+   "era": "1.0A",
+   "self": "{npc_name}抱著腿直哼哼：「哎喲……這山豬拱得可真狠，腿上的口子一動就冒血。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_sm_shangqiaofu@NIGHT",
+   "era": "1.0A",
+   "self": "{npc_name}靠在樹下，冷得直打哆嗦：「天黑了，山豬又要出來了……」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_sm_litong",
+   "era": "1.0A",
+   "self": "{npc_name}收劍而立，額上全是汗：「這一招『有鳳來儀』，我練了三個月，總覺得差了一點什麼。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_sm_litong@NIGHT",
+   "era": "1.0A",
+   "self": "{npc_name}還在水池邊練劍，月光下劍光一閃一閃的。",
+   "src": "proposal"
+  },
+  {
+   "id": "tell_q_sm_du_chixie",
+   "era": "1.0A",
+   "self": "雪地上一道紅影一閃，一隻赤蝎翹著尾鉤朝你爬了過來！",
+   "src": "proposal"
+  },
+  {
+   "id": "tell_q_sm_du_xiezi",
+   "era": "1.0A",
+   "self": "毒沼的爛泥咕嘟一聲，鑽出一隻黑蝎子，鉗子張得老大。",
+   "src": "proposal"
+  },
+  {
+   "id": "tell_q_sm_du_wugong",
+   "era": "1.0A",
+   "self": "石縫裡沙沙作響，一條紅頭蜈蚣百足齊動，直朝你腳邊竄來！",
+   "src": "proposal"
+  },
+  {
+   "id": "tell_q_sm_du_chanchu",
+   "era": "1.0A",
+   "self": "雪堆後蹦出一隻大蟾蜍，鼓著腮幫子瞪著你。",
+   "src": "proposal"
+  },
+  {
+   "id": "tell_q_sm_du_qingshe",
+   "era": "1.0A",
+   "self": "草叢裡嘶的一聲，一條青蛇昂起頭來，吐著信子。",
+   "src": "proposal"
+  },
+  {
+   "id": "tell_q_sm_du_caizhu",
+   "era": "1.0A",
+   "self": "頭頂的蛛網一陣晃動，一隻花花綠綠的大蜘蛛垂絲落了下來！",
+   "src": "proposal"
+  },
+  {
+   "id": "tell_q_sm_du_heizhu",
+   "era": "1.0A",
+   "self": "樹根底下爬出一隻黑蛛，腹下一點紅斑像血一樣。",
+   "src": "proposal"
+  },
+  {
+   "id": "rmr_q_sm_yuntie_first",
+   "era": "1.0A",
+   "self": "聽說{name}替少林寺從西夏扛回了一批精鐵，道相師兄樂得合不攏嘴。",
+   "other": "聽說{name}替少林寺從西夏扛回了一批精鐵，道相師兄樂得合不攏嘴。",
+   "src": "proposal",
+   "src_note": "系統傳聞【設計提案・非原作】（STORY_PLAN §5.1）"
+  },
+  {
+   "id": "rmr_q_sm_yuntie_foreshadow",
+   "era": "1.0A",
+   "self": "少林寺的道相師兄天天站在十八銅人陣外嘆氣，說是向西夏張鐵訂的精鐵還沒送到。",
+   "other": "少林寺的道相師兄天天站在十八銅人陣外嘆氣，說是向西夏張鐵訂的精鐵還沒送到。",
+   "src": "proposal",
+   "src_note": "系統傳聞【設計提案・非原作】（STORY_PLAN §5.1）"
+  },
+  {
+   "id": "rmr_q_sm_qidu_first",
+   "era": "1.0A",
+   "self": "聽說{name}替星宿派的楚禮子抓齊了七毒，丁春秋的丹爐裡又多了一爐新毒。",
+   "other": "聽說{name}替星宿派的楚禮子抓齊了七毒，丁春秋的丹爐裡又多了一爐新毒。",
+   "src": "proposal",
+   "src_note": "系統傳聞【設計提案・非原作】（STORY_PLAN §5.1）"
+  },
+  {
+   "id": "rmr_q_sm_qidu_foreshadow",
+   "era": "1.0A",
+   "self": "星宿海傳出消息：楚禮子到處拉人替他抓七毒，說是給解毒草當報酬。",
+   "other": "星宿海傳出消息：楚禮子到處拉人替他抓七毒，說是給解毒草當報酬。",
+   "src": "proposal",
+   "src_note": "系統傳聞【設計提案・非原作】（STORY_PLAN §5.1）"
+  },
+  {
+   "id": "rmr_q_sm_zhuadu_first",
+   "era": "1.0A",
+   "self": "聽說{name}一口氣替咸楓子抓齊了七種毒物，星宿派的人都說這人天生是使毒的料。",
+   "other": "聽說{name}一口氣替咸楓子抓齊了七種毒物，星宿派的人都說這人天生是使毒的料。",
+   "src": "proposal",
+   "src_note": "系統傳聞【設計提案・非原作】（STORY_PLAN §5.1）"
+  },
+  {
+   "id": "rmr_q_sm_zhuadu_foreshadow",
+   "era": "1.0A",
+   "self": "星宿海的咸楓子又在找人出外抓毒物了，說是交一樣就教一手使毒的竅門。",
+   "other": "星宿海的咸楓子又在找人出外抓毒物了，說是交一樣就教一手使毒的竅門。",
+   "src": "proposal",
+   "src_note": "系統傳聞【設計提案・非原作】（STORY_PLAN §5.1）"
+  },
+  {
+   "id": "rmr_q_sm_lengning_first",
+   "era": "1.0A",
+   "self": "聽說{name}鑄成了一把冷凝劍，峨嵋山腳的劍痴抱著劍哭了一整天。",
+   "other": "聽說{name}鑄成了一把冷凝劍，峨嵋山腳的劍痴抱著劍哭了一整天。",
+   "src": "proposal",
+   "src_note": "系統傳聞【設計提案・非原作】（STORY_PLAN §5.1）"
+  },
+  {
+   "id": "rmr_q_sm_lengning_foreshadow",
+   "era": "1.0A",
+   "self": "峨嵋山腳那個劍痴逢人就問：「你見過冷凝劍沒有？」聽說誰能鑄一把給她看，她肯傾家蕩產。",
+   "other": "峨嵋山腳那個劍痴逢人就問：「你見過冷凝劍沒有？」聽說誰能鑄一把給她看，她肯傾家蕩產。",
+   "src": "proposal",
+   "src_note": "系統傳聞【設計提案・非原作】（STORY_PLAN §5.1）"
+  },
+  {
+   "id": "rmr_q_sm_chengwei_first",
+   "era": "1.0A",
+   "self": "聽說恆山派今年的冬衣有著落了——{name}替程薇小師父張羅了麻和棉花。",
+   "other": "聽說恆山派今年的冬衣有著落了——{name}替程薇小師父張羅了麻和棉花。",
+   "src": "proposal",
+   "src_note": "系統傳聞【設計提案・非原作】（STORY_PLAN §5.1）"
+  },
+  {
+   "id": "rmr_q_sm_chengwei_foreshadow",
+   "era": "1.0A",
+   "self": "恆山後山的程薇小師父為了麻和棉花愁眉不展，聽說誰肯幫忙，師太們都會記著這份情。",
+   "other": "恆山後山的程薇小師父為了麻和棉花愁眉不展，聽說誰肯幫忙，師太們都會記著這份情。",
+   "src": "proposal",
+   "src_note": "系統傳聞【設計提案・非原作】（STORY_PLAN §5.1）"
+  },
+  {
+   "id": "rmr_q_sm_dujulaoren_first",
+   "era": "1.0A",
+   "self": "西夏錢莊門口的王老先生逢人就誇：{name}替他跑腿買藥，是個好孩子。",
+   "other": "西夏錢莊門口的王老先生逢人就誇：{name}替他跑腿買藥，是個好孩子。",
+   "src": "proposal",
+   "src_note": "系統傳聞【設計提案・非原作】（STORY_PLAN §5.1）"
+  },
+  {
+   "id": "rmr_q_sm_dujulaoren_foreshadow",
+   "era": "1.0A",
+   "self": "西夏錢莊門口那位王老先生，腿疼得站不起來，也沒個人照應，看了真叫人心酸。",
+   "other": "西夏錢莊門口那位王老先生，腿疼得站不起來，也沒個人照應，看了真叫人心酸。",
+   "src": "proposal",
+   "src_note": "系統傳聞【設計提案・非原作】（STORY_PLAN §5.1）"
+  },
+  {
+   "id": "rmr_q_sm_esi_nongfu_first",
+   "era": "1.0A",
+   "self": "兩個餓肚子的樵夫總算吃上飯了，聽說是{name}一頭一頭送過去的。",
+   "other": "兩個餓肚子的樵夫總算吃上飯了，聽說是{name}一頭一頭送過去的。",
+   "src": "proposal",
+   "src_note": "系統傳聞【設計提案・非原作】（STORY_PLAN §5.1）"
+  },
+  {
+   "id": "rmr_q_sm_esi_nongfu_foreshadow",
+   "era": "1.0A",
+   "self": "大理和恆山的稻田邊，各有一個樵夫餓得直不起腰，家裡的婆娘都回娘家去了。",
+   "other": "大理和恆山的稻田邊，各有一個樵夫餓得直不起腰，家裡的婆娘都回娘家去了。",
+   "src": "proposal",
+   "src_note": "系統傳聞【設計提案・非原作】（STORY_PLAN §5.1）"
+  },
+  {
+   "id": "rmr_q_sm_ahuo_first",
+   "era": "1.0A",
+   "self": "大理的礦業大王說，阿火的礦石這回準時送到了，送貨的是{name}。",
+   "other": "大理的礦業大王說，阿火的礦石這回準時送到了，送貨的是{name}。",
+   "src": "proposal",
+   "src_note": "系統傳聞【設計提案・非原作】（STORY_PLAN §5.1）"
+  },
+  {
+   "id": "rmr_q_sm_ahuo_foreshadow",
+   "era": "1.0A",
+   "self": "大漠礦場的阿火急得團團轉，礦坑塌了一角，大理礦業大王訂的礦石卻送不出去。",
+   "other": "大漠礦場的阿火急得團團轉，礦坑塌了一角，大理礦業大王訂的礦石卻送不出去。",
+   "src": "proposal",
+   "src_note": "系統傳聞【設計提案・非原作】（STORY_PLAN §5.1）"
+  },
+  {
+   "id": "tell_q_sm_abao_gate",
+   "era": "1.0A",
+   "self": "阿寶把礦帳交給城門口的帳房先生，鬆了一大口氣，轉身又抓住你的袖子：「回去的路……」",
+   "src": "proposal"
+  },
+  {
+   "id": "rmr_q_sm_ahong_first",
+   "era": "1.0A",
+   "self": "洱海岸邊的張箐這幾天笑得特別甜，聽說是{name}替天山的阿鴻捎來了家書。",
+   "other": "洱海岸邊的張箐這幾天笑得特別甜，聽說是{name}替天山的阿鴻捎來了家書。",
+   "src": "proposal",
+   "src_note": "系統傳聞【設計提案・非原作】（STORY_PLAN §5.1）"
+  },
+  {
+   "id": "rmr_q_sm_ahong_foreshadow",
+   "era": "1.0A",
+   "self": "天山腳下有個大理來的獵人，天天望著南方發呆，聽說是想家想得緊。",
+   "other": "天山腳下有個大理來的獵人，天天望著南方發呆，聽說是想家想得緊。",
+   "src": "proposal",
+   "src_note": "系統傳聞【設計提案・非原作】（STORY_PLAN §5.1）"
+  },
+  {
+   "id": "amb_q_sm_xh_left",
+   "era": "1.0A",
+   "self": "左房角落的瓦罐裡傳出嘶嘶聲，不知養著什麼毒物。",
+   "src": "proposal"
+  },
+  {
+   "id": "amb_q_sm_de_mine",
+   "era": "1.0A",
+   "self": "礦坑深處傳來一陣悶響，沙塵從坑口簌簌地落下來。",
+   "src": "proposal"
+  }
+ ],
+ "rumors": [
+  {
+   "id": "rmr_row_q_sm_yuntie",
+   "kind": "FORESHADOW",
+   "quest": "q_sm_yuntie",
+   "text": "rmr_q_sm_yuntie_foreshadow",
+   "requires_world": {
+    "not_first": "q_sm_yuntie"
+   },
+   "hours": [],
+   "weight": 1,
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "系統傳聞【設計提案・非原作】（研究：原作沒有系統謠言）"
+  },
+  {
+   "id": "rmr_row_q_sm_qidu",
+   "kind": "FORESHADOW",
+   "quest": "q_sm_qidu",
+   "text": "rmr_q_sm_qidu_foreshadow",
+   "requires_world": {
+    "not_first": "q_sm_qidu"
+   },
+   "hours": [
+    "辰",
+    "巳",
+    "午",
+    "未"
+   ],
+   "weight": 1,
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "系統傳聞【設計提案・非原作】（研究：原作沒有系統謠言）"
+  },
+  {
+   "id": "rmr_row_q_sm_zhuadu",
+   "kind": "FORESHADOW",
+   "quest": "q_sm_zhuadu",
+   "text": "rmr_q_sm_zhuadu_foreshadow",
+   "requires_world": {
+    "not_first": "q_sm_zhuadu"
+   },
+   "hours": [
+    "卯",
+    "辰",
+    "巳",
+    "午",
+    "未"
+   ],
+   "weight": 1,
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "系統傳聞【設計提案・非原作】（研究：原作沒有系統謠言）"
+  },
+  {
+   "id": "rmr_row_q_sm_lengning",
+   "kind": "FORESHADOW",
+   "quest": "q_sm_lengning",
+   "text": "rmr_q_sm_lengning_foreshadow",
+   "requires_world": {
+    "not_first": "q_sm_lengning"
+   },
+   "hours": [],
+   "weight": 1,
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "系統傳聞【設計提案・非原作】（研究：原作沒有系統謠言）"
+  },
+  {
+   "id": "rmr_row_q_sm_chengwei",
+   "kind": "FORESHADOW",
+   "quest": "q_sm_chengwei",
+   "text": "rmr_q_sm_chengwei_foreshadow",
+   "requires_world": {
+    "not_first": "q_sm_chengwei"
+   },
+   "hours": [],
+   "weight": 1,
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "系統傳聞【設計提案・非原作】（研究：原作沒有系統謠言）"
+  },
+  {
+   "id": "rmr_row_q_sm_dujulaoren",
+   "kind": "FORESHADOW",
+   "quest": "q_sm_dujulaoren",
+   "text": "rmr_q_sm_dujulaoren_foreshadow",
+   "requires_world": {
+    "not_first": "q_sm_dujulaoren"
+   },
+   "hours": [],
+   "weight": 1,
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "系統傳聞【設計提案・非原作】（研究：原作沒有系統謠言）"
+  },
+  {
+   "id": "rmr_row_q_sm_esi_nongfu",
+   "kind": "FORESHADOW",
+   "quest": "q_sm_esi_nongfu",
+   "text": "rmr_q_sm_esi_nongfu_foreshadow",
+   "requires_world": {
+    "not_first": "q_sm_esi_nongfu"
+   },
+   "hours": [],
+   "weight": 1,
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "系統傳聞【設計提案・非原作】（研究：原作沒有系統謠言）"
+  },
+  {
+   "id": "rmr_row_q_sm_ahuo",
+   "kind": "FORESHADOW",
+   "quest": "q_sm_ahuo",
+   "text": "rmr_q_sm_ahuo_foreshadow",
+   "requires_world": {
+    "not_first": "q_sm_ahuo"
+   },
+   "hours": [],
+   "weight": 1,
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "系統傳聞【設計提案・非原作】（研究：原作沒有系統謠言）"
+  },
+  {
+   "id": "rmr_row_q_sm_ahong",
+   "kind": "FORESHADOW",
+   "quest": "q_sm_ahong",
+   "text": "rmr_q_sm_ahong_foreshadow",
+   "requires_world": {
+    "not_first": "q_sm_ahong"
+   },
+   "hours": [],
+   "weight": 1,
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "系統傳聞【設計提案・非原作】（研究：原作沒有系統謠言）"
+  }
+ ],
+ "ambient": [
+  {
+   "id": "amb_sm_xh_left",
+   "room": "xh_left",
+   "periods": [
+    "DAY"
+   ],
+   "requires": [],
+   "weight": 1,
+   "text": "amb_q_sm_xh_left",
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "環境句【設計提案・非原作】"
+  },
+  {
+   "id": "amb_sm_de_mine",
+   "room": "de_mine",
+   "periods": [
+    "DAWN",
+    "DAY"
+   ],
+   "requires": [],
+   "weight": 1,
+   "text": "amb_q_sm_de_mine",
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "環境句【設計提案・非原作】"
+  }
+ ],
+ "art_requests": {
+  "units": [
+   {
+    "id": "n_sm_daoxiang",
+    "alias": "n_sl_zhike",
+    "prompt": "中年少林僧，灰布僧袍、手捏一張訂貨單、愁眉苦臉，少林前院背景，水墨武俠立繪"
+   },
+   {
+    "id": "n_sm_chulizi",
+    "alias": "n_xx_cha",
+    "prompt": "年輕星宿派弟子，暗綠短袍、袖口沾著毒汁、神色鬼祟，水墨武俠立繪"
+   },
+   {
+    "id": "n_sm_xianfengzi",
+    "alias": "n_xx_cha",
+    "prompt": "瘦高的星宿派弟子，身邊堆滿竹簍、手裡捏著一條小蛇，水墨武俠立繪"
+   },
+   {
+    "id": "n_sm_wanglao",
+    "alias": "n_wd_dl_oldman",
+    "prompt": "白髮老翁，拄拐杖坐在錢莊石階上捶腿，水墨武俠立繪"
+   },
+   {
+    "id": "n_sm_qiaofu_dl",
+    "alias": "n_xe_miner",
+    "prompt": "扛柴擔的樵夫，粗布短打、餓得捂著肚子，稻田背景，水墨武俠立繪"
+   },
+   {
+    "id": "n_sm_qiaofu_xx",
+    "alias": "n_xe_miner",
+    "prompt": "靠在稻草堆上的樵夫，柴刀擱在一旁、有氣無力，水墨武俠立繪"
+   },
+   {
+    "id": "n_sm_ahuo",
+    "alias": "n_xe_miner",
+    "prompt": "滿臉沙塵的礦工，手持十字鎬、焦急張望，沙漠礦坑背景，水墨武俠立繪"
+   },
+   {
+    "id": "n_sm_kuangye",
+    "alias": "n_dl_grocer",
+    "prompt": "身穿綢緞的胖商人，手戴三個玉扳指、得意洋洋，水墨武俠立繪"
+   },
+   {
+    "id": "n_sm_ahong",
+    "alias": "n_lj_hunter",
+    "prompt": "穿羊皮襖的大理青年獵人，坐在火堆旁削箭桿、神情思鄉，水墨武俠立繪"
+   },
+   {
+    "id": "n_sm_zhangqing",
+    "alias": "n_em_yingyueer",
+    "prompt": "洱海岸邊浣紗的白族姑娘，素色衣裙、望著北方，水墨武俠立繪"
+   },
+   {
+    "id": "n_sm_shangqiaofu",
+    "alias": "n_xe_miner",
+    "prompt": "抱著受傷小腿坐在樹下的樵夫，綁腿滲血，水墨武俠立繪"
+   },
+   {
+    "id": "n_sm_litong",
+    "alias": "n_ludayou",
+    "prompt": "華山派青年劍客，青衫褪色劍穗、水池邊獨自練劍，水墨武俠立繪"
+   },
+   {
+    "id": "m_sm_du_chixie",
+    "alias": "m_xh_scorpion",
+    "prompt": "赤紅色大蝎子，尾鉤高翹，雪地背景"
+   },
+   {
+    "id": "m_sm_du_xiezi",
+    "alias": "m_xh_scorpion",
+    "prompt": "黑色毒蝎，鉗子張開，毒沼爛泥背景"
+   },
+   {
+    "id": "m_sm_du_wugong",
+    "alias": "m_lf_wugong",
+    "prompt": "紅頭大蜈蚣，百足齊動"
+   },
+   {
+    "id": "m_sm_du_chanchu",
+    "alias": "m_xh_toad",
+    "prompt": "背上長滿疙瘩的大蟾蜍，鼓著腮幫"
+   },
+   {
+    "id": "m_sm_du_qingshe",
+    "alias": "m_lf_qingshe",
+    "prompt": "細長青蛇，昂首吐信"
+   },
+   {
+    "id": "m_sm_du_caizhu",
+    "alias": "m_lf_zhizhu",
+    "prompt": "背上五彩花紋的大蜘蛛，垂絲落下"
+   },
+   {
+    "id": "m_sm_du_heizhu",
+    "alias": "m_lf_zhizhu",
+    "prompt": "通體漆黑、腹下紅斑的毒蛛"
+   }
+  ],
+  "backgrounds": []
+ },
+ "test_plan": [
+  {
+   "quest": "q_sm_yuntie",
+   "outcome": "default",
+   "setup": {
+    "sect": "shaolin"
+   },
+   "save_reload_at": "s_back",
+   "path": [
+    "walk@sl_court",
+    "accept@n_sm_daoxiang",
+    "choose@n_sm_daoxiang:n0:c_ask",
+    "choose@n_sm_daoxiang:n1:c_go",
+    "walk@xx_tiepu",
+    "talk@n_xx_zhangtie",
+    "choose@n_xx_zhangtie:n0:c_letter",
+    "choose@n_xx_zhangtie:n1:c_ok",
+    "walk@sl_court",
+    "talk@n_sm_daoxiang",
+    "choose@n_sm_daoxiang:n0:c_give"
+   ],
+   "expect": {
+    "items": {
+     "r_kuang_lv": 2,
+     "i_sm_jingtie": 0,
+     "i_sm_caigouxin": 0
+    },
+    "skills": {
+     "life_swordsmith": 1
+    },
+    "rumor": "rmr_q_sm_yuntie_first"
+   }
+  },
+  {
+   "quest": "q_sm_qidu",
+   "outcome": "default",
+   "setup": {},
+   "save_reload_at": "s_hunt",
+   "path": [
+    "wait:hour=辰",
+    "walk@xh_left",
+    "accept@n_sm_chulizi",
+    "choose@n_sm_chulizi:n0:c_which",
+    "choose@n_sm_chulizi:n1:c_where",
+    "choose@n_sm_chulizi:n2:c_help",
+    "walk@xh_marsh",
+    "act@q_sm_qidu:a_poison_xiezi",
+    "fight:WIN",
+    "walk@ts_road2",
+    "act@q_sm_qidu:a_poison_chixie",
+    "fight:WIN",
+    "walk@ts_road1",
+    "act@q_sm_qidu:a_poison_wugong",
+    "fight:WIN",
+    "walk@xn_snow",
+    "act@q_sm_qidu:a_poison_chanchu",
+    "fight:WIN",
+    "walk@hg_shandao",
+    "act@q_sm_qidu:a_poison_caizhu",
+    "fight:WIN",
+    "walk@wd_woods",
+    "act@q_sm_qidu:a_poison_heizhu",
+    "fight:WIN",
+    "walk@dlw_river",
+    "act@q_sm_qidu:a_poison_qingshe",
+    "fight:WIN",
+    "wait:hour=辰",
+    "walk@xh_left",
+    "talk@n_sm_chulizi",
+    "choose@n_sm_chulizi:n0:c_give"
+   ],
+   "expect": {
+    "items": {
+     "r_sm_jieducao": 2,
+     "i_sm_du_heizhu": 0,
+     "i_sm_du_chixie": 0
+    },
+    "rumor": "rmr_q_sm_qidu_first"
+   }
+  },
+  {
+   "quest": "q_sm_zhuadu",
+   "outcome": "all",
+   "setup": {
+    "skills": {
+     "basic_poison": 10
+    }
+   },
+   "save_reload_at": "s_hunt",
+   "path": [
+    "wait:hour=卯",
+    "walk@xh_right",
+    "accept@n_sm_xianfengzi",
+    "choose@n_sm_xianfengzi:n0:c_what",
+    "choose@n_sm_xianfengzi:n1:c_where",
+    "choose@n_sm_xianfengzi:n2:c_ok",
+    "walk@xh_marsh",
+    "act@q_sm_zhuadu:a_poison_xiezi",
+    "fight:WIN",
+    "walk@ts_road2",
+    "act@q_sm_zhuadu:a_poison_chixie",
+    "fight:WIN",
+    "walk@ts_road1",
+    "act@q_sm_zhuadu:a_poison_wugong",
+    "fight:WIN",
+    "walk@xn_snow",
+    "act@q_sm_zhuadu:a_poison_chanchu",
+    "fight:WIN",
+    "walk@hg_shandao",
+    "act@q_sm_zhuadu:a_poison_caizhu",
+    "fight:WIN",
+    "walk@wd_woods",
+    "act@q_sm_zhuadu:a_poison_heizhu",
+    "fight:WIN",
+    "walk@dlw_river",
+    "act@q_sm_zhuadu:a_poison_qingshe",
+    "fight:WIN",
+    "wait:hour=辰",
+    "walk@xh_right",
+    "talk@n_sm_xianfengzi",
+    "choose@n_sm_xianfengzi:n0:c_xiezi",
+    "choose@n_sm_xianfengzi:n_got:c_more",
+    "choose@n_sm_xianfengzi:n0:c_chixie",
+    "choose@n_sm_xianfengzi:n_got:c_more",
+    "choose@n_sm_xianfengzi:n0:c_wugong",
+    "choose@n_sm_xianfengzi:n_got:c_more",
+    "choose@n_sm_xianfengzi:n0:c_chanchu",
+    "choose@n_sm_xianfengzi:n_got:c_more",
+    "choose@n_sm_xianfengzi:n0:c_caizhu",
+    "choose@n_sm_xianfengzi:n_got:c_more",
+    "choose@n_sm_xianfengzi:n0:c_heizhu",
+    "choose@n_sm_xianfengzi:n_got:c_more",
+    "choose@n_sm_xianfengzi:n0:c_qingshe",
+    "choose@n_sm_xianfengzi:n_got:c_more",
+    "choose@n_sm_xianfengzi:n0:c_all"
+   ],
+   "expect": {
+    "skill_prof": {
+     "basic_poison": 71
+    },
+    "items": {
+     "i_sm_du_heizhu": 0,
+     "i_sm_du_qingshe": 0
+    },
+    "repeat_cooldown": true,
+    "rumor": "rmr_q_sm_zhuadu_first"
+   },
+   "note": "熟練合計 3+5+3+3+5+5+7＋全交 40 = 71（bot 只檢查有成長）"
+  },
+  {
+   "quest": "q_sm_zhuadu",
+   "outcome": "part",
+   "setup": {
+    "skills": {
+     "basic_poison": 10
+    }
+   },
+   "path": [
+    "wait:hour=卯",
+    "walk@xh_right",
+    "accept@n_sm_xianfengzi",
+    "choose@n_sm_xianfengzi:n0:c_what",
+    "choose@n_sm_xianfengzi:n1:c_where",
+    "choose@n_sm_xianfengzi:n2:c_ok",
+    "walk@xh_marsh",
+    "act@q_sm_zhuadu:a_poison_xiezi",
+    "fight:WIN",
+    "wait:hour=辰",
+    "walk@xh_right",
+    "talk@n_sm_xianfengzi",
+    "choose@n_sm_xianfengzi:n0:c_xiezi",
+    "choose@n_sm_xianfengzi:n_got:c_more",
+    "choose@n_sm_xianfengzi:n0:c_part"
+   ],
+   "expect": {
+    "skill_prof": {
+     "basic_poison": 5
+    },
+    "items": {
+     "i_sm_du_xiezi": 0
+    },
+    "repeat_cooldown": true
+   }
+  },
+  {
+   "quest": "q_sm_lengning",
+   "outcome": "give",
+   "setup": {
+    "skills": {
+     "life_swordsmith": 30
+    },
+    "items": {
+     "w_lengning": 1
+    }
+   },
+   "path": [
+    "walk@em_foot",
+    "accept@n_em_jianchi",
+    "choose@n_em_jianchi:n0:c_what",
+    "choose@n_em_jianchi:n2:c_try",
+    "talk@n_em_jianchi",
+    "choose@n_em_jianchi:n0:c_look",
+    "choose@n_em_jianchi:n2:c_give"
+   ],
+   "expect": {
+    "money": 3800,
+    "learn_points": 70,
+    "items": {
+     "w_lengning": -1
+    },
+    "rumor": "rmr_q_sm_lengning_first"
+   },
+   "note": "鑄劍過程由 lifeskills_content 的 life_swordsmith 配方負責；這裡直接給劍（setup.items）"
+  },
+  {
+   "quest": "q_sm_lengning",
+   "outcome": "keep",
+   "setup": {
+    "skills": {
+     "life_swordsmith": 30
+    },
+    "items": {
+     "w_lengning": 1
+    }
+   },
+   "path": [
+    "walk@em_foot",
+    "accept@n_em_jianchi",
+    "choose@n_em_jianchi:n0:c_what",
+    "choose@n_em_jianchi:n2:c_try",
+    "talk@n_em_jianchi",
+    "choose@n_em_jianchi:n0:c_look",
+    "choose@n_em_jianchi:n2:c_keep"
+   ],
+   "expect": {
+    "learn_points": 50,
+    "items": {
+     "w_lengning": 0
+    }
+   }
+  },
+  {
+   "quest": "q_sm_chengwei",
+   "outcome": "default",
+   "setup": {
+    "skills": {
+     "basic_medic": 10
+    },
+    "items": {
+     "r_ma": 20
+    }
+   },
+   "save_reload_at": "s_mian",
+   "path": [
+    "walk@hg_field",
+    "accept@n_hg_chengwei",
+    "choose@n_hg_chengwei:n0:c_help",
+    "choose@n_hg_chengwei:n2:c_ok",
+    "talk@n_hg_chengwei",
+    "choose@n_hg_chengwei:n0:c_give",
+    "wait:hour=巳",
+    "talk@n_hg_chengwei",
+    "walk@dlw_paddy",
+    "talk@n_taoyun",
+    "choose@n_taoyun:n0:c_show",
+    "walk@hg_field",
+    "talk@n_hg_chengwei",
+    "choose@n_hg_chengwei:n0:c_give"
+   ],
+   "expect": {
+    "items": {
+     "r_sm_dulongxian": 1,
+     "r_ma": -20,
+     "r_mianhua": 0,
+     "i_sm_nongwu": 0
+    },
+    "learn_points": 10,
+    "skill_prof": {
+     "basic_medic": 50
+    },
+    "rumor": "rmr_q_sm_chengwei_first"
+   },
+   "note": "麻由 setup 直接給（種麻在 lifeskills_content 測）"
+  },
+  {
+   "quest": "q_sm_dujulaoren",
+   "outcome": "default",
+   "setup": {},
+   "save_reload_at": "s_give",
+   "path": [
+    "wait:hour=辰",
+    "walk@xx_bank",
+    "accept@n_sm_wanglao",
+    "choose@n_sm_wanglao:n0:c_help",
+    "choose@n_sm_wanglao:n2:c_buy",
+    "walk@xx_pharmacy",
+    "buy@n_xx_pharmacist:c_qiyao:1",
+    "walk@xx_bank",
+    "talk@n_sm_wanglao",
+    "choose@n_sm_wanglao:n0:c_give"
+   ],
+   "expect": {
+    "money": 15,
+    "fame": 2,
+    "lilian": 2,
+    "items": {
+     "c_qiyao": 0
+    },
+    "rumor": "rmr_q_sm_dujulaoren_first"
+   }
+  },
+  {
+   "quest": "q_sm_esi_nongfu",
+   "outcome": "default",
+   "setup": {
+    "items": {
+     "c_mantou": 2
+    }
+   },
+   "save_reload_at": "s_feed",
+   "path": [
+    "walk@dlw_paddy",
+    "accept@n_sm_qiaofu_dl",
+    "choose@n_sm_qiaofu_dl:n0:c_ask",
+    "choose@n_sm_qiaofu_dl:n2:c_ok",
+    "talk@n_sm_qiaofu_dl",
+    "choose@n_sm_qiaofu_dl:n0:c_mantou",
+    "walk@hf_paddy",
+    "talk@n_sm_qiaofu_xx",
+    "choose@n_sm_qiaofu_xx:n0:c_mantou"
+   ],
+   "expect": {
+    "learn_points": 15,
+    "items": {
+     "c_mantou": -2
+    },
+    "rumor": "rmr_q_sm_esi_nongfu_first"
+   }
+  },
+  {
+   "quest": "q_sm_ahuo",
+   "outcome": "default",
+   "setup": {},
+   "save_reload_at": "s_send",
+   "path": [
+    "walk@de_mine",
+    "accept@n_sm_ahuo",
+    "choose@n_sm_ahuo:n0:c_ask",
+    "choose@n_sm_ahuo:n2:c_ok",
+    "walk@dl_square",
+    "talk@n_sm_kuangye",
+    "choose@n_sm_kuangye:n0:c_give"
+   ],
+   "expect": {
+    "fame": 3,
+    "lilian": 3,
+    "items": {
+     "i_sm_kuangshi": 0
+    },
+    "repeat_cooldown": true,
+    "rumor": "rmr_q_sm_ahuo_first"
+   }
+  },
+  {
+   "quest": "q_sm_abao",
+   "outcome": "default",
+   "setup": {},
+   "save_reload_at": "s_back",
+   "path": [
+    "walk@xn_slope",
+    "accept@n_xx_abao",
+    "choose@n_xx_abao:n0:c_yes",
+    "choose@n_xx_abao:n2:c_ok",
+    "walk@xx_gate_e",
+    "walk@xn_slope",
+    "talk@n_xx_abao"
+   ],
+   "expect": {
+    "items": {
+     "r_kuang_lv": 1
+    }
+   }
+  },
+  {
+   "quest": "q_sm_ahong",
+   "outcome": "default",
+   "setup": {},
+   "save_reload_at": "s_back",
+   "path": [
+    "walk@ts_hut",
+    "accept@n_sm_ahong",
+    "choose@n_sm_ahong:n0:c_ask",
+    "choose@n_sm_ahong:n2:c_ok",
+    "walk@dlw_lake",
+    "talk@n_sm_zhangqing",
+    "choose@n_sm_zhangqing:n0:c_give",
+    "walk@ts_hut",
+    "talk@n_sm_ahong",
+    "choose@n_sm_ahong:n0:c_give"
+   ],
+   "expect": {
+    "money": 1000,
+    "items": {
+     "i_sm_ahong_xin": 0,
+     "i_sm_zhangqing_xin": 0
+    },
+    "repeat_cooldown": true,
+    "rumor": "rmr_q_sm_ahong_first"
+   }
+  },
+  {
+   "quest": "q_sm_rixing",
+   "outcome": "default",
+   "setup": {
+    "items": {
+     "c_qiyao": 1
+    }
+   },
+   "path": [
+    "walk@dlw_eastwood",
+    "accept@n_sm_shangqiaofu",
+    "choose@n_sm_shangqiaofu:n0:c_ask",
+    "choose@n_sm_shangqiaofu:n2:c_ok",
+    "talk@n_sm_shangqiaofu",
+    "choose@n_sm_shangqiaofu:n0:c_give"
+   ],
+   "expect": {
+    "morality": 5,
+    "items": {
+     "c_qiyao": -1
+    }
+   }
+  },
+  {
+   "quest": "q_sm_shepi",
+   "outcome": "default",
+   "setup": {},
+   "save_reload_at": "s_back",
+   "path": [
+    "walk@xx_square",
+    "accept@n_wujieshan",
+    "choose@n_wujieshan:n0:c_ask",
+    "choose@n_wujieshan:n2:c_ok",
+    "walk@xw_creek",
+    "act@q_sm_shepi:a_shepi",
+    "fight:WIN",
+    "act@q_sm_shepi:a_shepi",
+    "fight:WIN",
+    "act@q_sm_shepi:a_shepi",
+    "fight:WIN",
+    "walk@xx_square",
+    "talk@n_wujieshan",
+    "choose@n_wujieshan:n0:c_give"
+   ],
+   "expect": {
+    "money": 60,
+    "fame": 1,
+    "items": {
+     "r_sm_qingshepi": 0
+    }
+   }
+  },
+  {
+   "quest": "q_sm_litong",
+   "outcome": "default",
+   "setup": {},
+   "path": [
+    "walk@hy_pond",
+    "accept@n_sm_litong",
+    "choose@n_sm_litong:n0:c_ask",
+    "choose@n_sm_litong:n2:c_ok",
+    "walk@hs_square",
+    "talk@n_ludayou",
+    "choose@n_ludayou:n0:c_give"
+   ],
+   "expect": {
+    "money": 50,
+    "fame": 2,
+    "lilian": 3,
+    "items": {
+     "i_sm_litong_xin": 0
+    }
+   }
+  }
+ ],
+ "todo_verify": [
+  "【待考證】運鐵：步驟（道相在「18銅人陣外左邊」、精鐵採購信、張鐵在武器店邊上）與獎勵（2 綠石礦、鑄劍熟練 +100）只有 2001-07-23 單一攻略，本輪未重抓；是否少林限定、可否重複都沒寫",
+  "【待考證】楚禮子位置：所有來源都沒寫（放星宿左房【設計提案】）；辰～未時與解毒草兩個是後期條件",
+  "【待考證】七毒 2001 座標表（17173 n862_778664，2001-08-18）本輪未重抓；與後期「其他」段座標 5 點中 4 點相差約 130 以內（只有彩蛛不同）",
+  "【待考證】出外抓毒物 2001 版的獎勵沒有數字；後期熟練表的蜂蟻、彩蛾在 2001 沒有出沒點（以蝎子、青蛇代）",
+  "【待考證】咸楓子位置沒有記載（M3B_PLAN 指定右房）",
+  "【待考證】冷凝劍：條件鑄劍 30 級與獎勵 3800 兩／學點 70／50 是後期攻略；2001 只有預告。給不給的選項文字原作沒有記載",
+  "【待考證】辛勤的程薇：條件（種田 ≤ 19、醫術 ≤ 29）、兩段獎勵、申／巳時棉花事件都是後期；2001 只有預告；農務委託書交給誰沒有記載（本作交陶耘）",
+  "【待考證】獨居老人：步驟（買傷藥膏）與獎勵（15 兩、名聲 2、歷練 2）只有 2001-08-24 一篇，Wayback 本輪未重抓；「傷藥膏」以金創藥代替",
+  "【待考證】餓肚子的農夫：實戰 999 以下、學點 15、實戰 50 只有一篇（Wayback 未重抓）；「西夏的農地」是哪一塊沒寫（本作取恆山外稻田）；送什麼食物沒寫",
+  "【待考證】著急的阿火：阿火座標 3615,8285、礦業大王、名聲歷練各 3 全部來自 Wayback 未重抓的一篇；是否可重複沒寫",
+  "【待考證】路痴的礦工：只有預告（2001-07-11），步驟、地點、獎勵全是【設計提案】",
+  "【待考證】離鄉的阿鴻：1000 兩與座標 5325,1755 來自 Wayback 未重抓的一篇；座標是阿鴻還是張箐的位置不確定；原作有沒有回信步驟、可否重複沒寫",
+  "【待考證】日行一善：只知道是大理城外受傷的樵夫、送藥、2001「沒好處」；研究另列「東超 俠義+25」（未重抓），不確定是不是這條的獎勵，本作不給",
+  "【待考證】為蛇皮困擾的武介山：只有事件標題；蛇皮數量、地點、獎勵都是【設計提案】",
+  "【待考證】離派修練的李同：只有預告；李同位置、盤纏數額、送到後的獎勵都沒寫",
+  "【待考證】阿火：本碎片照 M3B_PLAN §8.3 建 n_sm_ahuo「阿火」於 de_mine（17173 other.htm 阿火的礦 3615,8285，未重抓）；既有 n_xe_miner「礦工阿火」在西夏東郊礦區（2002 洞穴表「礦區, miner 阿火」）。兩者是否同一人、礦坑在哪一處，兩來源不一致；整合者可考慮把 n_xe_miner 改名（例：礦工）避免同名",
+  "【待考證】七毒點對應：赤蝎 [83,30] 離所有既有房間都遠（最近的天山道約 158 格），暫放縹緲峰山腳；高昌古道 gc_road1（[130,70]，mingjiao_gaochang_yanmen 新建）其實更近，高昌落地後可改",
+  "【待考證】毒物 7 種的 2001 名單（赤蝎、蝎子、蜈蚣、蟾蜍、青蛇、彩蛛、黑蛛）來自座標表；咸楓子後期名單是 赤蝎、斑蟾、蜈蚣、彩蛛、蜂蟻、彩蛾、黑蛛，蜂蟻、彩蛾沒有 2001 座標"
+ ],
+ "owner_decisions": [
+  "O21：咸楓子與楚禮子共用 7 個毒物點（8 個房間動作，青蛇兩處），動作 id a_poison_<種類>，兩任務各自掛一份",
+  "新預設：毒物任務物 i_sm_du_<種類> 由新怪 m_sm_du_<種類> 掉落（requires 兩任務其一在 s_hunt 階段）；不改既有 m_lf_*／m_xh_* 的掉落（碎片不能動別人的怪）。兩任務同時進行時共用同一批毒物（交給一邊就少一隻）",
+  "新預設：咸楓子的後期熟練表（赤蝎／斑蟾／蜈蚣 +3、彩蛛／蜂蟻／彩蛾 +5、黑蛛 +7、全交 +40）對到 2001 七毒：蜂蟻 → 蝎子 +5、彩蛾 → 青蛇 +5【設計提案】；可分次交，交過的種類當次不能再交；「今天就交這些」結束本次（不給 +40）",
+  "新預設：楚禮子、咸楓子的後期「辰～未」「卯～未」時辰條件做成 NPC appear（只在這些時辰出現），log 寫明",
+  "新預設：獨居老人的「傷藥膏」用既有金創藥 c_qiyao（西夏回春藥鋪有賣），不新建物品、不改藥鋪貨架",
+  "新預設：餓肚子的農夫接受白飯或饅頭（白飯目前沒有商店賣，饅頭各客棧、茶棚都有）；兩位樵夫都能接，同一任務兩個目標都要送到",
+  "新預設：程薇的農務委託書交給大理陶耘換 10 包棉花（程薇要求種田 ≤ 19 級，而種棉要 20 級，委託書讓玩家拿得到棉花）；自己有 10 包棉花也可以直接交",
+  "新預設：運鐵限少林弟子（M3B_PLAN §8.3【設計提案】）；精鐵是任務物",
+  "新預設：路痴的礦工（只有預告）＝護送阿寶到西夏東門再護送回城北山坡 → 綠石礦 ×1（M3B_PLAN §8.3）",
+  "新預設：離鄉的阿鴻多一步回信（張箐 → 回信 → 阿鴻付 1000 兩）；可重複、冷卻 1 遊戲日",
+  "新預設：P3 五條（孝順的小珍、逢紀子、荀思現、終南山在哪裡?、愛吃熊肉的老祖）不做（M3B_PLAN §8.3「可不做」）",
+  "新預設：tell 模板用 tell_q_sm_* 前綴、環境句模板用 amb_q_sm_*（M3B_PLAN §3.6 沒列這兩種模板的前綴；含 q_sm_ 不會撞名）"
+ ],
+ "notes": "WP-C-story_missing：P1 八條＋P2 五條，共 13 條任務；全部 era 1.0A。跨碎片固定 id：n_xx_zhangtie、xx_tiepu、life_swordsmith、w_lengning、r_ma、r_mianhua（lifeskills_content）、de_mine（lifeskills_content）、xx_bank（_econ）。新條件型別 life_min（M3B_PLAN §4.3）用在冷凝劍。跨碎片物品若缺，相關任務會被 lint 擋：r_ma／r_mianhua 由 lifeskills_content 建立，冷凝劍需要 life_swordsmith 配方能做出 w_lengning。沒有新地區、新房間、exit_patches、shop_patches。"
+}

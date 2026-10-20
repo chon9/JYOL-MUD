@@ -1,0 +1,428 @@
+{
+  "fragment": "ev_yuner",
+  "version": 1,
+  "author": "WP-C-ev_yuner",
+  "quests": [
+    {
+      "id": "q_yuner",
+      "name": "雲兒小姐的煩惱",
+      "chapter": "西夏・開服事件",
+      "group": "ev_yuner",
+      "giver": "n_xx_yuner",
+      "era": "1.0A",
+      "src": "verified",
+      "dialogue_src": "proposal",
+      "src_note": "研究 雲兒：17173 2001-7-17 n431_348015（開服，≤ 2001-07-17；tishi.htm 未標日期的開服區塊）、2001-7-23 n274_190972（步驟與阿寶的謝禮）。對白全部【設計提案】",
+      "text": "西夏城裡民房中的雲兒小姐，為了要嫁給藥局的李台安還是青梅竹馬的阿寶而煩惱。",
+      "requires": [],
+      "give_items": [],
+      "repeat": { "max": 1, "cooldown_days": 0 },
+      "abandon": true,
+      "party_credit": true,
+      "start": "s_ask",
+      "offer": "d_offer",
+      "stages": [
+        {
+          "id": "s_ask",
+          "title": "雲兒的心事",
+          "log": "雲兒要你先去看看李台安是個怎樣的人。從民房往北回到東門，進城往西穿過廣場到西大街，北邊的回春藥鋪裡，掌櫃身旁碾藥的年輕夥計就是李台安。",
+          "hint_room": "xx_pharmacy",
+          "objectives": [
+            { "id": "o_li", "type": "TALK", "npc": "n_xx_litaian", "dialogue": "d_li", "text": "到回春藥鋪找李台安" }
+          ],
+          "next": "s_abao"
+        },
+        {
+          "id": "s_abao",
+          "title": "城外的阿寶",
+          "log": "再去西夏城外的礦工阿寶那裡看看。出西夏東門往東到荒草坡，往北穿過胡楊林，再往北爬上城北山坡，背著礦筐東張西望的年輕礦工就是阿寶。",
+          "hint_room": "xn_slope",
+          "objectives": [
+            { "id": "o_abao", "type": "TALK", "npc": "n_xx_abao", "dialogue": "d_abao_1", "text": "到城北山坡找礦工阿寶" }
+          ],
+          "next": "s_choose"
+        },
+        {
+          "id": "s_choose",
+          "title": "替雲兒拿主意",
+          "log": "兩個人你都見過了。回西夏東門，往南進民房，替雲兒做個決定。這個決定一旦說出口，就不能反悔。",
+          "hint_room": "xx_minfang",
+          "objectives": [
+            { "id": "o_choose", "type": "TALK", "npc": "n_xx_yuner", "dialogue": "d_choose", "text": "回民房告訴雲兒你的看法" }
+          ],
+          "next": [
+            { "if": [ { "type": "quest_var", "quest": "q_yuner", "var": "pick", "value": "abao" } ], "goto": "s_thanks" },
+            { "goto": "END:li" }
+          ]
+        },
+        {
+          "id": "s_thanks",
+          "title": "阿寶的謝禮",
+          "log": "雲兒選了阿寶。出西夏東門往東到荒草坡，往北穿過胡楊林上城北山坡，把這個好消息告訴阿寶。",
+          "hint_room": "xn_slope",
+          "objectives": [
+            { "id": "o_thanks", "type": "TALK", "npc": "n_xx_abao", "dialogue": "d_abao_2", "text": "回城北山坡告訴阿寶" }
+          ],
+          "next": "END:abao"
+        }
+      ],
+      "dialogues": {
+        "d_offer": {
+          "start": "n0",
+          "resume": "n0",
+          "nodes": {
+            "n0": {
+              "speaker": "npc",
+              "text": "雲兒倚在窗邊，手裡的帕子絞了又絞。見你進門，她慌忙別過臉去拭了拭眼角：「這位大俠，有、有什麼事嗎？」",
+              "src_note": "依官方簡介改寫：「在西夏的民房內，雲兒小姐正在為了要嫁給誰而煩惱……」（研究 雲兒，tishi.htm 開服區塊）【設計提案】",
+              "choices": [
+                { "id": "c_ask", "label": "姑娘為何愁眉不展？", "goto": "n1" },
+                { "id": "c_leave", "label": "走錯門了，打擾了。", "goto": "END" }
+              ]
+            },
+            "n1": {
+              "speaker": "npc",
+              "text": "雲兒的臉一下子紅到耳根：「說來羞人……爹娘要我今年出嫁。藥局的李台安託了媒人來說親，他人斯文，又有份正經差事；可是……可是阿寶他……」",
+              "goto": "n2"
+            },
+            "n2": {
+              "speaker": "npc",
+              "text": "「阿寶是跟我從小一塊兒長大的，如今在城外挖礦。唉……一個是藥局的李台安，一個是從小一起長大的阿寶，我到底該嫁給誰才好？」",
+              "choices": [
+                { "id": "c_help", "label": "我替妳去看看他們兩個。", "do": [ { "do": "accept" } ], "goto": "n3" },
+                { "id": "c_no", "label": "這種事我可幫不上忙。", "goto": "n_no" }
+              ]
+            },
+            "n3": {
+              "speaker": "npc",
+              "text": "「真的？那……那就有勞你了。李台安在城裡的回春藥鋪幫忙，就在掌櫃身邊；阿寶多半在城北的山坡上轉悠。你先去看看李台安是個怎樣的人吧。」",
+              "goto": "END"
+            },
+            "n_no": {
+              "speaker": "npc",
+              "text": "雲兒低下頭，輕輕嘆了口氣：「也是……旁人的家務事，誰願意管呢。」",
+              "goto": "END"
+            }
+          }
+        },
+        "d_li": {
+          "start": "n0",
+          "resume": "n0",
+          "nodes": {
+            "n0": {
+              "speaker": "npc",
+              "text": "掌櫃身旁一個年輕夥計正低頭碾著藥材，聽見腳步聲，頭也不抬：「抓藥請找掌櫃，我只管碾藥、配藥。」",
+              "src_note": "依官方簡介「在藥局工作的李台安」與 2001-07-23 攻略「在城內藥店老闆旁邊」改寫【設計提案】",
+              "choices": [
+                { "id": "c_li_yuner", "label": "我是為雲兒姑娘來的。", "goto": "n1" },
+                { "id": "c_li_leave", "label": "沒事，打擾了。", "goto": "END" }
+              ]
+            },
+            "n1": {
+              "speaker": "npc",
+              "text": "李台安手上一停，連忙放下藥碾，整了整衣襟，壓低聲音道：「雲兒姑娘？是她託你來的？實不相瞞，我託媒人上門說親已經半個月了，她家始終沒個準話。」",
+              "goto": "n2"
+            },
+            "n2": {
+              "speaker": "npc",
+              "text": "「她……她可曾提起我？」",
+              "choices": [
+                { "id": "c_li_why", "label": "你為什麼想娶她？", "goto": "n3" },
+                { "id": "c_li_abao", "label": "你可知道礦工阿寶？", "goto": "n4" }
+              ]
+            },
+            "n3": {
+              "speaker": "npc",
+              "text": "「雲兒姑娘溫柔賢慧，西夏城裡誰不知道？我在這藥鋪學了五年，掌櫃說再過兩年就讓我自己坐堂看診。嫁給我，總不會讓她吃苦。」他頓了頓，眉頭一皺：「只是聽說，城外還有個挖礦的也惦記著她。」",
+              "goto": "n4"
+            },
+            "n4": {
+              "speaker": "npc",
+              "text": "李台安哼了一聲：「那個阿寶？一天到晚灰頭土臉，連進城的路都會走錯，他拿什麼養家？……你替我在雲兒姑娘面前多美言幾句，事成之後，少不了你的好處。」",
+              "choices": [
+                { "id": "c_li_ok", "label": "我自會照實跟她說。", "do": [ { "do": "complete", "obj": "o_li" } ], "goto": "n5" }
+              ]
+            },
+            "n5": {
+              "speaker": "npc",
+              "text": "「照實說也好，我李台安行得正、坐得端。」說罷又低頭碾起藥來，只是手上的力道重了幾分。",
+              "goto": "END"
+            }
+          }
+        },
+        "d_abao_1": {
+          "start": "n0",
+          "resume": "n0",
+          "nodes": {
+            "n0": {
+              "speaker": "npc",
+              "text": "山坡上一個皮膚黝黑的年輕礦工背著一筐礦石，對著幾條岔路直抓頭：「怪了，礦坑明明在東邊……我怎麼又繞到這兒來了？」",
+              "src_note": "依官方簡介「從小一起生活的青梅竹馬阿寶」與 2001-07-23 攻略「礦工阿寶在西夏城外」改寫；不認路一節取自開服事件「路痴的礦工」【設計提案】",
+              "choices": [
+                { "id": "c_ab_yuner", "label": "你就是阿寶？雲兒姑娘託我來看看你。", "goto": "n1" },
+                { "id": "c_ab_leave", "label": "（不打擾他，悄悄走開）", "goto": "END" }
+              ]
+            },
+            "n1": {
+              "speaker": "npc",
+              "text": "阿寶一聽，猛地站起身來，筐裡的礦石嘩啦啦滾了一地：「雲、雲兒？她……她還好嗎？聽說藥局的李台安上她家提親去了……」",
+              "goto": "n2"
+            },
+            "n2": {
+              "speaker": "npc",
+              "text": "他蹲下去一顆一顆撿著礦石，聲音越來越小：「我知道，我只是個挖礦的，沒念過書，連路都認不清。李台安會看病、會寫字，雲兒跟了他，日子一定比跟著我好。」",
+              "choices": [
+                { "id": "c_ab_heart", "label": "那你自己呢？你想娶她嗎？", "goto": "n3" }
+              ]
+            },
+            "n3": {
+              "speaker": "npc",
+              "text": "阿寶抬起頭，黑黝黝的臉漲得通紅：「想！打小就想！小時候她被野狗追，是我拿石頭把狗趕跑的。她說過長大了要嫁給我……可那是小時候的話了。」他握緊手裡的礦石：「我每天多挖一筐，攢下的錢都收在床底下，就盼著有一天……」",
+              "goto": "n4"
+            },
+            "n4": {
+              "speaker": "npc",
+              "text": "「……你回去，別跟她說我難過。只要她過得好，我就高興。」",
+              "choices": [
+                { "id": "c_ab_ok", "label": "我明白了。", "do": [ { "do": "complete", "obj": "o_abao" } ], "goto": "n5" }
+              ]
+            },
+            "n5": {
+              "speaker": "npc",
+              "text": "阿寶背起礦筐走了兩步，又回過頭來，憨憨地問：「對了……礦坑是往哪邊走來著？」",
+              "goto": "END"
+            }
+          }
+        },
+        "d_choose": {
+          "start": "n0",
+          "resume": "n0",
+          "nodes": {
+            "n0": {
+              "speaker": "npc",
+              "text": "雲兒一見你回來，連忙迎上前，又強自鎮定地坐下：「你……你都見過他們了？你說，我該選誰？」",
+              "src_note": "依 2001-07-23 攻略「回去找雲兒，她會要你幫她選」改寫【設計提案】",
+              "choices": [
+                { "id": "c_pick_abao", "label": "我看阿寶不錯。", "goto": "n_ask_abao" },
+                { "id": "c_pick_li", "label": "我看李台安不錯。", "goto": "n_ask_li" },
+                { "id": "c_wait", "label": "讓我再想想。", "goto": "END" }
+              ]
+            },
+            "n_ask_abao": {
+              "speaker": "npc",
+              "text": "「阿寶？」雲兒咬著嘴唇，聲音細得像蚊子：「他……他可說了什麼？」",
+              "choices": [
+                { "id": "c_abao", "label": "阿寶對妳一片真心。", "do": [ { "do": "var", "name": "pick", "value": "abao" }, { "do": "complete", "obj": "o_choose" } ], "goto": "n_abao" },
+                { "id": "c_back_abao", "label": "我再想想。", "goto": "n0" }
+              ]
+            },
+            "n_abao": {
+              "speaker": "npc",
+              "text": "雲兒怔了半晌，眼淚忽然撲簌簌地掉下來，嘴角卻笑了：「這個傻子……從小就是這樣，什麼都悶在心裡。」",
+              "goto": "n_abao2"
+            },
+            "n_abao2": {
+              "speaker": "npc",
+              "text": "「嗯……我也是這麼想的。麻煩你去跟阿寶說一聲，叫他……叫他快託個媒人來，路上可別再走錯了。」",
+              "goto": "END"
+            },
+            "n_ask_li": {
+              "speaker": "npc",
+              "text": "「李台安？」雲兒垂下眼簾，輕聲問：「他……待人可還好？」",
+              "choices": [
+                { "id": "c_li", "label": "李台安有份正當差事。", "do": [ { "do": "var", "name": "pick", "value": "li" }, { "do": "complete", "obj": "o_choose" } ], "goto": "n_li" },
+                { "id": "c_back_li", "label": "我再想想。", "goto": "n0" }
+              ]
+            },
+            "n_li": {
+              "speaker": "npc",
+              "text": "雲兒沉默良久，終於輕輕點了點頭：「是啊……爹娘也說，嫁人要嫁個有出息的。阿寶他……他會明白的。」",
+              "goto": "n_li2"
+            },
+            "n_li2": {
+              "speaker": "npc",
+              "text": "她從妝匣裡取出一小錠碎銀，塞到你手裡：「那就這麼定了。這點小錢你收下吧，多謝你替我跑這一趟。」",
+              "goto": "END"
+            }
+          }
+        },
+        "d_abao_2": {
+          "start": "n0",
+          "resume": "n0",
+          "nodes": {
+            "n0": {
+              "speaker": "npc",
+              "text": "阿寶還在山坡上打轉，一見你來，緊張得連礦筐都忘了放下：「怎、怎麼樣？雲兒她……」",
+              "src_note": "依 2001-07-23 攻略「選阿寶，再回去找阿寶，給 3 紫石礦 3 綠石礦」改寫【設計提案】",
+              "choices": [
+                { "id": "c_tell", "label": "雲兒選了你，叫你快託媒人上門。", "goto": "n1" }
+              ]
+            },
+            "n1": {
+              "speaker": "npc",
+              "text": "阿寶愣在那裡，好半天才回過神來。他把礦筐往地上一擱，對著山下的西夏城放聲大喊，喊得山谷裡回音一陣接著一陣。",
+              "goto": "n2"
+            },
+            "n2": {
+              "speaker": "npc",
+              "text": "他手忙腳亂地從筐底翻出幾塊礦石，用衣角擦得發亮，硬塞進你懷裡：「我沒什麼值錢的東西，這是我這陣子挖到最好的紫石礦和綠石礦，你一定得收下！」",
+              "choices": [
+                { "id": "c_take", "label": "那我就收下了。", "do": [ { "do": "complete", "obj": "o_thanks" } ], "goto": "n3" }
+              ]
+            },
+            "n3": {
+              "speaker": "npc",
+              "text": "「等我跟雲兒成了親，一定請你來喝喜酒！……呃，西夏城是往哪邊走來著？」",
+              "goto": "END"
+            }
+          }
+        }
+      },
+      "outcomes": {
+        "abao": {
+          "label": "雲兒嫁給了阿寶",
+          "rewards": { "items": [ { "id": "r_kuang_zi", "n": 3 }, { "id": "r_kuang_lv", "n": 3 } ] },
+          "src": "verified",
+          "src_note": "2001-07-17、07-23 兩篇一致：3 紫石礦 + 3 綠石礦"
+        },
+        "li": {
+          "label": "雲兒嫁給了李台安",
+          "rewards": { "money": 10 },
+          "src": "later",
+          "src_note": "2001-07-17「選李。。什麼也沒有只有10元和開始給你的一個傷藥」；傷藥視為開局物品不另給（D5）；給錢的人是雲兒【設計提案】"
+        }
+      },
+      "rumors": { "first": "rmr_q_yuner_first", "foreshadow": "rmr_q_yuner_foreshadow" }
+    }
+  ],
+  "npcs": [
+    {
+      "id": "n_xx_yuner", "name": "雲兒", "kind": "STORY", "region": "xixia", "room": "xx_minfang",
+      "alignment": "GOOD", "talk": "talk_n_xx_yuner", "services": ["QUEST"], "night_closed": false,
+      "quests": ["q_yuner"],
+      "desc": "西夏東門邊民房裡的姑娘，眉目清秀，近來總是愁眉不展。",
+      "era": "1.0A", "src": "verified",
+      "src_note": "研究 雲兒：「在西夏的民房內」「一進城左邊房子」（2001-07-23）；孤鴻子事件的家書收信人也是她（ev_guhongzi 以 npc_links 掛任務）"
+    },
+    {
+      "id": "n_xx_litaian", "name": "李台安", "kind": "STORY", "region": "xixia", "room": "xx_pharmacy",
+      "alignment": "NEUTRAL", "talk": "talk_n_xx_litaian", "services": [], "night_closed": false,
+      "desc": "回春藥鋪裡幫掌櫃碾藥配藥的年輕夥計，衣著整齊，斯斯文文。",
+      "era": "1.0A", "src": "verified",
+      "src_note": "研究 雲兒：「在藥局工作的李台安」「在城內藥店老闆旁邊」（2001-07-23）；性格【設計提案】"
+    },
+    {
+      "id": "n_xx_abao", "name": "礦工阿寶", "kind": "STORY", "region": "xixia_north", "room": "xn_slope",
+      "alignment": "GOOD", "talk": "talk_n_xx_abao", "services": [], "night_closed": false,
+      "desc": "皮膚黝黑、憨厚老實的年輕礦工，天生不認路，常背著礦筐在城外繞圈子。",
+      "era": "1.0A", "src": "verified",
+      "src_note": "研究 雲兒：礦工阿寶「在西夏城外西邊（7277，1027）」（2001-07-23）；與開服事件「路痴的礦工」是同一人。座標 ÷24 ≈ [303,43]，在西夏城正北，故依 STORY_PLAN §3.2 放城北山坡"
+    }
+  ],
+  "npc_links": [],
+  "shop_patches": [],
+  "art_patches": [],
+  "items": [
+    {
+      "id": "r_kuang_zi", "name": "紫石礦", "tab": "MATERIAL", "slot": "", "atk": 0, "def": 0, "weight": 2, "price": 30,
+      "stack": 50, "spoil_days": 0, "effects": [], "usable": false, "usable_in_battle": false, "no_sell": false,
+      "quest_item": false, "desc": "泛著淡淡紫光的礦石，鐵匠說拿來打造兵器最好不過。",
+      "era": "1.0A", "src": "verified",
+      "src_note": "研究 雲兒：阿寶的謝禮 3 紫石礦（2001-07-17、07-23）。售價、重量、用途【設計提案】【待考證】"
+    },
+    {
+      "id": "r_kuang_lv", "name": "綠石礦", "tab": "MATERIAL", "slot": "", "atk": 0, "def": 0, "weight": 2, "price": 30,
+      "stack": 50, "spoil_days": 0, "effects": [], "usable": false, "usable_in_battle": false, "no_sell": false,
+      "quest_item": false, "desc": "帶著青綠紋路的礦石，質地堅硬，是打鐵鑄器的好材料。",
+      "era": "1.0A", "src": "verified",
+      "src_note": "研究 雲兒：阿寶的謝禮 3 綠石礦（2001-07-17、07-23）。售價、重量、用途【設計提案】【待考證】"
+    }
+  ],
+  "monsters": [],
+  "martial_arts": [],
+  "masters": [],
+  "text_templates": [
+    { "id": "talk_n_xx_yuner", "era": "1.0A", "self": "{npc_name}倚著窗櫺望著窗外出神，手裡的帕子絞了又絞，輕輕嘆了口氣。", "src": "proposal" },
+    { "id": "talk_n_xx_yuner@NIGHT", "era": "1.0A", "self": "夜深了，民房裡還點著一盞孤燈。{npc_name}對著跳動的燈花發怔，喃喃自語：「該怎麼辦才好……」", "src": "proposal" },
+    { "id": "talk_n_xx_litaian", "era": "1.0A", "self": "{npc_name}低頭碾著藥材：「抓藥請找掌櫃。我只管碾藥配藥，再過兩年，就能自己坐堂看診了。」", "src": "proposal" },
+    { "id": "talk_n_xx_abao", "era": "1.0A", "self": "{npc_name}背著一筐礦石在岔路口東張西望：「這礦坑……到底是往哪邊走來著？」", "src": "proposal" },
+    { "id": "rmr_q_yuner_first", "era": "1.0A", "self": "聽說西夏東門邊民房裡的雲兒姑娘，終於拿定了終身大事的主意。替她兩頭奔走、說合這門親事的，是一位叫{name}的江湖朋友。", "src": "proposal" },
+    { "id": "rmr_q_yuner_foreshadow", "era": "1.0A", "self": "西夏城裡有人說，東門邊民房的雲兒姑娘這些天夜夜點燈發愁。藥局的李台安和城外的礦工阿寶，不知她要選哪一個。", "src": "proposal" },
+    { "id": "amb_xx_minfang_night", "era": "1.0A", "self": "窗紙上映著一個瘦小的影子，燈火搖搖晃晃，屋裡傳來一聲長長的嘆息。", "src": "proposal" },
+    { "id": "amb_xx_pharmacy_litaian", "era": "1.0A", "self": "藥碾子咯吱咯吱地響。掌櫃身旁的年輕夥計一邊碾藥，一邊不時朝門外張望，像是在等什麼消息。", "src": "proposal" },
+    { "id": "amb_xn_slope_abao", "era": "1.0A", "self": "山坡上有人扯著嗓子喊：「喂——礦坑往哪邊走啊——」聲音在山谷間來回打轉。", "src": "proposal" }
+  ],
+  "rumors": [
+    {
+      "id": "rmr_fs_q_yuner", "kind": "FORESHADOW", "quest": "q_yuner", "text": "rmr_q_yuner_foreshadow",
+      "requires_world": { "not_first": "q_yuner" }, "hours": [], "weight": 1,
+      "era": "1.0A", "src": "proposal", "src_note": "系統傳聞【設計提案・非原作】（D14）；內容依官方簡介"
+    }
+  ],
+  "ambient": [
+    {
+      "id": "amb_ev_yuner_minfang_night", "room": "xx_minfang", "periods": ["NIGHT"], "requires": [], "weight": 1,
+      "text": "amb_xx_minfang_night", "era": "1.0A", "src": "proposal", "src_note": "環境句【設計提案・非原作】（§5.3）"
+    },
+    {
+      "id": "amb_ev_yuner_pharmacy", "room": "xx_pharmacy", "periods": ["DAY"],
+      "requires": [ { "type": "quest_active", "quest": "q_yuner" } ], "weight": 1,
+      "text": "amb_xx_pharmacy_litaian", "era": "1.0A", "src": "proposal", "src_note": "環境句【設計提案・非原作】（§5.3）"
+    },
+    {
+      "id": "amb_ev_yuner_slope", "room": "xn_slope", "periods": ["DAWN", "DAY"], "requires": [], "weight": 1,
+      "text": "amb_xn_slope_abao", "era": "1.0A", "src": "proposal", "src_note": "環境句【設計提案・非原作】；呼應開服事件「路痴的礦工」"
+    }
+  ],
+  "art_requests": {
+    "units": [
+      { "id": "n_xx_yuner", "alias": "n_em_yingyueer", "prompt": "Young Song-dynasty commoner woman in a plain light-blue cotton jacket and skirt, hair in a simple bun with a cloth ribbon, holding a handkerchief, worried downcast expression; wuxia RPG unit sprite, same style as existing town NPCs." },
+      { "id": "n_xx_litaian", "alias": "n_xx_innkeeper", "prompt": "Neat young pharmacy apprentice in a grey scholar-style robe with sleeves tied back, holding a bronze herb grinder (藥碾), slightly proud posture; wuxia RPG unit sprite." },
+      { "id": "n_xx_abao", "alias": "n_xe_miner", "prompt": "Sturdy sun-darkened young miner in a patched brown short jacket and straw sandals, carrying a woven basket of purple and green ore on his back, scratching his head with a confused honest grin; wuxia RPG unit sprite." }
+    ],
+    "backgrounds": []
+  },
+  "test_plan": [
+    {
+      "quest": "q_yuner", "outcome": "abao", "save_reload_at": "s_abao",
+      "path": [
+        "walk@xx_minfang", "accept@n_xx_yuner",
+        "walk@xx_pharmacy", "talk@n_xx_litaian", "choose@n_xx_litaian:n0:c_li_yuner", "choose@n_xx_litaian:n2:c_li_abao", "choose@n_xx_litaian:n4:c_li_ok",
+        "walk@xn_slope", "talk@n_xx_abao", "choose@n_xx_abao:n0:c_ab_yuner", "choose@n_xx_abao:n2:c_ab_heart", "choose@n_xx_abao:n4:c_ab_ok",
+        "walk@xx_minfang", "talk@n_xx_yuner", "choose@n_xx_yuner:n0:c_pick_abao", "choose@n_xx_yuner:n_ask_abao:c_abao",
+        "walk@xn_slope", "talk@n_xx_abao", "choose@n_xx_abao:n0:c_tell", "choose@n_xx_abao:n2:c_take"
+      ],
+      "expect": { "outcome": "abao", "items": { "r_kuang_zi": 3, "r_kuang_lv": 3 }, "money": 0, "rumor": "rmr_q_yuner_first" }
+    },
+    {
+      "quest": "q_yuner", "outcome": "li", "save_reload_at": "s_choose",
+      "path": [
+        "walk@xx_minfang", "accept@n_xx_yuner",
+        "walk@xx_pharmacy", "talk@n_xx_litaian", "choose@n_xx_litaian:n0:c_li_yuner", "choose@n_xx_litaian:n2:c_li_why", "choose@n_xx_litaian:n4:c_li_ok",
+        "walk@xn_slope", "talk@n_xx_abao", "choose@n_xx_abao:n0:c_ab_yuner", "choose@n_xx_abao:n2:c_ab_heart", "choose@n_xx_abao:n4:c_ab_ok",
+        "walk@xx_minfang", "talk@n_xx_yuner", "choose@n_xx_yuner:n0:c_pick_li", "choose@n_xx_yuner:n_ask_li:c_back_li", "choose@n_xx_yuner:n0:c_pick_li", "choose@n_xx_yuner:n_ask_li:c_li"
+      ],
+      "expect": { "outcome": "li", "money": 10, "items": { "r_kuang_zi": 0, "r_kuang_lv": 0 } }
+    }
+  ],
+  "todo_verify": [
+    "【待考證】原作逐字對白：研究確認沒有任何留存，全部對白為【設計提案】，依官方簡介與 2001-07-23 攻略改寫。",
+    "【待考證】阿寶位置：攻略文字寫「西夏城外西邊（7277，1027）」，但座標換算 [303,43] 在西夏城正北；依 STORY_PLAN §3.2 放 xn_slope（城北山坡）。",
+    "【待考證】紫石礦、綠石礦的售價、重量與用途（1.0A 挖礦／打鐵尚未實作；目前定價 30 兩、重 2 為【設計提案】）。",
+    "【待考證】選李台安的 10 兩是誰給的（攻略只說「只有10元」），本碎片由雲兒給（D5）。",
+    "【待考證】是否有善惡、名聲、江湖歷練獎勵：2001 攻略未記錄（同作者別處有記俠義，缺記是弱證據），依擁有者預設不給。",
+    "【待考證】雲兒、李台安、阿寶三人的性格與身家（爹娘催嫁、李台安學藝五年、阿寶攢錢）為【設計提案】。",
+    "【待考證】完成後雲兒／阿寶／李台安的閒聊是否依結局改變（引擎的 talk 模板不支援依結局分支，目前不變）。"
+  ],
+  "owner_decisions": [
+    "D1：事件日期採開服（≤ 2001-07-17），GDD 的 2001-07-18 記在 src_note。",
+    "D2：每角色一次（repeat.max = 1），選擇永久。",
+    "D5：選李台安 → 雲兒給 10 兩，沒有傷藥（outcome li，src later）。",
+    "新預設：不改善惡、名聲、歷練（研究無記錄）。",
+    "新預設：與「路痴的礦工」互相獨立，只在對白與環境句裡呼應阿寶不認路。",
+    "新預設：s_choose 做兩段確認（選了人之後可「我再想想」回頭），說出口後才寫入 pick 並完成目標；選擇之後不能反悔。",
+    "新預設：阿寶依 §3.2 放在城北山坡（xn_slope），log 照實際走法指路（出東門→荒草坡→胡楊林→城北山坡）。",
+    "新預設：rumors 除了 first 也填 foreshadow（§7.2 #6）；未設 each，避免每次完成都廣播。"
+  ],
+  "notes": "STORY_PLAN 缺漏：(1) §5.3 說 _ambient 碎片給每個 STORY NPC @NIGHT 句，而 §7.3 指定本碎片寫雲兒的 @NIGHT；本碎片只寫 talk_n_xx_yuner@NIGHT，李台安與阿寶的 @NIGHT 留給 _ambient（若 _ambient 也寫了雲兒的，WP-MERGE 以本碎片為準或擇一）。(2) n_xx_litaian 與 n_xx_abao 放在既有房間 xx_pharmacy、xn_slope，房間的 npcs 陣列需由 WP-MERGE 依 NPC 列的 room 欄位補上；xx_minfang 由 _world 建立並放雲兒。(3) 環境句與傳聞模板沿用 text_templates 的 self 欄位；傳聞參數用 {name}。(4) 環境列 amb_ev_yuner_pharmacy 以 quest_active 限定只在任務進行中出現。(5) test_plan 的 expect.money 是此任務帶來的銀兩差額。"
+}

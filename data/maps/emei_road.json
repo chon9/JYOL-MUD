@@ -1,0 +1,61 @@
+{
+  "region_id": "emei_road",
+  "era": "1.0A",
+  "src": "proposal",
+  "desc": "從大理東北的崆峒道口上峨嵋的山路，沿途竹林溪澗，山腳下常有盜賊。",
+  "escape_tiles_hint": 2,
+  "rooms": [
+    { "id": "em_road1", "name": "崆峒橋", "desc": "一座石橋橫跨山澗，橋頭的路標一邊寫著「崆峒」、一邊寫著「峨嵋」。往西南回崆峒道口，往東是上峨嵋的山路。",
+      "exits": [{"dir": "SW", "to": "dlw_fork"}, {"dir": "E", "to": "em_road2"}], "npcs": ["n_em_qingwei"], "features": [],
+      "requires": [],
+      "encounter": { "rate": 0.1,
+        "table": [
+          {"monster": "m_rabbit", "w": 60, "count": [1, 1]},
+          {"monster": "m_bigrabbit", "w": 30, "count": [1, 1]},
+          {"monster": "m_wolf", "w": 10, "count": [1, 1]}
+        ] } },
+    { "id": "em_road2", "name": "竹林山徑", "desc": "山徑穿過一大片翠竹林，風吹過竹梢沙沙作響。往東不遠有個茶棚，可以歇腳。",
+      "exits": [{"dir": "W", "to": "em_road1"}, {"dir": "E", "to": "em_teahouse"}], "npcs": [], "features": ["WOOD"],
+      "requires": [],
+      "encounter": { "rate": 0.1,
+        "table": [{"monster": "m_rabbit", "w": 70, "count": [1, 1]}, {"monster": "m_bigrabbit", "w": 30, "count": [1, 1]}] } },
+    { "id": "em_teahouse", "name": "峨嵋茶棚", "desc": "路邊搭著竹棚，賣些茶水饅頭，往來峨嵋的香客都在這裡歇腳。老闆說南邊山腳下最近有盜賊出沒。",
+      "exits": [{"dir": "W", "to": "em_road2"}, {"dir": "E", "to": "em_road3"}],
+      "npcs": ["n_em_teaman", "n_em_yingyueer"], "features": [], "requires": [] },
+    { "id": "em_road3", "name": "清音閣山道", "desc": "溪水在亂石間奔流，水聲清越。往東北上山，往南是峨嵋山下的盜賊窩，新手最好別去。",
+      "exits": [{"dir": "W", "to": "em_teahouse"}, {"dir": "NE", "to": "em_road4"}, {"dir": "S", "to": "em_bandit"}],
+      "npcs": [], "features": ["WATER"], "requires": [],
+      "encounter": { "rate": 0.12,
+        "table": [
+          {"monster": "m_rabbit", "w": 40, "count": [1, 1]},
+          {"monster": "m_bigrabbit", "w": 25, "count": [1, 1]},
+          {"monster": "m_em_monkey", "w": 15, "count": [1, 1]},
+          {"monster": "m_wolf", "w": 12, "count": [1, 1]},
+          {"monster": "m_boar", "w": 8, "count": [1, 1]}
+        ] } },
+    { "id": "em_bandit", "name": "峨嵋山下", "desc": "山腳下的亂石坡上搭著幾個草棚，是盜賊的窩。武當弟子奉命剿匪、峨嵋弟子持殲逞令除惡，都到這裡來。這裡往裡就沒有路了。",
+      "exits": [{"dir": "N", "to": "em_road3"}], "npcs": [], "features": [], "requires": [],
+      "encounter": { "rate": 0.25,
+        "table": [
+          {"monster": "m_bandit", "w": 50, "count": [1, 1]},
+          {"monster": "m_boar", "w": 30, "count": [1, 1]},
+          {"monster": "m_wolf", "w": 20, "count": [1, 1]}
+        ] } },
+    { "id": "em_road4", "name": "峨嵋西林", "desc": "峨嵋山門左邊的樹林，林木茂密，日光幾乎透不進來。一位清秀的女子常在林中徘徊；往南的密林聽說是座迷宮。",
+      "exits": [{"dir": "SW", "to": "em_road3"}, {"dir": "E", "to": "em_foot"}, {"dir": "S", "to": "em_mz_1"}],
+      "npcs": ["n_em_jixiaofu"], "features": ["WOOD"], "requires": [],
+      "encounter": { "rate": 0.12,
+        "table": [
+          {"monster": "m_bigrabbit", "w": 35, "count": [1, 1]},
+          {"monster": "m_em_monkey", "w": 30, "count": [1, 1]},
+          {"monster": "m_rabbit", "w": 15, "count": [1, 1]},
+          {"monster": "m_wolf", "w": 12, "count": [1, 1]},
+          {"monster": "m_boar", "w": 8, "count": [1, 1]}
+        ] } },
+    { "id": "em_foot", "name": "峨嵋山腳", "desc": "峨嵋金頂高聳入雲，石階從這裡一路盤上山門。往東的小路通往終南山。",
+      "exits": [{"dir": "W", "to": "em_road4"}, {"dir": "N", "to": "em_gate"}, {"dir": "E", "to": "zn_road1"}],
+      "npcs": ["n_em_jianchi"], "features": [], "requires": [],
+      "encounter": { "rate": 0.08,
+        "table": [{"monster": "m_rabbit", "w": 70, "count": [1, 1]}, {"monster": "m_bigrabbit", "w": 30, "count": [1, 1]}] } }
+  ]
+}

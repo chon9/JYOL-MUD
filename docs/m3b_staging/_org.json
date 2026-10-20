@@ -1,0 +1,68 @@
+{
+  "fragment": "_org",
+  "version": 1,
+  "author": "WP-ORG",
+  "npcs": [
+    {"id": "n_og_xx_shuli", "name": "衙門書吏", "kind": "FUNC", "region": "xixia", "room": "xx_yamen", "alignment": "NEUTRAL", "talk": "talk_n_og_xx_shuli", "services": ["ORG"], "night_closed": false, "desc": "伏在案前抄寫名冊的書吏，筆桿後頭夾著一疊連署書。", "era": "1.0A", "src": "proposal", "src_note": "官方組織頁：組織要連署才能成立（30 人、連署人名聲 20、幫主名聲 150）；在衙門書吏處登記是【設計提案】（M3B_PLAN O14）"},
+    {"id": "n_og_dl_shuli", "name": "衙門書吏", "kind": "FUNC", "region": "dali", "room": "dl_yamen", "alignment": "NEUTRAL", "talk": "talk_n_og_dl_shuli", "services": ["ORG"], "night_closed": false, "desc": "戴著方巾的老書吏，案上擺著硯台和一本厚厚的組織名冊。", "era": "1.0A", "src": "proposal", "src_note": "官方組織頁（研究 經濟組織生活技能）；登記處【設計提案】（M3B_PLAN O14）"},
+    {"id": "n_og_jc_shuli", "name": "衙門書吏", "kind": "FUNC", "region": "jingcheng", "room": "jc_yamen", "alignment": "NEUTRAL", "talk": "talk_n_og_jc_shuli", "services": ["ORG"], "night_closed": false, "desc": "京城衙門的書吏，官腔十足，連署書上的字跡卻寫得一絲不苟。", "era": "1.0B", "src": "proposal", "src_note": "京城衙門 1.0B（神鵰大俠）；登記處【設計提案】（M3B_PLAN O14）"}
+  ],
+  "text_templates": [
+    {"id": "talk_n_og_xx_shuli", "era": "1.0A", "self": "{npc_name}擱下筆：「要立幫結社？名聲夠響亮的人才能發起，先繳手續費，再找江湖同道到各城衙門連署。人數湊齊了，官府就准你們立號。」", "src": "proposal"},
+    {"id": "talk_n_og_dl_shuli", "era": "1.0A", "self": "{npc_name}翻開名冊：「大理城裡的幫會都在這本冊子上。你是來發起的，還是來替人連署的？」", "src": "proposal"},
+    {"id": "talk_n_og_jc_shuli", "era": "1.0B", "src": "proposal", "self": "{npc_name}打著官腔：「天子腳下，結社立號可得照規矩來。發起、連署，一樣一樣登記清楚。」"},
+    {"id": "org_petition", "era": "1.0A", "self": "你在衙門遞上創立組織「{org_name}」的連署書，繳了{fee}兩手續費。", "other": "【組織】{name}發起創立組織「{org_name}」，名聲 {signer_fame} 以上的人可到各城衙門書吏處連署（需 {need} 人，{days} 日內）。", "src": "proposal"},
+    {"id": "org_signed", "era": "1.0A", "self": "你在「{org_name}」的連署書上簽了名（{signed}／{need}）。", "other": "{name}在「{org_name}」的連署書上簽了名（{signed}／{need}）。", "src": "proposal"},
+    {"id": "org_founded", "era": "1.0A", "self": "連署已滿，你創立了組織「{org_name}」，成為幫主！", "other": "【組織】{leader_name}創立了組織「{org_name}」。", "src": "proposal"},
+    {"id": "org_petition_expired", "era": "1.0A", "self": "「{org_name}」的連署期限已過，創立作罷（手續費不退）。", "src": "proposal"},
+    {"id": "org_joined", "era": "1.0A", "self": "你加入了「{org_name}」。", "other": "【組織】{name}加入了組織。", "src": "proposal"},
+    {"id": "org_left", "era": "1.0A", "self": "你退出了「{org_name}」。", "other": "【組織】{name}退出了組織。", "src": "proposal"},
+    {"id": "org_kicked", "era": "1.0A", "self": "你被{by_name}開除出「{org_name}」。", "other": "【組織】{name}被{by_name}開除出組織。", "src": "proposal"},
+    {"id": "org_rank_changed", "era": "1.0A", "self": "你把{name}的位階改為{rank_name}。", "target": "{by_name}把你的位階改為{rank_name}。", "other": "【組織】{by_name}把{name}的位階改為{rank_name}。", "src": "proposal"},
+    {"id": "org_title_changed", "era": "1.0A", "self": "你把{name}的封號定為「{title}」。", "target": "{by_name}把你的封號定為「{title}」。", "other": "【組織】{by_name}把{name}的封號定為「{title}」。", "src": "proposal"},
+    {"id": "org_leader_changed", "era": "1.0A", "self": "你把幫主之位傳給了{name}。", "target": "{old_name}把幫主之位傳給了你，你成了「{org_name}」的幫主。", "other": "【組織】{old_name}把幫主之位傳給了{name}。", "src": "proposal"},
+    {"id": "org_disbanded", "era": "1.0A", "self": "你解散了「{org_name}」。", "other": "【組織】{leader_name}解散了組織「{org_name}」。", "src": "proposal"},
+    {"id": "chat_guild", "era": "1.0A", "self": "【組織】你：{text}", "other": "【組織】{from}：{text}", "src": "proposal"},
+    {"id": "err_already_in_org", "era": "1.0A", "self": "【系統】已經在組織裡了。", "src": "proposal"},
+    {"id": "err_bad_org_name", "era": "1.0A", "self": "【系統】組織名稱要 2 到 8 個字，只能用中文字與數字。", "src": "proposal"},
+    {"id": "err_org_name_taken", "era": "1.0A", "self": "【系統】這個組織名稱已經有人用了。", "src": "proposal"},
+    {"id": "err_already_petitioning", "era": "1.0A", "self": "【系統】你已經有一份連署中的組織了。", "src": "proposal"},
+    {"id": "err_not_petition", "era": "1.0A", "self": "【系統】這個組織不在連署中。", "src": "proposal"},
+    {"id": "err_already_signed", "era": "1.0A", "self": "【系統】你已經簽過名了。", "src": "proposal"},
+    {"id": "err_org_full", "era": "1.0A", "self": "【系統】組織人數已滿。", "src": "proposal"},
+    {"id": "err_no_permission", "era": "1.0A", "self": "【系統】你的位階不夠，不能這麼做。", "src": "proposal"},
+    {"id": "err_leader_must_transfer", "era": "1.0A", "self": "【系統】幫主要先把幫主之位傳給別人，或解散組織，才能退出。", "src": "proposal"},
+    {"id": "err_req_fame_min", "era": "1.0A", "self": "【系統】你的名聲不夠。", "src": "proposal"},
+    {"id": "err_self_target", "era": "1.0A", "self": "【系統】不能對自己這麼做。", "src": "proposal"}
+  ],
+  "org_info_shape": {
+    "_comment": "org_info（ui）事件的 payload（Day-0 契約，WP-UI 組織面板用；OrgSystem.info_payload 產生，tests/unit/test_m3b_org.gd 驗證）",
+    "org": "null | { id, name, status: PETITION|ACTIVE, leader, leader_name, created_s, rank_names: [5 個], member_count, member_max, members_online, members: [ { char_id, name, rank, rank_name, title, online, joined_s } ]（依位階、加入時間）, petition: null | { signed, need, signers: [名字], left_s（真實秒數） } }",
+    "my": "null | { rank, rank_name, title, can_invite, can_kick, can_set_rank, can_title, can_rank_names, can_transfer, can_disband, can_leave }",
+    "societies": "[String]（天地會等會籍；OrgSystem.SOCIETY_FLAGS）",
+    "found": "{ fee, fame_min, signer_fame_min, need }（創立條件，沒有組織時顯示）",
+    "notes": "連署中的發起人：org 是那個 PETITION（members 空、petition 有值），my.rank = 0、只有 can_disband（撤回連署，手續費不退）。"
+  },
+  "event_payloads": {
+    "org_invite": "ui：{ org, org_name, from_name, ttl（真實秒數）, peer } → 回 org_reply { org, accept }",
+    "org_petition": "{ name, org_name, org, peer（發起人）, fee, signer_fame, need, days }（全服）",
+    "org_signed": "{ name, org_name, org, signed, need, peer（簽名者） }（簽名者與發起人）",
+    "org_founded": "{ org_name, org, name, leader_name, peer（幫主）, members }（全服）",
+    "org_petition_expired": "{ org_name, peer }（發起人）",
+    "org_joined / org_left": "{ name, org_name, peer }（在線成員）",
+    "org_kicked": "{ name, by_name, org_name, peer（被開除者，離線時 0） }",
+    "org_rank_changed": "{ name, rank, rank_name, by_name, org_name, peer（幫主）, def_peer（對象） }",
+    "org_title_changed": "{ name, title, by_name, org_name, peer, def_peer }",
+    "org_leader_changed": "{ name（新幫主）, old_name, org_name, peer（舊幫主）, def_peer（新幫主） }",
+    "org_disbanded": "{ name, leader_name, org_name, peer }",
+    "npc_menu.org": "{ petitions: [ { id, name, leader_name, signed, need, mine, signed_by_me } ], can_found, fee, fame_min, signer_fame_min }",
+    "sheet.org": "null | { id, name, rank, rank_name, title, leader_name, members_online }；sheet.societies: [String]（OrgSystem.sheet_fields）",
+    "player_tags.org_name": "String（OrgSystem.player_tags）"
+  },
+  "todo_verify": [
+    "原作組織在哪裡登記、手續費多少：官方組織頁只寫連署 30 人、連署人名聲 20、幫主名聲 150；登記在衙門書吏、手續費一萬兩是【設計提案】",
+    "原作連署人是否自動成為成員、成員上限、連署期限：未知【待考證】，本作用 O14 的預設"
+  ],
+  "owner_decisions": ["O14"],
+  "notes": "WP-ORG 的碎片：三城衙門書吏（ORG 服務）與組織事件、錯誤模板。org_invite、org_info 是 ui 事件，沒有模板（data_lint UI_ONLY 規則）。err_req_fame_min、err_self_target 現有資料沒有；若 _sect.json／_econ.json 也提供同 id，依 §9.4 以字母序先到者為準。chat_guild 是組織頻道事件（M3B_PLAN 缺漏：§6 沒列 key，比照 chat_sect）。"
+}

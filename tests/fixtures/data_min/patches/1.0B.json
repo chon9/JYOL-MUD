@@ -1,0 +1,3 @@
+{ "table": "patches", "version": 1, "era": "1.0B", "rows": [
+  { "id": "p_b_001", "target_table": "npcs", "target_id": "n_patch", "op": "merge", "set": { "region": "r_b" }, "src": "later" }
+] }

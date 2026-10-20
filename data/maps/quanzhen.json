@@ -1,0 +1,58 @@
+{
+  "region_id": "quanzhen",
+  "era": "1.0A",
+  "src": "proposal",
+  "desc": "終南山上的重陽宮，全真教的根本重地。",
+  "escape_tiles_hint": 2,
+  "rooms": [
+    { "id": "qz_gate", "name": "全真教山門", "desc": "山門前立著「全真教」石坊，一位白鬍子的知客道長守在門口打量來人。一旁的老先生正在簿子上記事，往南下山是終南山腳。",
+      "exits": [{"dir": "S", "to": "zn_foot"}, {"dir": "N", "to": "qz_road"}], "npcs": ["n_qz_zhike", "n_qz_cha"],
+      "features": [], "requires": [] },
+    { "id": "qz_road", "name": "重陽宮山道", "desc": "青石山道在這裡分岔，往西是供奉三清的大殿，往北是全真大廣場。山風吹來，隱約聽得到道士誦經的聲音。",
+      "exits": [{"dir": "S", "to": "qz_gate"}, {"dir": "W", "to": "qz_sanqing"}, {"dir": "N", "to": "qz_square"}],
+      "npcs": [], "features": [],
+      "requires": [{"type": "any_of", "options": [
+        [{"type": "morality_min", "value": -299}],
+        [{"type": "sect", "sect": "quanzhen"}],
+        [{"type": "party_size_min", "value": 2}]
+      ]}],
+      "src_note": "研究 全真（17173 2001-08-08「全真那個看門老頭」、jb22）：看門的知客道長不讓邪惡的人進山，要隊友帶進去。邪惡＝善惡 ≤ −300【待考證：2001 邪惡的數值界線】；「帶進去」＝同隊、同在山門、閒置的隊員 2 人以上（含自己）【設計提案】；全真弟子不受限（門規另管）（M3a 審查 #3）" },
+    { "id": "qz_sanqing", "name": "三清殿", "desc": "殿上供奉三清道祖，香煙裊裊。全真七子分坐兩旁，想拜入全真教的人，便在這裡向其中一位真人叩頭拜師。",
+      "exits": [{"dir": "E", "to": "qz_road"}],
+      "npcs": [
+        "n_qz_qiuchuji",
+        "n_qz_majue",
+        "n_qz_tanchuduan",
+        "n_qz_liuchuxuan",
+        "n_qz_wangchuyi",
+        "n_qz_haodatong",
+        "n_qz_sunbuer"
+      ],
+      "features": [], "requires": [] },
+    { "id": "qz_square", "name": "全真大廣場", "desc": "寬闊的廣場上，數十名道士排成陣勢練劍，劍光映著日頭。三代弟子在一旁陪新進師弟拆招，一位中年道士負責傳授基本功夫。",
+      "exits": [{"dir": "S", "to": "qz_road"}, {"dir": "N", "to": "qz_chongyang"}, {"dir": "E", "to": "qz_reading"}],
+      "npcs": ["n_qz_qizhicheng", "n_qz_spar", "n_qz_lizhichang"], "features": [], "requires": [] },
+    { "id": "qz_reading", "name": "丘初級屋子", "desc": "一間簡樸的書房，架上擺滿道經與蒙學書冊。夏志誠在這裡教新入門的弟子讀書識字。",
+      "exits": [{"dir": "W", "to": "qz_square"}], "npcs": ["n_qz_xiazhicheng"], "features": [],
+      "requires": [{"type": "sect", "sect": "quanzhen"}] },
+    { "id": "qz_chongyang", "name": "重陽宮", "desc": "重陽宮是全真教的正殿，供著祖師王重陽的畫像。殿側擺著長桌，卯、午、酉時鹿清篤在這裡分發齋飯，掌藥的師兄守著藥櫃。",
+      "exits": [{"dir": "S", "to": "qz_square"}, {"dir": "N", "to": "qz_houshan"}],
+      "npcs": ["n_qz_luqingdu", "n_qz_zhangyao", "n_qz_biye", "n_qz_huipai"], "features": ["STOVE"], "requires": [] },
+    { "id": "qz_houshan", "name": "重陽宮後山", "desc": "宮後的山坡清幽寂靜，幾位道人盤膝吐納。尹志平常在這裡指點弟子調息養生；往東是閉關的山洞，往西是思過處。",
+      "exits": [
+        {"dir": "S", "to": "qz_chongyang"},
+        {"dir": "E", "to": "qz_cave"},
+        {"dir": "W", "to": "qz_siguo"},
+        {"dir": "N", "to": "qz_garden"}
+      ],
+      "npcs": ["n_qz_yinzhiping", "n_qz_yinshi"], "features": ["WOOD"], "requires": [] },
+    { "id": "qz_cave", "name": "閉關山洞", "desc": "山洞裡陰涼安靜，石壁上刻著祖師留下的口訣。在這裡打坐修練內力，事半功倍。",
+      "exits": [{"dir": "W", "to": "qz_houshan"}], "npcs": ["n_qz_dongkou"], "features": [],
+      "requires": [{"type": "sect", "sect": "quanzhen"}], "meditate": {"mult": 1.3, "drain_pct": 0.0} },
+    { "id": "qz_garden", "name": "後山菜園", "desc": "道觀自種的菜園，一畦畦青菜長得整整齊齊。掌園道長拄著鋤頭，正在發愁今年的收成。",
+      "exits": [{"dir": "S", "to": "qz_houshan"}], "npcs": ["n_qz_zhangyuan", "n_qz_jiangqingrui"], "features": ["FIELD"], "requires": [] },
+    { "id": "qz_siguo", "name": "思過崖", "desc": "崖邊一間石屋，屋裡只有一張蒲團。觸犯門規的弟子被押到這裡面壁思過，期滿之前不得下山。",
+      "exits": [{"dir": "E", "to": "qz_houshan"}], "npcs": ["n_qz_jailer"], "features": [],
+      "requires": [{"type": "sect", "sect": "quanzhen"}], "jail": true }
+  ]
+}

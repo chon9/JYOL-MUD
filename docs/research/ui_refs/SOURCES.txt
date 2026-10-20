@@ -1,0 +1,27 @@
+# Reference only - never shipped. Downloaded 2026-10-18.
+qqnjy_4.png <- https://qqnjy.com/wp-content/uploads/2022/06/4.png (page https://www.qqnjy.com/news/newplayer)
+qqnjy_5.png <- https://qqnjy.com/wp-content/uploads/2022/06/5.png (page https://www.qqnjy.com/news/newplayer)
+qqnjy_11.png <- https://qqnjy.com/wp-content/uploads/2022/06/11.png (page https://www.qqnjy.com/news/newplayer)
+qqnjy_messageImage_1655698404881.jpg <- https://qqnjy.com/wp-content/uploads/2022/06/messageImage_1655698404881.jpg (page https://www.qqnjy.com/news/newplayer)
+qqnjy_1.png <- https://qqnjy.com/wp-content/uploads/2022/06/1.png (page https://www.qqnjy.com/news/newplayer)
+qqnjy_13.png <- https://qqnjy.com/wp-content/uploads/2022/06/13.png (page https://www.qqnjy.com/news/newplayer)
+qqnjy_command_window_framed.jpg <- https://qqnjy.com/wp-content/uploads/2022/06/messageImage_1656219939961.jpg (page https://www.qqnjy.com/news/life)
+official_main_hud_annotated.png <- http://jy16.online-game.com.cn/newsimg/image/20180824/20180824172632_43071.png (official mainland 至尊服 guide page http://jy16.online-game.com.cn/yxzls-21.html)
+official_status_bars.png <- http://jy16.online-game.com.cn/newsimg/image/20180824/20180824172701_13164.png (official mainland 至尊服 guide page http://jy16.online-game.com.cn/yxzls-21.html)
+official_lantern_menu.png <- http://jy16.online-game.com.cn/newsimg/image/20180824/20180824172735_46000.png (official mainland 至尊服 guide page http://jy16.online-game.com.cn/yxzls-21.html)
+official_hotbar_location_clock.png <- http://jy16.online-game.com.cn/newsimg/image/20180824/20180824172735_56047.png (official mainland 至尊服 guide page http://jy16.online-game.com.cn/yxzls-21.html)
+official_battle_commands.png <- http://jy16.online-game.com.cn/newsimg/image/20180824/20180824183451_60162.png (official mainland 至尊服 guide page http://jy16.online-game.com.cn/yxzls-35.html)
+official_battle_attack_range.png <- http://jy16.online-game.com.cn/newsimg/image/20180824/20180824183555_64450.png (official mainland 至尊服 guide page http://jy16.online-game.com.cn/yxzls-35.html)
+official_shop_window.png <- http://jy16.online-game.com.cn/newsimg/image/20180824/20180824175950_36755.png (official mainland 至尊服 guide page http://jy16.online-game.com.cn/yxzls-27.html)
+official_equipment_window.png <- http://jy16.online-game.com.cn/newsimg/image/20180824/20180824174049_73512.png (official mainland 至尊服 guide page http://jy16.online-game.com.cn/yxzls-24.html)
+
+=== Battle presentation references (battle_*.png) ===
+battle_1_official_fig1_lanterns.png  <- https://jy.chinesegamer.net/images/jy-2/c18.gif  (official 中華網龍 guide "如何戰鬥" 圖1, page https://jy.chinesegamer.net/index_jy2-6-12.asp; 3x upscaled from 180x135)
+battle_2_official_fig2_move_green_escape.png <- https://jy.chinesegamer.net/images/jy-2/c19.gif (same page, 圖2: green move tiles + 逃 tiles; 3x upscaled)
+battle_3_official_fig3_attack_blue_red.png <- https://jy.chinesegamer.net/images/jy-2/c20.gif (same page, 圖3: blue attack range, red damage area; 3x upscaled)
+battle_4_early2001_command_discs.png <- https://p2.bahamut.com.tw/B/2KU/99/0000001399.JPG (Bahamut ACG DB https://acg.gamer.com.tw/acgDetail.php?s=3152; early-version UI; 2x upscaled)
+battle_5_early2001_party_fight.png <- https://p2.bahamut.com.tw/B/2KU/97/0000001397.JPG (same ACG page; party portraits top-left, early bottom bar; 2x)
+battle_6_late_lanterns_names_bars.png <- https://i.imgur.com/yxi0UwM.jpg (screenshot 2023-07-16 in Bahamut article https://home.gamer.com.tw/artwork.php?sn=5764896)
+battle_7_hp_text_escape_row.png <- https://www.jy2001.net/wp-content/uploads/2022/06/1654493748-20180824184118_63925.png (網金資料庫 死亡機制 https://www.jy2001.net/document/2197.html; 2x)
+battle_8_escape_button_hp_text.png <- https://www.jy2001.net/wp-content/uploads/2022/06/1654493749-20180824184118_45432.png (same page, 逃 lantern highlighted; 2x)
+Extra (not saved as battle_*): official full-UI annotated diagram https://jy.chinesegamer.net/images/jy-2/1.jpg (page index_jy2-5-1.asp); 降龍十八掌 battle FX https://p2.bahamut.com.tw/B/2KU/00/0000317100.JPG

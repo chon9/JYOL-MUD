@@ -1,0 +1,59 @@
+{
+  "region_id": "gumu_maze",
+  "era": "1.0A",
+  "src": "proposal",
+  "desc": "活死人墓的墓道迷宮，岔路重重，蝙蝠、玉蜂與盜墓賊出沒；古墓弟子有人帶路，外人只能硬闖。",
+  "escape_tiles_hint": 2,
+  "src_note": "研究 古墓（17173 2001-07-05）：迷宮怪多、不能逃跑、洪凌波／李莫愁可能加入戰鬥；2002 指南 每場 4 隻。保留「不能逃跑」（encounter.no_flee）。每場 1 隻、約三分之一氣、遇敵率 0.35 是整合時為了單人能走完而調低的【設計提案・偏離原作】，待業主決定是否改回每場多隻（M3a 審查 #2）；李莫愁不出現【待考證】",
+  "rooms": [
+    { "id": "gm_mz_1", "name": "幽暗墓道", "desc": "墓門後是一條漆黑的甬道，石壁濕滑，頭頂不時有蝙蝠撲翅掠過。往外可以出墓。",
+      "exits": [{"dir": "OUT", "to": "gm_entrance"}, {"dir": "N", "to": "gm_mz_2"}], "npcs": [], "features": [],
+      "requires": [],
+      "encounter": { "rate": 0.35, "no_flee": true,
+        "table": [{"monster": "m_gm_bianfu", "w": 60, "count": [1, 1]}, {"monster": "m_gm_yufeng", "w": 40, "count": [1, 1]}] },
+      "encounter_exempt": ["gumu"] },
+    { "id": "gm_mz_2", "name": "岔道石室", "desc": "幾條一模一樣的甬道在這裡交會，牆上的記號早被磨平，不熟路的人很容易在此打轉。",
+      "exits": [{"dir": "S", "to": "gm_mz_1"}, {"dir": "E", "to": "gm_mz_3"}, {"dir": "W", "to": "gm_mz_dead"}],
+      "npcs": [], "features": [], "requires": [],
+      "encounter": { "rate": 0.35, "no_flee": true,
+        "table": [
+          {"monster": "m_gm_bianfu", "w": 40, "count": [1, 1]},
+          {"monster": "m_gm_yufeng", "w": 30, "count": [1, 1]},
+          {"monster": "m_gm_daomu", "w": 25, "count": [1, 1]},
+          {"monster": "m_gm_hongningbo", "w": 5, "count": [1, 1]}
+        ] },
+      "encounter_exempt": ["gumu"] },
+    { "id": "gm_mz_dead", "name": "死路石室", "desc": "甬道走到這裡就斷了，地上散著幾具盜墓賊的枯骨和生鏽的鐵鏟。",
+      "exits": [{"dir": "E", "to": "gm_mz_2"}], "npcs": [], "features": [], "requires": [],
+      "encounter": { "rate": 0.35, "no_flee": true,
+        "table": [
+          {"monster": "m_gm_bianfu", "w": 40, "count": [1, 1]},
+          {"monster": "m_gm_yufeng", "w": 30, "count": [1, 1]},
+          {"monster": "m_gm_daomu", "w": 25, "count": [1, 1]},
+          {"monster": "m_gm_hongningbo", "w": 5, "count": [1, 1]}
+        ] },
+      "encounter_exempt": ["gumu"] },
+    { "id": "gm_mz_3", "name": "斷龍石前", "desc": "一塊萬斤巨石斜斜卡在甬道中，只留下側邊一道窄縫可以擠過去。石縫後隱約傳來流水聲。",
+      "exits": [{"dir": "W", "to": "gm_mz_2"}, {"dir": "N", "to": "gm_mz_4"}], "npcs": [], "features": [],
+      "requires": [],
+      "encounter": { "rate": 0.35, "no_flee": true,
+        "table": [
+          {"monster": "m_gm_bianfu", "w": 40, "count": [1, 1]},
+          {"monster": "m_gm_yufeng", "w": 30, "count": [1, 1]},
+          {"monster": "m_gm_daomu", "w": 25, "count": [1, 1]},
+          {"monster": "m_gm_hongningbo", "w": 5, "count": [1, 1]}
+        ] },
+      "encounter_exempt": ["gumu"] },
+    { "id": "gm_mz_4", "name": "暗河石廊", "desc": "石廊一側是地底暗河，水聲淙淙，寒氣逼人。廊盡頭透出長明燈的微光，再往裡就是古墓正廳。",
+      "exits": [{"dir": "S", "to": "gm_mz_3"}, {"dir": "IN", "to": "gm_hall"}], "npcs": [], "features": [],
+      "requires": [],
+      "encounter": { "rate": 0.35, "no_flee": true,
+        "table": [
+          {"monster": "m_gm_bianfu", "w": 40, "count": [1, 1]},
+          {"monster": "m_gm_yufeng", "w": 30, "count": [1, 1]},
+          {"monster": "m_gm_daomu", "w": 25, "count": [1, 1]},
+          {"monster": "m_gm_hongningbo", "w": 5, "count": [1, 1]}
+        ] },
+      "encounter_exempt": ["gumu"] }
+  ]
+}

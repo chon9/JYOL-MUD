@@ -1,0 +1,576 @@
+{
+  "fragment": "_cmd",
+  "version": 1,
+  "author": "WP-CMD",
+  "items": [
+    {
+      "id": "h_dangong",
+      "name": "彈弓",
+      "tab": "OTHER",
+      "slot": "",
+      "atk": 0,
+      "def": 0,
+      "weight": 1,
+      "price": 30,
+      "stack": 99,
+      "spoil_days": 0,
+      "effects": [
+        {
+          "type": "hidden",
+          "value": 2,
+          "poisonable": true
+        }
+      ],
+      "usable": false,
+      "usable_in_battle": false,
+      "no_sell": false,
+      "quest_item": false,
+      "desc": "打鳥用的彈弓，配上石子也能傷人；可以淬毒。",
+      "era": "1.0A",
+      "src": "verified",
+      "src_note": "官方暗器頁（研究 M3a 暗器）：傷氣數值已證實；價格【設計提案】；每丟一次消耗 1 個【待考證】"
+    },
+    {
+      "id": "h_jinqianbiao",
+      "name": "金錢鏢",
+      "tab": "OTHER",
+      "slot": "",
+      "atk": 0,
+      "def": 0,
+      "weight": 1,
+      "price": 60,
+      "stack": 99,
+      "spoil_days": 0,
+      "effects": [
+        {
+          "type": "hidden",
+          "value": 8,
+          "poisonable": false
+        }
+      ],
+      "usable": false,
+      "usable_in_battle": false,
+      "no_sell": false,
+      "quest_item": false,
+      "desc": "邊緣磨利的銅錢，出手無聲。",
+      "era": "1.0A",
+      "src": "verified",
+      "src_note": "官方暗器頁（研究 M3a 暗器）：傷氣數值已證實；價格【設計提案】；每丟一次消耗 1 個【待考證】"
+    },
+    {
+      "id": "h_feihuangshi",
+      "name": "飛蝗石",
+      "tab": "OTHER",
+      "slot": "",
+      "atk": 0,
+      "def": 0,
+      "weight": 1,
+      "price": 90,
+      "stack": 99,
+      "spoil_days": 0,
+      "effects": [
+        {
+          "type": "hidden",
+          "value": 12,
+          "poisonable": false
+        }
+      ],
+      "usable": false,
+      "usable_in_battle": false,
+      "no_sell": false,
+      "quest_item": false,
+      "desc": "打磨圓滑的石子，擲出時嗡嗡作響，如飛蝗撲面。",
+      "era": "1.0A",
+      "src": "verified",
+      "src_note": "官方暗器頁（研究 M3a 暗器）：傷氣數值已證實；價格【設計提案】；每丟一次消耗 1 個【待考證】"
+    },
+    {
+      "id": "h_tieling",
+      "name": "鐵菱",
+      "tab": "OTHER",
+      "slot": "",
+      "atk": 0,
+      "def": 0,
+      "weight": 2,
+      "price": 150,
+      "stack": 99,
+      "spoil_days": 0,
+      "effects": [
+        {
+          "type": "hidden",
+          "value": 20,
+          "poisonable": false
+        }
+      ],
+      "usable": false,
+      "usable_in_battle": false,
+      "no_sell": false,
+      "quest_item": false,
+      "desc": "四角帶刺的鐵菱，撒出去叫人防不勝防。",
+      "era": "1.0A",
+      "src": "verified",
+      "src_note": "官方暗器頁（研究 M3a 暗器）：傷氣數值已證實；價格【設計提案】；每丟一次消耗 1 個【待考證】"
+    },
+    {
+      "id": "h_yubiao",
+      "name": "魚鏢",
+      "tab": "OTHER",
+      "slot": "",
+      "atk": 0,
+      "def": 0,
+      "weight": 2,
+      "price": 150,
+      "stack": 99,
+      "spoil_days": 0,
+      "effects": [
+        {
+          "type": "hidden",
+          "value": 20,
+          "poisonable": false
+        }
+      ],
+      "usable": false,
+      "usable_in_battle": false,
+      "no_sell": false,
+      "quest_item": false,
+      "desc": "形如小魚的飛鏢，尾端繫著紅纓。",
+      "era": "1.0A",
+      "src": "verified",
+      "src_note": "官方暗器頁（研究 M3a 暗器）：傷氣數值已證實；價格【設計提案】；每丟一次消耗 1 個【待考證】"
+    },
+    {
+      "id": "h_tielianzi",
+      "name": "鐵蓮子",
+      "tab": "OTHER",
+      "slot": "",
+      "atk": 0,
+      "def": 0,
+      "weight": 2,
+      "price": 300,
+      "stack": 99,
+      "spoil_days": 0,
+      "effects": [
+        {
+          "type": "hidden",
+          "value": 35,
+          "poisonable": false
+        }
+      ],
+      "usable": false,
+      "usable_in_battle": false,
+      "no_sell": false,
+      "quest_item": false,
+      "desc": "沉甸甸的鐵蓮子，打中要害可以碎骨。",
+      "era": "1.0A",
+      "src": "verified",
+      "src_note": "官方暗器頁（研究 M3a 暗器）：傷氣數值已證實；價格【設計提案】；每丟一次消耗 1 個【待考證】"
+    },
+    {
+      "id": "c_jieduyao",
+      "name": "解毒藥",
+      "tab": "OTHER",
+      "slot": "",
+      "atk": 0,
+      "def": 0,
+      "weight": 1,
+      "price": 150,
+      "stack": 99,
+      "spoil_days": 0,
+      "effects": [
+        {
+          "type": "cure",
+          "status": "poison",
+          "max_level": 5
+        }
+      ],
+      "usable": true,
+      "usable_in_battle": true,
+      "no_sell": false,
+      "quest_item": false,
+      "desc": "藥鋪配的解毒散，一般的毒吃了就好。",
+      "era": "1.0A",
+      "src": "verified",
+      "src_note": "「一般的毒吃解毒藥」【已證實】；可解等級 ≤ 5、價格【設計提案】"
+    },
+    {
+      "id": "c_jiedulingyao",
+      "name": "解毒靈藥",
+      "tab": "OTHER",
+      "slot": "",
+      "atk": 0,
+      "def": 0,
+      "weight": 1,
+      "price": 600,
+      "stack": 99,
+      "spoil_days": 0,
+      "effects": [
+        {
+          "type": "cure",
+          "status": "poison",
+          "max_level": 10
+        }
+      ],
+      "usable": true,
+      "usable_in_battle": true,
+      "no_sell": false,
+      "quest_item": false,
+      "desc": "珍貴的解毒靈藥，再厲害的毒也解得開。",
+      "era": "1.0A",
+      "src": "verified",
+      "src_note": "2001 任務獎勵物【已證實】；販售與可解等級【設計提案】"
+    }
+  ],
+  "text_templates": [
+    {
+      "id": "battle_poison_ok",
+      "era": "1.0A",
+      "self": "你暗運毒功，{def}中了你的毒！（-{dmg}，毒性 {level} 級）",
+      "target": "{atk}暗運毒功，你中毒了！（-{dmg}，毒性 {level} 級）",
+      "other": "{atk}暗運毒功，{def}中毒了！",
+      "src": "proposal"
+    },
+    {
+      "id": "battle_poison_fail",
+      "era": "1.0A",
+      "self": "你施毒落空，{def}察覺有異，避開了毒氣。",
+      "target": "{atk}向你施毒，你及時屏住了呼吸。",
+      "other": "{atk}向{def}施毒，卻被避開了。",
+      "src": "proposal"
+    },
+    {
+      "id": "battle_poison_tick",
+      "era": "1.0A",
+      "self": "你體內毒性發作，氣血翻騰！（-{dmg}）",
+      "other": "{name}毒性發作，臉色發青。",
+      "src": "proposal"
+    },
+    {
+      "id": "battle_medic",
+      "era": "1.0A",
+      "self": "你施展醫術，為{def}療傷，回復了 {heal} 點氣。",
+      "target": "{atk}施展醫術替你療傷，你回復了 {heal} 點氣。",
+      "other": "{atk}施展醫術，替{def}療傷。",
+      "src": "proposal"
+    },
+    {
+      "id": "battle_hidden_hit",
+      "era": "1.0A",
+      "self": "你揚手打出{item_name}，正中{def}的{part}！（-{dmg}）",
+      "target": "{atk}揚手打出{item_name}，正中你的{part}！（-{dmg}）",
+      "other": "{atk}揚手打出{item_name}，正中{def}的{part}！",
+      "src": "proposal"
+    },
+    {
+      "id": "battle_hidden_miss",
+      "era": "1.0A",
+      "self": "你打出的{item_name}被{def}閃開了。",
+      "target": "{atk}打出{item_name}，被你閃開了。",
+      "other": "{atk}打出{item_name}，被{def}閃開了。",
+      "src": "proposal"
+    },
+    {
+      "id": "battle_formation_on",
+      "era": "1.0A",
+      "self": "你一聲號令，與同伴結成{art_name}！",
+      "other": "{name}一聲號令，結成{art_name}！",
+      "src": "proposal"
+    },
+    {
+      "id": "battle_formation_off",
+      "era": "1.0A",
+      "self": "{art_name}陣勢被破，加持散去。",
+      "other": "{art_name}陣勢被破，加持散去。",
+      "src": "proposal"
+    },
+    {
+      "id": "battle_inner_heal",
+      "era": "1.0A",
+      "self": "你運功療傷，回復了 {heal} 點氣（內力剩 {neili}）。",
+      "other": "{name}盤膝運功，臉色漸漸紅潤。",
+      "src": "proposal"
+    },
+    {
+      "id": "battle_inner_expel",
+      "era": "1.0A",
+      "self": "你運功逼毒，毒性剩下 {level_left} 級。",
+      "other": "{name}運功逼毒，頭頂冒出縷縷黑氣。",
+      "src": "proposal"
+    },
+    {
+      "id": "battle_inner_unseal_ok",
+      "era": "1.0A",
+      "self": "你運氣衝開了受制的穴道！",
+      "other": "{name}運氣衝開了穴道。",
+      "src": "proposal"
+    },
+    {
+      "id": "battle_inner_unseal_fail",
+      "era": "1.0A",
+      "self": "你運氣衝穴，穴道卻紋絲不動。",
+      "other": "{name}運氣衝穴，卻沒有成功。",
+      "src": "proposal"
+    },
+    {
+      "id": "battle_inner_transfer",
+      "era": "1.0A",
+      "self": "你掌貼{def}後心，傳過去 {n} 點內力。",
+      "target": "{atk}掌貼你後心，傳給你 {n} 點內力。",
+      "other": "{atk}掌貼{def}後心，傳過去一股內力。",
+      "src": "proposal"
+    },
+    {
+      "id": "battle_acupoint_ok",
+      "era": "1.0A",
+      "self": "你出手如風，點中了{def}的穴道！",
+      "target": "{atk}出手如風，點中了你的穴道！",
+      "other": "{atk}點中了{def}的穴道！",
+      "src": "proposal"
+    },
+    {
+      "id": "battle_acupoint_fail",
+      "era": "1.0A",
+      "self": "你想點{def}的穴道，卻被避開了。",
+      "target": "{atk}想點你的穴道，被你避開了。",
+      "other": "{atk}想點{def}的穴道，卻被避開了。",
+      "src": "proposal"
+    },
+    {
+      "id": "battle_status_skip",
+      "era": "1.0A",
+      "self": "你{status_name}，這一回合動彈不得！",
+      "other": "{name}{status_name}，動彈不得。",
+      "src": "proposal"
+    },
+    {
+      "id": "battle_confused",
+      "era": "1.0A",
+      "self": "你神智錯亂，不分敵我亂打一通！",
+      "other": "{name}神智錯亂，不分敵我亂打一通！",
+      "src": "proposal"
+    },
+    {
+      "id": "battle_item_use",
+      "era": "1.0A",
+      "self": "你給{def}服下{item_name}。",
+      "target": "{atk}給你服下{item_name}。",
+      "other": "{atk}給{def}服下{item_name}。",
+      "src": "proposal"
+    },
+    {
+      "id": "battle_wave",
+      "era": "1.0A",
+      "other": "第 {n} 波（共 {total} 波）的對手衝了上來！",
+      "src": "proposal"
+    },
+    {
+      "id": "battle_bleed_tick",
+      "era": "1.0A",
+      "self": "你一動，傷口又湧出血來！（-{dmg}）",
+      "other": "{name}傷口流血不止。",
+      "src": "proposal"
+    },
+    {
+      "id": "battle_proc_RESIST",
+      "era": "1.0A",
+      "self": "你心存{skill_name}，不為所動！",
+      "other": "{name}心存{skill_name}，不為所動。",
+      "src": "proposal"
+    },
+    {
+      "id": "battle_proc_EVADE",
+      "era": "1.0A",
+      "self": "你默運{skill_name}，身形一晃！",
+      "other": "{name}默運{skill_name}，身形一晃。",
+      "src": "proposal"
+    },
+    {
+      "id": "battle_proc_COUNTER",
+      "era": "1.0A",
+      "self": "你心懷{skill_name}，隨即還手！",
+      "other": "{name}心懷{skill_name}，隨即還手！",
+      "src": "proposal"
+    },
+    {
+      "id": "battle_proc_REST",
+      "era": "1.0A",
+      "self": "你默運{skill_name}，精神大振！",
+      "other": "{name}默運{skill_name}，精神大振。",
+      "src": "proposal"
+    },
+    {
+      "id": "battle_proc_PARALYZE",
+      "era": "1.0A",
+      "self": "你以{skill_name}之勁封住對手氣血！",
+      "other": "{name}以{skill_name}之勁封住對手氣血！",
+      "src": "proposal"
+    },
+    {
+      "id": "battle_proc_CONFUSE",
+      "era": "1.0A",
+      "self": "你以{skill_name}之術亂了對手心神！",
+      "other": "{name}以{skill_name}之術亂了對手心神！",
+      "src": "proposal"
+    },
+    {
+      "id": "battle_proc_DISTRACT",
+      "era": "1.0A",
+      "self": "你一番{skill_name}，對手心神大亂。",
+      "other": "{name}一番{skill_name}，聽得人心神不寧。",
+      "src": "proposal"
+    },
+    {
+      "id": "battle_proc_HEAVY",
+      "era": "1.0A",
+      "self": "你運起{skill_name}，這一下力道奇重！",
+      "other": "{name}運起{skill_name}，這一下力道奇重！",
+      "src": "proposal"
+    },
+    {
+      "id": "battle_aoe",
+      "era": "1.0A",
+      "self": "你施展「{move}」，籠罩一片！",
+      "src": "proposal"
+    },
+    {
+      "id": "move_palm_poison",
+      "era": "1.0A",
+      "self": "你使出{art}「{move}」，掌風腥甜，擊中{def}的{part}！（-{dmg}）",
+      "target": "{atk}使出{art}「{move}」，一股腥甜掌風擊中你的{part}！（-{dmg}）",
+      "other": "{atk}使出{art}「{move}」，擊中{def}的{part}！",
+      "src": "proposal"
+    },
+    {
+      "id": "move_sword_cross",
+      "era": "1.0A",
+      "self": "你使出{art}「{move}」，劍光縱橫，刺中{def}的{part}！（-{dmg}）",
+      "target": "{atk}使出{art}「{move}」，劍光縱橫，刺中你的{part}！（-{dmg}）",
+      "other": "{atk}使出{art}「{move}」，劍光刺中{def}的{part}！",
+      "src": "proposal"
+    },
+    {
+      "id": "move_blade_line",
+      "era": "1.0A",
+      "self": "你使出{art}「{move}」，刀氣直劈，砍中{def}的{part}！（-{dmg}）",
+      "target": "{atk}使出{art}「{move}」，刀氣直劈，砍中你的{part}！（-{dmg}）",
+      "other": "{atk}使出{art}「{move}」，砍中{def}的{part}！",
+      "src": "proposal"
+    },
+    {
+      "id": "move_whip_fan",
+      "era": "1.0A",
+      "self": "你使出{art}「{move}」，鞭影如扇，掃中{def}的{part}！（-{dmg}）",
+      "target": "{atk}使出{art}「{move}」，鞭影如扇，掃中你的{part}！（-{dmg}）",
+      "other": "{atk}使出{art}「{move}」，鞭影掃中{def}的{part}！",
+      "src": "proposal"
+    },
+    {
+      "id": "move_staff_fan",
+      "era": "1.0A",
+      "self": "你使出{art}「{move}」，杖影橫掃，打中{def}的{part}！（-{dmg}）",
+      "target": "{atk}使出{art}「{move}」，杖影橫掃，打中你的{part}！（-{dmg}）",
+      "other": "{atk}使出{art}「{move}」，杖影打中{def}的{part}！",
+      "src": "proposal"
+    },
+    {
+      "id": "move_stab_basic",
+      "era": "1.0A",
+      "self": "你使出{art}「{move}」，筆尖疾點{def}的{part}！（-{dmg}）",
+      "target": "{atk}使出{art}「{move}」，筆尖疾點你的{part}！（-{dmg}）",
+      "other": "{atk}使出{art}「{move}」，點中{def}的{part}！",
+      "src": "proposal"
+    },
+    {
+      "id": "move_whip_basic",
+      "era": "1.0A",
+      "self": "你使出{art}「{move}」，長鞭抽中{def}的{part}！（-{dmg}）",
+      "target": "{atk}使出{art}「{move}」，長鞭抽中你的{part}！（-{dmg}）",
+      "other": "{atk}使出{art}「{move}」，長鞭抽中{def}的{part}！",
+      "src": "proposal"
+    },
+    {
+      "id": "err_cmd_disabled",
+      "era": "1.0A",
+      "self": "【系統】這個指令在本伺服器的規則下不能用（原作 2002 年才有）。",
+      "src": "proposal"
+    },
+    {
+      "id": "err_no_poison_art",
+      "era": "1.0A",
+      "self": "【系統】你不會這門毒術。",
+      "src": "proposal"
+    },
+    {
+      "id": "err_no_medic",
+      "era": "1.0A",
+      "self": "【系統】你不懂醫術。",
+      "src": "proposal"
+    },
+    {
+      "id": "err_not_ally",
+      "era": "1.0A",
+      "self": "【系統】只能對自己或身邊的同伴施展。",
+      "src": "proposal"
+    },
+    {
+      "id": "err_no_hidden",
+      "era": "1.0A",
+      "self": "【系統】你沒有暗器，或不會暗器功夫。",
+      "src": "proposal"
+    },
+    {
+      "id": "err_no_ammo",
+      "era": "1.0A",
+      "self": "【系統】這種暗器已經用完了。",
+      "src": "proposal"
+    },
+    {
+      "id": "err_no_formation_art",
+      "era": "1.0A",
+      "self": "【系統】你不會這個陣法。",
+      "src": "proposal"
+    },
+    {
+      "id": "err_formation_party",
+      "era": "1.0A",
+      "self": "【系統】同隊會此陣法的同伴人數不足（或性別不符），結不成陣。",
+      "src": "proposal"
+    },
+    {
+      "id": "err_formation_stations",
+      "era": "1.0A",
+      "self": "【系統】同伴沒有站在陣法的方位上。",
+      "src": "proposal"
+    },
+    {
+      "id": "err_no_inner_art",
+      "era": "1.0A",
+      "self": "【系統】你沒有可以運用的內功。",
+      "src": "proposal"
+    },
+    {
+      "id": "err_nothing_to_expel",
+      "era": "1.0A",
+      "self": "【系統】你沒有中毒，不必逼毒。",
+      "src": "proposal"
+    },
+    {
+      "id": "err_not_sealed",
+      "era": "1.0A",
+      "self": "【系統】你的穴道並沒有受制。",
+      "src": "proposal"
+    },
+    {
+      "id": "err_no_acupoint",
+      "era": "1.0A",
+      "self": "【系統】你不會點穴的功夫。",
+      "src": "proposal"
+    },
+    {
+      "id": "err_bad_direction",
+      "era": "1.0A",
+      "self": "【系統】這一招只能朝直線或斜線方向施展。",
+      "src": "proposal"
+    }
+  ],
+  "notes": "WP-CMD 的物品與戰鬥模板（M3A_PLAN 3.9、5.2、5.10）。新增事件 battle_bleed_tick（流血「移」時扣氣；計畫只寫狀態、沒寫事件 key）與招式 flavor move_whip_basic（日月鞭法單體招式用）。err_no_item、err_not_enough_shen 已在 text_templates，沿用不覆寫；err_no_flee 屬 §6.12（_rules.json）。商店加賣照 M3A_PLAN 3.9（WP-MERGE）。"
+}

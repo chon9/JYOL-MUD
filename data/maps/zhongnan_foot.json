@@ -1,0 +1,63 @@
+{
+  "region_id": "zhongnan_foot",
+  "era": "1.0A",
+  "src": "proposal",
+  "desc": "終南山下的山路，西接峨嵋山腳，東北翻過山脊可到武當，後山深處便是古墓。",
+  "escape_tiles_hint": 2,
+  "rooms": [
+    { "id": "zn_road1", "name": "終南山道口", "desc": "從峨嵋山腳往東的山路，兩旁是茂密的松林。一個醉醺醺的浪子靠在路邊的大石上，逢人就問終南山怎麼走。",
+      "exits": [{"dir": "W", "to": "em_foot"}, {"dir": "E", "to": "zn_road2"}], "npcs": ["n_qz_chengfeng"],
+      "features": [], "requires": [],
+      "encounter": { "rate": 0.1,
+        "table": [
+          {"monster": "m_bigrabbit", "w": 50, "count": [1, 1]},
+          {"monster": "m_rabbit", "w": 20, "count": [1, 1]},
+          {"monster": "m_wolf", "w": 20, "count": [1, 1]},
+          {"monster": "m_boar", "w": 10, "count": [1, 1]}
+        ] } },
+    { "id": "zn_road2", "name": "終南山麓", "desc": "山路沿著溪谷蜿蜒而上，遠處終南山的主峰隱在雲霧裡。往北有條小徑通到河邊，往東北上山。",
+      "exits": [{"dir": "W", "to": "zn_road1"}, {"dir": "NE", "to": "zn_foot"}, {"dir": "N", "to": "zn_river"}],
+      "npcs": [], "features": [], "requires": [],
+      "encounter": { "rate": 0.1,
+        "table": [
+          {"monster": "m_bigrabbit", "w": 50, "count": [1, 1]},
+          {"monster": "m_rabbit", "w": 20, "count": [1, 1]},
+          {"monster": "m_wolf", "w": 20, "count": [1, 1]},
+          {"monster": "m_boar", "w": 10, "count": [1, 1]}
+        ] } },
+    { "id": "zn_river", "name": "終南山西北河灘", "desc": "河水湍急，岸邊的蘆葦長得比人還高。有個年輕人蹲在河邊唉聲嘆氣，林子裡不時傳來野獸的低吼。",
+      "exits": [{"dir": "S", "to": "zn_road2"}], "npcs": ["n_qz_chendabao"], "features": ["WATER"], "requires": [],
+      "encounter": { "rate": 0.12,
+        "table": [
+          {"monster": "m_wolf", "w": 40, "count": [1, 1]},
+          {"monster": "m_boar", "w": 30, "count": [1, 1]},
+          {"monster": "m_bigrabbit", "w": 20, "count": [1, 1]},
+          {"monster": "m_bandit", "w": 10, "count": [1, 1]}
+        ] } },
+    { "id": "zn_foot", "name": "終南山腳", "desc": "終南山腳下的岔路口，北邊石階直通全真教山門，常有道童挑水上山。往東是後山，往東北的山路通往武當。",
+      "exits": [
+        {"dir": "SW", "to": "zn_road2"},
+        {"dir": "N", "to": "qz_gate"},
+        {"dir": "E", "to": "zn_backhill"},
+        {"dir": "NE", "to": "zn_east"}
+      ],
+      "npcs": [], "features": [], "requires": [],
+      "encounter": { "rate": 0.08,
+        "table": [{"monster": "m_rabbit", "w": 60, "count": [1, 1]}, {"monster": "m_bigrabbit", "w": 40, "count": [1, 1]}] } },
+    { "id": "zn_east", "name": "終南東麓", "desc": "終南山東側的山坳，一條踩出來的小路翻過山脊往東北去，聽說走到底就是武當山腳。",
+      "exits": [{"dir": "SW", "to": "zn_foot"}, {"dir": "NE", "to": "wd_road2"}], "npcs": [], "features": [],
+      "requires": [],
+      "encounter": { "rate": 0.1,
+        "table": [
+          {"monster": "m_bigrabbit", "w": 50, "count": [1, 1]},
+          {"monster": "m_rabbit", "w": 20, "count": [1, 1]},
+          {"monster": "m_wolf", "w": 25, "count": [1, 1]},
+          {"monster": "m_boar", "w": 5, "count": [1, 1]}
+        ] } },
+    { "id": "zn_backhill", "name": "終南後山", "desc": "後山林木幽深，人跡罕至。往東的林子深處立著一塊刻有「活死人墓」的石碑，全真弟子都知道那裡去不得。",
+      "exits": [{"dir": "W", "to": "zn_foot"}, {"dir": "E", "to": "gm_entrance"}], "npcs": [], "features": ["WOOD"],
+      "requires": [],
+      "encounter": { "rate": 0.08,
+        "table": [{"monster": "m_rabbit", "w": 50, "count": [1, 1]}, {"monster": "m_bigrabbit", "w": 50, "count": [1, 1]}] } }
+  ]
+}

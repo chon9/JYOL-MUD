@@ -1,0 +1,20 @@
+{
+  "table": "eras", "version": 1,
+  "rows": [
+    { "id": "1.0A",  "name": "公測開服",   "order": 0,   "date": "2001-06-28", "requires": [],        "base": true,  "src": "verified" },
+    { "id": "1.0B",  "name": "神鵰大俠",   "order": 10,  "date": "2001-09-28", "requires": ["1.0A"],  "base": false, "src": "verified" },
+    { "id": "gmdk",  "name": "決戰光明頂", "order": 20,  "date": "2002-01-23", "requires": ["1.0B"],  "base": false, "src": "verified" },
+    { "id": "xkd",   "name": "勇闖俠客島", "order": 30,  "date": "2002-06-06", "requires": ["gmdk"],  "base": false, "src": "verified" },
+    { "id": "khbd",  "name": "葵花寶典",   "order": 40,  "date": "2002-09-18", "requires": ["xkd"],   "base": false, "src": "verified" },
+    { "id": "qfcq",  "name": "喬峰傳奇",   "order": 50,  "date": "2003-01-15", "requires": ["khbd"],  "base": false, "src": "verified" },
+    { "id": "xbcq",  "name": "小寶闖情關", "order": 60,  "date": "2003-05-21", "requires": ["qfcq"],  "base": false, "src": "verified" },
+    { "id": "gjdx",  "name": "郭靖大俠",   "order": 70,  "date": "2003-11-12", "requires": ["xbcq"],  "base": false, "src": "verified" },
+    { "id": "sjjs",  "name": "書劍江山",   "order": 80,  "date": "2004-04-21", "requires": ["gjdx"],  "base": false, "src": "verified" },
+    { "id": "lyfh",  "name": "冷月飛狐",   "order": 90,  "date": "2004-08-27", "requires": ["sjjs"],  "base": false, "src": "verified" },
+    { "id": "bxsc",  "name": "碧血沙場",   "order": 100, "date": "2005-02-23", "requires": ["lyfh"],  "base": false, "src": "verified" },
+    { "id": "wlhd",  "name": "武林浩蕩",   "order": 101, "date": "2005-02-23", "requires": ["lyfh"],  "base": false, "src": "verified" },
+    { "id": "lzlhc", "name": "浪子令狐沖", "order": 110, "date": "2006-01-18", "requires": ["bxsc"],  "base": false, "src": "verified" },
+    { "id": "rysj",  "name": "日月神教",   "order": 120, "date": "2006-10-04", "requires": ["lzlhc"], "base": false, "src": "verified" },
+    { "id": "wyjp",  "name": "五嶽劍派",   "order": 130, "date": "2007-07-18", "requires": ["rysj"],  "base": false, "src": "verified" }
+  ]
+}

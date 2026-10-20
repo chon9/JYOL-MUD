@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://ciwa6o2o1k2my"
+path="res://.godot/imported/天涯任我行 刀劍同行.mp3-f0a92e321f0f8032ff58c816d90d7148.mp3str"
+
+[deps]
+
+source_file="res://assets/bgm/天涯任我行 刀劍同行.mp3"
+dest_files=["res://.godot/imported/天涯任我行 刀劍同行.mp3-f0a92e321f0f8032ff58c816d90d7148.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

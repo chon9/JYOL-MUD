@@ -1,0 +1,2 @@
+# 開發／編輯器執行的資料根目錄（相對於本檔所在的專案根目錄）。測試根目錄＝旁邊的 testdata/。見 core/util/data_root.gd
+../JY-Mini-OL-Work/userdata

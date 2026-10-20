@@ -1,0 +1,9 @@
+{
+  "region_id": "gaibang", "era": "1.0B", "src": "proposal", "desc": "京城北郊山路半腰的一座破山神廟，丐幫總舵就設在這裡，四方叫化子進進出出。", "escape_tiles_hint": 2,
+  "rooms": [
+    {"id": "gb_gate", "name": "破廟門口", "desc": "一座年久失修的山神廟，廟門半掩，門楣上的匾額早已斑駁難辨，幾個叫化子蹲在門檻上捉蝨子曬太陽。往西回山路岔口，往北進廟。", "exits": [{"dir": "W", "to": "jcn_road2"}, {"dir": "N", "to": "gb_pomiao"}], "npcs": [], "features": [], "requires": [], "src_note": "2001：門外沒有商人、沒有查小鏞（O4）；官方後期「回丐幫入破廟門口」"},
+    {"id": "gb_pomiao", "name": "破廟正殿", "desc": "殿中神像缺了半邊臉，香案上供著一根竹棒和幾隻破碗，丐幫弟子三三兩兩圍坐在草堆上。陳長老就在這裡主持幫務。", "exits": [{"dir": "S", "to": "gb_gate"}, {"dir": "N", "to": "gb_houdian"}, {"dir": "E", "to": "gb_yuan"}], "npcs": ["n_gb_chen"], "features": [], "requires": [], "src_note": "2001-10-29「一群乞丐躲雨的破廟」"},
+    {"id": "gb_houdian", "name": "破廟後殿", "desc": "後殿收拾得比前頭乾淨些，傳功長老盤坐草蓆，指點弟子拳腳棍棒；牆角堆滿了練功用的竹棒。", "exits": [{"dir": "S", "to": "gb_pomiao"}], "npcs": ["n_gb_chuangong", "n_gb_spar"], "features": [], "requires": []},
+    {"id": "gb_yuan", "name": "破廟後院", "desc": "後院雜草叢生，一口枯井旁拴著幾條黃狗，掌棍長老與執法長老常在井邊議事。", "exits": [{"dir": "W", "to": "gb_pomiao"}], "npcs": ["n_gb_zhanggun", "n_gb_zhifa"], "features": [], "requires": []}
+  ]
+}

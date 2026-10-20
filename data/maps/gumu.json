@@ -1,0 +1,105 @@
+{
+  "region_id": "gumu",
+  "era": "1.0A",
+  "src": "proposal",
+  "desc": "終南山後的活死人墓，古墓派代代隱居於此，弟子終生少有離開。",
+  "escape_tiles_hint": 2,
+  "rooms": [
+    { "id": "gm_entrance", "name": "活死人墓入口",
+      "desc": "終南山後山的密林深處，一塊大石碑半埋在亂草裡，碑後是一道黑沉沉的墓門。白髮的孫婆婆守在門邊，查小鏞在一旁的樹下記事。往西回終南山後山。",
+      "exits": [{"dir": "W", "to": "zn_backhill"}, {"dir": "IN", "to": "gm_mz_1"}],
+      "npcs": ["n_gm_cha", "n_gm_sunpopo"], "features": [], "requires": [] },
+    { "id": "gm_hall", "name": "古墓正廳", "desc": "墓室高大寬敞，四壁點著長明燈，石桌石椅一塵不染。古墓派掌門人在此收徒傳藝；往外是迷宮般的墓道。",
+      "exits": [
+        {"dir": "OUT", "to": "gm_mz_4"},
+        {"dir": "E", "to": "gm_lianwu"},
+        {"dir": "W", "to": "gm_food"},
+        {"dir": "N", "to": "gm_xiaolongnu"}
+      ],
+      "npcs": ["n_gm_zhangmen", "n_gm_yinlu"], "features": [], "requires": [] },
+    { "id": "gm_lianwu", "name": "練功室", "desc": "石室頂上垂著一條繩索，地上畫著九宮格。師姊們在這裡指點基本武學，也陪新入門的弟子對招。南邊有一道石門通往石室。",
+      "exits": [{"dir": "W", "to": "gm_hall"}, {"dir": "S", "to": "gm_shishi"}],
+      "npcs": ["n_gm_dashijie", "n_gm_spar"], "features": [],
+      "requires": [
+        { "type": "any_of",
+          "options": [
+            [{"type": "sect", "sect": "gumu"}],
+            [
+              {"type": "no_sect"},
+              {"type": "gender", "value": "F"},
+              {"type": "morality_min", "value": -299},
+              {"type": "morality_max", "value": 299},
+              {"type": "not_enemy_of", "sect": "gumu"}
+            ]
+          ] }
+      ] },
+    { "id": "gm_food", "name": "送飯石室", "desc": "石室裡擺著一口大陶缸和幾疊粗碗，卯、午、酉三個時辰，送飯的弟子會在這裡分發飯食，來者不拒。往北是墓後的花園。",
+      "exits": [{"dir": "E", "to": "gm_hall"}, {"dir": "N", "to": "gm_huayuan"}], "npcs": ["n_gm_songfan"],
+      "features": ["STOVE"], "requires": [] },
+    { "id": "gm_huayuan", "name": "墓後花園", "desc": "墓後一塊隱密的園子，種著花樹與菜蔬，蜂巢裡的玉蜂嗡嗡飛舞。一道山泉從石縫間流過。",
+      "exits": [{"dir": "S", "to": "gm_food"}], "npcs": [], "features": ["FIELD", "WATER"],
+      "requires": [
+        { "type": "any_of",
+          "options": [
+            [{"type": "sect", "sect": "gumu"}],
+            [
+              {"type": "no_sect"},
+              {"type": "gender", "value": "F"},
+              {"type": "morality_min", "value": -299},
+              {"type": "morality_max", "value": 299},
+              {"type": "not_enemy_of", "sect": "gumu"}
+            ]
+          ] }
+      ] },
+    { "id": "gm_xiaolongnu", "name": "小龍女居室", "desc": "室中只有一張石床、一盞油燈，素淨得不像有人居住。白衣的小龍女靜坐其中，傳授本門上乘武功。東邊寒氣逼人，西邊是小梅的房間。",
+      "exits": [{"dir": "S", "to": "gm_hall"}, {"dir": "E", "to": "gm_hanyu"}, {"dir": "W", "to": "gm_xiaomei"}],
+      "npcs": ["n_gm_xiaolongnu"], "features": [],
+      "requires": [
+        { "type": "any_of",
+          "options": [
+            [{"type": "sect", "sect": "gumu"}],
+            [
+              {"type": "no_sect"},
+              {"type": "gender", "value": "F"},
+              {"type": "morality_min", "value": -299},
+              {"type": "morality_max", "value": 299},
+              {"type": "not_enemy_of", "sect": "gumu"}
+            ]
+          ] }
+      ] },
+    { "id": "gm_hanyu", "name": "寒玉床石室", "desc": "石室正中放著一張寒玉床，寒氣森森，在上面打坐練功事半功倍，只是精氣神也耗得極快。",
+      "exits": [{"dir": "W", "to": "gm_xiaolongnu"}], "npcs": ["n_gm_hanyu"], "features": [],
+      "requires": [
+        { "type": "any_of",
+          "options": [
+            [{"type": "sect", "sect": "gumu"}],
+            [
+              {"type": "no_sect"},
+              {"type": "gender", "value": "F"},
+              {"type": "morality_min", "value": -299},
+              {"type": "morality_max", "value": 299},
+              {"type": "not_enemy_of", "sect": "gumu"}
+            ]
+          ] }
+      ],
+      "meditate": {"mult": 1.5, "drain_pct": 0.05} },
+    { "id": "gm_xiaomei", "name": "小梅的房間", "desc": "小小的石室收拾得整整齊齊，床頭插著一枝梅花。小梅常在這裡陪師妹們練習清心的功夫。",
+      "exits": [{"dir": "E", "to": "gm_xiaolongnu"}], "npcs": ["n_gm_xiaomei"], "features": [],
+      "requires": [
+        { "type": "any_of",
+          "options": [
+            [{"type": "sect", "sect": "gumu"}],
+            [
+              {"type": "no_sect"},
+              {"type": "gender", "value": "F"},
+              {"type": "morality_min", "value": -299},
+              {"type": "morality_max", "value": 299},
+              {"type": "not_enemy_of", "sect": "gumu"}
+            ]
+          ] }
+      ] },
+    { "id": "gm_shishi", "name": "石室", "desc": "一間沒有窗戶的小石室，只有牆角一盞油燈。犯了門規的弟子被關在這裡面壁思過。",
+      "exits": [{"dir": "N", "to": "gm_lianwu"}], "npcs": ["n_gm_jailer"], "features": [],
+      "requires": [{"type": "sect", "sect": "gumu"}], "jail": true }
+  ]
+}

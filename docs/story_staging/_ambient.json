@@ -1,0 +1,1498 @@
+{
+  "fragment": "_ambient",
+  "version": 1,
+  "author": "WP-AMBIENT",
+  "quests": [],
+  "npcs": [
+    {
+      "id": "n_amb_etou_xe",
+      "name": "惡人頭子",
+      "kind": "EVIL_NPC",
+      "region": "xixia_east",
+      "room": "xe_mine",
+      "alignment": "EVIL",
+      "talk": "talk_n_amb_etou",
+      "services": [],
+      "night_closed": false,
+      "desc": "滿臉橫肉的惡人頭子，在野外四處遊蕩，專找落單的人下手。",
+      "era": "1.0A",
+      "since": "2001-08-30",
+      "src": "proposal",
+      "src_note": "追擊 NPC：研究 2001-08-30；位置由 WanderSystem 移動（此處是起點）"
+    },
+    {
+      "id": "n_amb_etou_dlw",
+      "name": "惡人頭子",
+      "kind": "EVIL_NPC",
+      "region": "dali_wild",
+      "room": "dlw_eastwood",
+      "alignment": "EVIL",
+      "talk": "talk_n_amb_etou",
+      "services": [],
+      "night_closed": false,
+      "desc": "滿臉橫肉的惡人頭子，在野外四處遊蕩，專找落單的人下手。",
+      "era": "1.0A",
+      "since": "2001-08-30",
+      "src": "proposal",
+      "src_note": "追擊 NPC：研究 2001-08-30；位置由 WanderSystem 移動（此處是起點）"
+    },
+    {
+      "id": "n_amb_etou_ss",
+      "name": "惡人頭子",
+      "kind": "EVIL_NPC",
+      "region": "songshan_road",
+      "room": "sy_pines",
+      "alignment": "EVIL",
+      "talk": "talk_n_amb_etou",
+      "services": [],
+      "night_closed": false,
+      "desc": "滿臉橫肉的惡人頭子，在野外四處遊蕩，專找落單的人下手。",
+      "era": "1.0A",
+      "since": "2001-08-30",
+      "src": "proposal",
+      "src_note": "追擊 NPC：研究 2001-08-30；位置由 WanderSystem 移動（此處是起點）"
+    }
+  ],
+  "npc_links": [],
+  "shop_patches": [],
+  "art_patches": [],
+  "items": [],
+  "monsters": [
+    {
+      "id": "m_nanhai",
+      "name": "南海鱷神",
+      "short": "鱷神",
+      "kind": "EVIL_NPC",
+      "alignment": "EVIL",
+      "desc": "四大惡人排行第三的岳老三，自稱岳老二，腦袋奇大、力大無窮，一把鱷嘴剪專剪人腦袋。（存在：已證實；「超強」：研究；數值：設計提案）",
+      "stats": {
+        "qi": 3800,
+        "neili": 600,
+        "jing": 800,
+        "str": 34,
+        "guts": 32,
+        "wit": 16,
+        "luck": 20,
+        "cal": 30,
+        "agi": 26,
+        "con": 34
+      },
+      "skills": {
+        "basic_dodge": 85,
+        "basic_parry": 90,
+        "basic_inner": 80
+      },
+      "arts": [
+        {
+          "art": "mon_blade",
+          "level": 90
+        }
+      ],
+      "weapon_type": "BLADE",
+      "weapon_power": 45,
+      "armor_power": 60,
+      "combat_xp_ref": 80000,
+      "combat_xp": 400,
+      "learn_points": 150,
+      "drops": [
+        {
+          "item": "c_qiyao",
+          "chance": 1.0,
+          "min": 1,
+          "max": 2
+        }
+      ],
+      "money": {
+        "min": 100,
+        "max": 300
+      },
+      "morality_on_kill": 20,
+      "killing_intent_on_kill": 10,
+      "ai": "melee_basic",
+      "no_rewards": false,
+      "era": "1.0A",
+      "src": "proposal"
+    },
+    {
+      "id": "m_yeerniang",
+      "name": "葉二娘",
+      "short": "葉二娘",
+      "kind": "EVIL_NPC",
+      "alignment": "EVIL",
+      "desc": "四大惡人之二「無惡不作」，臉上三道血痕，懷裡總抱著搶來的嬰兒，出手陰狠迅捷。（存在：已證實；「超強」：研究；數值：設計提案）",
+      "stats": {
+        "qi": 3300,
+        "neili": 600,
+        "jing": 750,
+        "str": 28,
+        "guts": 30,
+        "wit": 26,
+        "luck": 20,
+        "cal": 30,
+        "agi": 34,
+        "con": 28
+      },
+      "skills": {
+        "basic_dodge": 90,
+        "basic_parry": 80,
+        "basic_inner": 80
+      },
+      "arts": [
+        {
+          "art": "mon_ghost",
+          "level": 85
+        }
+      ],
+      "weapon_type": "FIST",
+      "weapon_power": 0,
+      "armor_power": 55,
+      "combat_xp_ref": 70000,
+      "combat_xp": 350,
+      "learn_points": 130,
+      "drops": [
+        {
+          "item": "c_qiyao",
+          "chance": 1.0,
+          "min": 1,
+          "max": 2
+        }
+      ],
+      "money": {
+        "min": 80,
+        "max": 250
+      },
+      "morality_on_kill": 20,
+      "killing_intent_on_kill": 10,
+      "ai": "melee_basic",
+      "no_rewards": false,
+      "era": "1.0A",
+      "src": "proposal"
+    },
+    {
+      "id": "m_amb_etou",
+      "name": "惡人頭子",
+      "short": "惡人",
+      "kind": "EVIL_NPC",
+      "alignment": "EVIL",
+      "desc": "在野外攔路行兇的惡人頭子，見了落單的江湖人便追上來動手。（追擊 NPC：研究 2001-08-30；數值：設計提案）",
+      "stats": {
+        "qi": 1300,
+        "neili": 200,
+        "jing": 350,
+        "str": 24,
+        "guts": 26,
+        "wit": 16,
+        "luck": 16,
+        "cal": 22,
+        "agi": 24,
+        "con": 24
+      },
+      "skills": {
+        "basic_dodge": 45,
+        "basic_parry": 45,
+        "basic_inner": 30
+      },
+      "arts": [
+        {
+          "art": "mon_blade",
+          "level": 45
+        }
+      ],
+      "weapon_type": "BLADE",
+      "weapon_power": 20,
+      "armor_power": 38,
+      "combat_xp_ref": 15000,
+      "combat_xp": 120,
+      "learn_points": 45,
+      "drops": [
+        {
+          "item": "c_qiyao",
+          "chance": 0.3,
+          "min": 1,
+          "max": 1
+        }
+      ],
+      "money": {
+        "min": 60,
+        "max": 160
+      },
+      "morality_on_kill": 5,
+      "killing_intent_on_kill": 5,
+      "ai": "melee_basic",
+      "no_rewards": false,
+      "era": "1.0A",
+      "src": "proposal",
+      "since": "2001-08-30"
+    }
+  ],
+  "martial_arts": [],
+  "masters": [],
+  "text_templates": [
+    {
+      "id": "e_pk_kill",
+      "era": "1.0A",
+      "self": "{def_name}在{room_name}遭{atk_name}下了殺手，命喪當場。",
+      "other": "{def_name}在{room_name}遭{atk_name}下了殺手，命喪當場。",
+      "src": "proposal",
+      "src_note": "M2 pk_kill 的全服廣播改走江湖傳聞（STORY_PLAN §5.1 #4）"
+    },
+    {
+      "id": "rmr_w_nanhai_roam",
+      "era": "1.0A",
+      "self": "天一黑，有人看見南海鱷神晃出了西夏城，在{region_name}一帶找人晦氣。夜裡出城的人可得當心。",
+      "other": "天一黑，有人看見南海鱷神晃出了西夏城，在{region_name}一帶找人晦氣。夜裡出城的人可得當心。",
+      "src": "proposal"
+    },
+    {
+      "id": "rmr_w_nanhai_defeated",
+      "era": "1.0A",
+      "self": "{name}在{room_name}擊退了南海鱷神！岳老二……不，岳老三這回可丟盡了臉。",
+      "other": "{name}在{room_name}擊退了南海鱷神！岳老二……不，岳老三這回可丟盡了臉。",
+      "src": "proposal"
+    },
+    {
+      "id": "rmr_w_yeerniang_roam",
+      "era": "1.0A",
+      "self": "入夜之後，葉二娘抱著孩子出了城，往{region_name}去了。行俠仗義的人尤其要小心。",
+      "other": "入夜之後，葉二娘抱著孩子出了城，往{region_name}去了。行俠仗義的人尤其要小心。",
+      "src": "proposal"
+    },
+    {
+      "id": "rmr_w_yeerniang_defeated",
+      "era": "1.0A",
+      "self": "{name}在{room_name}打退了葉二娘，四大惡人的名頭也不過如此。",
+      "other": "{name}在{room_name}打退了葉二娘，四大惡人的名頭也不過如此。",
+      "src": "proposal"
+    },
+    {
+      "id": "rmr_w_etou_roam",
+      "era": "1.0A",
+      "self": "聽說{region_name}一帶有惡人頭子攔路行兇，落單的旅人最好結伴而行。",
+      "other": "聽說{region_name}一帶有惡人頭子攔路行兇，落單的旅人最好結伴而行。",
+      "src": "proposal"
+    },
+    {
+      "id": "rmr_w_etou_defeated",
+      "era": "1.0A",
+      "self": "{name}在{room_name}打跑了作惡多端的{npc_name}，過路的人總算能安心些了。",
+      "other": "{name}在{room_name}打跑了作惡多端的{npc_name}，過路的人總算能安心些了。",
+      "src": "proposal"
+    },
+    {
+      "id": "rmr_deed_fame",
+      "era": "1.0A",
+      "self": "{name}的名聲已達{fame}，江湖上漸漸有人提起這個名字。",
+      "other": "{name}的名聲已達{fame}，江湖上漸漸有人提起這個名字。",
+      "src": "proposal"
+    },
+    {
+      "id": "rmr_deed_evil",
+      "era": "1.0A",
+      "self": "聽說{name}近來行事狠辣，已經成了人人提防的惡徒。",
+      "other": "聽說{name}近來行事狠辣，已經成了人人提防的惡徒。",
+      "src": "proposal"
+    },
+    {
+      "id": "rmr_deed_saint",
+      "era": "1.0A",
+      "self": "{name}行俠仗義、善名遠播，百姓都說是位大俠。",
+      "other": "{name}行俠仗義、善名遠播，百姓都說是位大俠。",
+      "src": "proposal"
+    },
+    {
+      "id": "rmr_deed_join",
+      "era": "1.0A",
+      "self": "{name}拜入了{sect_name}門下。",
+      "other": "{name}拜入了{sect_name}門下。",
+      "src": "proposal"
+    },
+    {
+      "id": "rmr_deed_betray",
+      "era": "1.0A",
+      "self": "{name}背叛了{sect_name}，從此成了師門的公敵。",
+      "other": "{name}背叛了{sect_name}，從此成了師門的公敵。",
+      "src": "proposal"
+    },
+    {
+      "id": "villain_warn",
+      "era": "1.0A",
+      "self": "{npc_name}朝你逼近！快離開這裡！",
+      "src": "proposal"
+    },
+    {
+      "id": "villain_attack",
+      "era": "1.0A",
+      "self": "{npc_name}獰笑一聲，向你撲了過來！",
+      "src": "proposal"
+    },
+    {
+      "id": "villain_escaped",
+      "era": "1.0A",
+      "self": "你及時抽身，甩開了{npc_name}。",
+      "src": "proposal"
+    },
+    {
+      "id": "villain_call",
+      "era": "1.0A",
+      "self": "【求救】{name}在{region_name}的{room_name}遭{npc_name}襲擊！",
+      "src": "proposal"
+    },
+    {
+      "id": "villain_call_sent",
+      "era": "1.0A",
+      "self": "你高聲呼救：「{npc_name}在{room_name}行兇，快來幫忙！」",
+      "src": "proposal"
+    },
+    {
+      "id": "villain_home",
+      "era": "1.0A",
+      "self": "{npc_name}罵罵咧咧地回城去了。",
+      "other": "{npc_name}罵罵咧咧地回城去了。",
+      "src": "proposal"
+    },
+    {
+      "id": "villain_out",
+      "era": "1.0A",
+      "self": "{npc_name}趁著夜色出城去了。",
+      "other": "{npc_name}趁著夜色出城去了。",
+      "src": "proposal"
+    },
+    {
+      "id": "villain_move_out",
+      "era": "1.0A",
+      "self": "{npc_name}往{dir_label}邊去了。",
+      "other": "{npc_name}往{dir_label}邊去了。",
+      "src": "proposal"
+    },
+    {
+      "id": "villain_move_in",
+      "era": "1.0A",
+      "self": "{npc_name}大搖大擺地走了過來。",
+      "other": "{npc_name}大搖大擺地走了過來。",
+      "src": "proposal"
+    },
+    {
+      "id": "greet_refuse_evil",
+      "era": "1.0A",
+      "self": "{npc_name}臉色一沉：「哼，你這種人也敢上門？」",
+      "src": "proposal"
+    },
+    {
+      "id": "greet_cold_evil",
+      "era": "1.0A",
+      "self": "{npc_name}冷冷地看著你：「要買就快買，買完快走。」",
+      "src": "proposal"
+    },
+    {
+      "id": "greet_evil_shop_refuse",
+      "era": "1.0A",
+      "self": "{npc_name}嗤笑一聲：「名門正派的大俠，也來我們這種地方？請回吧。」",
+      "src": "proposal"
+    },
+    {
+      "id": "greet_evil_shop_cold",
+      "era": "1.0A",
+      "self": "{npc_name}斜眼看你：「正道的人？價錢可得另算。」",
+      "src": "proposal"
+    },
+    {
+      "id": "greet_fame_shop",
+      "era": "1.0A",
+      "self": "{npc_name}連忙迎了上來：「久仰大名！小店給您算便宜些。」",
+      "src": "proposal"
+    },
+    {
+      "id": "greet_fame",
+      "era": "1.0A",
+      "self": "{npc_name}抱拳道：「閣下就是{name}？久仰大名。」",
+      "src": "proposal"
+    },
+    {
+      "id": "greet_newbie",
+      "era": "1.0A",
+      "self": "{npc_name}打量了你一眼：「頭一回出門闖蕩吧？凡事多問問人。」",
+      "src": "proposal"
+    },
+    {
+      "id": "rx_refuse_evil",
+      "era": "1.0A",
+      "self": "{npc_name}擺擺手：「你這種惡名在外的人，小店不做你的生意。」",
+      "src": "proposal"
+    },
+    {
+      "id": "rx_refuse_saint",
+      "era": "1.0A",
+      "self": "{npc_name}冷笑：「正道大俠的銀子，我們可不敢收。」",
+      "src": "proposal"
+    },
+    {
+      "id": "talk_n_amb_etou",
+      "era": "1.0A",
+      "self": "{npc_name}橫眉豎目地瞪著你：「看什麼看？把值錢的東西留下！」",
+      "src": "proposal"
+    },
+    {
+      "id": "talk_n_amb_etou@NIGHT",
+      "era": "1.0A",
+      "self": "{npc_name}在黑暗中獰笑：「三更半夜還敢在這條路上走？」",
+      "src": "proposal"
+    },
+    {
+      "id": "talk_n_wujieshan@NIGHT",
+      "era": "1.0A",
+      "self": "{npc_name}打了個呵欠：「天都黑了，荒草坡上的野兔也該睡了吧……大兔皮的事，明天再說。」",
+      "src": "proposal"
+    },
+    {
+      "id": "talk_n_zhangwuji@NIGHT",
+      "era": "1.0A",
+      "self": "{npc_name}倚著窗望向夜色：「夜裡行路要多加小心，聽說城外不太平。」",
+      "src": "proposal"
+    },
+    {
+      "id": "talk_n_chenjialuo@NIGHT",
+      "era": "1.0A",
+      "self": "{npc_name}仰頭望著滿天星斗：「大漠的夜空，倒是比江南清朗得多。」",
+      "src": "proposal"
+    },
+    {
+      "id": "talk_n_xe_miner@NIGHT",
+      "era": "1.0A",
+      "self": "{npc_name}提著油燈：「夜裡礦坑裡的怪聲更大了，我可不敢再往下走。」",
+      "src": "proposal"
+    },
+    {
+      "id": "talk_n_dl_bukuai@NIGHT",
+      "era": "1.0A",
+      "self": "{npc_name}揉著眼睛：「夜裡還得巡街，剿匪的事明早再議吧。」",
+      "src": "proposal"
+    },
+    {
+      "id": "talk_n_weixiaobao@NIGHT",
+      "era": "1.0A",
+      "self": "{npc_name}打著哈欠：「這麼晚了還不睡？要不要來擲兩把骰子？」",
+      "src": "proposal"
+    },
+    {
+      "id": "talk_n_shuanger@NIGHT",
+      "era": "1.0A",
+      "self": "{npc_name}輕聲說：「相公睡下了，您小聲些。」",
+      "src": "proposal"
+    },
+    {
+      "id": "talk_n_taoyun@NIGHT",
+      "era": "1.0A",
+      "self": "{npc_name}坐在田埂上歇腳：「天黑了，稻子也該歇歇了。明天一早再來吧。」",
+      "src": "proposal"
+    },
+    {
+      "id": "talk_n_em_beimianyi@NIGHT",
+      "era": "1.0A",
+      "self": "{npc_name}提著燈籠巡夜：「這麼晚了還在外頭？師父知道了可要罰的。」",
+      "src": "proposal"
+    },
+    {
+      "id": "talk_n_em_dingminjun@NIGHT",
+      "era": "1.0A",
+      "self": "{npc_name}冷哼一聲：「大半夜的不去練功，到處亂逛做什麼？」",
+      "src": "proposal"
+    },
+    {
+      "id": "talk_n_em_zhouzhiruo@NIGHT",
+      "era": "1.0A",
+      "self": "{npc_name}在燈下抄經：「夜深了，師姐也早點歇息吧。」",
+      "src": "proposal"
+    },
+    {
+      "id": "talk_n_em_jingguan@NIGHT",
+      "era": "1.0A",
+      "self": "{npc_name}望著窗外的月亮出神：「每到這樣的夜裡，就會想起師伯……」",
+      "src": "proposal"
+    },
+    {
+      "id": "talk_n_em_lianxiang@NIGHT",
+      "era": "1.0A",
+      "self": "{npc_name}閉目打坐：「夜裡最宜靜心。坐下來，一起禪修吧。」",
+      "src": "proposal"
+    },
+    {
+      "id": "talk_n_em_jinxiaomei@NIGHT",
+      "era": "1.0A",
+      "self": "{npc_name}揉著肚子：「廚房的灶火都熄了……師姐，你身上有沒有吃的？」",
+      "src": "proposal"
+    },
+    {
+      "id": "talk_n_em_jianchi@NIGHT",
+      "era": "1.0A",
+      "self": "{npc_name}抱著劍縮在山腳下：「冷凝劍……夜裡也冷，劍也冷……」",
+      "src": "proposal"
+    },
+    {
+      "id": "talk_n_em_jixiaofu@NIGHT",
+      "era": "1.0A",
+      "self": "{npc_name}望著黑沉沉的林子：「這麼晚了……他今天大概不會來了。」",
+      "src": "proposal"
+    },
+    {
+      "id": "talk_n_em_yingyueer@NIGHT",
+      "era": "1.0A",
+      "self": "{npc_name}托著腮望向門外：「天都黑了……茶都涼了。」",
+      "src": "proposal"
+    },
+    {
+      "id": "talk_n_lj_chengqingshuang@NIGHT",
+      "era": "1.0A",
+      "self": "{npc_name}放下手中的紡錘：「夜裡風大，師妹多添件衣裳。有什麼心事，不妨跟我說說。」",
+      "src": "proposal"
+    },
+    {
+      "id": "talk_n_lj_fuminyi@NIGHT",
+      "era": "1.0A",
+      "self": "{npc_name}裹著棉被直打哆嗦：「夜裡更冷了……哈啾！」",
+      "src": "proposal"
+    },
+    {
+      "id": "talk_n_qz_lizhichang@NIGHT",
+      "era": "1.0A",
+      "self": "{npc_name}收起木劍：「天黑了，切磋明天再來吧。」",
+      "src": "proposal"
+    },
+    {
+      "id": "talk_n_qz_biye@NIGHT",
+      "era": "1.0A",
+      "self": "{npc_name}就著油燈看書：「出師的事，白天再談。」",
+      "src": "proposal"
+    },
+    {
+      "id": "talk_n_qz_huipai@NIGHT",
+      "era": "1.0A",
+      "self": "{npc_name}打了個呵欠：「登記的事，明天再說吧。」",
+      "src": "proposal"
+    },
+    {
+      "id": "talk_n_qz_dongkou@NIGHT",
+      "era": "1.0A",
+      "self": "{npc_name}壓低聲音：「再等等，子時一到，洞裡就……噓，別出聲。」",
+      "src": "proposal"
+    },
+    {
+      "id": "talk_n_qz_zhangyuan@NIGHT",
+      "era": "1.0A",
+      "self": "{npc_name}提著燈籠在菜園裡巡看：「夜裡菜蟲最多，我得盯著些。」",
+      "src": "proposal"
+    },
+    {
+      "id": "talk_n_qz_chendabao@NIGHT",
+      "era": "1.0A",
+      "self": "{npc_name}在河邊來回踱步：「唉，又是一夜睡不著……」",
+      "src": "proposal"
+    },
+    {
+      "id": "talk_n_qz_chengfeng@NIGHT",
+      "era": "1.0A",
+      "self": "{npc_name}抱著酒葫蘆躺在路邊：「月亮……嘿，月亮也喝醉了，晃來晃去的。」",
+      "src": "proposal"
+    },
+    {
+      "id": "talk_n_wd_beizhong@NIGHT",
+      "era": "1.0A",
+      "self": "{npc_name}按著劍柄：「夜裡山門不開，有事明早再來。」",
+      "src": "proposal"
+    },
+    {
+      "id": "talk_n_wd_yinjian@NIGHT",
+      "era": "1.0A",
+      "self": "{npc_name}拱手道：「天色已晚，拜山的事明日再談不遲。」",
+      "src": "proposal"
+    },
+    {
+      "id": "talk_n_wd_zhongfei@NIGHT",
+      "era": "1.0A",
+      "self": "{npc_name}擦著劍：「師兄弟們都歇下了，練武場明天見。」",
+      "src": "proposal"
+    },
+    {
+      "id": "talk_n_wd_nongfu@NIGHT",
+      "era": "1.0A",
+      "self": "{npc_name}扛著鋤頭往回走：「天黑了，田裡的事明天再說。插秧要直，記得啊！」",
+      "src": "proposal"
+    },
+    {
+      "id": "talk_n_wd_nanyu@NIGHT",
+      "era": "1.0A",
+      "self": "{npc_name}捶著腰：「總算收工了……腰都直不起來了。」",
+      "src": "proposal"
+    },
+    {
+      "id": "talk_n_wd_xiyun@NIGHT",
+      "era": "1.0A",
+      "self": "{npc_name}在燈下臨帖：「夜裡寫字最能靜心，四師叔說的。」",
+      "src": "proposal"
+    },
+    {
+      "id": "talk_n_wd_songqingshu@NIGHT",
+      "era": "1.0A",
+      "self": "{npc_name}負手而立：「夜深了，有事明日再稟。」",
+      "src": "proposal"
+    },
+    {
+      "id": "talk_n_wd_dongchao@NIGHT",
+      "era": "1.0A",
+      "self": "{npc_name}望著南方出神：「大理那邊這時候……爹大概已經睡了吧。」",
+      "src": "proposal"
+    },
+    {
+      "id": "talk_n_wd_dl_oldman@NIGHT",
+      "era": "1.0A",
+      "self": "{npc_name}咳了幾聲：「人老了，夜裡睡不著，總惦記著山上的孩子。」",
+      "src": "proposal"
+    },
+    {
+      "id": "talk_n_xh_chuchenzi@NIGHT",
+      "era": "1.0A",
+      "self": "{npc_name}抱著瓦罐嘿嘿直笑：「夜裡毒蛇最多，正是捉蛇的好時候。」",
+      "src": "proposal"
+    },
+    {
+      "id": "talk_n_xh_shudouzi@NIGHT",
+      "era": "1.0A",
+      "self": "{npc_name}點起火把：「夜裡蟾蜍都出來了，捉毒物正是時候。」",
+      "src": "proposal"
+    },
+    {
+      "id": "talk_n_xh_tianlangzi@NIGHT",
+      "era": "1.0A",
+      "self": "{npc_name}盯著鼎下的火：「這毒得熬上一整夜，別來打擾我。」",
+      "src": "proposal"
+    },
+    {
+      "id": "talk_n_xd_shanyong@NIGHT",
+      "era": "1.0A",
+      "self": "{npc_name}在火堆旁磨刀：「夜裡最適合清理門戶。」",
+      "src": "proposal"
+    },
+    {
+      "id": "talk_n_xd_aihui@NIGHT",
+      "era": "1.0A",
+      "self": "{npc_name}陰惻惻地看著你：「天黑了……你還不走？」",
+      "src": "proposal"
+    },
+    {
+      "id": "talk_n_xd_buliu@NIGHT",
+      "era": "1.0A",
+      "self": "{npc_name}抱著胳膊靠在柱子上打盹：「出師的事，等天亮再說。」",
+      "src": "proposal"
+    },
+    {
+      "id": "talk_n_xd_buzou@NIGHT",
+      "era": "1.0A",
+      "self": "{npc_name}懶洋洋地翻了個身：「大半夜的，別吵。」",
+      "src": "proposal"
+    },
+    {
+      "id": "amb_g_xx_inn_news",
+      "era": "1.0A",
+      "self": "鄰桌幾個江湖客壓低了聲音說話，客棧向來是打聽消息的好地方。",
+      "src": "proposal"
+    },
+    {
+      "id": "amb_g_dl_inn_news",
+      "era": "1.0A",
+      "self": "櫃檯邊有人在談論最近江湖上的新鮮事，店小二豎著耳朵聽得入神。",
+      "src": "proposal"
+    },
+    {
+      "id": "amb_g_xx_night",
+      "era": "1.0A",
+      "self": "夜深了，西夏城裡的燈火一盞盞熄滅，街上只剩巡夜的梆子聲。",
+      "src": "proposal"
+    },
+    {
+      "id": "amb_g_dl_night",
+      "era": "1.0A",
+      "self": "大理城入夜後格外安靜，遠處五華樓上還亮著幾點燈火。",
+      "src": "proposal"
+    },
+    {
+      "id": "amb_g_xx_dawn",
+      "era": "1.0A",
+      "self": "天剛濛濛亮，廣場上已經有人在打拳練功了。",
+      "src": "proposal"
+    },
+    {
+      "id": "amb_g_xx_street_night",
+      "era": "1.0A",
+      "self": "街角兩個小販交頭接耳：「天一黑，那兩個惡人就出城去了……」",
+      "src": "proposal"
+    },
+    {
+      "id": "amb_g_xx_street_day",
+      "era": "1.0A",
+      "self": "路人遠遠繞過街心，生怕惹上那兩個煞星。",
+      "src": "proposal"
+    },
+    {
+      "id": "amb_g_hf_teaman_road",
+      "era": "1.0A",
+      "self": "茶棚老闆一邊擦桌子一邊說：「客官打哪兒來？這幾天路上不太平，天黑前最好找個地方落腳。」",
+      "src": "proposal"
+    },
+    {
+      "id": "amb_g_sy_teaman_road",
+      "era": "1.0A",
+      "self": "茶棚老闆替你斟了碗茶：「往東過了松林就是少室山；岔路往南上去，就是武當山了。」",
+      "src": "proposal"
+    },
+    {
+      "id": "amb_g_em_teaman_road",
+      "era": "1.0A",
+      "self": "茶棚老闆指著山道：「再往上走就是峨嵋山腳了，林子裡有山賊，可別一個人亂闖。」",
+      "src": "proposal"
+    },
+    {
+      "id": "amb_g_wd_nongfu_nag",
+      "era": "1.0A",
+      "self": "老農夫又叮嚀了一遍：「插秧要直，水別放太滿……我剛才說過了？那就再說一遍。」",
+      "src": "proposal"
+    },
+    {
+      "id": "amb_g_taoyun_nag",
+      "era": "1.0A",
+      "self": "陶耘彎著腰念叨：「稻子怕旱也怕澇，老天爺可得幫幫忙啊。」",
+      "src": "proposal"
+    },
+    {
+      "id": "amb_g_dl_scholar",
+      "era": "1.0A",
+      "self": "一個落第秀才拉住路人的衣袖：「借、借幾文盤纏，來年中了舉一定加倍奉還……」",
+      "src": "proposal"
+    },
+    {
+      "id": "amb_g_xw_night",
+      "era": "1.0A",
+      "self": "荒野裡傳來幾聲狼嚎，夜風吹得草叢沙沙作響。",
+      "src": "proposal"
+    },
+    {
+      "id": "amb_g_ws_night",
+      "era": "1.0A",
+      "self": "遠處的沙丘上似乎有個人影一晃而過，懷裡像是抱著什麼東西……",
+      "src": "proposal"
+    },
+    {
+      "id": "amb_g_xe_mine_night",
+      "era": "1.0A",
+      "self": "礦坑深處傳來一陣陣怪聲，礦工阿火縮了縮脖子。",
+      "src": "proposal"
+    },
+    {
+      "id": "amb_g_dlw_dusk",
+      "era": "1.0A",
+      "self": "夕陽沉進洱海，稻田邊的農人扛著鋤頭收工回家了。",
+      "src": "proposal"
+    },
+    {
+      "id": "amb_g_xx_pharmacy",
+      "era": "1.0A",
+      "self": "藥鋪裡瀰漫著一股苦澀的藥香。",
+      "src": "proposal"
+    }
+  ],
+  "rumors": [],
+  "ambient": [
+    {
+      "id": "amb_g_xx_inn_news",
+      "room": "xx_inn",
+      "periods": [],
+      "requires": [],
+      "weight": 1,
+      "text": "amb_g_xx_inn_news",
+      "era": "1.0A",
+      "src": "proposal",
+      "src_note": "環境句【設計提案・非原作】（§5.3）"
+    },
+    {
+      "id": "amb_g_dl_inn_news",
+      "room": "dl_inn",
+      "periods": [],
+      "requires": [],
+      "weight": 1,
+      "text": "amb_g_dl_inn_news",
+      "era": "1.0A",
+      "src": "proposal",
+      "src_note": "環境句【設計提案・非原作】（§5.3）"
+    },
+    {
+      "id": "amb_g_xx_night",
+      "region": "xixia",
+      "periods": [
+        "NIGHT"
+      ],
+      "requires": [],
+      "weight": 1,
+      "text": "amb_g_xx_night",
+      "era": "1.0A",
+      "src": "proposal",
+      "src_note": "環境句【設計提案・非原作】（§5.3）"
+    },
+    {
+      "id": "amb_g_dl_night",
+      "region": "dali",
+      "periods": [
+        "NIGHT"
+      ],
+      "requires": [],
+      "weight": 1,
+      "text": "amb_g_dl_night",
+      "era": "1.0A",
+      "src": "proposal",
+      "src_note": "環境句【設計提案・非原作】（§5.3）"
+    },
+    {
+      "id": "amb_g_xx_dawn",
+      "region": "xixia",
+      "periods": [
+        "DAWN"
+      ],
+      "requires": [],
+      "weight": 1,
+      "text": "amb_g_xx_dawn",
+      "era": "1.0A",
+      "src": "proposal",
+      "src_note": "環境句【設計提案・非原作】（§5.3）"
+    },
+    {
+      "id": "amb_g_xx_street_night",
+      "room": "xx_street",
+      "periods": [
+        "NIGHT",
+        "DUSK"
+      ],
+      "requires": [],
+      "weight": 1,
+      "text": "amb_g_xx_street_night",
+      "era": "1.0A",
+      "src": "proposal",
+      "src_note": "環境句【設計提案・非原作】（§5.3）"
+    },
+    {
+      "id": "amb_g_xx_street_day",
+      "room": "xx_street",
+      "periods": [
+        "DAY",
+        "DAWN"
+      ],
+      "requires": [],
+      "weight": 1,
+      "text": "amb_g_xx_street_day",
+      "era": "1.0A",
+      "src": "proposal",
+      "src_note": "環境句【設計提案・非原作】（§5.3）"
+    },
+    {
+      "id": "amb_g_hf_teaman_road",
+      "npc": "n_hf_teaman",
+      "periods": [],
+      "requires": [],
+      "weight": 1,
+      "text": "amb_g_hf_teaman_road",
+      "era": "1.0A",
+      "src": "proposal",
+      "src_note": "環境句【設計提案・非原作】（§5.3）"
+    },
+    {
+      "id": "amb_g_sy_teaman_road",
+      "npc": "n_sy_teaman",
+      "periods": [],
+      "requires": [],
+      "weight": 1,
+      "text": "amb_g_sy_teaman_road",
+      "era": "1.0A",
+      "src": "proposal",
+      "src_note": "環境句【設計提案・非原作】（§5.3）"
+    },
+    {
+      "id": "amb_g_em_teaman_road",
+      "npc": "n_em_teaman",
+      "periods": [],
+      "requires": [],
+      "weight": 1,
+      "text": "amb_g_em_teaman_road",
+      "era": "1.0A",
+      "src": "proposal",
+      "src_note": "環境句【設計提案・非原作】（§5.3）"
+    },
+    {
+      "id": "amb_g_wd_nongfu_nag",
+      "npc": "n_wd_nongfu",
+      "periods": [
+        "DAWN",
+        "DAY"
+      ],
+      "requires": [],
+      "weight": 1,
+      "text": "amb_g_wd_nongfu_nag",
+      "era": "1.0A",
+      "src": "proposal",
+      "src_note": "環境句【設計提案・非原作】（§5.3）"
+    },
+    {
+      "id": "amb_g_taoyun_nag",
+      "npc": "n_taoyun",
+      "periods": [
+        "DAWN",
+        "DAY"
+      ],
+      "requires": [],
+      "weight": 1,
+      "text": "amb_g_taoyun_nag",
+      "era": "1.0A",
+      "src": "proposal",
+      "src_note": "環境句【設計提案・非原作】（§5.3）"
+    },
+    {
+      "id": "amb_g_dl_scholar",
+      "room": "dl_square",
+      "periods": [
+        "DAY"
+      ],
+      "requires": [],
+      "weight": 1,
+      "text": "amb_g_dl_scholar",
+      "era": "1.0A",
+      "src": "proposal",
+      "src_note": "環境句【設計提案・非原作】（§5.3）"
+    },
+    {
+      "id": "amb_g_xw_night",
+      "region": "xixia_wild",
+      "periods": [
+        "NIGHT"
+      ],
+      "requires": [],
+      "weight": 1,
+      "text": "amb_g_xw_night",
+      "era": "1.0A",
+      "src": "proposal",
+      "src_note": "環境句【設計提案・非原作】（§5.3）"
+    },
+    {
+      "id": "amb_g_ws_night",
+      "region": "xixia_south",
+      "periods": [
+        "NIGHT"
+      ],
+      "requires": [],
+      "weight": 1,
+      "text": "amb_g_ws_night",
+      "era": "1.0A",
+      "src": "proposal",
+      "src_note": "環境句【設計提案・非原作】（§5.3）"
+    },
+    {
+      "id": "amb_g_xe_mine_night",
+      "npc": "n_xe_miner",
+      "periods": [
+        "NIGHT"
+      ],
+      "requires": [],
+      "weight": 1,
+      "text": "amb_g_xe_mine_night",
+      "era": "1.0A",
+      "src": "proposal",
+      "src_note": "環境句【設計提案・非原作】（§5.3）"
+    },
+    {
+      "id": "amb_g_dlw_dusk",
+      "region": "dali_wild",
+      "periods": [
+        "DUSK"
+      ],
+      "requires": [],
+      "weight": 1,
+      "text": "amb_g_dlw_dusk",
+      "era": "1.0A",
+      "src": "proposal",
+      "src_note": "環境句【設計提案・非原作】（§5.3）"
+    },
+    {
+      "id": "amb_g_xx_pharmacy",
+      "room": "xx_pharmacy",
+      "periods": [],
+      "requires": [],
+      "weight": 1,
+      "text": "amb_g_xx_pharmacy",
+      "era": "1.0A",
+      "src": "proposal",
+      "src_note": "環境句【設計提案・非原作】（§5.3）"
+    }
+  ],
+  "wanderers": [
+    {
+      "id": "w_nanhai",
+      "npc": "n_nanhai",
+      "monster": "m_nanhai",
+      "home_room": "xx_street",
+      "schedule": [
+        {
+          "hours": [
+            "卯",
+            "辰",
+            "巳",
+            "午",
+            "未",
+            "申",
+            "酉"
+          ],
+          "mode": "HOME"
+        },
+        {
+          "hours": [
+            "戌",
+            "亥",
+            "子",
+            "丑",
+            "寅"
+          ],
+          "mode": "ROAM",
+          "regions": [
+            "xixia_wild",
+            "xixia_south",
+            "xixia_north"
+          ]
+        }
+      ],
+      "move_every_ke": 4,
+      "aggro": {
+        "requires": [],
+        "chance_pct": 60,
+        "per_player_cooldown_days": 1
+      },
+      "talk_fight": {
+        "requires": []
+      },
+      "no_flee": true,
+      "respawn_days": 1,
+      "rumors": {
+        "roam": "rmr_w_nanhai_roam",
+        "defeated": "rmr_w_nanhai_defeated"
+      },
+      "era": "1.0A",
+      "src": "proposal",
+      "src_note": "白天定點、交談即打：官方自救手札、gaoshou/23；夜遊與主動出手【設計提案・非原作】（D13，擁有者要求）"
+    },
+    {
+      "id": "w_yeerniang",
+      "npc": "n_yeerniang",
+      "monster": "m_yeerniang",
+      "home_room": "xx_street",
+      "schedule": [
+        {
+          "hours": [
+            "卯",
+            "辰",
+            "巳",
+            "午",
+            "未",
+            "申",
+            "酉"
+          ],
+          "mode": "HOME"
+        },
+        {
+          "hours": [
+            "戌",
+            "亥",
+            "子",
+            "丑",
+            "寅"
+          ],
+          "mode": "ROAM",
+          "regions": [
+            "xixia_south",
+            "desert_edge"
+          ]
+        }
+      ],
+      "move_every_ke": 4,
+      "aggro": {
+        "requires": [
+          {
+            "type": "morality_min",
+            "value": 1
+          }
+        ],
+        "chance_pct": 60,
+        "per_player_cooldown_days": 1
+      },
+      "talk_fight": {
+        "requires": [
+          {
+            "type": "morality_min",
+            "value": 1
+          }
+        ]
+      },
+      "no_flee": true,
+      "respawn_days": 1,
+      "rumors": {
+        "roam": "rmr_w_yeerniang_roam",
+        "defeated": "rmr_w_yeerniang_defeated"
+      },
+      "era": "1.0A",
+      "src": "proposal",
+      "src_note": "白天在西大街、只對善惡 > 0 的人出手：研究 葉二娘；夜遊【設計提案・非原作】（D13）"
+    },
+    {
+      "id": "w_etou_xe",
+      "npc": "n_amb_etou_xe",
+      "monster": "m_amb_etou",
+      "home_room": "xe_mine",
+      "schedule": [
+        {
+          "hours": [
+            "子",
+            "丑",
+            "寅",
+            "卯",
+            "辰",
+            "巳",
+            "午",
+            "未",
+            "申",
+            "酉",
+            "戌",
+            "亥"
+          ],
+          "mode": "ROAM",
+          "regions": [
+            "xixia_east"
+          ]
+        }
+      ],
+      "move_every_ke": 3,
+      "aggro": {
+        "requires": [],
+        "chance_pct": 50,
+        "per_player_cooldown_days": 1
+      },
+      "talk_fight": {
+        "requires": []
+      },
+      "no_flee": true,
+      "respawn_days": 1,
+      "option": "chase_npcs",
+      "rumors": {
+        "roam": "rmr_w_etou_roam",
+        "defeated": "rmr_w_etou_defeated"
+      },
+      "era": "1.0A",
+      "since": "2001-08-30",
+      "src": "proposal",
+      "src_note": "追擊 NPC 存在與「追擊戰不能逃」：研究 2001-08-30；出沒地點（西夏東北礦區一帶）與數值【設計提案】"
+    },
+    {
+      "id": "w_etou_dlw",
+      "npc": "n_amb_etou_dlw",
+      "monster": "m_amb_etou",
+      "home_room": "dlw_eastwood",
+      "schedule": [
+        {
+          "hours": [
+            "子",
+            "丑",
+            "寅",
+            "卯",
+            "辰",
+            "巳",
+            "午",
+            "未",
+            "申",
+            "酉",
+            "戌",
+            "亥"
+          ],
+          "mode": "ROAM",
+          "regions": [
+            "dali_wild"
+          ]
+        }
+      ],
+      "move_every_ke": 3,
+      "aggro": {
+        "requires": [],
+        "chance_pct": 50,
+        "per_player_cooldown_days": 1
+      },
+      "talk_fight": {
+        "requires": []
+      },
+      "no_flee": true,
+      "respawn_days": 1,
+      "option": "chase_npcs",
+      "rumors": {
+        "roam": "rmr_w_etou_roam",
+        "defeated": "rmr_w_etou_defeated"
+      },
+      "era": "1.0A",
+      "since": "2001-08-30",
+      "src": "proposal",
+      "src_note": "追擊 NPC 存在與「追擊戰不能逃」：研究 2001-08-30；出沒地點（大理城東樹林一帶）與數值【設計提案】"
+    },
+    {
+      "id": "w_etou_ss",
+      "npc": "n_amb_etou_ss",
+      "monster": "m_amb_etou",
+      "home_room": "sy_pines",
+      "schedule": [
+        {
+          "hours": [
+            "子",
+            "丑",
+            "寅",
+            "卯",
+            "辰",
+            "巳",
+            "午",
+            "未",
+            "申",
+            "酉",
+            "戌",
+            "亥"
+          ],
+          "mode": "ROAM",
+          "regions": [
+            "songshan_road"
+          ]
+        }
+      ],
+      "move_every_ke": 3,
+      "aggro": {
+        "requires": [],
+        "chance_pct": 50,
+        "per_player_cooldown_days": 1
+      },
+      "talk_fight": {
+        "requires": []
+      },
+      "no_flee": true,
+      "respawn_days": 1,
+      "option": "chase_npcs",
+      "rumors": {
+        "roam": "rmr_w_etou_roam",
+        "defeated": "rmr_w_etou_defeated"
+      },
+      "era": "1.0A",
+      "since": "2001-08-30",
+      "src": "proposal",
+      "src_note": "追擊 NPC 存在與「追擊戰不能逃」：研究 2001-08-30；出沒地點（嵩山松林一帶）與數值【設計提案】"
+    }
+  ],
+  "reactions": [
+    {
+      "id": "rx_good_shop_refuse_evil",
+      "priority": 100,
+      "npc_kinds": [
+        "SHOP",
+        "FUNC"
+      ],
+      "npc_alignment": [
+        "GOOD",
+        "NEUTRAL"
+      ],
+      "services": [
+        "SHOP",
+        "INN"
+      ],
+      "when": [
+        {
+          "type": "morality_max",
+          "value": -1000
+        }
+      ],
+      "refuse": "rx_refuse_evil",
+      "greet": "greet_refuse_evil",
+      "era": "1.0A",
+      "src": "proposal",
+      "src_note": "研究：1.0 查無依善惡／名聲改價或招呼的記載【設計提案・非原作】（D15）"
+    },
+    {
+      "id": "rx_good_shop_evil",
+      "priority": 90,
+      "npc_kinds": [
+        "SHOP",
+        "FUNC"
+      ],
+      "npc_alignment": [
+        "GOOD",
+        "NEUTRAL"
+      ],
+      "services": [
+        "SHOP",
+        "INN"
+      ],
+      "when": [
+        {
+          "type": "morality_max",
+          "value": -500
+        }
+      ],
+      "price_pct": 120,
+      "greet": "greet_cold_evil",
+      "era": "1.0A",
+      "src": "proposal",
+      "src_note": "研究：1.0 查無依善惡／名聲改價或招呼的記載【設計提案・非原作】（D15）"
+    },
+    {
+      "id": "rx_evil_shop_refuse_good",
+      "priority": 100,
+      "npcs": [
+        "n_xh_canjizi",
+        "n_xd_jingqi"
+      ],
+      "services": [
+        "SHOP"
+      ],
+      "when": [
+        {
+          "type": "morality_min",
+          "value": 1000
+        }
+      ],
+      "refuse": "rx_refuse_saint",
+      "greet": "greet_evil_shop_refuse",
+      "era": "1.0A",
+      "src": "proposal",
+      "src_note": "研究：1.0 查無依善惡／名聲改價或招呼的記載【設計提案・非原作】（D15）"
+    },
+    {
+      "id": "rx_evil_shop_good",
+      "priority": 90,
+      "npcs": [
+        "n_xh_canjizi",
+        "n_xd_jingqi"
+      ],
+      "services": [
+        "SHOP"
+      ],
+      "when": [
+        {
+          "type": "morality_min",
+          "value": 500
+        }
+      ],
+      "price_pct": 120,
+      "greet": "greet_evil_shop_cold",
+      "era": "1.0A",
+      "src": "proposal",
+      "src_note": "研究：1.0 查無依善惡／名聲改價或招呼的記載【設計提案・非原作】（D15）"
+    },
+    {
+      "id": "rx_fame_discount",
+      "priority": 50,
+      "npc_kinds": [
+        "SHOP",
+        "FUNC"
+      ],
+      "services": [
+        "SHOP",
+        "INN"
+      ],
+      "when": [
+        {
+          "type": "fame_min",
+          "value": 1000
+        }
+      ],
+      "price_pct": 95,
+      "greet": "greet_fame_shop",
+      "era": "1.0A",
+      "src": "proposal",
+      "src_note": "研究：1.0 查無依善惡／名聲改價或招呼的記載【設計提案・非原作】（D15）"
+    },
+    {
+      "id": "rx_greet_fame",
+      "priority": 20,
+      "npc_kinds": [
+        "MASTER",
+        "STORY",
+        "QUEST",
+        "FUNC",
+        "SHOP"
+      ],
+      "npc_alignment": [
+        "GOOD",
+        "NEUTRAL"
+      ],
+      "when": [
+        {
+          "type": "fame_min",
+          "value": 1000
+        }
+      ],
+      "greet": "greet_fame",
+      "era": "1.0A",
+      "src": "proposal",
+      "src_note": "研究：1.0 查無依善惡／名聲改價或招呼的記載【設計提案・非原作】（D15）"
+    },
+    {
+      "id": "rx_greet_newbie",
+      "priority": 10,
+      "npc_kinds": [
+        "MASTER",
+        "STORY",
+        "QUEST",
+        "FUNC",
+        "SHOP"
+      ],
+      "npc_alignment": [
+        "GOOD",
+        "NEUTRAL"
+      ],
+      "when": [
+        {
+          "type": "combat_xp_max",
+          "value": 499
+        }
+      ],
+      "greet": "greet_newbie",
+      "era": "1.0A",
+      "src": "proposal",
+      "src_note": "研究：1.0 查無依善惡／名聲改價或招呼的記載【設計提案・非原作】（D15）"
+    }
+  ],
+  "art_requests": {
+    "units": [
+      {
+        "id": "n_amb_etou_xe",
+        "alias": "n_bandit_chief",
+        "prompt": "金庸群俠傳OL 風格的野外惡人頭子立繪：滿臉橫肉、披著破舊皮襖、手提鬼頭刀，凶狠表情。"
+      },
+      {
+        "id": "n_amb_etou_dlw",
+        "alias": "n_bandit_chief",
+        "prompt": "金庸群俠傳OL 風格的野外惡人頭子立繪：滿臉橫肉、披著破舊皮襖、手提鬼頭刀，凶狠表情。"
+      },
+      {
+        "id": "n_amb_etou_ss",
+        "alias": "n_bandit_chief",
+        "prompt": "金庸群俠傳OL 風格的野外惡人頭子立繪：滿臉橫肉、披著破舊皮襖、手提鬼頭刀，凶狠表情。"
+      }
+    ],
+    "backgrounds": []
+  },
+  "test_plan": [],
+  "todo_verify": [
+    "【待考證】追擊 NPC（2001-08-30）的實際名稱、出沒地點與強度；目前用「惡人頭子」放在西夏東北、大理城東、嵩山松林（設計提案）。",
+    "【待考證】rumor_chat_inner_min：原作 1.0 末江湖謠言頻道可能需要基本內功 80，年代不明；預設 0。",
+    "【待考證】葉二娘 1.0B 是否搬到大理裝備商旁（目前留在西夏，STORY_PLAN §11 #9）。",
+    "【待考證】南海鱷神、葉二娘「超強」的實際數值；目前比照守城官兵以上（combat_xp_ref 80000／70000）。"
+  ],
+  "owner_decisions": [
+    "D13：白天照原作定點、交談即戰；戌～寅時在附近野外遊蕩並出手（非原作，wanderers_enabled 可關）；追擊戰不能逃；新手（實戰 < newbie_pk_protect_xp）與安全房間免疫；出手前 villain_warn_s（預設 3）秒警告。",
+    "D14：系統【江湖傳聞】非原作，rumors_enabled 預設開。",
+    "D15：價格／拒絕反應非原作，npc_reactions 預設 FULL（惡名 −500 起 +20%、−1000 拒絕；名聲 1000 起 −5%；邪派店家對善惡 500 起 +20%、1000 拒絕）；查小鏞、守衛、師父、驛站不受影響。",
+    "新預設：追擊 NPC 每位玩家冷卻 1 遊戲日、擊敗後 1 遊戲日重生、出手機率 50%；南海鱷神／葉二娘出手機率 60%（設計提案）。"
+  ],
+  "notes": "wanderers 列的 option 欄位（選填）：伺服器選項名，false 時整列不出現（惡人頭子用 chase_npcs）。reactions 列的 priority（選填，預設 0，大的先）、npcs（指定 NPC）、exclude_npcs 為本碎片新增的選填欄位。STORY_PLAN 缺漏：n_nanhai、n_yeerniang 是既有 NPC，靜態位置在 xx_street；夜遊時 view 的 NPC 列表要問 WanderSystem.npc_shown(npc_id, room_id) 才不會同時出現在城裡（建議 WP-ENGINE 在 npc_visible／view 接上）。"
+}

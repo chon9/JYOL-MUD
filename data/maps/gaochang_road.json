@@ -1,0 +1,8 @@
+{
+  "region_id": "gaochang_road", "era": "1.0A", "src": "proposal", "desc": "從天山腳下的雪原往西南，一條駝隊踩出來的古道穿過戈壁，通往沙漠中的高昌。", "escape_tiles_hint": 2,
+  "rooms": [
+    {"id": "gc_road1", "name": "古道沙梁", "desc": "雪原到這裡漸漸變成碎石沙梁，地上留著駝隊的蹄印。往東北回雪原小徑，往西沿古道走。", "exits": [{"dir": "NE", "to": "ts_road1"}, {"dir": "W", "to": "gc_road2"}], "npcs": [], "features": [], "requires": [], "encounter": {"rate": 0.1, "table": [{"monster": "m_rabbit", "w": 50, "count": [1, 1]}, {"monster": "m_bigrabbit", "w": 40, "count": [1, 1]}, {"monster": "m_wolf", "w": 10, "count": [1, 1]}]}, "src": "proposal"},
+    {"id": "gc_road2", "name": "駝隊歇腳處", "desc": "幾頂氈帳圍著一口苦水井，往來高昌的駝隊都在這裡歇腳飲水。往東、往西都是古道。", "exits": [{"dir": "E", "to": "gc_road1"}, {"dir": "W", "to": "gc_road3"}], "npcs": ["n_gc_tuodui"], "features": [], "requires": [], "src": "proposal"},
+    {"id": "gc_road3", "name": "戈壁古道", "desc": "四下一片礫石戈壁，熱風捲著沙子打在臉上，遠處看得見古城的殘垣。往東回駝隊歇腳處，往西就到高昌。", "exits": [{"dir": "E", "to": "gc_road2"}, {"dir": "W", "to": "gc_outside"}], "npcs": [], "features": [], "requires": [], "encounter": {"rate": 0.12, "table": [{"monster": "m_bigrabbit", "w": 55, "count": [1, 1]}, {"monster": "m_wolf", "w": 30, "count": [1, 1]}, {"monster": "m_xh_scorpion", "w": 15, "count": [1, 1]}]}, "src": "proposal"}
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "table": "patches", "version": 1, "era": "1.0B",
+  "rows": [
+    { "id": "p1b_xx_station_travel", "target_table": "npcs", "target_id": "n_xx_station", "op": "merge",
+      "set": { "travel": [ { "to_room": "dl_station", "price": 150 }, { "to_room": "jc_station", "price": 120 } ] },
+      "src": "proposal" },
+    {"id": "p1b_ym_hufei_quest", "target_table": "npcs", "target_id": "n_ym_hufei", "op": "merge", "set": {"services": ["QUEST"], "quests": ["q_ym_mawang"]}, "src": "proposal", "src_note": "M3b 審查：馬王洞（馬賊王）的來源都在 1.0B 以後 → 剿馬王洞的任務只在 1.0B 世界掛在胡斐身上【設計提案】"},
+    { "id": "p1b_dl_station_travel", "target_table": "npcs", "target_id": "n_dl_station", "op": "merge",
+      "set": { "travel": [ { "to_room": "xx_station", "price": 150 }, { "to_room": "jc_station", "price": 150 } ] },
+      "src": "proposal" },
+    { "id": "p1b_sl_due_teach", "target_table": "npcs", "target_id": "n_sl_due", "op": "merge",
+      "set": { "services": ["TEACH"] },
+      "src": "verified", "src_note": "news 322：陣法 2001-10-05 隨神鵰大俠開放；渡厄教金剛伏魔圈（官方少林頁）。1.0A 只能對話" },
+    {"id": "p1b_jc_guard_talk", "target_table": "text_templates", "target_id": "talk_n_jc_guard", "op": "merge", "set": {"self": "{npc_name}喝道：「南門外往華山、少林的路都通，去武當走嵩山那頭最近；恆山得先下到華山腳下再往西北。雁門關、丐幫走北門。東南小路進得去山谷。」"}, "src": "proposal", "src_note": "M3B_PLAN §8.3：既有 talk_n_jc_guard 改寫（京城完整後南北都有路）"},
+    {"id": "p1b_xx_banker_talk", "target_table": "text_templates", "target_id": "talk_n_ec_xx_banker", "op": "merge", "set": {"self": "錢莊掌櫃抬起頭：「客官要存錢還是存東西？本號在大理、京城都有分號，帳目相通。」"}, "src": "proposal", "src_note": "M3b 審查：京城是神鵰（1.0B）第三座城 → 提京城分號的版本只在 1.0B"},
+    {"id": "p1b_xx_biaotou_talk", "target_table": "text_templates", "target_id": "talk_n_ec_xx_biaotou", "op": "merge", "set": {"self": "鏢頭拍了拍鏢車：「要托鏢寄東西給朋友，還是想跟著押一趟鏢賺點銀子？丐幫的兄弟就免了，規矩如此。」"}, "src": "proposal", "src_note": "M3b 審查：「丐幫不能運鏢」（O17）只在有丐幫的 1.0B 世界提；對白【設計提案】"},
+    {"id": "p1b_jc_station_talk", "target_table": "text_templates", "target_id": "talk_n_jc_station", "op": "merge", "set": {"self": "{npc_name}打著官腔：「往西夏一百二十兩，往大理一百五十兩，車馬齊備，隨到隨走。要跑腿的，這兒也有信要往西夏、大理送。」"}, "src": "proposal", "src_note": "京城完整後驛站不再是「剛設起來」；價錢照既有 travel"},
+    {"id": "p1b_q_ec_biao_xx_dl_no_gaibang", "target_table": "quests", "target_id": "q_ec_biao_xx_dl", "op": "merge", "set": {"requires": [{"type": "sect_not", "sect": "gaibang"}]}, "src": "verified", "src_note": "WP-MERGE：「丐幫不能運鏢」（2001 多篇，O17）；丐幫是 1.0B，1.0A 世界沒有這一派，故以 1.0B patch 加上"},
+    {"id": "p1b_q_ec_biao_dl_xx_no_gaibang", "target_table": "quests", "target_id": "q_ec_biao_dl_xx", "op": "merge", "set": {"requires": [{"type": "sect_not", "sect": "gaibang"}]}, "src": "verified", "src_note": "WP-MERGE：「丐幫不能運鏢」（2001 多篇，O17）；丐幫是 1.0B，1.0A 世界沒有這一派，故以 1.0B patch 加上"}
+  ]
+}

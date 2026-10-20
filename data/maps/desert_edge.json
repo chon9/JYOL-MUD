@@ -1,0 +1,24 @@
+{
+  "region_id": "desert_edge",
+  "era": "1.0A",
+  "src": "proposal",
+  "desc": "西夏與大理之間的大漠東緣，黃沙連著戈壁，只有一處綠洲可以歇腳。",
+  "escape_tiles_hint": 2,
+  "rooms": [
+    {"id": "de_edge", "name": "大漠邊緣", "desc": "放眼望去盡是黃沙，駱駝商隊踩出的路沿著沙漠東緣往南延伸。西邊沙丘後頭有人掘了礦坑，風裡夾著鐵鎬敲石的聲音。", "exits": [{"dir": "N", "to": "ws_dunes"}, {"dir": "S", "to": "de_cave"}, {"dir": "W", "to": "de_mine"}], "npcs": [], "features": [], "requires": [], "encounter": {"rate": 0.12, "table": [{"monster": "m_bigrabbit", "w": 60, "count": [1, 1]}, {"monster": "m_rabbit", "w": 30, "count": [1, 1]}, {"monster": "m_wolf", "w": 10, "count": [1, 1]}]}},
+    { "id": "de_cave", "name": "沙漠山洞外", "desc": "風蝕的石山下有個山洞，洞口被沙堵了一半，暫時進不去。往西是更深的大漠，再過去是終年積雪的大雪山，血刀門就在雪山裡。",
+      "exits": [{"dir": "N", "to": "de_edge"}, {"dir": "SE", "to": "de_oasis"}, {"dir": "W", "to": "xd_road1"}],
+      "npcs": [], "features": [], "requires": [],
+      "encounter": { "rate": 0.12,
+        "table": [
+          {"monster": "m_wolf", "w": 30, "count": [1, 1]},
+          {"monster": "m_boar", "w": 20, "count": [1, 1]},
+          {"monster": "m_bandit", "w": 10, "count": [1, 1]},
+          {"monster": "m_bigrabbit", "w": 40, "count": [1, 1]}
+        ] } },
+    { "id": "de_oasis", "name": "綠洲", "desc": "沙漠裡的一片綠洲，幾株胡楊圍著一口泉眼，一戶人家搭了帳篷賣茶水、供人歇宿。",
+      "exits": [{"dir": "NW", "to": "de_cave"}, {"dir": "SE", "to": "rr_upper"}], "npcs": ["n_de_host"],
+      "features": ["WATER"], "requires": [] },
+    {"id": "de_mine", "name": "大漠礦場", "desc": "沙丘背風處掘開的幾口淺礦坑，坑邊堆著篩過的礦砂和碎石，烈日底下熱氣蒸騰。", "exits": [{"dir": "E", "to": "de_edge"}], "npcs": ["n_sm_ahuo"], "features": ["MINE"], "requires": [], "encounter": {"rate": 0.08, "table": [{"monster": "m_rabbit", "w": 60, "count": [1, 1]}, {"monster": "m_bigrabbit", "w": 40, "count": [1, 1]}]}, "era": "1.0A", "src": "proposal", "src_note": "§3.2 #63；阿火的礦：星宿海左下 3615,8285 → [151,345]（17173 other.htm，未重抓）；房間【設計提案】"}
+  ]
+}

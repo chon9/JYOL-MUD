@@ -1,0 +1,20 @@
+{
+  "table": "patches", "version": 1, "era": "xkd",
+  "rows": [
+    { "id": "pxkd_xd_xuehai_2002_gates", "target_table": "martial_arts", "target_id": "xd_xuehai", "op": "merge",
+      "set": { "requires": [
+        {"type": "sect", "sect": "xuedao"},
+        {"type": "quest_flag", "flag": "xd_xuehai_lv1"},
+        {"type": "skill_min", "skill": "weihe", "value": 60},
+        {"type": "skill_min", "skill": "basic_inner", "value": 60},
+        {"type": "skill_min", "skill": "basic_blade", "value": 60},
+        {"type": "skill_min", "skill": "xd_xinfa", "value": 80},
+        {"type": "skill_min", "skill": "xd_daofa", "value": 80},
+        {"type": "skill_min", "skill": "xd_miexian", "value": 60},
+        {"type": "skill_min", "skill": "xd_xuedun", "value": 60},
+        {"type": "morality_max", "value": -900},
+        {"type": "combat_xp_min", "value": 3000000}
+      ] },
+      "src": "later", "src_note": "研究 血刀門：2002-08 的血海魔功條件（實戰 300 萬、門技 60、基內 60、基刀 60、心法 80、刀法 80、滅仙 60、雪遁 60、善惡 −900 以下）【後期版】；2002-08 落在勇闖俠客島（2002-06-06）資料片期間 → 掛在 xkd；審查修正：原本留在 1.0A 列上，2001 門檻拿到 1 級的人永遠練不動" }
+  ]
+}

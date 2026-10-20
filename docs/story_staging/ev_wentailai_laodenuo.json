@@ -1,0 +1,662 @@
+{
+  "fragment": "ev_wentailai_laodenuo",
+  "version": 1,
+  "author": "WP-C-ev_wentailai_laodenuo",
+  "quests": [
+    {
+      "id": "q_wentailai", "name": "解救文泰來", "chapter": "西夏・紅花會", "group": "ev_wentailai",
+      "alias": "愛喝酒的張豹／大理王捕頭",
+      "giver": "n_xx_zhangbao", "era": "1.0A", "src": "verified", "dialogue_src": "proposal",
+      "src_note": "研究 解救文泰來：17173 tishi.htm 2001-07-26 三則（解救文泰來／大理王捕頭／愛喝酒的張豹）同一條鏈；流程 17173 2001-8-2 n214_130547「愛喝酒的張豹任務的解法」；公文手抄本、江湖歷練 +10 取自官方張豹任務頁 index_jy3-4（第 15 版資料片時期）【後期版】",
+      "text": "紅花會四當家文泰來被朝廷的人抓走了，紅花會一行人正為解救他而大傷腦筋……西夏衙門裡那個愛喝酒的差役張豹，嘴上沒把門，似乎知道些什麼。（西夏衙門在西夏廣場西北邊；張豹子時回家睡覺，其餘時辰都在衙門裡。）",
+      "requires": [], "give_items": [],
+      "repeat": { "max": 1, "cooldown_days": 0 },
+      "abandon": true, "party_credit": true,
+      "start": "s_buy1",
+      "offer": "d_offer",
+      "stages": [
+        { "id": "s_buy1", "title": "替張豹買酒", "hint_room": "xx_inn",
+          "log": "張豹嘴裡沒酒就不說話。到西夏客棧（西夏廣場往北）向店小二買白酒、羊乳酒各一瓶。",
+          "objectives": [
+            { "id": "o_b1_bai", "type": "BUY", "item": "c_baijiu", "count": 1, "npc": "n_xx_innkeeper", "text": "在西夏客棧買一瓶白酒" },
+            { "id": "o_b1_yang", "type": "BUY", "item": "c_yangrujiu", "count": 1, "npc": "n_xx_innkeeper", "text": "在西夏客棧買一瓶羊乳酒" } ],
+          "src": "verified", "src_note": "2001-8-2：先在客棧買一瓶白酒、一瓶羊乳酒",
+          "next": "s_treat" },
+        { "id": "s_treat", "title": "請張豹喝酒", "hint_room": "xx_yamen",
+          "log": "把酒帶回西夏衙門（西夏廣場往西北）請張豹喝。張豹子時回家睡覺，其餘時辰都在衙門裡，虛竹旁邊。",
+          "objectives": [ { "id": "o_treat", "type": "TALK", "npc": "n_xx_zhangbao", "dialogue": "d_treat", "text": "到西夏衙門請張豹喝酒（子時不在）" } ],
+          "next": "s_chen1" },
+        { "id": "s_chen1", "title": "城外的書生", "hint_room": "xw_road",
+          "log": "張豹說西夏東門外有個書生打扮的公子天天在官道上張望。從西夏廣場往東出西夏東門，到東門外官道找他。",
+          "objectives": [ { "id": "o_chen1", "type": "TALK", "npc": "n_chenjialuo", "dialogue": "d_chen1", "text": "出西夏東門，到東門外官道找陳家洛" } ],
+          "src": "verified", "src_note": "2001-8-2 原文是「出西夏往左下」；陳家洛維持既有的 xw_road（D20）",
+          "next": "s_zb2" },
+        { "id": "s_zb2", "title": "醉鬼的規矩", "hint_room": "xx_yamen",
+          "log": "陳家洛請你替紅花會打聽文泰來被押往何處。回西夏衙門（西夏廣場往西北）向張豹打聽（張豹子時不在）。",
+          "objectives": [ { "id": "o_zb2", "type": "TALK", "npc": "n_xx_zhangbao", "dialogue": "d_zb2", "text": "回西夏衙門向張豹打聽文泰來的下落（子時不在）" } ],
+          "src": "verified", "src_note": "2001-8-2：張豹說有酒就說",
+          "next": "s_buy2" },
+        { "id": "s_buy2", "title": "每樣酒各一瓶", "hint_room": "xx_inn",
+          "log": "張豹要客棧裡的每種酒各一瓶，而且要「新買的」——之前買的不算。到西夏客棧（西夏廣場往北）買白酒、羊乳酒、竹葉青各一瓶。",
+          "objectives": [
+            { "id": "o_b2_bai", "type": "BUY", "item": "c_baijiu", "count": 1, "npc": "n_xx_innkeeper", "text": "重新買一瓶白酒" },
+            { "id": "o_b2_yang", "type": "BUY", "item": "c_yangrujiu", "count": 1, "npc": "n_xx_innkeeper", "text": "重新買一瓶羊乳酒" },
+            { "id": "o_b2_zhu", "type": "BUY", "item": "c_zhuyeqing", "count": 1, "npc": "n_xx_innkeeper", "text": "買一瓶竹葉青" } ],
+          "src": "verified", "src_note": "2001-8-2「這時再去買客棧裡的每種酒各一瓶（之前買的不算）」；「每種酒」= 白酒、羊乳酒、竹葉青（STORY_PLAN §3.3）",
+          "next": "s_zb3" },
+        { "id": "s_zb3", "title": "張豹開口", "hint_room": "xx_yamen",
+          "log": "帶著三瓶酒回西夏衙門找張豹（子時不在），問他文泰來的消息。問話要問對路子。",
+          "objectives": [ { "id": "o_zb3", "type": "TALK", "npc": "n_xx_zhangbao", "dialogue": "d_zb3", "text": "把三種酒交給張豹，打聽文泰來的消息（子時不在）" } ],
+          "src": "verified", "src_note": "2001-8-2「選第二個選項」",
+          "next": "s_wang1" },
+        { "id": "s_wang1", "title": "大理王捕頭", "hint_room": "dl_yamen",
+          "log": "公文在大理衙門的王捕頭手上。從西夏東門出城，經荒草坡往南到小溪邊，順著溪岸一路往南穿過大漠邊緣到大理（也可以在西夏驛站雇車）；大理衙門在衙門前廣場的南邊。",
+          "objectives": [ { "id": "o_wang1", "type": "TALK", "npc": "n_dl_wangbutou", "dialogue": "d_wang1", "text": "到大理衙門找王捕頭" } ],
+          "next": "s_buy3" },
+        { "id": "s_buy3", "title": "再打一回酒", "hint_room": "xx_inn",
+          "log": "王捕頭口風太緊。回西夏客棧（西夏廣場往北）再買白酒、羊乳酒、竹葉青各一瓶，帶去找張豹想辦法。",
+          "objectives": [
+            { "id": "o_b3_bai", "type": "BUY", "item": "c_baijiu", "count": 1, "npc": "n_xx_innkeeper", "text": "再買一瓶白酒" },
+            { "id": "o_b3_yang", "type": "BUY", "item": "c_yangrujiu", "count": 1, "npc": "n_xx_innkeeper", "text": "再買一瓶羊乳酒" },
+            { "id": "o_b3_zhu", "type": "BUY", "item": "c_zhuyeqing", "count": 1, "npc": "n_xx_innkeeper", "text": "再買一瓶竹葉青" } ],
+          "src": "verified", "src_note": "2001-8-2「再回去找張豹，再買一次」；「再買一次」是否同樣每種一瓶【待考證】",
+          "next": "s_zb4" },
+        { "id": "s_zb4", "title": "王捕頭的情報", "hint_room": "xx_yamen",
+          "log": "把酒帶回西夏衙門給張豹（子時不在），向他打聽王捕頭的底細。",
+          "objectives": [ { "id": "o_zb4", "type": "TALK", "npc": "n_xx_zhangbao", "dialogue": "d_zb4", "text": "向張豹打聽王捕頭的情報（子時不在）" } ],
+          "src": "verified", "src_note": "2001-8-2 選項原文「王捕頭的情報」",
+          "next": "s_buy4" },
+        { "id": "s_buy4", "title": "三瓶竹葉青", "hint_room": "xx_inn",
+          "log": "張豹說王捕頭最愛竹葉青，三瓶就倒。到西夏客棧（西夏廣場往北）買三瓶竹葉青（之前買的不算）。",
+          "objectives": [ { "id": "o_b4_zhu", "type": "BUY", "item": "c_zhuyeqing", "count": 3, "npc": "n_xx_innkeeper", "text": "在西夏客棧買三瓶竹葉青" } ],
+          "src": "later", "src_note": "2001-8-2 只寫「照他說的做，再買一次」；三瓶灌醉王捕頭取自官方張豹任務頁（後期是美酒狀元紅 ×3，本作依 STORY_PLAN §7.3 用竹葉青）【後期版】",
+          "next": "s_wang2" },
+        { "id": "s_wang2", "title": "灌醉王捕頭", "hint_room": "dl_yamen",
+          "log": "帶著三瓶竹葉青到大理衙門（大理衙門前廣場南邊）找王捕頭，想辦法讓他喝醉。",
+          "objectives": [ { "id": "o_wang2", "type": "TALK", "npc": "n_dl_wangbutou", "dialogue": "d_wang2", "text": "用三瓶竹葉青灌醉王捕頭，抄下公文" } ],
+          "src": "verified", "src_note": "2001-8-2「選最後一個選項」；公文手抄本是後期官方頁的物品【後期版】",
+          "next": "s_report" },
+        { "id": "s_report", "title": "回報陳家洛", "hint_room": "xw_road",
+          "log": "帶著公文手抄本回西夏，從西夏廣場往東出西夏東門，到東門外官道交給陳家洛。",
+          "objectives": [ { "id": "o_report", "type": "TALK", "npc": "n_chenjialuo", "dialogue": "d_chen2", "text": "把公文手抄本交給東門外官道的陳家洛" } ],
+          "next": "END:default" }
+      ],
+      "dialogues": {
+        "d_offer": { "start": "n0", "nodes": {
+          "n0": { "speaker": "npc", "src_note": "依 tishi.htm 2001-07-26「愛喝酒的張豹」：西夏的酒鬼差役，給他酒就能打聽消息【設計提案】",
+                  "text": "（一個滿臉通紅的差役歪在衙門角落的長凳上，手裡的酒葫蘆早就空了。）嗝……這西夏的風沙，吹得人喉嚨冒煙。衙門那點餉銀，連壺好酒都買不起……",
+                  "choices": [
+                    { "id": "c_ask", "label": "這位差大哥，看你愁眉苦臉的，出了什麼事？", "goto": "n1" },
+                    { "id": "c_leave", "label": "（不理這個醉漢）", "goto": "END" } ] },
+          "n1": { "speaker": "npc", "text": "事？天大的事也比不上沒酒喝！衙門裡最近來了一樁大案子，上頭忙得雞飛狗跳……嘿，我嘴巴乾，說不動啦。",
+                  "choices": [
+                    { "id": "c_accept", "label": "我去客棧替你打兩壺酒來。", "do": [ { "do": "accept" } ], "goto": "n2" },
+                    { "id": "c_no", "label": "喝酒誤事，你還是少喝點吧。", "goto": "END" } ] },
+          "n2": { "speaker": "npc", "text": "好兄弟，夠意思！客棧的白酒夠烈，羊乳酒夠香，一樣來一瓶就行。快去快回，子時一到，我可要回家睡覺啦。", "goto": "END" } } },
+
+        "d_treat": { "start": "n0", "resume": "n0", "nodes": {
+          "n0": { "speaker": "npc", "src_note": "2001-8-2「去找張豹請他喝酒」【設計提案】",
+                  "text": "（張豹聞到酒香，眼睛一下子亮了）酒呢？酒買來了沒有？",
+                  "choices": [
+                    { "id": "c_give", "label": "白酒、羊乳酒各一瓶，請張大哥嘗嘗。",
+                      "do": [ { "do": "take", "item": "c_baijiu", "n": 1 }, { "do": "take", "item": "c_yangrujiu", "n": 1 } ], "goto": "n1" },
+                    { "id": "c_later", "label": "酒還沒買齊，我這就去。", "goto": "END" } ] },
+          "n1": { "speaker": "npc", "text": "（咕嘟咕嘟灌了大半瓶）痛快！羊乳酒入口綿，白酒後勁足……嗝。我跟你說，前些日子朝廷的鷹爪子在江南拿了個硬漢子，聽說是什麼紅花會的四當家……", "goto": "n2" },
+          "n2": { "speaker": "npc", "text": "噓——這可是官府的機密！喝了你兩瓶酒，就只能說這麼多。對了，西夏東門外有個書生打扮的公子，天天在官道上東張西望，八成也是為這事來的。",
+                  "do": [ { "do": "complete", "obj": "o_treat" } ], "goto": "END" } } },
+
+        "d_chen1": { "start": "n0", "resume": "n0", "nodes": {
+          "n0": { "speaker": "npc", "src_note": "依 tishi.htm 2001-07-26「解救文泰來」：紅花會一行人正為解救四當家大傷腦筋；2001-8-2 陳家洛請你打聽情報【設計提案】",
+                  "text": "（那書生收起摺扇，打量了你一眼）這位朋友從城裡來？在下姓陳，江南人氏，到這大漠來，是尋一位走散的兄長。",
+                  "choices": [
+                    { "id": "c_tell", "label": "衙門裡的張豹說，朝廷拿了紅花會的四當家。", "goto": "n1" },
+                    { "id": "c_bye", "label": "路過而已，告辭。", "goto": "END" } ] },
+          "n1": { "speaker": "npc", "text": "（神色一凜，隨即壓低聲音）不瞞朋友，在下正是紅花會陳家洛。我四哥「奔雷手」文泰來，在鐵膽莊被火手判官張召重擒去。四哥身上擔著一樁天大的干係，萬萬不能落在朝廷手裡。", "goto": "n2" },
+          "n2": { "speaker": "npc", "text": "我們兄弟一路追查，卻打聽不到四哥被押往何處。那張豹既是衙門裡的人，或許聽過些風聲。朋友若肯仗義相助，替我們向他打聽打聽，紅花會上下感激不盡。",
+                  "choices": [
+                    { "id": "c_yes", "label": "文四爺是條好漢，這個忙我幫了。", "do": [ { "do": "complete", "obj": "o_chen1" } ], "goto": "n3" },
+                    { "id": "c_think", "label": "此事牽涉朝廷，讓我想想。", "goto": "END" } ] },
+          "n3": { "speaker": "npc", "text": "多謝！那張豹嗜酒如命，只怕不見酒不開口。萬事小心，莫要驚動官府。", "goto": "END" } } },
+
+        "d_zb2": { "start": "n0", "resume": "n0", "nodes": {
+          "n0": { "speaker": "npc", "src_note": "2001-8-2「張豹說有酒就說」【設計提案】",
+                  "text": "喲，又是你。怎麼，還想聽故事？",
+                  "choices": [
+                    { "id": "c_ask", "label": "張大哥，那紅花會的四當家，如今關在哪兒？", "goto": "n1" },
+                    { "id": "c_bye", "label": "沒事，路過看看你。", "goto": "END" } ] },
+          "n1": { "speaker": "npc", "text": "（把空酒瓶倒過來晃了晃）瞧見沒？一滴都不剩啦。我張豹別的沒有，就一條規矩——有酒就說，沒酒免談。", "goto": "n2" },
+          "n2": { "speaker": "npc", "text": "上回那兩瓶不算數！客棧裡賣的酒，白酒、羊乳酒、竹葉青，你每樣給我新買一瓶來，我就跟你好好聊聊。",
+                  "do": [ { "do": "complete", "obj": "o_zb2" } ], "goto": "END" } } },
+
+        "d_zb3": { "start": "n0", "resume": "n0", "nodes": {
+          "n0": { "speaker": "npc", "src_note": "2001-8-2「選第二個選項」；選項 2 的文字取自官方張豹任務頁【我只是好奇來問問文泰來的消息的】【後期版】",
+                  "text": "（張豹湊過來嗅了嗅）嗯……三種酒的香味都齊了。說吧，你想聽什麼？",
+                  "choices": [
+                    { "id": "c_1", "label": "張大哥海量，這酒你先喝個痛快！", "goto": "n_w1" },
+                    { "id": "c_2", "label": "我只是好奇來問問文泰來的消息的。",
+                      "do": [ { "do": "take", "item": "c_baijiu", "n": 1 }, { "do": "take", "item": "c_yangrujiu", "n": 1 }, { "do": "take", "item": "c_zhuyeqing", "n": 1 } ], "goto": "n1" },
+                    { "id": "c_3", "label": "少囉嗦，快把你知道的都說出來！", "goto": "n_w2" } ] },
+          "n_w1": { "speaker": "npc", "text": "光喝悶酒有什麼意思？你到底想打聽什麼，想清楚了再來。", "goto": "END" },
+          "n_w2": { "speaker": "npc", "text": "嘿，你兇什麼兇？我可是吃公門飯的！不說了不說了。", "goto": "END" },
+          "n1": { "speaker": "npc", "text": "（一口氣喝了三瓶，臉紅得像關公）好奇？嘿嘿……告訴你吧，那姓文的押到哪兒去，衙門裡只有一份公文寫著。", "goto": "n2" },
+          "n2": { "speaker": "npc", "text": "公文不在西夏，在大理衙門的王捕頭手上。那老傢伙口風緊得很，你去碰碰運氣吧……嗝。",
+                  "do": [ { "do": "complete", "obj": "o_zb3" } ], "goto": "END" } } },
+
+        "d_wang1": { "start": "n0", "resume": "n0", "nodes": {
+          "n0": { "speaker": "npc", "src_note": "依 tishi.htm 2001-07-26「大理王捕頭」：收到一份關於捉拿某人的公文【設計提案】",
+                  "text": "（王捕頭正把一封蓋了紅印的公文鎖進抽屜，抬頭瞪你）什麼人？衙門重地，閒雜人等少來晃蕩！",
+                  "choices": [
+                    { "id": "c_ask", "label": "聽說王捕頭手上有份公文，是關於一位江湖好漢的……", "goto": "n1" },
+                    { "id": "c_bye", "label": "走錯門了，告辭。", "goto": "END" } ] },
+          "n1": { "speaker": "npc", "text": "公文？哼，朝廷的公事，也是你能打聽的？老子吃了二十年公門飯，什麼樣的探子沒見過。", "goto": "n2" },
+          "n2": { "speaker": "npc", "text": "識相的就快滾，別讓我把你也當成紅花會的反賊鎖起來！（說完咂了咂嘴，像是嘴裡少了點什麼滋味。）",
+                  "do": [ { "do": "complete", "obj": "o_wang1" } ], "goto": "END" } } },
+
+        "d_zb4": { "start": "n0", "resume": "n0", "nodes": {
+          "n0": { "speaker": "npc", "src_note": "2001-8-2 選項原文「王捕頭的情報」【設計提案】",
+                  "text": "怎麼，在王捕頭那兒碰了一鼻子灰吧？哈哈！我早說了，那老傢伙不好對付。",
+                  "choices": [
+                    { "id": "c_1", "label": "再陪我喝兩杯吧。", "goto": "n_w" },
+                    { "id": "c_2", "label": "王捕頭的情報",
+                      "do": [ { "do": "take", "item": "c_baijiu", "n": 1 }, { "do": "take", "item": "c_yangrujiu", "n": 1 }, { "do": "take", "item": "c_zhuyeqing", "n": 1 } ], "goto": "n1" },
+                    { "id": "c_3", "label": "算了，告辭。", "goto": "END" } ] },
+          "n_w": { "speaker": "npc", "text": "喝酒歸喝酒，你想問什麼倒是說呀。", "goto": "END" },
+          "n1": { "speaker": "npc", "text": "（拔開瓶塞聞了聞，滿意地點頭）王捕頭這人啊，鐵面無私是假的，貪杯才是真的。他什麼都不愛，就愛中原運來的竹葉青。", "goto": "n2" },
+          "n2": { "speaker": "npc", "text": "你給他帶三瓶竹葉青去，保管他喝得東倒西歪。到時候那抽屜裡的公文……嘿嘿，我可什麼都沒說。",
+                  "do": [ { "do": "complete", "obj": "o_zb4" } ], "goto": "END" } } },
+
+        "d_wang2": { "start": "n0", "resume": "n0", "nodes": {
+          "n0": { "speaker": "npc", "src_note": "2001-8-2「照他說的做，選最後一個選項」；官方頁「他喝醉後得到偷抄的一份公文手抄本」【設計提案】",
+                  "text": "又是你？上回的話沒聽懂嗎？",
+                  "choices": [
+                    { "id": "c_1", "label": "我奉紅花會之命，來取那份公文！", "goto": "n_w1" },
+                    { "id": "c_2", "label": "（趁他不注意，偷偷去拉抽屜）", "goto": "n_w2" },
+                    { "id": "c_3", "label": "王捕頭辛苦了。這是中原來的竹葉青，小的特地孝敬您的。",
+                      "do": [ { "do": "take", "item": "c_zhuyeqing", "n": 3 } ], "goto": "n1" } ] },
+          "n_w1": { "speaker": "npc", "text": "好大的膽子！來人哪——算了，看你也不像個能成事的，滾！", "goto": "END" },
+          "n_w2": { "speaker": "npc", "text": "（啪的一聲按住你的手）想在老子眼皮底下動手腳？再有下回，鐵鍊伺候！", "goto": "END" },
+          "n1": { "speaker": "npc", "text": "（眼睛一亮，連聲音都軟了）竹葉青！好、好，你這人懂事。來來來，陪老子喝兩杯！", "goto": "n2" },
+          "n2": { "speaker": "npc", "text": "（三瓶下肚，王捕頭趴在桌上鼾聲如雷，抽屜的鑰匙從腰間滑了出來。）", "goto": "n3" },
+          "n3": { "speaker": "player", "text": "（你輕輕打開抽屜，就著燈火把公文一字一句抄了下來，再原樣鎖好，放回鑰匙。）",
+                  "do": [ { "do": "give", "item": "i_wtl_gongwen", "n": 1 }, { "do": "complete", "obj": "o_wang2" } ], "goto": "END" } } },
+
+        "d_chen2": { "start": "n0", "resume": "n0", "nodes": {
+          "n0": { "speaker": "npc", "src_note": "2001-8-2「回報陳家洛」；官方頁「公文手抄本 → 陳家洛」。研究：沒有任何來源救出文泰來，任務以情報結束【設計提案】",
+                  "text": "朋友回來了！可打聽到四哥的下落？",
+                  "choices": [
+                    { "id": "c_give", "label": "這是大理衙門那份公文的手抄本。", "do": [ { "do": "take", "item": "i_wtl_gongwen", "n": 1 } ], "goto": "n1" },
+                    { "id": "c_not", "label": "還沒有，我再去想想辦法。", "goto": "END" } ] },
+          "n1": { "speaker": "npc", "text": "（接過手抄本，越看臉色越沉）……「反賊文泰來，著即押解杭州，交提督衙門嚴加看管，沿途不得有失。」原來如此！", "goto": "n2" },
+          "n2": { "speaker": "npc", "text": "有了這份公文，我們便知道該在何處動手。這番恩情，紅花會記下了。朋友日後若到江南，報上陳家洛的名號便是。",
+                  "do": [ { "do": "complete", "obj": "o_report" } ], "goto": "n3" },
+          "n3": { "speaker": "npc", "text": "（陳家洛向你深深一揖，轉身撮唇長嘯，遠處一騎快馬應聲而來，朝東南方絕塵而去。）", "goto": "END" } } }
+      },
+      "outcomes": {
+        "default": { "label": "打探到文泰來的下落", "rewards": { "lilian": 10 },
+                     "src": "later", "src_note": "2001-8-2 攻略沒寫獎勵；江湖歷練 +10 取自官方張豹任務頁（index_jy3-4）【後期版】" }
+      },
+      "rumors": { "first": "rmr_q_wentailai_first", "foreshadow": "rmr_q_wentailai_fs" }
+    },
+
+    {
+      "id": "q_hs_jianqi", "name": "劍氣宗之別", "chapter": "華山派", "group": "ev_laodenuo",
+      "giver": "n_hs_chengbuyou", "era": "1.0A", "src": "verified", "dialogue_src": "proposal",
+      "src_note": "研究 華山內奸：17173 2001-8-2 n732_648232（華山劍法 35、心法 30 → 思過崖洞 → 成不憂問你可知劍宗 → 是；點錯就失去機會）；拒絕成不憂才能做華山內奸（2001-8-27 n930_846291、n162_78514）。劍宗後續內容不在本包，只做選擇與旗標（STORY_PLAN §1.2）",
+      "text": "思過崖破劍洞裡來了一位脾氣暴躁的老者，自稱華山劍宗門人，正在物色傳人。劍宗還是氣宗，一旦選定，便再也回不了頭。（華山山門往北經玉女峰練武場、正氣堂，再往北就是思過崖破劍洞。）",
+      "requires": [
+        { "type": "sect", "sect": "huashan" },
+        { "type": "skill_min", "skill": "hs_jianfa", "value": 35 },
+        { "type": "skill_min", "skill": "hs_xinfa", "value": 30 } ],
+      "give_items": [],
+      "repeat": { "max": 1, "cooldown_days": 0 },
+      "abandon": true, "party_credit": true,
+      "start": "s_choose",
+      "offer": "d_offer",
+      "stages": [
+        { "id": "s_choose", "title": "劍宗還是氣宗", "hint_room": "hs_siguoya",
+          "log": "回思過崖破劍洞（華山山門往北，經玉女峰練武場、正氣堂再往北）答覆成不憂：改投劍宗，或婉拒堅守氣宗。一旦選定便不能更改。",
+          "objectives": [ { "id": "o_choose", "type": "TALK", "npc": "n_hs_chengbuyou", "dialogue": "d_choose", "text": "答覆成不憂：入劍宗或婉拒" } ],
+          "next": [
+            { "if": [ { "type": "quest_var", "quest": "q_hs_jianqi", "var": "pick", "value": "jian" } ], "goto": "END:jianzong" },
+            { "goto": "END:qizong" } ] }
+      ],
+      "dialogues": {
+        "d_offer": { "start": "n0", "nodes": {
+          "n0": { "speaker": "npc", "src_note": "2001-8-2 n732_648232：思過崖洞中的成不憂問你是否知道劍宗【設計提案】",
+                  "text": "（一個面容枯瘦的老者盤坐在洞中，聽見腳步聲，霍地睜開雙眼）又是岳不群那偽君子的徒弟？嘿，劍法倒還練得有幾分樣子。",
+                  "choices": [
+                    { "id": "c_bow", "label": "弟子見過前輩。前輩也是華山派的？", "goto": "n1" },
+                    { "id": "c_leave", "label": "（悄悄退出洞去）", "goto": "END" } ] },
+          "n1": { "speaker": "npc", "text": "我問你——你可知劍宗？",
+                  "choices": [
+                    { "id": "c_know", "label": "知道。", "do": [ { "do": "accept" } ], "goto": "n2" },
+                    { "id": "c_dont", "label": "劍宗？弟子從沒聽師父提過。", "goto": "n_dont" } ] },
+          "n_dont": { "speaker": "npc", "text": "哼，岳不群連本門的往事都不敢跟徒弟說，果然是個偽君子。等你弄明白了再來見我！", "goto": "END" },
+          "n2": { "speaker": "npc", "text": "知道就好！二十五年前玉女峰上，劍宗、氣宗兩派比劍，劍宗一時失手，從此被逐出華山。岳不群那一派練氣不練劍，練到老也不過如此！", "goto": "n3" },
+          "n3": { "speaker": "npc", "text": "你這小子根骨不壞，跟著岳不群可惜了。回去好好想想，想清楚了再來答覆我。", "goto": "END" } } },
+
+        "d_choose": { "start": "n0", "resume": "n0", "nodes": {
+          "n0": { "speaker": "npc", "src_note": "研究：接受 → 劍宗；拒絕 → 氣宗，可做華山內奸；學了紫霞神功就永遠不能入劍宗【設計提案】",
+                  "text": "華山武功，以劍為主，以氣為輔，這才是正途！我劍宗一脈，劍法上的造詣遠勝氣宗。你若肯改投劍宗，我便將劍宗的心得傳你。怎麼樣？",
+                  "choices": [
+                    { "id": "c_jian", "label": "弟子願入劍宗。",
+                      "do": [ { "do": "var", "name": "pick", "value": "jian" }, { "do": "complete", "obj": "o_choose" } ], "goto": "n_j1" },
+                    { "id": "c_qi", "label": "弟子既拜在岳掌門門下，不敢改投他宗。",
+                      "do": [ { "do": "var", "name": "pick", "value": "qi" }, { "do": "complete", "obj": "o_choose" } ], "goto": "n_q1" },
+                    { "id": "c_wait", "label": "此事重大，容弟子再想想。", "goto": "n_wait" } ] },
+          "n_wait": { "speaker": "npc", "text": "想？好，你慢慢想。不過我成不憂的耐性可不多。", "goto": "END" },
+          "n_j1": { "speaker": "npc", "text": "好！有骨氣！從今往後，你便是劍宗的人。練劍要快、要狠，別學岳不群那套磨磨蹭蹭的吐納功夫。", "goto": "n_j2" },
+          "n_j2": { "speaker": "npc", "text": "這事暫且別讓岳不群知道。等劍宗重回華山那一天，自有你的好處。", "goto": "END" },
+          "n_q1": { "speaker": "npc", "text": "（臉色一沉）哼，又是一個被岳不群灌了迷湯的！氣宗、氣宗，練一輩子氣，碰上真正的快劍，還不是一樣送命？", "goto": "n_q2" },
+          "n_q2": { "speaker": "npc", "text": "罷了，人各有志。你走吧——從今往後，劍宗的門再也不會為你開。", "goto": "END" } } }
+      },
+      "outcomes": {
+        "jianzong": { "label": "改投劍宗", "rewards": { "flags": [ "hs_jianzong" ] },
+                      "src": "verified", "src_note": "2001-8-2：答「是」即入劍宗；劍宗後續內容不在本包（STORY_PLAN §1.2）" },
+        "qizong": { "label": "堅守氣宗", "rewards": { "flags": [ "hs_qizong" ] },
+                    "src": "verified", "src_note": "2001-8-27 兩篇：先達到劍宗條件並拒絕成不憂，勞德諾才會理你" }
+      },
+      "rumors": { "first": "rmr_q_hs_jianqi_first", "foreshadow": "rmr_q_hs_jianqi_fs" }
+    },
+
+    {
+      "id": "q_hs_spy", "name": "華山內奸", "chapter": "華山派", "group": "ev_laodenuo",
+      "alias": "勞德諾",
+      "giver": "n_xx_laodenuo", "era": "1.0A", "src": "verified", "dialogue_src": "proposal",
+      "src_note": "研究 華山內奸：簡介 tishi.htm 2001-08-10 區塊（官方 08-08）；門檻 華心50 讀書30 悟30 儒風30（2001-8-27 文章二 徐悅瀧，D10）；步驟依文章二順序；物品「氣宗武譜」（3 個來源中 2 個）；「衡山左冷蟬」保留遊戲原文",
+      "text": "在西夏客棧的勞德諾居然是內奸，那他到底又是誰派來的內奸呢？令狐沖早就已經懷疑他很久了……若岳不群知道他是華山氣宗的內奸又會如何呢？快去西夏的客棧看看勞德諾有什麼異常吧。不過華山心法可要多加熟練喔。",
+      "requires": [
+        { "type": "sect", "sect": "huashan" },
+        { "type": "quest_flag", "flag": "hs_qizong" },
+        { "type": "skill_min", "skill": "hs_xinfa", "value": 50 },
+        { "type": "skill_min", "skill": "basic_literacy", "value": 30 },
+        { "type": "attr_min", "attr": "wit", "value": 30 },
+        { "type": "skill_min", "skill": "rufeng", "value": 30 } ],
+      "give_items": [],
+      "repeat": { "max": 1, "cooldown_days": 0 },
+      "abandon": true, "party_credit": true,
+      "start": "s_lhc1",
+      "offer": "d_offer",
+      "stages": [
+        { "id": "s_lhc1", "title": "大師兄的疑心", "hint_room": "hy_pond",
+          "log": "到華山水池找大師兄令狐沖，他只在巳、午、未三個時辰在池邊練劍。走法：出西夏東門往東北官道，經礦區、黑龍潭、潭東河岸、恆山外稻田、路邊茶棚、恆山岸邊到恆山岔路，往東南走華陰道到華山腳下，再往東就是華山水池。",
+          "objectives": [ { "id": "o_lhc1", "type": "TALK", "npc": "n_hs_linghuchong", "dialogue": "d_lhc1", "text": "巳、午、未時到華山水池找令狐沖" } ],
+          "src": "verified", "src_note": "令狐沖 17461,8715 華山與武當之間的水池，巳／午／未出現（2001-8-27 文章二）；子時比武場的令狐沖給的是別的任務",
+          "next": "s_ldn2" },
+        { "id": "s_ldn2", "title": "敷衍一下", "hint_room": "xx_inn",
+          "log": "回西夏客棧（西夏廣場往北）找勞德諾，順著他的話敷衍一下，套出他背後的人。",
+          "objectives": [ { "id": "o_ldn2", "type": "TALK", "npc": "n_xx_laodenuo", "dialogue": "d_ldn2", "text": "回西夏客棧跟勞德諾敷衍一下" } ],
+          "src": "verified", "src_note": "2001-8-27 文章二：回去找勞德諾「敷衍一下」，得知他與「衡山左冷蟬」的關係",
+          "next": "s_lhc2" },
+        { "id": "s_lhc2", "title": "華山密函", "hint_room": "hy_pond",
+          "log": "回華山水池（只在巳、午、未時）把勞德諾的話告訴令狐沖。",
+          "objectives": [ { "id": "o_lhc2", "type": "TALK", "npc": "n_hs_linghuchong", "dialogue": "d_lhc2", "text": "巳、午、未時回華山水池稟告令狐沖" } ],
+          "next": "s_ybq1" },
+        { "id": "s_ybq1", "title": "稟報掌門", "hint_room": "hs_square",
+          "log": "把華山密函親手交給掌門岳不群。從華山水池往西回華山腳下，往北上華山山門，再往北就是玉女峰練武場。",
+          "objectives": [ { "id": "o_ybq1", "type": "TALK", "npc": "n_yuebuqun", "dialogue": "d_ybq1", "text": "把華山密函交給玉女峰練武場的岳不群" } ],
+          "next": "s_fight" },
+        { "id": "s_fight", "title": "清理門戶", "hint_room": "xx_inn",
+          "log": "持追擊令回西夏客棧（西夏廣場往北），在客棧裡攔下勞德諾，打贏他。打輸或逃走了，就再找他一次。",
+          "objectives": [ { "id": "o_fight", "type": "FIGHT", "npc": "n_xx_laodenuo", "dialogue": "d_fight", "win": "WIN", "text": "在西夏客棧擊敗勞德諾" } ],
+          "room_actions": [
+            { "id": "a_fight", "room": "xx_inn", "label": "持追擊令攔下勞德諾", "hours": [],
+              "requires": [ { "type": "has_item", "item": "i_hs_zhuijiling", "n": 1 } ], "repeat": true,
+              "do": [ { "do": "tell", "key": "tell_q_hs_spy_confront" },
+                      { "do": "fight", "monsters": [ "m_xx_laodenuo" ], "obj": "o_fight", "npc": "n_xx_laodenuo", "no_flee": false, "solo": false } ] } ],
+          "on_complete": [ { "do": "give", "item": "i_hs_qizongwupu", "n": 1 }, { "do": "tell", "key": "tell_q_hs_spy_wupu" } ],
+          "src": "verified", "src_note": "2001-8-27：持追擊令到西夏客棧殺／打敗勞德諾 → 氣宗武譜；必須打贏（D10）。後期「不用真打」是免費版【後期版】，不採用",
+          "next": "s_ybq2" },
+        { "id": "s_ybq2", "title": "繳回武譜", "hint_room": "hs_square",
+          "log": "帶著氣宗武譜回華山（西夏東門出城，照原路經恆山岔路、華陰道到華山腳下，往北上山門），到玉女峰練武場向岳不群覆命。",
+          "objectives": [ { "id": "o_ybq2", "type": "TALK", "npc": "n_yuebuqun", "dialogue": "d_ybq2", "text": "把氣宗武譜交給岳不群" } ],
+          "next": "END:default" }
+      ],
+      "dialogues": {
+        "d_offer": { "start": "n0", "nodes": {
+          "n0": { "speaker": "npc", "src_note": "依 tishi.htm 2001-08-10 簡介「快去西夏的客棧看看勞德諾有什麼異常吧」；2001-8-27「勞德諾有特別的對話」【設計提案】",
+                  "text": "（勞德諾獨坐角落，正低頭寫著什麼；一見你走近，連忙把信紙折起塞進袖中）啊……是師弟啊。怎麼也到西夏來了？",
+                  "choices": [
+                    { "id": "c_ask", "label": "二師兄在寫信？寫給師父的嗎？", "goto": "n1" },
+                    { "id": "c_greet", "label": "師兄好，小弟路過而已。", "goto": "END" } ] },
+          "n1": { "speaker": "npc", "text": "是、是啊，給師父報個平安。（他眼神閃爍，一隻手始終按著袖口）師弟一路辛苦，坐下喝杯酒吧。", "goto": "n2" },
+          "n2": { "speaker": "player", "text": "（二師兄向來老成持重，今天卻神色慌張。聽說大師兄令狐沖對他起疑已久，不如先去找大師兄商量。）",
+                  "choices": [
+                    { "id": "c_accept", "label": "（不動聲色，先去找大師兄令狐沖）", "do": [ { "do": "accept" } ], "goto": "END" },
+                    { "id": "c_ignore", "label": "（大概是自己多心了）", "goto": "END" } ] } } },
+
+        "d_lhc1": { "start": "n0", "resume": "n0", "nodes": {
+          "n0": { "speaker": "npc", "src_note": "依簡介「令狐沖早就已經懷疑他很久了」；人物口吻依《笑傲江湖》令狐沖【設計提案】",
+                  "text": "（令狐沖收劍入鞘，拎起酒葫蘆咧嘴一笑）師弟，你怎麼找到這兒來了？要不要喝一口？",
+                  "choices": [
+                    { "id": "c_tell", "label": "大師兄，我在西夏客棧見到二師兄，他鬼鬼祟祟地在寫信。", "goto": "n1" },
+                    { "id": "c_bye", "label": "路過，來看看大師兄。", "goto": "END" } ] },
+          "n1": { "speaker": "npc", "text": "（笑容收了起來）果然……不瞞你說，我疑心他很久了。勞師弟是帶藝投師，入門之前就有一身功夫，偏偏對本門的事打聽得比誰都勤。", "goto": "n2" },
+          "n2": { "speaker": "npc", "text": "可他是師父的弟子，沒有真憑實據，我也不好在師父面前說他的不是。師弟，你替我回西夏客棧，跟他敷衍一下，探探他背後到底是什麼人。",
+                  "choices": [
+                    { "id": "c_ok", "label": "大師兄放心，我這就去。", "do": [ { "do": "complete", "obj": "o_lhc1" } ], "goto": "n3" },
+                    { "id": "c_no", "label": "這……讓我再想想。", "goto": "END" } ] },
+          "n3": { "speaker": "npc", "text": "千萬別打草驚蛇。他要是說什麼，你就順著他的話說。", "goto": "END" } } },
+
+        "d_ldn2": { "start": "n0", "resume": "n0", "nodes": {
+          "n0": { "speaker": "npc", "src_note": "2001-8-27 文章二：「敷衍一下」，得知與「衡山左冷蟬」的關係（遊戲原文，小說作嵩山左冷禪；D10 保留）【設計提案】",
+                  "text": "師弟又來了？（他斟了兩杯酒）來，陪師兄喝一杯。唉，在師父門下熬了這些年，大師兄整天喝酒胡鬧，師父卻偏偏把他當寶……",
+                  "choices": [
+                    { "id": "c_fuyan", "label": "（敷衍一下）師兄說得是，師父也太偏心了。", "goto": "n1" },
+                    { "id": "c_direct", "label": "二師兄，你袖子裡那封信，到底是寫給誰的？", "goto": "n_w" } ] },
+          "n_w": { "speaker": "npc", "text": "（臉色一變，乾笑兩聲）師弟說笑了。天色不早，我先回房歇息。", "goto": "END" },
+          "n1": { "speaker": "npc", "text": "（壓低聲音）師弟果然是明白人。我跟你說，岳不群這點能耐，五嶽劍派裡有誰看得上？將來執掌五嶽的，只有一個人。", "goto": "n2" },
+          "n2": { "speaker": "npc", "text": "衡山左冷蟬左盟主雄才大略，早晚要將五嶽併成一派。到那時候，跟對了人，比什麼都強……師弟，你若有心，師兄替你引見引見。", "goto": "n3" },
+          "n3": { "speaker": "player", "text": "（你心中一凜，臉上卻不動聲色，陪他乾了一杯。原來二師兄是左冷蟬派來的人！）",
+                  "do": [ { "do": "complete", "obj": "o_ldn2" } ], "goto": "END" } } },
+
+        "d_lhc2": { "start": "n0", "resume": "n0", "nodes": {
+          "n0": { "speaker": "npc", "src_note": "2001-8-27 文章二：再找令狐沖 → 華山密函【設計提案】",
+                  "text": "怎麼樣？套出什麼來了？",
+                  "choices": [
+                    { "id": "c_tell", "label": "二師兄親口說了，他是替衡山左冷蟬左盟主辦事的。", "goto": "n1" },
+                    { "id": "c_bye", "label": "還沒有，我再去探探。", "goto": "END" } ] },
+          "n1": { "speaker": "npc", "text": "（一拳捶在柳樹上，震得柳葉簌簌而落）果然是他！這些年本門的劍譜心法，只怕早被他抄了個遍。", "goto": "n2" },
+          "n2": { "speaker": "npc", "text": "事關重大，我寫一封密函，你親手交給師父，千萬別經他人之手。",
+                  "do": [ { "do": "give", "item": "i_hs_mihan", "n": 1 }, { "do": "complete", "obj": "o_lhc2" } ], "goto": "n3" },
+          "n3": { "speaker": "npc", "text": "師父在華山玉女峰練武場。快去吧——對了，這事先別讓小師妹知道，免得她擔心。", "goto": "END" } } },
+
+        "d_ybq1": { "start": "n0", "resume": "n0", "nodes": {
+          "n0": { "speaker": "npc", "src_note": "2001-8-27：華山密函 → 岳不群 → 追擊令；人物口吻依《笑傲江湖》岳不群【設計提案】",
+                  "text": "（岳不群負手而立）你不在外頭歷練，回山來有什麼事？",
+                  "choices": [
+                    { "id": "c_give", "label": "大師兄有一封密函，要弟子親手呈給師父。", "do": [ { "do": "take", "item": "i_hs_mihan", "n": 1 } ], "goto": "n1" },
+                    { "id": "c_bye", "label": "弟子回山看看師父。", "goto": "END" } ] },
+          "n1": { "speaker": "npc", "text": "（拆信細讀，臉上那股儒雅之氣漸漸化作一片鐵青）……德諾，德諾，為師待你不薄。", "goto": "n2" },
+          "n2": { "speaker": "npc", "text": "此事你辦得穩妥。勾結外人、出賣師門，罪無可恕。這是追擊令，你持令到西夏客棧拿下勞德諾。",
+                  "do": [ { "do": "give", "item": "i_hs_zhuijiling", "n": 1 }, { "do": "complete", "obj": "o_ybq1" } ], "goto": "n3" },
+          "n3": { "speaker": "npc", "text": "他入門之前便有一身武功，你須小心應付。若他束手就擒便罷；若敢反抗，就地拿下，不必留情。", "goto": "END" } } },
+
+        "d_fight": { "start": "n0", "resume": "n0", "nodes": {
+          "n0": { "speaker": "npc", "src_note": "2001-8-27：持追擊令在西夏客棧打敗勞德諾【設計提案】",
+                  "text": "（勞德諾瞥見你腰間的令牌，握著酒杯的手微微一顫）師弟……你這是什麼意思？",
+                  "choices": [
+                    { "id": "c_fight", "label": "勞德諾！師父有令，拿你回華山發落！", "goto": "n1" },
+                    { "id": "c_wait", "label": "（先不動聲色，養足精神再來）", "goto": "n_wait" } ] },
+          "n1": { "speaker": "npc", "text": "（勞德諾臉色大變，一腳踢翻酒桌，拔劍而起）好，好……既然撕破了臉，那就手底下見真章！",
+                  "do": [ { "do": "fight", "monsters": [ "m_xx_laodenuo" ], "obj": "o_fight", "npc": "n_xx_laodenuo", "no_flee": false, "solo": false } ], "goto": "END" },
+          "n_wait": { "speaker": "npc", "text": "（勞德諾盯著你的背影，慢慢把手按上了劍柄。）", "goto": "END" } } },
+
+        "d_ybq2": { "start": "n0", "resume": "n0", "nodes": {
+          "n0": { "speaker": "npc", "src_note": "2001-8-27：氣宗武譜 → 岳不群 → 紫霞神功（之後自修）【設計提案】",
+                  "text": "人拿下了？",
+                  "choices": [
+                    { "id": "c_give", "label": "勞德諾已經伏法。這是從他身上搜出來的氣宗武譜。", "do": [ { "do": "take", "item": "i_hs_qizongwupu", "n": 1 } ], "goto": "n1" },
+                    { "id": "c_bye", "label": "弟子還沒辦妥。", "goto": "END" } ] },
+          "n1": { "speaker": "npc", "text": "（翻了翻武譜，長嘆一聲）這是本門氣宗的心法要訣……他抄得倒是工整。若流到外人手裡，華山派還有什麼臉面立足五嶽？", "goto": "n2" },
+          "n2": { "speaker": "npc", "text": "你出身氣宗，劍宗的誘惑也未曾動心，又替本門除去了內奸。為師便將本門鎮派內功「紫霞神功」的入門口訣傳你。", "goto": "n3" },
+          "n3": { "speaker": "npc", "text": "紫霞神功是華山氣宗的根本，練到深處，紫氣自生，百脈俱通。為師只能領你入門，往後的功夫，全靠你自己苦練。切記：以氣御劍，方是正道。",
+                  "do": [ { "do": "complete", "obj": "o_ybq2" } ], "goto": "END" } } }
+      },
+      "outcomes": {
+        "default": { "label": "習得紫霞神功", "rewards": { "flags": [ "hs_zixia_ok" ], "learn": { "hs_zixia": 1 } },
+                     "src": "verified", "src_note": "2001-8-27：獎勵是紫霞神功（之後自修）與永久氣宗；沒有善惡、名聲、歷練變化；GDD【提案】儒風熟練無依據，已拿掉" }
+      },
+      "rumors": { "first": "rmr_q_hs_spy_first", "foreshadow": "rmr_q_hs_spy_fs" }
+    }
+  ],
+
+  "npcs": [
+    { "id": "n_xx_zhangbao", "name": "張豹", "kind": "STORY", "region": "xixia", "room": "xx_yamen", "alignment": "NEUTRAL",
+      "talk": "talk_n_xx_zhangbao", "services": [ "QUEST" ], "night_closed": false, "quests": [ "q_wentailai" ],
+      "appear": { "hours": [ "丑", "寅", "卯", "辰", "巳", "午", "未", "申", "酉", "戌", "亥" ], "requires": [] },
+      "desc": "滿臉通紅、腰間掛著空酒葫蘆的衙門差役，說起話來滿嘴酒氣。",
+      "era": "1.0A", "src": "verified",
+      "src_note": "研究 解救文泰來：2001-8-2「西夏衙門右邊、虛竹旁邊的張豹（子時不在）」；外貌【設計提案】" },
+    { "id": "n_dl_wangbutou", "name": "王捕頭", "kind": "STORY", "region": "dali", "room": "dl_yamen", "alignment": "NEUTRAL",
+      "talk": "talk_n_dl_wangbutou", "services": [], "night_closed": false,
+      "desc": "國字臉、絡腮鬍的老捕頭，腰間佩刀擦得雪亮，看人的眼神像刀子。",
+      "era": "1.0A", "src": "verified",
+      "src_note": "研究 解救文泰來：tishi.htm 2001-07-26「大理王捕頭」；2001-8-2 大理衙門；外貌【設計提案】" },
+    { "id": "n_xx_laodenuo", "name": "勞德諾", "kind": "STORY", "region": "xixia", "room": "xx_inn", "alignment": "NEUTRAL",
+      "talk": "talk_n_xx_laodenuo", "services": [ "QUEST" ], "night_closed": false, "quests": [ "q_hs_spy" ],
+      "desc": "鬚髮花白、神情老成的華山二弟子，總是獨坐客棧一角，慢慢地斟酒。",
+      "era": "1.0A", "src": "verified",
+      "src_note": "研究 華山內奸：簡介「在西夏客棧的勞德諾」；外貌依《笑傲江湖》【設計提案】" },
+    { "id": "n_hs_linghuchong", "name": "令狐沖", "kind": "STORY", "region": "huayin_road", "room": "hy_pond", "alignment": "GOOD",
+      "talk": "talk_n_hs_linghuchong", "services": [], "night_closed": false,
+      "appear": { "hours": [ "巳", "午", "未" ], "requires": [] },
+      "desc": "瀟灑不羈的華山大弟子，腰間掛著酒葫蘆，常在池邊練劍。",
+      "era": "1.0A", "src": "verified",
+      "src_note": "研究 華山內奸：令狐沖 17461,8715「華山與武當之間的水池」，巳／午／未（2001-8-27 文章二）；D10 hy_pond" },
+    { "id": "n_hs_chengbuyou", "name": "成不憂", "kind": "STORY", "region": "huashan", "room": "hs_siguoya", "alignment": "NEUTRAL",
+      "talk": "talk_n_hs_chengbuyou", "services": [ "QUEST" ], "night_closed": false, "quests": [ "q_hs_jianqi" ],
+      "desc": "面容枯瘦、脾氣暴躁的老者，自稱華山劍宗門人，盤坐在思過崖破劍洞中。",
+      "era": "1.0A", "src": "verified",
+      "src_note": "研究 華山內奸：2001-8-2 n732_648232 思過崖洞中的成不憂；外貌依《笑傲江湖》【設計提案】" }
+  ],
+
+  "npc_links": [],
+
+  "shop_patches": [
+    { "npc": "n_xx_innkeeper", "add_items": [ "c_baijiu", "c_yangrujiu", "c_zhuyeqing" ] }
+  ],
+
+  "art_patches": [],
+
+  "items": [
+    { "id": "c_baijiu", "name": "白酒", "tab": "OTHER", "slot": "", "atk": 0, "def": 0, "weight": 1, "price": 10,
+      "stack": 20, "spoil_days": 0, "effects": [ { "type": "restore", "stat": "water", "value": 25 } ], "usable": true,
+      "usable_in_battle": false, "no_sell": false, "quest_item": false,
+      "desc": "西夏客棧自釀的白酒，入口火辣，後勁十足。",
+      "era": "1.0A", "src": "verified", "src_note": "2001-8-2 客棧賣白酒【已證實】；價格與效果【設計提案】（比照青稞酒）" },
+    { "id": "c_yangrujiu", "name": "羊乳酒", "tab": "OTHER", "slot": "", "atk": 0, "def": 0, "weight": 1, "price": 15,
+      "stack": 20, "spoil_days": 0, "effects": [ { "type": "restore", "stat": "water", "value": 25 } ], "usable": true,
+      "usable_in_battle": false, "no_sell": false, "quest_item": false,
+      "desc": "西夏人拿羊奶釀成的酒，帶著淡淡的奶香，入口綿軟。",
+      "era": "1.0A", "src": "verified", "src_note": "2001-8-2 客棧賣羊乳酒【已證實】；價格與效果【設計提案】" },
+    { "id": "c_zhuyeqing", "name": "竹葉青", "tab": "OTHER", "slot": "", "atk": 0, "def": 0, "weight": 1, "price": 30,
+      "stack": 20, "spoil_days": 0, "effects": [ { "type": "restore", "stat": "water", "value": 30 } ], "usable": true,
+      "usable_in_battle": false, "no_sell": false, "quest_item": false,
+      "desc": "從中原運來的竹葉青，酒色碧綠，清香撲鼻，在西夏算是稀罕貨。",
+      "era": "1.0A", "src": "later", "src_note": "2001 只說「客棧裡的每種酒」，種類未列【待考證】；竹葉青取自官方張豹任務頁（狀元紅、紹興、竹葉青）【後期版】；價格與效果【設計提案】" },
+    { "id": "i_wtl_gongwen", "name": "公文手抄本", "tab": "OTHER", "slot": "", "atk": 0, "def": 0, "weight": 0, "price": 0,
+      "stack": 1, "spoil_days": 0, "effects": [], "usable": false, "usable_in_battle": false, "no_sell": true, "quest_item": true,
+      "desc": "趁王捕頭醉倒時偷偷抄下的公文，上面寫著文泰來的押解去處。",
+      "era": "1.0A", "src": "later", "src_note": "官方張豹任務頁「偷抄的一份公文手抄本」【後期版】" },
+    { "id": "i_hs_mihan", "name": "華山密函", "tab": "OTHER", "slot": "", "atk": 0, "def": 0, "weight": 0, "price": 0,
+      "stack": 1, "spoil_days": 0, "effects": [], "usable": false, "usable_in_battle": false, "no_sell": true, "quest_item": true,
+      "sect_only": "huashan",
+      "desc": "令狐沖親筆寫給師父的密函，封口用火漆封得嚴嚴實實。",
+      "era": "1.0A", "src": "verified", "src_note": "研究 華山內奸：令狐沖 → 華山密函（2001-8-27）" },
+    { "id": "i_hs_zhuijiling", "name": "追擊令", "tab": "OTHER", "slot": "", "atk": 0, "def": 0, "weight": 0, "price": 0,
+      "stack": 1, "spoil_days": 0, "effects": [], "usable": false, "usable_in_battle": false, "no_sell": true, "quest_item": true,
+      "sect_only": "huashan",
+      "desc": "岳不群親手交付的華山追擊令，持令者可代掌門清理門戶。事成之後便留作憑證。",
+      "era": "1.0A", "src": "verified", "src_note": "研究 華山內奸：岳不群 → 追擊令（2001-8-27）；任務結束不收回【設計提案】" },
+    { "id": "i_hs_qizongwupu", "name": "氣宗武譜", "tab": "OTHER", "slot": "", "atk": 0, "def": 0, "weight": 0, "price": 0,
+      "stack": 1, "spoil_days": 0, "effects": [], "usable": false, "usable_in_battle": false, "no_sell": true, "quest_item": true,
+      "sect_only": "huashan",
+      "desc": "勞德諾暗中抄錄的華山氣宗武譜，字跡工整，不知已抄了多少份送出去。",
+      "era": "1.0A", "src": "verified", "src_note": "研究 華山內奸：3 個來源中 2 個寫氣宗武譜（文章一寫劍宗武譜）；D10" }
+  ],
+
+  "monsters": [
+    { "id": "m_xx_laodenuo", "name": "勞德諾", "short": "勞德諾", "kind": "ELITE", "alignment": "EVIL",
+      "desc": "華山二弟子勞德諾，帶藝投師，暗中替人刺探華山的武功。被揭穿之後拔劍相向，劍法老辣。（存在：已證實；數值：設計提案）",
+      "stats": { "qi": 700, "neili": 300, "jing": 500, "str": 22, "guts": 24, "wit": 26, "luck": 18, "cal": 26, "agi": 24, "con": 24 },
+      "skills": { "basic_dodge": 45, "basic_parry": 45, "basic_inner": 45, "basic_sword": 48 },
+      "arts": [ { "art": "hs_jianfa", "level": 45 } ],
+      "weapon_type": "SWORD", "weapon_power": 12, "armor_power": 36,
+      "combat_xp_ref": 30000, "combat_xp": 250, "learn_points": 80,
+      "drops": [], "money": { "min": 50, "max": 120 },
+      "morality_on_kill": 0, "killing_intent_on_kill": 0, "ai": "melee_basic", "no_rewards": false,
+      "era": "1.0A", "src": "proposal",
+      "src_note": "研究 華山內奸：必須打贏（D10）；級距 30000（STORY_PLAN §3.4），數值介於鬼王（20000）與盜墓賊（28000）之上；氣宗武譜由任務 on_complete 給，不走掉落" }
+  ],
+
+  "martial_arts": [
+    { "id": "hs_zixia", "name": "紫霞神功", "sect_id": "huashan", "category": "INNER", "base_skill": "basic_inner",
+      "difficulty": 1.2, "tier": "QUEST", "self_study_until": 0, "self_study_cap": 65, "party_size": 0, "monster_only": false,
+      "requires": [ { "type": "sect", "sect": "huashan" }, { "type": "quest_flag", "flag": "hs_zixia_ok" } ],
+      "inner": { "heal_mult": 1.3, "expel_mult": 1.3 },
+      "desc": "華山氣宗的鎮派內功，練到深處紫氣自生、百脈俱通。要先揭穿內奸勞德諾，岳不群才傳入門口訣，之後全靠自己苦修。",
+      "era": "1.0A", "src": "verified",
+      "src_note": "研究 華山內奸：2001-08-10 事件獎勵紫霞神功（只能自修）；任務給 1 級；自修上限 65 取自後期師父表（英白羅 65）【後期版】，1.0 上限【待考證】；係數與內功倍率【設計提案】",
+      "moves": [] }
+  ],
+
+  "masters": [],
+
+  "text_templates": [
+    { "id": "talk_n_xx_zhangbao", "era": "1.0A", "src": "proposal",
+      "self": "{npc_name}打了個酒嗝：「嗝……這位兄弟，身上帶酒了沒有？沒酒？那、那別跟我說話。」" },
+    { "id": "talk_n_xx_zhangbao@NIGHT", "era": "1.0A", "src": "proposal",
+      "self": "{npc_name}趴在衙門的長凳上，抱著空酒瓶喃喃自語：「再、再來一壺……子時一到，我可要回家睡覺啦……」" },
+    { "id": "talk_n_dl_wangbutou", "era": "1.0A", "src": "proposal",
+      "self": "{npc_name}手按刀柄：「衙門重地，沒事少來晃蕩。」說完卻忍不住咂了咂嘴，像是想起了什麼好酒。" },
+    { "id": "talk_n_dl_wangbutou@NIGHT", "era": "1.0A", "src": "proposal",
+      "self": "{npc_name}就著油燈翻閱公文，桌上擺著一隻空酒杯：「深更半夜還來衙門？莫非做賊心虛？」" },
+    { "id": "talk_n_xx_laodenuo", "era": "1.0A", "src": "proposal",
+      "self": "{npc_name}拱手道：「在下華山勞德諾。西夏風沙大，朋友多喝兩杯暖暖身子。」說罷又低頭看著手中的酒杯，若有所思。" },
+    { "id": "talk_n_xx_laodenuo@NIGHT", "era": "1.0A", "src": "proposal",
+      "self": "夜深了，{npc_name}還就著燭火伏案寫信，見你走近，連忙把信紙蓋住：「沒、沒什麼，給師父寫封家書。」" },
+    { "id": "talk_n_hs_linghuchong", "era": "1.0A", "src": "proposal",
+      "self": "{npc_name}拎起酒葫蘆灌了一口，笑道：「好酒！朋友，要不要也來一口？練劍練得口乾，喝酒最是解渴。」" },
+    { "id": "talk_n_hs_chengbuyou", "era": "1.0A", "src": "proposal",
+      "self": "{npc_name}冷冷地道：「岳不群的徒弟？練氣練到老，也敵不過一柄快劍。滾吧，別擾我清靜。」" },
+    { "id": "talk_n_hs_chengbuyou@NIGHT", "era": "1.0A", "src": "proposal",
+      "self": "洞裡黑漆漆的，只聽見{npc_name}對著石壁上的劍痕喃喃自語：「這一招……當年這一招若是使得快些……」" },
+    { "id": "tell_q_hs_spy_confront", "era": "1.0A", "src": "proposal",
+      "self": "你亮出追擊令，喝道：「勞德諾！師父有令，拿你回華山發落！」勞德諾臉色大變，推開酒桌拔劍而起：「好，既然撕破了臉，那就手底下見真章！」" },
+    { "id": "tell_q_hs_spy_wupu", "era": "1.0A", "src": "proposal",
+      "self": "勞德諾踉蹌倒地，懷中掉出一本手抄的冊子，封面寫著「氣宗武譜」四個字。你把它收了起來。" },
+    { "id": "rmr_q_wentailai_first", "era": "1.0A", "src": "proposal",
+      "self": "聽說{name}替紅花會打探到了四當家文泰來的下落，陳總舵主連夜派人快馬南下。" },
+    { "id": "rmr_q_wentailai_fs", "era": "1.0A", "src": "proposal",
+      "self": "紅花會四當家文泰來被朝廷的人抓走了，紅花會一行人正為解救他而大傷腦筋……" },
+    { "id": "rmr_q_hs_jianqi_first", "era": "1.0A", "src": "proposal",
+      "self": "聽說華山思過崖上有劍宗前輩出沒，{name}已在劍、氣二宗之間做了抉擇。" },
+    { "id": "rmr_q_hs_jianqi_fs", "era": "1.0A", "src": "proposal",
+      "self": "有華山弟子說，思過崖破劍洞裡住進了一個怪老頭，開口閉口都是「劍宗」。" },
+    { "id": "rmr_q_hs_spy_first", "era": "1.0A", "src": "proposal",
+      "self": "華山派清理門戶！{name}奉岳掌門之命，在西夏客棧拿下了內奸勞德諾。" },
+    { "id": "rmr_q_hs_spy_fs", "era": "1.0A", "src": "proposal",
+      "self": "在西夏客棧的勞德諾居然是內奸，那他到底又是誰派來的內奸呢？" },
+    { "id": "amb_xx_inn_laodenuo", "era": "1.0A", "src": "proposal",
+      "self": "客棧角落裡的燭火一直亮著，有人伏案寫字，紙筆沙沙作響，一有人走近便停了筆。" },
+    { "id": "amb_xx_yamen_zhangbao", "era": "1.0A", "src": "proposal",
+      "self": "衙門角落傳來一陣鼾聲，夾著濃濃的酒氣。" }
+  ],
+
+  "rumors": [
+    { "id": "rm_q_wentailai_fs", "kind": "FORESHADOW", "quest": "q_wentailai", "text": "rmr_q_wentailai_fs",
+      "requires_world": { "not_first": "q_wentailai" }, "hours": [], "weight": 1, "era": "1.0A", "src": "proposal",
+      "src_note": "文字是 tishi.htm 2001-07-26 簡介原文；系統預告傳聞【設計提案・非原作】" },
+    { "id": "rm_q_hs_jianqi_fs", "kind": "FORESHADOW", "quest": "q_hs_jianqi", "text": "rmr_q_hs_jianqi_fs",
+      "requires_world": { "not_first": "q_hs_jianqi" }, "hours": [], "weight": 1, "era": "1.0A", "src": "proposal",
+      "src_note": "系統預告傳聞【設計提案・非原作】" },
+    { "id": "rm_q_hs_spy_fs", "kind": "FORESHADOW", "quest": "q_hs_spy", "text": "rmr_q_hs_spy_fs",
+      "requires_world": { "not_first": "q_hs_spy" }, "hours": [], "weight": 1, "era": "1.0A", "src": "proposal",
+      "src_note": "文字是 tishi.htm 2001-08-10 簡介原文首句；系統預告傳聞【設計提案・非原作】" }
+  ],
+
+  "ambient": [
+    { "id": "amb_xx_inn_laodenuo", "room": "xx_inn", "periods": [ "NIGHT" ], "requires": [], "weight": 1,
+      "text": "amb_xx_inn_laodenuo", "era": "1.0A", "src": "proposal", "src_note": "環境句【設計提案・非原作】" },
+    { "id": "amb_xx_yamen_zhangbao", "room": "xx_yamen", "periods": [ "DAY", "DUSK" ], "requires": [], "weight": 1,
+      "text": "amb_xx_yamen_zhangbao", "era": "1.0A", "src": "proposal", "src_note": "環境句【設計提案・非原作】" }
+  ],
+
+  "art_requests": {
+    "units": [
+      { "id": "n_xx_zhangbao", "alias": "n_xx_guard", "prompt": "張豹：滿臉通紅的西夏衙門差役，皂衣小帽、腰掛空酒葫蘆，醉眼惺忪（drunken yamen runner, red face, empty gourd at waist）" },
+      { "id": "n_dl_wangbutou", "alias": "n_dl_bukuai", "prompt": "王捕頭：國字臉、絡腮鬍的老捕頭，紅纓官帽、佩刀，眼神凌厲（veteran constable, square face, full beard, saber）" },
+      { "id": "n_xx_laodenuo", "alias": "huashan_m", "prompt": "勞德諾：鬚髮花白、神情老成的華山弟子，青衫佩劍，袖中藏信，眼神閃爍（grey-haired Huashan disciple, shifty, letter in sleeve）" },
+      { "id": "m_xx_laodenuo", "alias": "n_xx_laodenuo", "prompt": "同 n_xx_laodenuo，拔劍戰鬥立繪" },
+      { "id": "n_hs_linghuchong", "alias": "huashan_m", "prompt": "令狐沖：瀟灑不羈的年輕劍客，青衫微敞、腰掛酒葫蘆，嘴角帶笑（carefree young swordsman with wine gourd）" },
+      { "id": "n_hs_chengbuyou", "alias": "huashan_m", "prompt": "成不憂：面容枯瘦、神情暴躁的老劍客，灰袍盤坐，劍橫膝上（gaunt irritable old swordsman, sword across knees）" }
+    ],
+    "backgrounds": []
+  },
+
+  "test_plan": [
+    { "quest": "q_wentailai", "outcome": "default", "save_reload_at": "s_wang1",
+      "note": "新角色、無門派即可；全程要約 10×2+15×3+30×5 兩以上的銀兩買酒；張豹子時不在，先跳到辰時；BUY 只算階段開始後買的",
+      "path": [ "wait:hour=辰",
+        "walk@xx_yamen", "accept@n_xx_zhangbao", "choose@n_xx_zhangbao:n0:c_ask", "choose@n_xx_zhangbao:n1:c_accept",
+        "walk@xx_inn", "buy@n_xx_innkeeper:c_baijiu:1", "buy@n_xx_innkeeper:c_yangrujiu:1",
+        "walk@xx_yamen", "talk@n_xx_zhangbao", "choose@n_xx_zhangbao:n0:c_give",
+        "walk@xw_road", "talk@n_chenjialuo", "choose@n_chenjialuo:n0:c_tell", "choose@n_chenjialuo:n2:c_yes",
+        "walk@xx_yamen", "talk@n_xx_zhangbao", "choose@n_xx_zhangbao:n0:c_ask",
+        "walk@xx_inn", "buy@n_xx_innkeeper:c_baijiu:1", "buy@n_xx_innkeeper:c_yangrujiu:1", "buy@n_xx_innkeeper:c_zhuyeqing:1",
+        "walk@xx_yamen", "talk@n_xx_zhangbao", "choose@n_xx_zhangbao:n0:c_1", "expect_stage:s_zb3",
+        "talk@n_xx_zhangbao", "choose@n_xx_zhangbao:n0:c_2",
+        "walk@dl_yamen", "talk@n_dl_wangbutou", "choose@n_dl_wangbutou:n0:c_ask",
+        "walk@xx_inn", "buy@n_xx_innkeeper:c_baijiu:1", "buy@n_xx_innkeeper:c_yangrujiu:1", "buy@n_xx_innkeeper:c_zhuyeqing:1",
+        "walk@xx_yamen", "talk@n_xx_zhangbao", "choose@n_xx_zhangbao:n0:c_2",
+        "walk@xx_inn", "buy@n_xx_innkeeper:c_zhuyeqing:3",
+        "walk@dl_yamen", "talk@n_dl_wangbutou", "choose@n_dl_wangbutou:n0:c_2", "expect_stage:s_wang2",
+        "talk@n_dl_wangbutou", "choose@n_dl_wangbutou:n0:c_3",
+        "walk@xw_road", "talk@n_chenjialuo", "choose@n_chenjialuo:n0:c_give" ],
+      "expect": { "lilian": 10, "items": { "i_wtl_gongwen": 0, "c_zhuyeqing": 0 }, "fame": 0, "morality": 0 } },
+    { "quest": "q_wentailai", "outcome": "default",
+      "note": "「之前買的不算」：接任務前先買好的酒不計入 s_buy1；子時張豹不在（npc_here 回 not_here）",
+      "path": [ "wait:hour=辰", "walk@xx_inn", "buy@n_xx_innkeeper:c_baijiu:1", "buy@n_xx_innkeeper:c_yangrujiu:1",
+        "walk@xx_yamen", "accept@n_xx_zhangbao", "choose@n_xx_zhangbao:n0:c_ask", "choose@n_xx_zhangbao:n1:c_accept",
+        "expect_stage:s_buy1", "wait:hour=子", "expect_absent:n_xx_zhangbao" ],
+      "expect": { "stage": "s_buy1" } },
+    { "quest": "q_hs_jianqi", "outcome": "qizong",
+      "setup": { "sect": "huashan", "skills": { "hs_jianfa": 35, "hs_xinfa": 30 } },
+      "path": [ "walk@hs_siguoya", "accept@n_hs_chengbuyou", "choose@n_hs_chengbuyou:n0:c_bow", "choose@n_hs_chengbuyou:n1:c_know",
+        "talk@n_hs_chengbuyou", "choose@n_hs_chengbuyou:n0:c_qi" ],
+      "expect": { "flags": { "hs_qizong": true, "hs_jianzong": false } } },
+    { "quest": "q_hs_jianqi", "outcome": "jianzong",
+      "setup": { "sect": "huashan", "skills": { "hs_jianfa": 35, "hs_xinfa": 30 } },
+      "note": "選劍宗之後 q_hs_spy 對此角色永遠不可接（缺 hs_qizong）",
+      "path": [ "walk@hs_siguoya", "accept@n_hs_chengbuyou", "choose@n_hs_chengbuyou:n0:c_bow", "choose@n_hs_chengbuyou:n1:c_know",
+        "talk@n_hs_chengbuyou", "choose@n_hs_chengbuyou:n0:c_jian" ],
+      "expect": { "flags": { "hs_jianzong": true, "hs_qizong": false } } },
+    { "quest": "q_hs_spy", "outcome": "default", "save_reload_at": "s_fight",
+      "setup": { "sect": "huashan", "after": "q_hs_jianqi:qizong", "skills": { "hs_xinfa": 50, "basic_literacy": 30, "rufeng": 30, "hs_jianfa": 60 }, "attrs": { "wit": 30 } },
+      "note": "勞德諾級距 30000、必須打贏；bot 角色需有相應實戰（debug 設定）。令狐沖只在巳午未出現",
+      "path": [ "walk@xx_inn", "accept@n_xx_laodenuo", "choose@n_xx_laodenuo:n0:c_ask", "choose@n_xx_laodenuo:n2:c_accept",
+        "walk@hy_pond", "wait:hour=巳", "talk@n_hs_linghuchong", "choose@n_hs_linghuchong:n0:c_tell", "choose@n_hs_linghuchong:n2:c_ok",
+        "walk@xx_inn", "talk@n_xx_laodenuo", "choose@n_xx_laodenuo:n0:c_fuyan",
+        "walk@hy_pond", "wait:hour=巳", "talk@n_hs_linghuchong", "choose@n_hs_linghuchong:n0:c_tell",
+        "walk@hs_square", "talk@n_yuebuqun", "choose@n_yuebuqun:n0:c_give",
+        "walk@xx_inn", "talk@n_xx_laodenuo", "choose@n_xx_laodenuo:n0:c_fight", "fight:FLEE", "expect_stage:s_fight",
+        "act@q_hs_spy:a_fight", "fight:WIN",
+        "walk@hs_square", "talk@n_yuebuqun", "choose@n_yuebuqun:n0:c_give" ],
+      "expect": { "flags": { "hs_zixia_ok": true }, "skills": { "hs_zixia": 1 }, "items": { "i_hs_qizongwupu": 0, "i_hs_mihan": 0 }, "fame": 0, "morality": 0, "lilian": 0 } }
+  ],
+
+  "todo_verify": [
+    "【待考證】張豹「第二個選項」的 2001 原文：本包用官方張豹任務頁（後期）的【我只是好奇來問問文泰來的消息的】當選項 2 文字",
+    "【待考證】2001「客棧裡的每種酒」實際是哪幾種：本包 = 白酒、羊乳酒、竹葉青（STORY_PLAN §3.3）；後期官方頁是狀元紅、紹興、竹葉青",
+    "【待考證】2001「再回去找張豹，再買一次」是否同樣每種一瓶（s_buy3 照每種一瓶做）",
+    "【待考證】灌醉王捕頭用的酒與數量：本包竹葉青 ×3（STORY_PLAN）；後期官方頁是美酒狀元紅 ×3；2001 只寫「照他說的做，再買一次，選最後一個選項」",
+    "【待考證】公文內容「押解杭州、交提督衙門」是依《書劍恩仇錄》（文泰來被押在杭州提督府）寫的【設計提案】；原作公文內容不明",
+    "【待考證】解救文泰來 2001 年版有無獎勵：2001 攻略沒寫；江湖歷練 +10 是後期官方頁【後期版】",
+    "【待考證】白酒、羊乳酒、竹葉青的價格與效果（比照青稞酒，設計提案）",
+    "【待考證】華山內奸門檻：本包 華心50 讀書30 悟30 儒風30（文章二，D10）；文章一 儒風60；KFLearn 讀書40 儒風60",
+    "【待考證】成不憂「點錯就失去機會」的確切行為：本包答「不知道」只是結束對話、可再來；真正不可逆的是入劍宗／婉拒的選擇",
+    "【待考證】勞德諾戰鬥強度（級距 30000，STORY_PLAN §3.4）與是否可逃（本包可逃、逃了不算、可再打）",
+    "【待考證】氣宗武譜 vs 劍宗武譜（3 個來源 2:1，取氣宗）",
+    "【待考證】紫霞神功 1.0 的自修上限（本包 65，取自後期英白羅上限）、係數 1.2、內功倍率 1.3 都是設計提案",
+    "【待考證】「衡山左冷蟬」是遊戲原文（小說為嵩山左冷禪），照 D10 原樣保留於對白",
+    "【待考證】陳家洛 2001 位置是西夏城外左下（6397,3527），本包維持既有 xw_road（東門外官道，D20），s_chen1 的 log 因此寫東門"
+  ],
+
+  "owner_decisions": [
+    "D1：事件日期以官方 TW 為準（華山內奸 08-08；17173 08-10 為別名）",
+    "D2：三條任務都是每角色一次（repeat.max = 1）；劍氣宗選擇互斥且只有一次",
+    "D10：華山內奸門檻 華心50 讀書30 悟30 儒風30；勞德諾要打贏；物品氣宗武譜；保留「衡山左冷蟬」原文",
+    "D20：陳家洛維持 xw_road",
+    "新預設：解救文泰來的給予者是張豹（2001 攻略從張豹開始；陳家洛只是步驟 NPC，不加 npc_links）",
+    "新預設：解救文泰來沒有門檻（2001 未列；後期實戰500/名聲100/善惡100 不採用）",
+    "新預設：成不憂問「你可知劍宗？」答錯只是結束對話，可以再來；入劍宗／婉拒才是不可逆的選擇",
+    "新預設：勞德諾的戰鬥可逃（no_flee false），逃跑或戰敗都不算完成，可重打；氣宗武譜由階段 on_complete 給，不用怪物掉落",
+    "新預設：追擊令任務結束後不收回（避免 take 失敗卡關），物品說明寫「留作憑證」",
+    "新預設：任務完成後勞德諾仍站在客棧（appear 沒有否定條件可用）",
+    "新預設：紫霞神功 self_study_cap 65（後期英白羅上限），任務直接學到 1 級",
+    "新預設：碎片檔名依工作指派為 ev_wentailai_laodenuo（STORY_PLAN §7.3 原本分成 ev_wentailai 與 ev_laodenuo 兩個碎片；group 欄位仍分別寫 ev_wentailai／ev_laodenuo）"
+  ],
+
+  "notes": "STORY_PLAN 缺漏：(1) §8.1 把 ev_wentailai 與 ev_laodenuo 列為兩個碎片，本工作指派合成一個檔 ev_wentailai_laodenuo.json；WP-MERGE 讀 docs/story_staging/*.json 不受影響。(2) FIGHT 目標在 §4.3 只有 id／win；本碎片照 ev_xingxia 的寫法加了 npc＋dialogue（交談勞德諾開 d_fight，選項觸發 fight），另外放了一個 room_action a_fight（需持追擊令）當保險；引擎只支援其一也走得通。(3) 對話選項連續多個 take（張豹三瓶酒）假設為原子性：任一不夠整個選項不執行（§4.4 take 的描述）。(4) outcomes.default.rewards 同時有 flags hs_zixia_ok 與 learn hs_zixia 1：hs_zixia 的 requires 含 quest_flag hs_zixia_ok，引擎必須先套 flags 再 learn。(5) text_templates 含 talk_<npc>@NIGHT（張豹、王捕頭、勞德諾、成不憂）；若 _ambient 也寫同 id，依 §8.4 以字母序先到者為準。令狐沖只在巳午未出現，沒有 @NIGHT。(6) BUY 目標都帶 npc n_xx_innkeeper；c_baijiu／c_yangrujiu／c_zhuyeqing 經 shop_patches 加到店小二商店。(7) 房間 xx_yamen、hs_siguoya 由 _world 碎片建立；dl_yamen、xx_inn、hy_pond、hs_square、xw_road 為既有房間。(8) test_plan 用了 setup／expect_stage／expect_absent 輔助鍵，story bot 不認得可忽略；accept@npc 預期開 offer 對話，後面的 choose 才真正接任務。"
+}

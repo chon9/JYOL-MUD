@@ -1,0 +1,79 @@
+{
+  "region_id": "lingjiu",
+  "era": "1.0A",
+  "src": "proposal",
+  "desc": "天山縹緲峰上的靈鷲宮，終年雲霧繚繞，宮中盡是女子，外人不得入內參觀。",
+  "escape_tiles_hint": 2,
+  "rooms": [
+    { "id": "lj_gate", "name": "靈鷲宮山門", "desc": "縹緲峰頂的雲霧中現出一座石砌宮門，門楣上刻著「靈鷲宮」三個大字，兩名女弟子按劍守門。門旁一位老先生正在簿子上記事，往南沿雪徑下山。",
+      "exits": [{"dir": "S", "to": "ts_road2"}, {"dir": "N", "to": "lj_square"}], "npcs": ["n_lj_cha", "n_lj_zhike"],
+      "features": [], "requires": [] },
+    { "id": "lj_square", "name": "宮前雪坪", "desc": "宮門內一片掃得乾乾淨淨的雪坪，靈鷲宮弟子在這裡對招練掌，掌風帶起細碎的雪花。北邊是大殿。",
+      "exits": [{"dir": "S", "to": "lj_gate"}, {"dir": "N", "to": "lj_hall"}], "npcs": ["n_lj_spar"], "features": [],
+      "requires": [
+        { "type": "any_of",
+          "options": [
+            [{"type": "sect", "sect": "lingjiu"}],
+            [
+              {"type": "no_sect"},
+              {"type": "gender", "value": "F"},
+              {"type": "morality_min", "value": -299},
+              {"type": "morality_max", "value": 299},
+              {"type": "pk_max", "value": 3},
+              {"type": "not_enemy_of", "sect": "lingjiu"}
+            ]
+          ] }
+      ] },
+    { "id": "lj_hall", "name": "靈鷲宮大殿", "desc": "大殿寬敞幽深，殿上端坐著一個身形如女童、神情卻威嚴老辣的女子。東西兩側各有一扇門通往內室。",
+      "exits": [{"dir": "S", "to": "lj_square"}, {"dir": "E", "to": "lj_east"}, {"dir": "W", "to": "lj_west"}],
+      "npcs": ["n_lj_tonglao"], "features": [],
+      "requires": [
+        { "type": "any_of",
+          "options": [
+            [{"type": "sect", "sect": "lingjiu"}],
+            [
+              {"type": "no_sect"},
+              {"type": "gender", "value": "F"},
+              {"type": "morality_min", "value": -299},
+              {"type": "morality_max", "value": 299},
+              {"type": "pk_max", "value": 3},
+              {"type": "not_enemy_of", "sect": "lingjiu"}
+            ]
+          ] }
+      ] },
+    { "id": "lj_east", "name": "東側靜室", "desc": "靜室裡只鋪著幾張蒲團，爐中檀香裊裊，是弟子定坐修內力、磨練心性的地方。",
+      "exits": [{"dir": "W", "to": "lj_hall"}], "npcs": ["n_lj_lanjian"], "features": [],
+      "requires": [
+        { "type": "any_of",
+          "options": [
+            [{"type": "sect", "sect": "lingjiu"}],
+            [
+              {"type": "no_sect"},
+              {"type": "gender", "value": "F"},
+              {"type": "morality_min", "value": -299},
+              {"type": "morality_max", "value": 299},
+              {"type": "pk_max", "value": 3},
+              {"type": "not_enemy_of", "sect": "lingjiu"}
+            ]
+          ] }
+      ],
+      "meditate": {"mult": 1.2, "drain_pct": 0.03} },
+    { "id": "lj_west", "name": "西側織房", "desc": "房裡擺著幾架織機與一排藥櫃，女弟子們在這裡紡織、配藥，偶爾有人揉著鼻子直打噴嚏。",
+      "exits": [{"dir": "E", "to": "lj_hall"}], "npcs": ["n_lj_jujian", "n_lj_chengqingshuang", "n_lj_fuminyi"],
+      "features": [],
+      "requires": [
+        { "type": "any_of",
+          "options": [
+            [{"type": "sect", "sect": "lingjiu"}],
+            [
+              {"type": "no_sect"},
+              {"type": "gender", "value": "F"},
+              {"type": "morality_min", "value": -299},
+              {"type": "morality_max", "value": 299},
+              {"type": "pk_max", "value": 3},
+              {"type": "not_enemy_of", "sect": "lingjiu"}
+            ]
+          ] }
+      ] }
+  ]
+}

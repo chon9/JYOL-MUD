@@ -1,0 +1,3325 @@
+{
+ "fragment": "jingcheng",
+ "version": 1,
+ "author": "WP-C-jingcheng",
+ "regions": [
+  {
+   "id": "jingcheng",
+   "name": "京城",
+   "type": "CITY",
+   "city": "jingcheng",
+   "map": "res://data/maps/jingcheng.json",
+   "world_pos": [
+    850,
+    196
+   ],
+   "suggested_xp": [
+    0,
+    0
+   ],
+   "pk_allowed": false,
+   "birth_allowed": true,
+   "birth_room": "jc_square",
+   "night_closed": [],
+   "era": "1.0B",
+   "src": "verified",
+   "src_note": "研究 丐幫：2001-11-06 n590_506355「選京城為出生地」；官方後期出生地分組（京城：少林、武當、丐幫、華山）。O3；出生房 jc_square【設計提案】"
+  },
+  {
+   "id": "jingcheng_wild",
+   "name": "京城南郊",
+   "type": "WILD",
+   "city": "jingcheng",
+   "map": "res://data/maps/jingcheng_wild.json",
+   "world_pos": [
+    850,
+    250
+   ],
+   "suggested_xp": [
+    0,
+    2000
+   ],
+   "pk_allowed": true,
+   "birth_allowed": false,
+   "birth_room": "",
+   "night_closed": [],
+   "era": "1.0B",
+   "src": "proposal"
+  }
+ ],
+ "maps": {
+  "jingcheng": {
+   "region_id": "jingcheng",
+   "era": "1.0B",
+   "src": "proposal",
+   "src_note": "京城存在、中華鏢局、紫禁城、天地會、京城監獄（官方第二片資料片、17173 DIAO/2-1）【已證實】；街坊配置與房間描述【設計提案】",
+   "desc": "天子腳下的京城，街坊整齊，商號林立。南門通華山、少林，北門外的山路通往丐幫破廟與雁門關。",
+   "escape_tiles_hint": 2,
+   "rooms": [
+    {
+     "id": "jc_station",
+     "name": "京城驛站",
+     "desc": "京城驛站門前拴著幾匹驛馬，管事在櫃檯後翻著簿冊。往西夏、大理的車馬都在這裡雇。往東是京城大街。",
+     "exits": [
+      {
+       "dir": "E",
+       "to": "jc_street"
+      }
+     ],
+     "npcs": [
+      "n_jc_station"
+     ],
+     "features": [],
+     "requires": []
+    },
+    {
+     "id": "jc_street",
+     "name": "京城大街",
+     "desc": "寬闊的青石大街從南門直通城中，兩旁茶樓酒肆招牌林立，挑擔的小販吆喝不絕。北邊是客棧，西邊是驛站，往東走便到京城廣場。",
+     "exits": [
+      {
+       "dir": "W",
+       "to": "jc_station"
+      },
+      {
+       "dir": "N",
+       "to": "jc_inn"
+      },
+      {
+       "dir": "S",
+       "to": "jc_gate_s"
+      },
+      {
+       "dir": "E",
+       "to": "jc_square"
+      }
+     ],
+     "npcs": [
+      "n_jc_lidashen"
+     ],
+     "features": [],
+     "requires": []
+    },
+    {
+     "id": "jc_inn",
+     "name": "京城客棧",
+     "desc": "京城客棧樓高三層，大堂裡坐滿了南來北往的旅人，跑堂的提著銅壺穿梭其間，後頭灶房炊煙不斷。",
+     "exits": [
+      {
+       "dir": "S",
+       "to": "jc_street"
+      }
+     ],
+     "npcs": [
+      "n_jc_innkeeper"
+     ],
+     "features": [
+      "STOVE"
+     ],
+     "requires": []
+    },
+    {
+     "id": "jc_gate_s",
+     "name": "京城南門",
+     "desc": "高大的南門城樓下，守衛盤查著進出的行人。出了南門，往西南下山是華山，往東南是嵩山少林，東南另有條小路鑽進山谷。",
+     "exits": [
+      {
+       "dir": "N",
+       "to": "jc_street"
+      },
+      {
+       "dir": "S",
+       "to": "jcw_crossroad"
+      }
+     ],
+     "npcs": [
+      "n_jc_cha",
+      "n_jc_guard"
+     ],
+     "features": [],
+     "requires": []
+    },
+    {
+     "id": "jc_square",
+     "name": "京城廣場",
+     "desc": "天子腳下的京城廣場，人聲鼎沸，賣藝的、說書的、算命的各據一角。東邊是中華鏢局，南邊是錢莊，東北是衙門，西北是布莊，西南是藥鋪；往北是北大街，往西回大街。",
+     "exits": [
+      {
+       "dir": "W",
+       "to": "jc_street"
+      },
+      {
+       "dir": "N",
+       "to": "jc_street_n"
+      },
+      {
+       "dir": "E",
+       "to": "jc_biaoju"
+      },
+      {
+       "dir": "S",
+       "to": "jc_bank"
+      },
+      {
+       "dir": "NE",
+       "to": "jc_yamen"
+      },
+      {
+       "dir": "NW",
+       "to": "jc_buzhuang"
+      },
+      {
+       "dir": "SW",
+       "to": "jc_pharmacy"
+      }
+     ],
+     "npcs": [
+      "n_jc_roubao"
+     ],
+     "features": [],
+     "requires": []
+    },
+    {
+     "id": "jc_bank",
+     "name": "京城錢莊",
+     "desc": "黑漆大門上懸著金字招牌，櫃檯高過人頭，朝奉隔著柵欄撥弄算盤。銀錢、細軟存在這裡，西夏、大理的分號都提得出來。",
+     "exits": [
+      {
+       "dir": "N",
+       "to": "jc_square"
+      }
+     ],
+     "npcs": [],
+     "features": [],
+     "requires": []
+    },
+    {
+     "id": "jc_biaoju",
+     "name": "中華鏢局",
+     "desc": "門口兩頭石獅子，旗桿上一面「中華鏢局」的鏢旗迎風招展。院子裡停著幾輛鏢車，趟子手正在套馬。",
+     "exits": [
+      {
+       "dir": "W",
+       "to": "jc_square"
+      }
+     ],
+     "npcs": [],
+     "features": [],
+     "requires": []
+    },
+    {
+     "id": "jc_yamen",
+     "name": "京城衙門",
+     "desc": "朱紅大門兩旁立著「肅靜」「迴避」的木牌，堂上明鏡高懸。捕快們進進出出，往北穿過側門便是監獄。",
+     "exits": [
+      {
+       "dir": "SW",
+       "to": "jc_square"
+      },
+      {
+       "dir": "N",
+       "to": "jc_jail_gate"
+      }
+     ],
+     "npcs": [
+      "n_jc_bukuai"
+     ],
+     "features": [],
+     "requires": []
+    },
+    {
+     "id": "jc_jail_gate",
+     "name": "監獄門口",
+     "desc": "高牆上插滿碎瓷片，一扇包鐵的牢門緊緊閉著，門邊坐著看守人。牆後隱約傳來鐵鍊拖地的聲響。",
+     "exits": [
+      {
+       "dir": "S",
+       "to": "jc_yamen"
+      },
+      {
+       "dir": "N",
+       "to": "jc_jail"
+      }
+     ],
+     "npcs": [
+      "n_jc_jailer"
+     ],
+     "features": [],
+     "requires": []
+    },
+    {
+     "id": "jc_jail",
+     "name": "京城監獄",
+     "desc": "陰暗潮濕的牢房裡只有一扇鐵柵小窗，地上鋪著發霉的稻草。背叛師門、被捉拿歸案的江湖人都關在這裡，等著刑期屆滿。",
+     "exits": [
+      {
+       "dir": "S",
+       "to": "jc_jail_gate"
+      }
+     ],
+     "npcs": [],
+     "features": [],
+     "requires": [
+      {
+       "type": "quest_flag",
+       "flag": "jc_jail_visitor"
+      }
+     ],
+     "jail": true,
+     "jail_scope": "CAPITAL",
+     "jail_release_to": "jc_yamen",
+     "safe": true
+    },
+    {
+     "id": "jc_buzhuang",
+     "name": "京城布莊",
+     "desc": "架上堆滿綾羅綢緞與粗細布匹，後院擺著紡紗機、織布機，還有一座烘皮爐，織工們手腳不停。",
+     "exits": [
+      {
+       "dir": "SE",
+       "to": "jc_square"
+      }
+     ],
+     "npcs": [
+      "n_jc_buzhuang"
+     ],
+     "features": [
+      "LOOM",
+      "TANNERY"
+     ],
+     "requires": []
+    },
+    {
+     "id": "jc_pharmacy",
+     "name": "京城藥鋪",
+     "desc": "一整面牆的百子櫃，抽屜上貼著藥名，滿屋子甘草當歸的氣味。坐堂的老郎中正替人把脈。",
+     "exits": [
+      {
+       "dir": "NE",
+       "to": "jc_square"
+      }
+     ],
+     "npcs": [
+      "n_jc_pharmacist"
+     ],
+     "features": [],
+     "requires": []
+    },
+    {
+     "id": "jc_street_n",
+     "name": "北大街",
+     "desc": "北大街兩旁多是深宅大院與老字號鋪子。西邊是兵器鋪，東邊是打鐵舖，西北望得見紫禁城的城牆，東北角有家棺材鋪，往北是北門。",
+     "exits": [
+      {
+       "dir": "S",
+       "to": "jc_square"
+      },
+      {
+       "dir": "W",
+       "to": "jc_smithy"
+      },
+      {
+       "dir": "E",
+       "to": "jc_tiepu"
+      },
+      {
+       "dir": "NW",
+       "to": "jc_zijin"
+      },
+      {
+       "dir": "NE",
+       "to": "jc_coffin"
+      },
+      {
+       "dir": "N",
+       "to": "jc_gate_n"
+      }
+     ],
+     "npcs": [],
+     "features": [],
+     "requires": []
+    },
+    {
+     "id": "jc_smithy",
+     "name": "京城兵器鋪",
+     "desc": "牆上掛滿刀槍劍戟，櫃檯上擺著幾副盔甲，夥計拿著油布一件件擦拭。門外轉角處常有閒漢蹲著。",
+     "exits": [
+      {
+       "dir": "E",
+       "to": "jc_street_n"
+      }
+     ],
+     "npcs": [
+      "n_jc_smith"
+     ],
+     "features": [],
+     "requires": []
+    },
+    {
+     "id": "jc_tiepu",
+     "name": "京城打鐵舖",
+     "desc": "爐火燒得通紅，鐵匠掄著大鎚叮叮噹噹，火星四濺。屋後一座鑄劍爐、一座燒炭爐，熱氣逼人。",
+     "exits": [
+      {
+       "dir": "W",
+       "to": "jc_street_n"
+      }
+     ],
+     "npcs": [
+      "n_jc_tiejiang"
+     ],
+     "features": [
+      "FORGE",
+      "CAST",
+      "KILN"
+     ],
+     "requires": []
+    },
+    {
+     "id": "jc_zijin",
+     "name": "紫禁城外",
+     "desc": "紅牆黃瓦的紫禁城巍然矗立，護城河水波不興。宮門緊閉，帶刀侍衛分列兩旁，閒人不得靠近。",
+     "exits": [
+      {
+       "dir": "SE",
+       "to": "jc_street_n"
+      }
+     ],
+     "npcs": [
+      "n_jc_zijin_guard",
+      "n_jc_xiaobao"
+     ],
+     "features": [],
+     "requires": []
+    },
+    {
+     "id": "jc_coffin",
+     "name": "棺材鋪",
+     "desc": "鋪子裡擺著大大小小的棺木，刨花堆了一地，掌櫃低頭刨著木板，對進門的客人愛理不理。鋪子後頭像是還有一間屋子。",
+     "exits": [
+      {
+       "dir": "SW",
+       "to": "jc_street_n"
+      },
+      {
+       "dir": "N",
+       "to": "jc_tdh_hall"
+      }
+     ],
+     "npcs": [
+      "n_tdh_zhanggui"
+     ],
+     "features": [],
+     "requires": []
+    },
+    {
+     "id": "jc_tdh_hall",
+     "name": "天地會香堂",
+     "desc": "推開棺材後的暗門，裡頭竟是一間寬敞的香堂。正中供著「反清復明」的木牌，香煙繚繞，兩旁站著精悍的會中兄弟。",
+     "exits": [
+      {
+       "dir": "S",
+       "to": "jc_coffin"
+      }
+     ],
+     "npcs": [
+      "n_tdh_chenjinnan",
+      "n_tdh_shop"
+     ],
+     "features": [],
+     "requires": [
+      {
+       "type": "any_of",
+       "options": [
+        [
+         {
+          "type": "quest_flag",
+          "flag": "tdh_member"
+         }
+        ],
+        [
+         {
+          "type": "quest_stage",
+          "quest": "q_tdh_ruhui",
+          "stage": "s_hall"
+         }
+        ]
+       ]
+      }
+     ]
+    },
+    {
+     "id": "jc_gate_n",
+     "name": "京城北門",
+     "desc": "北門城樓比南門略矮，出了城便是往北的山路。守衛說山路中段有座破廟住著丐幫的人，再往北翻過山就是雁門關。",
+     "exits": [
+      {
+       "dir": "S",
+       "to": "jc_street_n"
+      },
+      {
+       "dir": "N",
+       "to": "jcn_road1"
+      }
+     ],
+     "npcs": [
+      "n_jc_cha_n",
+      "n_jc_guard_n"
+     ],
+     "features": [],
+     "requires": []
+    }
+   ]
+  },
+  "jingcheng_wild": {
+   "region_id": "jingcheng_wild",
+   "era": "1.0B",
+   "src": "proposal",
+   "src_note": "京城門口 0–10 級練功點：乞丐頭子、不良少年（17173 2001-10-13 n833_749718）【已證實】；遇敵率與權重【設計提案】",
+   "desc": "京城南郊丘陵起伏，古道向四方延伸，通往各大門派。城裡混不下去的乞丐頭子、不良少年常在路邊攔人。",
+   "escape_tiles_hint": 2,
+   "rooms": [
+    {
+     "id": "jcw_crossroad",
+     "name": "南郊岔路",
+     "desc": "幾條古道在此交會。往北回京城南門，往西下山到華山腳下，往東接嵩山古道去少林；路牌上往武當、恆山的方向都寫著『道路不通』。",
+     "exits": [
+      {
+       "dir": "N",
+       "to": "jc_gate_s"
+      },
+      {
+       "dir": "W",
+       "to": "jcw_huashan"
+      },
+      {
+       "dir": "E",
+       "to": "jcw_songshan"
+      }
+     ],
+     "npcs": [],
+     "features": [],
+     "requires": [],
+     "encounter": {
+      "rate": 0.12,
+      "table": [
+       {
+        "monster": "m_rabbit",
+        "w": 50,
+        "count": [
+         1,
+         1
+        ]
+       },
+       {
+        "monster": "m_jc_buliang",
+        "w": 25,
+        "count": [
+         1,
+         1
+        ]
+       },
+       {
+        "monster": "m_jc_qigaitou",
+        "w": 20,
+        "count": [
+         1,
+         1
+        ]
+       },
+       {
+        "monster": "m_wolf",
+        "w": 5,
+        "count": [
+         1,
+         1
+        ]
+       }
+      ]
+     }
+    },
+    {
+     "id": "jcw_huashan",
+     "name": "華山古道",
+     "desc": "山勢漸陡，古道兩旁松柏參天，常有城裡出來的閒漢在路邊晃蕩。往西南下山就是華山腳下。",
+     "exits": [
+      {
+       "dir": "E",
+       "to": "jcw_crossroad"
+      },
+      {
+       "dir": "SW",
+       "to": "hy_foot"
+      }
+     ],
+     "npcs": [],
+     "features": [],
+     "requires": [],
+     "encounter": {
+      "rate": 0.12,
+      "table": [
+       {
+        "monster": "m_rabbit",
+        "w": 45,
+        "count": [
+         1,
+         1
+        ]
+       },
+       {
+        "monster": "m_bigrabbit",
+        "w": 15,
+        "count": [
+         1,
+         1
+        ]
+       },
+       {
+        "monster": "m_jc_buliang",
+        "w": 15,
+        "count": [
+         1,
+         1
+        ]
+       },
+       {
+        "monster": "m_jc_qigaitou",
+        "w": 15,
+        "count": [
+         1,
+         1
+        ]
+       },
+       {
+        "monster": "m_wolf",
+        "w": 10,
+        "count": [
+         1,
+         1
+        ]
+       }
+      ]
+     }
+    },
+    {
+     "id": "jcw_songshan",
+     "name": "嵩山古道",
+     "desc": "石板古道蜿蜒入山，遠處隱約傳來寺院的鐘聲。往南下山接上嵩山松林，再往東就是少林山門。",
+     "exits": [
+      {
+       "dir": "W",
+       "to": "jcw_crossroad"
+      },
+      {
+       "dir": "S",
+       "to": "sy_pines"
+      }
+     ],
+     "npcs": [],
+     "features": [],
+     "requires": [],
+     "encounter": {
+      "rate": 0.12,
+      "table": [
+       {
+        "monster": "m_rabbit",
+        "w": 45,
+        "count": [
+         1,
+         1
+        ]
+       },
+       {
+        "monster": "m_bigrabbit",
+        "w": 15,
+        "count": [
+         1,
+         1
+        ]
+       },
+       {
+        "monster": "m_jc_buliang",
+        "w": 15,
+        "count": [
+         1,
+         1
+        ]
+       },
+       {
+        "monster": "m_jc_qigaitou",
+        "w": 15,
+        "count": [
+         1,
+         1
+        ]
+       },
+       {
+        "monster": "m_wolf",
+        "w": 10,
+        "count": [
+         1,
+         1
+        ]
+       }
+      ]
+     }
+    }
+   ]
+  }
+ },
+ "npcs": [
+  {
+   "id": "n_jc_cha_n",
+   "name": "查小鏞",
+   "kind": "FUNC",
+   "region": "jingcheng",
+   "room": "jc_gate_n",
+   "alignment": "GOOD",
+   "talk": "talk_n_jc_cha_n",
+   "services": [
+    "RESPAWN"
+   ],
+   "night_closed": false,
+   "desc": "在京城北門替江湖人記錄落腳處的老先生。",
+   "era": "1.0B",
+   "src": "later",
+   "src_note": "查小鏞每座城門各站一位是後期指南的擺法【後期版】；丐幫山門沒有查小鏞（2001-10-24），所以北門這位是去丐幫最近的記錄點【設計提案】"
+  },
+  {
+   "id": "n_jc_guard_n",
+   "name": "京城守衛",
+   "kind": "GUARD",
+   "region": "jingcheng",
+   "room": "jc_gate_n",
+   "alignment": "NEUTRAL",
+   "talk": "talk_n_jc_guard_n",
+   "services": [],
+   "night_closed": false,
+   "no_beg": true,
+   "desc": "守北門的禁軍守衛，手按腰刀。",
+   "era": "1.0B",
+   "src": "proposal"
+  },
+  {
+   "id": "n_jc_jailer",
+   "name": "監獄看守人",
+   "kind": "FUNC",
+   "region": "jingcheng",
+   "room": "jc_jail_gate",
+   "alignment": "NEUTRAL",
+   "talk": "talk_n_jc_jailer",
+   "services": [
+    "JAIL"
+   ],
+   "night_closed": false,
+   "no_beg": true,
+   "jail_room": "jc_jail",
+   "desc": "滿臉橫肉的牢頭，腰間一大串鑰匙叮噹作響。",
+   "era": "1.0B",
+   "src": "verified",
+   "src_note": "官方門派監獄頁（index_jy1-2-5-4）：「監獄旁有門派監獄看守人」、朋友可付十萬保釋【已證實】；放在京城、外貌【設計提案】"
+  },
+  {
+   "id": "n_jc_bukuai",
+   "name": "捕快",
+   "kind": "STORY",
+   "region": "jingcheng",
+   "room": "jc_yamen",
+   "alignment": "NEUTRAL",
+   "talk": "talk_n_jc_bukuai",
+   "services": [],
+   "night_closed": false,
+   "desc": "新調來京城衙門的捕快，笑起來一團和氣，眼睛卻滴溜溜地打量每個人。",
+   "era": "1.0B",
+   "src": "proposal",
+   "src_note": "衙門捕快與懸賞屬 M3c；本作只放對話與天地會入會的忠誠考驗【設計提案】"
+  },
+  {
+   "id": "n_jc_smith",
+   "name": "兵器防具鋪老闆",
+   "kind": "SHOP",
+   "region": "jingcheng",
+   "room": "jc_smithy",
+   "alignment": "NEUTRAL",
+   "talk": "talk_n_jc_smith",
+   "services": [
+    "SHOP"
+   ],
+   "night_closed": true,
+   "shop": {
+    "items": [
+     "w_mudao",
+     "w_chaidao",
+     "w_dandao",
+     "w_gangdao",
+     "w_mujian",
+     "w_qingfeng",
+     "w_zhubang",
+     "a_bupao",
+     "a_pijia",
+     "a_cubudaopao",
+     "w_pibian",
+     "h_jinqianbiao",
+     "h_feihuangshi"
+    ],
+    "refuse_if": [
+     [
+      {
+       "type": "sect",
+       "sect": "gaibang"
+      }
+     ]
+    ],
+    "refuse_text": "jc_smith_refuse_gb"
+   },
+   "desc": "精明的兵器鋪老闆，一雙眼睛專看客人身上的穿著。",
+   "era": "1.0B",
+   "src": "verified",
+   "src_note": "研究 丐幫：2001-10-09 n903_819664「丐幫的弟子在京城內買不到武器與防具」【已證實；可能是 bug】（O10）；貨色比照西夏兵器鋪【設計提案】"
+  },
+  {
+   "id": "n_jc_pharmacist",
+   "name": "藥鋪郎中",
+   "kind": "SHOP",
+   "region": "jingcheng",
+   "room": "jc_pharmacy",
+   "alignment": "GOOD",
+   "talk": "talk_n_jc_pharmacist",
+   "services": [
+    "SHOP"
+   ],
+   "night_closed": true,
+   "shop": {
+    "items": [
+     "c_jingyao",
+     "c_qiyao",
+     "c_jieduyao",
+     "c_dahuandan"
+    ]
+   },
+   "desc": "鬚髮花白的老郎中，說話慢條斯理。",
+   "era": "1.0B",
+   "src": "proposal"
+  },
+  {
+   "id": "n_jc_buzhuang",
+   "name": "布莊掌櫃",
+   "kind": "SHOP",
+   "region": "jingcheng",
+   "room": "jc_buzhuang",
+   "alignment": "NEUTRAL",
+   "talk": "talk_n_jc_buzhuang",
+   "services": [
+    "SHOP"
+   ],
+   "night_closed": true,
+   "shop": {
+    "items": [
+     "a_bupao",
+     "a_cubudaopao",
+     "t_zhenxian"
+    ]
+   },
+   "desc": "打扮體面的布莊掌櫃，量布的尺子從不離手。",
+   "era": "1.0B",
+   "src": "proposal",
+   "src_note": "布莊另有場景（官方 index_jy1-1-2）；貨色【設計提案】；t_zhenxian 由 lifeskills_content 建立"
+  },
+  {
+   "id": "n_jc_tiejiang",
+   "name": "京城鐵匠",
+   "kind": "SHOP",
+   "region": "jingcheng",
+   "room": "jc_tiepu",
+   "alignment": "NEUTRAL",
+   "talk": "talk_n_jc_tiejiang",
+   "services": [
+    "SHOP"
+   ],
+   "night_closed": true,
+   "shop": {
+    "items": [
+     "t_shizigao",
+     "t_caishaqi",
+     "t_tiechui",
+     "r_jiaotan"
+    ]
+   },
+   "desc": "赤著膊的壯漢，兩條胳膊比常人的腿還粗。",
+   "era": "1.0B",
+   "src": "proposal",
+   "src_note": "打鐵舖是標準城內設施（官方 index_jy1-1-5）；貨色【設計提案】；物品由 lifeskills_content 建立（§4.6 綁定 id）"
+  },
+  {
+   "id": "n_jc_zijin_guard",
+   "name": "大內侍衛",
+   "kind": "GUARD",
+   "region": "jingcheng",
+   "room": "jc_zijin",
+   "alignment": "NEUTRAL",
+   "talk": "talk_n_jc_zijin_guard",
+   "services": [],
+   "night_closed": false,
+   "no_beg": true,
+   "desc": "身穿黃馬褂的大內侍衛，腰懸寶刀，目不斜視。",
+   "era": "1.0B",
+   "src": "proposal",
+   "src_note": "17173 DIAO/2-1 京城有《紫禁城》；本作只有外景與守門侍衛【設計提案】"
+  },
+  {
+   "id": "n_tdh_zhanggui",
+   "name": "棺材鋪掌櫃",
+   "kind": "STORY",
+   "region": "jingcheng",
+   "room": "jc_coffin",
+   "alignment": "GOOD",
+   "talk": "talk_n_tdh_zhanggui",
+   "services": [
+    "QUEST"
+   ],
+   "night_closed": false,
+   "quests": [
+    "q_tdh_ruhui"
+   ],
+   "desc": "瘦削的中年漢子，手上全是老繭，刨木頭時一雙眼睛卻總留意著門口。",
+   "era": "1.0B",
+   "src": "proposal",
+   "src_note": "棺材鋪作天地會聯絡處依《鹿鼎記》北京棺材鋪【設計提案】"
+  },
+  {
+   "id": "n_tdh_chenjinnan",
+   "name": "陳近南",
+   "kind": "STORY",
+   "region": "jingcheng",
+   "room": "jc_tdh_hall",
+   "alignment": "GOOD",
+   "talk": "talk_n_tdh_chenjinnan",
+   "services": [],
+   "night_closed": false,
+   "no_beg": true,
+   "desc": "青衫文士，神色和藹，眉宇間自有一股威嚴。天地會總舵主。",
+   "era": "1.0B",
+   "src": "verified",
+   "src_note": "17173 DIAO/2-1：天地會總舵主 陳永華（陳近南）【已證實存在】；位置與對話【設計提案】"
+  },
+  {
+   "id": "n_tdh_shop",
+   "name": "天地會管事",
+   "kind": "SHOP",
+   "region": "jingcheng",
+   "room": "jc_tdh_hall",
+   "alignment": "GOOD",
+   "talk": "talk_n_tdh_shop",
+   "services": [
+    "SHOP"
+   ],
+   "night_closed": false,
+   "no_beg": true,
+   "shop": {
+    "items": [
+     "c_jiedulingyao",
+     "c_qiyao",
+     "h_tdh_menghan",
+     "a_tdh_yexingyi"
+    ],
+    "refuse_if": [
+     [
+      {
+       "type": "not_flag",
+       "flag": "tdh_member"
+      }
+     ]
+    ],
+    "refuse_text": "tdh_shop_refuse"
+   },
+   "desc": "管理會中軍械藥品的老兄弟，說話帶著閩南口音。",
+   "era": "1.0B",
+   "src": "proposal",
+   "src_note": "天地會商店【設計提案】（M3B_PLAN §8.3）"
+  },
+  {
+   "id": "n_jc_lidashen",
+   "name": "李大嬸",
+   "kind": "STORY",
+   "region": "jingcheng",
+   "room": "jc_street",
+   "alignment": "GOOD",
+   "talk": "talk_n_jc_lidashen",
+   "services": [
+    "QUEST"
+   ],
+   "night_closed": false,
+   "quests": [
+    "q_jc_xiaobao"
+   ],
+   "desc": "繫著圍裙的婦人，頻頻往街頭張望，急得直搓手。",
+   "era": "1.0B",
+   "src": "proposal",
+   "src_note": "官方第七話（2001-11-22）標題「李大嬸找小保事件」【已證實標題】；人物外貌與步驟【設計提案】"
+  },
+  {
+   "id": "n_jc_xiaobao",
+   "name": "小保",
+   "kind": "STORY",
+   "region": "jingcheng",
+   "room": "jc_zijin",
+   "alignment": "GOOD",
+   "talk": "talk_n_jc_xiaobao",
+   "services": [],
+   "night_closed": false,
+   "no_beg": true,
+   "appear": {
+    "hours": [],
+    "requires": [
+     {
+      "type": "quest_stage",
+      "quest": "q_jc_xiaobao",
+      "stage": [
+       "s_find",
+       "s_escort"
+      ]
+     }
+    ]
+   },
+   "desc": "七八歲的小男孩，虎頭虎腦，褲腳沾滿了泥。",
+   "era": "1.0B",
+   "src": "proposal",
+   "src_note": "官方第七話「李大嬸找小保事件」【已證實標題】；迷路地點與對話【設計提案】"
+  },
+  {
+   "id": "n_jc_roubao",
+   "name": "王大娘",
+   "kind": "SHOP",
+   "region": "jingcheng",
+   "room": "jc_square",
+   "alignment": "GOOD",
+   "talk": "talk_n_jc_roubao",
+   "services": [
+    "SHOP",
+    "QUEST"
+   ],
+   "night_closed": false,
+   "quests": [
+    "q_jc_lingquan"
+   ],
+   "shop": {
+    "items": [
+     "c_jc_roubao",
+     "c_mantou"
+    ]
+   },
+   "desc": "廣場邊擺肉包子攤的大娘，蒸籠冒著白氣。",
+   "era": "1.0B",
+   "src": "proposal",
+   "src_note": "官方第七話標題「靈犬小黃」【已證實標題】；賣肉包的大娘與步驟【設計提案】"
+  },
+  {
+   "id": "n_jc_zhangyuanwai",
+   "name": "張員外",
+   "kind": "STORY",
+   "region": "dali",
+   "room": "dl_square",
+   "alignment": "NEUTRAL",
+   "talk": "talk_n_jc_zhangyuanwai",
+   "services": [
+    "QUEST"
+   ],
+   "night_closed": false,
+   "quests": [
+    "q_jc_zhangyuanwai"
+   ],
+   "desc": "穿綢緞的富態員外，手裡盤著兩顆光滑的石球。",
+   "era": "1.0B",
+   "src": "proposal",
+   "src_note": "官方第九話（2001-12-06，index_jy3-2-9）標題「愛好礦石的張員外」（大理）【已證實標題】；收購紫石礦的細節【設計提案】"
+  }
+ ],
+ "monsters": [
+  {
+   "id": "m_jc_qigaitou",
+   "name": "乞丐頭子",
+   "short": "乞丐頭",
+   "kind": "EVIL_NPC",
+   "alignment": "NEUTRAL",
+   "desc": "蓬頭垢面的乞丐頭子，拄著一根油亮的打狗棍，專在城門口向過路人「討」買路錢。（存在：已證實；數值：設計提案）",
+   "stats": {
+    "qi": 200,
+    "neili": 10,
+    "jing": 70,
+    "str": 12,
+    "guts": 10,
+    "wit": 8,
+    "luck": 12,
+    "cal": 10,
+    "agi": 14,
+    "con": 14
+   },
+   "skills": {
+    "basic_dodge": 8,
+    "basic_parry": 6,
+    "basic_inner": 2,
+    "basic_fist": 8
+   },
+   "arts": [
+    {
+     "art": "mon_zhuangjia",
+     "level": 8
+    }
+   ],
+   "weapon_type": "FIST",
+   "weapon_power": 0,
+   "armor_power": 28,
+   "combat_xp_ref": 400,
+   "combat_xp": 12,
+   "learn_points": 6,
+   "drops": [
+    {
+     "item": "c_mantou",
+     "chance": 0.3,
+     "min": 1,
+     "max": 2
+    }
+   ],
+   "money": {
+    "min": 0,
+    "max": 8
+   },
+   "morality_on_kill": 0,
+   "killing_intent_on_kill": 0,
+   "ai": "melee_basic",
+   "no_rewards": false,
+   "era": "1.0B",
+   "src": "verified",
+   "src_note": "研究 丐幫：2001-10-13 n833_749718「0–10 京城門口（乞丐頭子、不良少年）」【已證實存在】；數值比照野狼以下級距【設計提案】"
+  },
+  {
+   "id": "m_jc_buliang",
+   "name": "不良少年",
+   "short": "少年",
+   "kind": "EVIL_NPC",
+   "alignment": "EVIL",
+   "desc": "斜戴帽子的京城混混，嘴裡叼根草，三五成群找外地人的麻煩。（存在：已證實；數值：設計提案）",
+   "stats": {
+    "qi": 150,
+    "neili": 0,
+    "jing": 60,
+    "str": 11,
+    "guts": 8,
+    "wit": 6,
+    "luck": 10,
+    "cal": 6,
+    "agi": 15,
+    "con": 11
+   },
+   "skills": {
+    "basic_dodge": 6,
+    "basic_parry": 4,
+    "basic_inner": 0,
+    "basic_fist": 6
+   },
+   "arts": [
+    {
+     "art": "mon_zhuangjia",
+     "level": 5
+    }
+   ],
+   "weapon_type": "FIST",
+   "weapon_power": 0,
+   "armor_power": 28,
+   "combat_xp_ref": 300,
+   "combat_xp": 10,
+   "learn_points": 5,
+   "drops": [
+    {
+     "item": "c_jc_roubao",
+     "chance": 0.2,
+     "min": 1,
+     "max": 1
+    }
+   ],
+   "money": {
+    "min": 2,
+    "max": 15
+   },
+   "morality_on_kill": 1,
+   "killing_intent_on_kill": 0,
+   "ai": "melee_basic",
+   "no_rewards": false,
+   "era": "1.0B",
+   "src": "verified",
+   "src_note": "研究 丐幫：2001-10-13 n833_749718「0–10 京城門口（乞丐頭子、不良少年）」【已證實存在】；數值比照野狼以下級距【設計提案】"
+  }
+ ],
+ "items": [
+  {
+   "id": "c_jc_roubao",
+   "name": "肉包子",
+   "tab": "OTHER",
+   "slot": "",
+   "atk": 0,
+   "def": 0,
+   "weight": 1,
+   "price": 6,
+   "stack": 20,
+   "spoil_days": 3,
+   "effects": [
+    {
+     "type": "restore",
+     "stat": "food",
+     "value": 25
+    }
+   ],
+   "usable": true,
+   "usable_in_battle": false,
+   "no_sell": false,
+   "quest_item": false,
+   "desc": "皮薄餡多的肉包子，一口咬下去滿嘴肉汁。京城的狗聞到這味兒就走不動了。",
+   "era": "1.0B",
+   "src": "proposal",
+   "src_note": "靈犬小黃任務用；回復量比照饅頭、牛肉餅級距【設計提案】"
+  },
+  {
+   "id": "h_tdh_menghan",
+   "name": "蒙汗藥",
+   "tab": "OTHER",
+   "slot": "",
+   "atk": 0,
+   "def": 0,
+   "weight": 1,
+   "price": 80,
+   "stack": 99,
+   "spoil_days": 0,
+   "effects": [
+    {
+     "type": "hidden",
+     "value": 6,
+     "poisonable": false
+    }
+   ],
+   "usable": false,
+   "usable_in_battle": false,
+   "no_sell": false,
+   "quest_item": false,
+   "desc": "天地會兄弟自配的蒙汗藥粉，包成小紙包，臨敵往對方臉上一撒，嗆得人睜不開眼。",
+   "era": "1.0B",
+   "src": "proposal",
+   "src_note": "天地會商店暗器彈藥【設計提案】；本作沒有昏睡狀態，只當低傷害暗器（《鹿鼎記》韋小寶常用）"
+  },
+  {
+   "id": "a_tdh_yexingyi",
+   "name": "夜行衣",
+   "tab": "ARMOR",
+   "slot": "ARMOR",
+   "atk": 0,
+   "def": 6,
+   "weight": 2,
+   "price": 400,
+   "stack": 1,
+   "spoil_days": 0,
+   "effects": [],
+   "usable": false,
+   "usable_in_battle": false,
+   "no_sell": false,
+   "quest_item": false,
+   "desc": "黑布縫製的緊身夜行衣，夜裡行事不易被人瞧見。",
+   "era": "1.0B",
+   "src": "proposal",
+   "src_note": "天地會商店防具【設計提案】；只有防禦，沒有隱身效果"
+  },
+  {
+   "id": "i_tdh_mihan",
+   "name": "天地會密函",
+   "tab": "OTHER",
+   "slot": "",
+   "atk": 0,
+   "def": 0,
+   "weight": 0,
+   "price": 0,
+   "stack": 1,
+   "spoil_days": 0,
+   "effects": [],
+   "usable": false,
+   "usable_in_battle": false,
+   "no_sell": true,
+   "quest_item": true,
+   "bankable": false,
+   "desc": "封了火漆的密函，封口壓著一個「洪」字暗記。千萬不能落到官府手裡。",
+   "era": "1.0B",
+   "src": "proposal"
+  },
+  {
+   "id": "i_tdh_huitiao",
+   "name": "王捕頭的回條",
+   "tab": "OTHER",
+   "slot": "",
+   "atk": 0,
+   "def": 0,
+   "weight": 0,
+   "price": 0,
+   "stack": 1,
+   "spoil_days": 0,
+   "effects": [],
+   "usable": false,
+   "usable_in_battle": false,
+   "no_sell": true,
+   "quest_item": true,
+   "bankable": false,
+   "desc": "一張摺得方方正正的字條，上頭只有幾個看不懂的符號。",
+   "era": "1.0B",
+   "src": "proposal"
+  }
+ ],
+ "quests": [
+  {
+   "id": "q_tdh_ruhui",
+   "name": "天地會入會",
+   "chapter": "京城・天地會",
+   "group": "jingcheng",
+   "giver": "n_tdh_zhanggui",
+   "era": "1.0B",
+   "src": "verified",
+   "dialogue_src": "proposal",
+   "src_note": "17173 DIAO/2-1：「進入天地會需要經過嚴密審核，並且完成交辦事宜，確定忠誠度後方可入會」、總舵主陳永華（陳近南）【已證實】；入會步驟全部【設計提案】；暗號依《鹿鼎記》天地會切口",
+   "text": "京城北大街的棺材鋪看似冷清，掌櫃卻是天地會的聯絡人。對上暗號、辦妥交辦的差事、通過忠誠考驗，才能進香堂拜見總舵主陳近南。",
+   "requires": [
+    {
+     "type": "morality_min",
+     "value": 0
+    },
+    {
+     "type": "combat_xp_min",
+     "value": 5000
+    },
+    {
+     "type": "not_flag",
+     "flag": "tdh_member"
+    }
+   ],
+   "give_items": [],
+   "repeat": {
+    "max": 1,
+    "cooldown_days": 30
+   },
+   "abandon": true,
+   "party_credit": false,
+   "start": "s_mihan",
+   "offer": "d_offer",
+   "stages": [
+    {
+     "id": "s_mihan",
+     "title": "送密函到大理",
+     "hint_room": "dl_yamen",
+     "log": "把天地會密函送到大理衙門的王捕頭手裡。到京城驛站（京城大街往西）搭車到大理驛站最快；下了車往城中走，衙門在大理廣場一帶。別在旁人面前提天地會。",
+     "objectives": [
+      {
+       "id": "o_wang",
+       "type": "TALK",
+       "npc": "n_dl_wangbutou",
+       "dialogue": "d_wang",
+       "text": "把密函交給大理衙門的王捕頭"
+      }
+     ],
+     "next": "s_back"
+    },
+    {
+     "id": "s_back",
+     "title": "帶回回條",
+     "hint_room": "jc_coffin",
+     "log": "王捕頭給了回條。搭車回京城，從京城廣場往北走上北大街，東北角的棺材鋪，把回條交給掌櫃。",
+     "objectives": [
+      {
+       "id": "o_back",
+       "type": "TALK",
+       "npc": "n_tdh_zhanggui",
+       "dialogue": "d_back",
+       "text": "把回條交給棺材鋪掌櫃"
+      }
+     ],
+     "next": "s_test"
+    },
+    {
+     "id": "s_test",
+     "title": "衙門的捕快",
+     "hint_room": "jc_yamen",
+     "log": "掌櫃要你去京城衙門（京城廣場東北）會會那個老在鋪子外頭轉悠的捕快，看他打什麼算盤。記住：咱們做的是棺材生意。",
+     "objectives": [
+      {
+       "id": "o_test",
+       "type": "TALK",
+       "npc": "n_jc_bukuai",
+       "dialogue": "d_bribe",
+       "text": "到京城衙門會會捕快"
+      }
+     ],
+     "next": "s_report"
+    },
+    {
+     "id": "s_report",
+     "title": "回報掌櫃",
+     "hint_room": "jc_coffin",
+     "log": "你沒收捕快的銀子。回北大街棺材鋪，把經過告訴掌櫃。",
+     "objectives": [
+      {
+       "id": "o_report",
+       "type": "TALK",
+       "npc": "n_tdh_zhanggui",
+       "dialogue": "d_report",
+       "text": "回棺材鋪向掌櫃回報"
+      }
+     ],
+     "next": "s_hall"
+    },
+    {
+     "id": "s_hall",
+     "title": "香堂拜見總舵主",
+     "hint_room": "jc_tdh_hall",
+     "log": "掌櫃讓你推開棺材鋪後頭的暗門（棺材鋪往北），進天地會香堂拜見總舵主陳近南。",
+     "objectives": [
+      {
+       "id": "o_hall",
+       "type": "TALK",
+       "npc": "n_tdh_chenjinnan",
+       "dialogue": "d_hall",
+       "text": "在香堂拜見陳近南"
+      }
+     ],
+     "next": "END"
+    }
+   ],
+   "dialogues": {
+    "d_offer": {
+     "start": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "（掌櫃從一口薄皮棺材後頭抬起頭，上下打量你）客官，買棺材還是訂壽材？小店貨真價實，童叟無欺。",
+       "choices": [
+        {
+         "id": "c_look",
+         "label": "隨便看看。",
+         "goto": "n_look"
+        },
+        {
+         "id": "c_code1",
+         "label": "地振高岡，一派溪山千古秀。",
+         "goto": "n1"
+        },
+        {
+         "id": "c_code2",
+         "label": "門朝大海，三河合水萬年流。",
+         "goto": "n_wrong"
+        }
+       ]
+      },
+      "n_look": {
+       "speaker": "npc",
+       "text": "（掌櫃懶洋洋地低下頭，又刨起木頭來）看中了再喊一聲。"
+      },
+      "n_wrong": {
+       "speaker": "npc",
+       "text": "（掌櫃眼皮一抬）客官這話沒頭沒腦的，小店聽不懂。要買棺材就挑，不買請便。"
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "（刨子停了。掌櫃壓低了聲音）門朝大海，三河合水萬年流。……朋友，哪一堂的？",
+       "choices": [
+        {
+         "id": "c_new",
+         "label": "在下還不是會中兄弟。久仰天地會的大義，特來投效。",
+         "goto": "n2"
+        },
+        {
+         "id": "c_leave",
+         "label": "認錯人了，告辭。",
+         "goto": "END"
+        }
+       ]
+      },
+      "n2": {
+       "speaker": "npc",
+       "text": "進天地會可不是喝碗酒、拜個把子就算數。會裡收人，要經過嚴密審核；交辦的事辦妥了，確定你忠心不二，才能入會。",
+       "goto": "n3"
+      },
+      "n3": {
+       "speaker": "npc",
+       "text": "眼下有一封信，要送到大理衙門的王捕頭手裡，再把他的回條帶回來。路上若有閃失，這顆腦袋就不是你的了。敢不敢接？",
+       "choices": [
+        {
+         "id": "c_accept",
+         "label": "敢！這封信我送定了。",
+         "do": [
+          {
+           "do": "accept"
+          },
+          {
+           "do": "give",
+           "item": "i_tdh_mihan",
+           "n": 1
+          }
+         ],
+         "goto": "n_yes"
+        },
+        {
+         "id": "c_no",
+         "label": "這差事太險，容我再想想。",
+         "goto": "n_no"
+        }
+       ]
+      },
+      "n_yes": {
+       "speaker": "npc",
+       "text": "（掌櫃從棺材夾層摸出一封火漆密函塞給你）王捕頭是自己人。從驛站搭車到大理最快，快去快回。"
+      },
+      "n_no": {
+       "speaker": "npc",
+       "text": "（掌櫃哼了一聲）想清楚了再來。今天的話，出了這個門就忘了。"
+      }
+     }
+    },
+    "d_wang": {
+     "start": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "（王捕頭按著刀柄打量你）有事報官，沒事少在衙門口晃蕩。",
+       "choices": [
+        {
+         "id": "c_letter",
+         "label": "京城棺材鋪的掌櫃託我捎一張壽材的訂單給您。",
+         "requires": [
+          {
+           "type": "has_item",
+           "item": "i_tdh_mihan"
+          }
+         ],
+         "do": [
+          {
+           "do": "take",
+           "item": "i_tdh_mihan",
+           "n": 1
+          }
+         ],
+         "goto": "n1"
+        },
+        {
+         "id": "c_none",
+         "label": "沒事，路過。",
+         "goto": "END"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "（王捕頭臉色微變，四下望了一眼，把你拉到廊柱後頭）……拿來。",
+       "goto": "n2"
+      },
+      "n2": {
+       "speaker": "npc",
+       "text": "（他就著窗光拆信，看了兩遍，揉成一團塞進嘴裡嚼了）總舵的意思我明白了。大理這頭的弟兄，一個也不會少。",
+       "goto": "n3"
+      },
+      "n3": {
+       "speaker": "npc",
+       "text": "這張回條你收好，交還給掌櫃。記著：在衙門裡我是官、你是民，咱們從沒見過。",
+       "do": [
+        {
+         "do": "give",
+         "item": "i_tdh_huitiao",
+         "n": 1
+        },
+        {
+         "do": "complete",
+         "obj": "o_wang"
+        }
+       ]
+      }
+     },
+     "resume": "n0"
+    },
+    "d_back": {
+     "start": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "回來了？東西呢？",
+       "choices": [
+        {
+         "id": "c_give",
+         "label": "王捕頭的回條在此。",
+         "requires": [
+          {
+           "type": "has_item",
+           "item": "i_tdh_huitiao"
+          }
+         ],
+         "do": [
+          {
+           "do": "take",
+           "item": "i_tdh_huitiao",
+           "n": 1
+          }
+         ],
+         "goto": "n1"
+        },
+        {
+         "id": "c_wait",
+         "label": "還沒辦妥。",
+         "goto": "n_wait"
+        }
+       ]
+      },
+      "n_wait": {
+       "speaker": "npc",
+       "text": "那還站在這兒做什麼？"
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "（掌櫃把回條湊到油燈前，看了看上頭的暗記，點點頭）差事辦得乾淨。不過……",
+       "goto": "n2"
+      },
+      "n2": {
+       "speaker": "npc",
+       "text": "這幾天衙門裡新來的那個捕快，老在鋪子外頭轉悠，像是嗅到了什麼。你去衙門會會他，看他打的什麼算盤。記住，咱們做的是棺材生意。",
+       "do": [
+        {
+         "do": "complete",
+         "obj": "o_back"
+        }
+       ]
+      }
+     },
+     "resume": "n0"
+    },
+    "d_bribe": {
+     "start": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "（捕快把你攔在廊下，笑得一團和氣）這位朋友，常往北大街那家棺材鋪跑啊？京城裡最近不太平，聽說有些反賊藏頭露尾的。",
+       "choices": [
+        {
+         "id": "c_deny",
+         "label": "我去買棺材，礙著官爺什麼事？",
+         "goto": "n1"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "（他從袖裡摸出一錠白花花的銀子，在你眼前晃了晃）明人不說暗話。那鋪子後頭藏著什麼，你說給我聽，這一百兩就是你的，往後衙門還有重賞。",
+       "choices": [
+        {
+         "id": "c_take",
+         "label": "收下。",
+         "do": [
+          {
+           "do": "reward",
+           "money": 100
+          },
+          {
+           "do": "fail",
+           "reason": "fail_q_tdh_ruhui_bribe"
+          }
+         ],
+         "goto": "END"
+        },
+        {
+         "id": "c_refuse",
+         "label": "拒絕。",
+         "goto": "n_refuse"
+        }
+       ]
+      },
+      "n_refuse": {
+       "speaker": "npc",
+       "text": "（捕快收起銀子，冷笑一聲）不識抬舉。……行，咱們走著瞧。",
+       "goto": "n2"
+      },
+      "n2": {
+       "speaker": "player",
+       "text": "（你轉身走出衙門，背後那道目光盯了你好一陣。）",
+       "do": [
+        {
+         "do": "complete",
+         "obj": "o_test"
+        }
+       ]
+      }
+     },
+     "resume": "n0"
+    },
+    "d_report": {
+     "start": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "怎麼樣？那捕快說了什麼？",
+       "choices": [
+        {
+         "id": "c_tell",
+         "label": "他拿一百兩銀子要我說出鋪子的底細，我沒收。",
+         "goto": "n1"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "（掌櫃難得露出笑容）銀子擺在眼前都不動心，好！實話跟你說，那捕快是總舵安排的，就是要試你一試。",
+       "goto": "n2"
+      },
+      "n2": {
+       "speaker": "npc",
+       "text": "總舵主正巧在京城。這口棺材後頭的暗門，你推開便是。",
+       "do": [
+        {
+         "do": "complete",
+         "obj": "o_report"
+        }
+       ]
+      }
+     },
+     "resume": "n0"
+    },
+    "d_hall": {
+     "start": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "（香堂裡香煙繚繞，正中一位青衫文士負手而立）你就是那位送信又不貪官銀的朋友？在下陳近南。",
+       "goto": "n1"
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "本會以反清復明為宗旨。入了會便是兄弟，有福同享，有難同當；洩漏會中機密、出賣兄弟者，三刀六洞。這些規矩，你可記得住？",
+       "choices": [
+        {
+         "id": "c_swear",
+         "label": "記住了。弟子願拜天為父、拜地為母，誓守會規。",
+         "goto": "n2"
+        },
+        {
+         "id": "c_think",
+         "label": "容我再想想。",
+         "goto": "n_think"
+        }
+       ]
+      },
+      "n_think": {
+       "speaker": "npc",
+       "text": "入會是一輩子的事，想清楚是對的。想好了再來找我。"
+      },
+      "n2": {
+       "speaker": "npc",
+       "text": "好！（他親手替你點上三炷香）從今往後，你便是天地會的兄弟。香堂裡的管事那兒有會中兄弟用的東西，報上名號便是。",
+       "do": [
+        {
+         "do": "complete",
+         "obj": "o_hall"
+        }
+       ]
+      }
+     },
+     "resume": "n0"
+    }
+   },
+   "outcomes": {
+    "default": {
+     "label": "加入天地會",
+     "rewards": {
+      "fame": 20,
+      "flags": [
+       "tdh_member"
+      ]
+     },
+     "src": "proposal",
+     "src_note": "名聲 +20 與會籍旗標【設計提案】（M3B_PLAN §8.3）"
+    }
+   },
+   "rumors": {
+    "first": "rmr_q_tdh_ruhui_first"
+   },
+   "test_plan": [
+    {
+     "quest": "q_tdh_ruhui",
+     "outcome": "default",
+     "note": "對錯暗號一次後重來；拒絕賄賂；setup.combat_xp 需要 bot 支援（或 debug_set）",
+     "setup": {
+      "combat_xp": 5000,
+      "morality": 0
+     },
+     "path": [
+      "walk@jc_coffin",
+      "accept@n_tdh_zhanggui",
+      "choose@n_tdh_zhanggui:n0:c_code2",
+      "accept@n_tdh_zhanggui",
+      "choose@n_tdh_zhanggui:n0:c_code1",
+      "choose@n_tdh_zhanggui:n1:c_new",
+      "choose@n_tdh_zhanggui:n3:c_accept",
+      "walk@dl_yamen",
+      "talk@n_dl_wangbutou",
+      "choose@n_dl_wangbutou:n0:c_letter",
+      "walk@jc_coffin",
+      "talk@n_tdh_zhanggui",
+      "choose@n_tdh_zhanggui:n0:c_give",
+      "walk@jc_yamen",
+      "talk@n_jc_bukuai",
+      "choose@n_jc_bukuai:n0:c_deny",
+      "choose@n_jc_bukuai:n1:c_refuse",
+      "walk@jc_coffin",
+      "talk@n_tdh_zhanggui",
+      "choose@n_tdh_zhanggui:n0:c_tell",
+      "walk@jc_tdh_hall",
+      "talk@n_tdh_chenjinnan",
+      "choose@n_tdh_chenjinnan:n1:c_swear"
+     ],
+     "expect": {
+      "flags": [
+       "tdh_member"
+      ],
+      "fame_gain": 20,
+      "done": "q_tdh_ruhui",
+      "items_absent": [
+       "i_tdh_mihan",
+       "i_tdh_huitiao"
+      ]
+     }
+    },
+    {
+     "quest": "q_tdh_ruhui",
+     "outcome": "fail",
+     "branch": "bribe",
+     "note": "收下賄賂 → 任務失敗、得 100 兩、30 遊戲日冷卻；香堂進不去",
+     "setup": {
+      "combat_xp": 5000,
+      "morality": 0
+     },
+     "path": [
+      "walk@jc_coffin",
+      "accept@n_tdh_zhanggui",
+      "choose@n_tdh_zhanggui:n0:c_code1",
+      "choose@n_tdh_zhanggui:n1:c_new",
+      "choose@n_tdh_zhanggui:n3:c_accept",
+      "walk@dl_yamen",
+      "talk@n_dl_wangbutou",
+      "choose@n_dl_wangbutou:n0:c_letter",
+      "walk@jc_coffin",
+      "talk@n_tdh_zhanggui",
+      "choose@n_tdh_zhanggui:n0:c_give",
+      "walk@jc_yamen",
+      "talk@n_jc_bukuai",
+      "choose@n_jc_bukuai:n0:c_deny",
+      "choose@n_jc_bukuai:n1:c_take",
+      "expect_menu_absent@n_tdh_zhanggui:q_tdh_ruhui"
+     ],
+     "expect": {
+      "active_absent": [
+       "q_tdh_ruhui"
+      ],
+      "money_gain": 100,
+      "items_absent": [
+       "i_tdh_huitiao"
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "q_jc_xiaobao",
+   "name": "李大嬸找小保",
+   "chapter": "京城・神鵰大俠事件",
+   "group": "jingcheng",
+   "giver": "n_jc_lidashen",
+   "era": "1.0B",
+   "src": "proposal",
+   "dialogue_src": "proposal",
+   "src_note": "官方第七話（2001-11-22）標題「李大嬸找小保事件」【已證實標題】；只有預告沒有攻略，步驟與獎勵全部【設計提案】",
+   "text": "京城大街的李大嬸一早讓兒子小保出門打醬油，到現在還沒回來。",
+   "requires": [],
+   "give_items": [],
+   "repeat": {
+    "max": 1,
+    "cooldown_days": 0
+   },
+   "abandon": true,
+   "party_credit": true,
+   "start": "s_ask",
+   "offer": "d_offer",
+   "stages": [
+    {
+     "id": "s_ask",
+     "title": "打聽小保",
+     "hint_room": "jc_zijin",
+     "log": "小保整天念著要看皇城侍衛換班。從京城大街往東到廣場，往北上北大街，再往西北到紫禁城外，問問守門的侍衛。",
+     "objectives": [
+      {
+       "id": "o_ask",
+       "type": "TALK",
+       "npc": "n_jc_zijin_guard",
+       "dialogue": "d_guard",
+       "text": "向紫禁城外的侍衛打聽小保"
+      }
+     ],
+     "next": "s_find"
+    },
+    {
+     "id": "s_find",
+     "title": "找到小保",
+     "hint_room": "jc_zijin",
+     "log": "侍衛說小保躲在紫禁城外的牆角下。去勸他跟你回家。",
+     "objectives": [
+      {
+       "id": "o_find",
+       "type": "TALK",
+       "npc": "n_jc_xiaobao",
+       "dialogue": "d_xiaobao",
+       "text": "勸小保回家"
+      }
+     ],
+     "next": "s_escort"
+    },
+    {
+     "id": "s_escort",
+     "title": "帶小保回家",
+     "hint_room": "jc_street",
+     "log": "帶著小保往東南回北大街，往南經過廣場，往西回到京城大街找李大嬸。別把他弄丟了。",
+     "on_enter": [
+      {
+       "do": "escort_start",
+       "npc": "n_jc_xiaobao"
+      }
+     ],
+     "objectives": [
+      {
+       "id": "o_escort",
+       "type": "ESCORT",
+       "npc": "n_jc_xiaobao",
+       "to_room": "jc_street",
+       "text": "把小保帶回京城大街"
+      }
+     ],
+     "on_complete": [
+      {
+       "do": "escort_end",
+       "npc": "n_jc_xiaobao"
+      }
+     ],
+     "next": "s_back"
+    },
+    {
+     "id": "s_back",
+     "title": "母子團圓",
+     "hint_room": "jc_street",
+     "log": "小保回到京城大街了，跟李大嬸說一聲。",
+     "objectives": [
+      {
+       "id": "o_back",
+       "type": "TALK",
+       "npc": "n_jc_lidashen",
+       "dialogue": "d_back",
+       "text": "告訴李大嬸小保回來了"
+      }
+     ],
+     "next": "END"
+    }
+   ],
+   "dialogues": {
+    "d_offer": {
+     "start": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "（李大嬸急得直搓手）這位大俠……你可看見一個七八歲、虎頭虎腦的小男孩？",
+       "goto": "n1"
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "我家小保一早出門打醬油，到這會兒還沒回來！京城這麼大，人又雜，要是叫拍花的拐了去……",
+       "choices": [
+        {
+         "id": "c_help",
+         "label": "大嬸別急，我替妳找找。",
+         "do": [
+          {
+           "do": "accept"
+          }
+         ],
+         "goto": "n_yes"
+        },
+        {
+         "id": "c_no",
+         "label": "我沒看見，妳去衙門問問吧。",
+         "goto": "n_no"
+        }
+       ]
+      },
+      "n_yes": {
+       "speaker": "npc",
+       "text": "謝天謝地！那孩子整天念著要看皇城的侍衛老爺換班，八成是跑到紫禁城那邊去了。拜託你了！"
+      },
+      "n_no": {
+       "speaker": "npc",
+       "text": "（李大嬸眼圈一紅，又往街頭張望去了）"
+      }
+     }
+    },
+    "d_guard": {
+     "start": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "（侍衛按刀而立，目不斜視）紫禁城重地，閒人走開。",
+       "choices": [
+        {
+         "id": "c_ask",
+         "label": "官爺可見著一個七八歲的小男孩？",
+         "goto": "n1"
+        },
+        {
+         "id": "c_go",
+         "label": "這就走。",
+         "goto": "END"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "哼，是有個小鬼頭，剛才扒著石獅子看了半天，叫我轟下來了。（朝牆角努努嘴）喏，還蹲在那兒不肯走。",
+       "goto": "n2"
+      },
+      "n2": {
+       "speaker": "npc",
+       "text": "告訴他家大人，再讓我看見他爬石獅子，就抓回衙門打屁股。",
+       "do": [
+        {
+         "do": "complete",
+         "obj": "o_ask"
+        }
+       ]
+      }
+     },
+     "resume": "n0"
+    },
+    "d_xiaobao": {
+     "start": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "（一個小男孩蹲在牆角，拿樹枝在地上畫侍衛的大刀）……你是誰呀？",
+       "choices": [
+        {
+         "id": "c_mom",
+         "label": "你娘找你找得快哭了，跟我回去。",
+         "goto": "n1"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "我不要！我還沒看到侍衛換班呢……換班的時候他們的刀會一起拔出來，可神氣了！",
+       "choices": [
+        {
+         "id": "c_promise",
+         "label": "你乖乖回家，下回我帶你來看。",
+         "goto": "n2"
+        },
+        {
+         "id": "c_scare",
+         "label": "侍衛說了，再爬石獅子就抓你回衙門打屁股。",
+         "goto": "n2b"
+        }
+       ]
+      },
+      "n2": {
+       "speaker": "npc",
+       "text": "真的？拉勾！……那好吧，我跟你走。",
+       "do": [
+        {
+         "do": "complete",
+         "obj": "o_find"
+        }
+       ]
+      },
+      "n2b": {
+       "speaker": "npc",
+       "text": "（小保嚇得一縮脖子，把樹枝一扔）我、我回家就是了……",
+       "do": [
+        {
+         "do": "complete",
+         "obj": "o_find"
+        }
+       ]
+      }
+     },
+     "resume": "n0"
+    },
+    "d_back": {
+     "start": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "小保！（李大嬸一把摟住孩子，又在他屁股上拍了兩下）死孩子，嚇死娘了！",
+       "goto": "n1"
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "多謝大俠，多謝大俠！家裡沒什麼好東西，這點錢你拿去買碗茶喝。",
+       "goto": "n2"
+      },
+      "n2": {
+       "speaker": "n_jc_xiaobao",
+       "text": "大俠，你說話要算話喔！",
+       "do": [
+        {
+         "do": "complete",
+         "obj": "o_back"
+        }
+       ]
+      }
+     },
+     "resume": "n0"
+    }
+   },
+   "outcomes": {
+    "default": {
+     "label": "小保平安回家",
+     "rewards": {
+      "money": 50,
+      "fame": 3,
+      "morality": 5,
+      "lilian": 5
+     },
+     "src": "proposal"
+    }
+   },
+   "test_plan": [
+    {
+     "quest": "q_jc_xiaobao",
+     "outcome": "default",
+     "path": [
+      "walk@jc_street",
+      "accept@n_jc_lidashen",
+      "choose@n_jc_lidashen:n1:c_help",
+      "walk@jc_zijin",
+      "talk@n_jc_zijin_guard",
+      "choose@n_jc_zijin_guard:n0:c_ask",
+      "talk@n_jc_xiaobao",
+      "choose@n_jc_xiaobao:n0:c_mom",
+      "choose@n_jc_xiaobao:n1:c_promise",
+      "walk@jc_street",
+      "talk@n_jc_lidashen"
+     ],
+     "expect": {
+      "money_gain": 50,
+      "fame_gain": 3,
+      "lilian_gain": 5,
+      "done": "q_jc_xiaobao"
+     }
+    }
+   ]
+  },
+  {
+   "id": "q_jc_lingquan",
+   "name": "靈犬小黃",
+   "chapter": "京城・神鵰大俠事件",
+   "group": "jingcheng",
+   "giver": "n_jc_roubao",
+   "era": "1.0B",
+   "src": "proposal",
+   "dialogue_src": "proposal",
+   "src_note": "官方第七話（2001-11-22）標題「靈犬小黃」【已證實標題】；預告大意「京城狗乞食」（M3B_PLAN §8.3）；步驟、靈犬刨地與獎勵全部【設計提案】",
+   "text": "京城廣場賣肉包的王大娘心疼城裡幾條討食的黃狗，想請人買肉包子去餵牠們。",
+   "requires": [],
+   "give_items": [],
+   "repeat": {
+    "max": 1,
+    "cooldown_days": 0
+   },
+   "abandon": true,
+   "party_credit": false,
+   "start": "s_feed",
+   "offer": "d_offer",
+   "stages": [
+    {
+     "id": "s_feed",
+     "title": "餵三條小黃",
+     "hint_room": "jc_square",
+     "log": "向王大娘買三個肉包子。一條小黃蹲在京城廣場，一條在北大街（廣場往北），還有一條守在京城北門（北大街再往北）。到了那裡按「餵小黃」。",
+     "room_actions": [
+      {
+       "id": "a_feed_square",
+       "room": "jc_square",
+       "label": "餵小黃",
+       "hours": [],
+       "requires": [
+        {
+         "type": "has_item",
+         "item": "c_jc_roubao"
+        }
+       ],
+       "repeat": false,
+       "do": [
+        {
+         "do": "take",
+         "item": "c_jc_roubao",
+         "n": 1
+        },
+        {
+         "do": "tell",
+         "key": "tell_q_jc_lingquan_feed"
+        },
+        {
+         "do": "var",
+         "name": "fed_square",
+         "value": true
+        },
+        {
+         "do": "complete",
+         "obj": "o_square"
+        }
+       ]
+      },
+      {
+       "id": "a_feed_street",
+       "room": "jc_street_n",
+       "label": "餵小黃",
+       "hours": [],
+       "requires": [
+        {
+         "type": "has_item",
+         "item": "c_jc_roubao"
+        }
+       ],
+       "repeat": false,
+       "do": [
+        {
+         "do": "take",
+         "item": "c_jc_roubao",
+         "n": 1
+        },
+        {
+         "do": "tell",
+         "key": "tell_q_jc_lingquan_feed"
+        },
+        {
+         "do": "var",
+         "name": "fed_street",
+         "value": true
+        },
+        {
+         "do": "complete",
+         "obj": "o_street"
+        }
+       ]
+      },
+      {
+       "id": "a_feed_gate",
+       "room": "jc_gate_n",
+       "label": "餵小黃",
+       "hours": [],
+       "requires": [
+        {
+         "type": "has_item",
+         "item": "c_jc_roubao"
+        }
+       ],
+       "repeat": false,
+       "do": [
+        {
+         "do": "take",
+         "item": "c_jc_roubao",
+         "n": 1
+        },
+        {
+         "do": "tell",
+         "key": "tell_q_jc_lingquan_feed"
+        },
+        {
+         "do": "var",
+         "name": "fed_gate",
+         "value": true
+        },
+        {
+         "do": "complete",
+         "obj": "o_gate"
+        }
+       ]
+      }
+     ],
+     "objectives": [
+      {
+       "id": "o_square",
+       "type": "STATE",
+       "requires": [
+        {
+         "type": "quest_var",
+         "quest": "q_jc_lingquan",
+         "var": "fed_square",
+         "value": true
+        }
+       ],
+       "text": "在京城廣場餵小黃"
+      },
+      {
+       "id": "o_street",
+       "type": "STATE",
+       "requires": [
+        {
+         "type": "quest_var",
+         "quest": "q_jc_lingquan",
+         "var": "fed_street",
+         "value": true
+        }
+       ],
+       "text": "在北大街餵小黃"
+      },
+      {
+       "id": "o_gate",
+       "type": "STATE",
+       "requires": [
+        {
+         "type": "quest_var",
+         "quest": "q_jc_lingquan",
+         "var": "fed_gate",
+         "value": true
+        }
+       ],
+       "text": "在京城北門餵小黃"
+      }
+     ],
+     "next": "s_follow"
+    },
+    {
+     "id": "s_follow",
+     "title": "跟著小黃走",
+     "hint_room": "jc_gate_n",
+     "log": "北門那條小黃吃完肉包子，咬著你的褲腳直往城牆根拖。在京城北門按「跟著小黃」。",
+     "room_actions": [
+      {
+       "id": "a_follow",
+       "room": "jc_gate_n",
+       "label": "跟著小黃",
+       "hours": [],
+       "requires": [],
+       "repeat": false,
+       "do": [
+        {
+         "do": "tell",
+         "key": "tell_q_jc_lingquan_dig"
+        },
+        {
+         "do": "reward",
+         "money": 120
+        },
+        {
+         "do": "var",
+         "name": "dug",
+         "value": true
+        },
+        {
+         "do": "complete",
+         "obj": "o_follow"
+        }
+       ]
+      }
+     ],
+     "objectives": [
+      {
+       "id": "o_follow",
+       "type": "STATE",
+       "requires": [
+        {
+         "type": "quest_var",
+         "quest": "q_jc_lingquan",
+         "var": "dug",
+         "value": true
+        }
+       ],
+       "text": "在京城北門跟著小黃走"
+      }
+     ],
+     "next": "s_back"
+    },
+    {
+     "id": "s_back",
+     "title": "回報王大娘",
+     "hint_room": "jc_square",
+     "log": "回京城廣場（北門往南經北大街）告訴王大娘小黃的事。",
+     "objectives": [
+      {
+       "id": "o_back",
+       "type": "TALK",
+       "npc": "n_jc_roubao",
+       "dialogue": "d_back",
+       "text": "回廣場告訴王大娘"
+      }
+     ],
+     "next": "END"
+    }
+   ],
+   "dialogues": {
+    "d_offer": {
+     "start": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "（王大娘一邊收蒸籠一邊嘆氣）唉，城裡那幾條黃狗，天天守在攤子前頭討吃的，瘦得皮包骨……",
+       "goto": "n1"
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "也不全是野狗。有人說那是丐幫養的狗，叫『小黃』，聰明得很，聽得懂人話。",
+       "goto": "n2"
+      },
+      "n2": {
+       "speaker": "npc",
+       "text": "我這小本生意，餵不起呀。大俠若心善，跟我買幾個肉包子去餵餵牠們：一條在廣場，一條在北大街，還有一條老蹲在北門口。",
+       "choices": [
+        {
+         "id": "c_gb",
+         "label": "（你拍拍腰間的竹棒）大娘放心，丐幫的狗，丐幫的人自己照顧。",
+         "requires": [
+          {
+           "type": "sect",
+           "sect": "gaibang"
+          }
+         ],
+         "hide_if_locked": true,
+         "do": [
+          {
+           "do": "accept"
+          }
+         ],
+         "goto": "n_gb"
+        },
+        {
+         "id": "c_yes",
+         "label": "包在我身上。",
+         "do": [
+          {
+           "do": "accept"
+          }
+         ],
+         "goto": "n_yes"
+        },
+        {
+         "id": "c_no",
+         "label": "狗的死活與我何干。",
+         "goto": "n_no"
+        }
+       ]
+      },
+      "n_gb": {
+       "speaker": "npc",
+       "text": "哎喲，原來是丐幫的小兄弟！難怪小黃見了你不叫……不過聽說牠們脾氣怪，對自家人反倒愛咬，你可小心點。"
+      },
+      "n_yes": {
+       "speaker": "npc",
+       "text": "好心有好報！肉包子三文錢……啊不，六兩一個，給你算便宜些。"
+      },
+      "n_no": {
+       "speaker": "npc",
+       "text": "（王大娘搖搖頭，把一個賣剩的包子掰開，丟給腳邊的黃狗）"
+      }
+     }
+    },
+    "d_back": {
+     "start": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "回來啦？小黃們都吃上了？",
+       "choices": [
+        {
+         "id": "c_tell",
+         "label": "北門那條小黃還刨出一個錢袋給我。",
+         "goto": "n1"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "（王大娘眼睛一亮）我就說牠們是靈犬！知恩圖報，比有些人強多了。",
+       "goto": "n2"
+      },
+      "n2": {
+       "speaker": "npc",
+       "text": "往後你從這兒過，牠們準認得你。來，這個包子算大娘請你的。",
+       "do": [
+        {
+         "do": "complete",
+         "obj": "o_back"
+        }
+       ]
+      }
+     },
+     "resume": "n0"
+    }
+   },
+   "outcomes": {
+    "default": {
+     "label": "靈犬報恩",
+     "rewards": {
+      "fame": 3,
+      "morality": 3,
+      "lilian": 3,
+      "items": [
+       {
+        "id": "c_jc_roubao",
+        "n": 1
+       }
+      ]
+     },
+     "src": "proposal"
+    }
+   },
+   "test_plan": [
+    {
+     "quest": "q_jc_lingquan",
+     "outcome": "default",
+     "note": "一般玩家",
+     "path": [
+      "walk@jc_square",
+      "accept@n_jc_roubao",
+      "choose@n_jc_roubao:n2:c_yes",
+      "buy@n_jc_roubao:c_jc_roubao:3",
+      "act@q_jc_lingquan:a_feed_square",
+      "walk@jc_street_n",
+      "act@q_jc_lingquan:a_feed_street",
+      "walk@jc_gate_n",
+      "act@q_jc_lingquan:a_feed_gate",
+      "act@q_jc_lingquan:a_follow",
+      "walk@jc_square",
+      "talk@n_jc_roubao",
+      "choose@n_jc_roubao:n0:c_tell"
+     ],
+     "expect": {
+      "money_gain": 102,
+      "fame_gain": 3,
+      "items": {
+       "c_jc_roubao": 1
+      },
+      "done": "q_jc_lingquan"
+     }
+    },
+    {
+     "quest": "q_jc_lingquan",
+     "outcome": "default",
+     "branch": "gaibang",
+     "note": "丐幫弟子的額外選項",
+     "setup": {
+      "sect": "gaibang"
+     },
+     "path": [
+      "walk@jc_square",
+      "accept@n_jc_roubao",
+      "choose@n_jc_roubao:n2:c_gb",
+      "buy@n_jc_roubao:c_jc_roubao:3",
+      "act@q_jc_lingquan:a_feed_square",
+      "walk@jc_street_n",
+      "act@q_jc_lingquan:a_feed_street",
+      "walk@jc_gate_n",
+      "act@q_jc_lingquan:a_feed_gate",
+      "act@q_jc_lingquan:a_follow",
+      "walk@jc_square",
+      "talk@n_jc_roubao",
+      "choose@n_jc_roubao:n0:c_tell"
+     ],
+     "expect": {
+      "done": "q_jc_lingquan"
+     }
+    }
+   ]
+  },
+  {
+   "id": "q_jc_zhangyuanwai",
+   "name": "愛好礦石的張員外",
+   "chapter": "大理・神鵰大俠事件",
+   "group": "jingcheng",
+   "giver": "n_jc_zhangyuanwai",
+   "era": "1.0B",
+   "src": "proposal",
+   "dialogue_src": "proposal",
+   "src_note": "官方第九話（2001-12-06，index_jy3-2-9）標題「愛好礦石的張員外」（大理）【已證實標題】；收購紫石礦、價錢、可重複全部【設計提案】，接上生活技能經濟（挖礦 40 級紫石礦）",
+   "text": "大理廣場的張員外愛收奇石，願意高價收購紫石礦。",
+   "requires": [],
+   "give_items": [],
+   "repeat": {
+    "max": 0,
+    "cooldown_days": 1
+   },
+   "abandon": true,
+   "party_credit": false,
+   "start": "s_give",
+   "offer": "d_offer",
+   "stages": [
+    {
+     "id": "s_give",
+     "title": "三塊紫石礦",
+     "hint_room": "dl_square",
+     "log": "湊齊三塊紫石礦交給大理廣場的張員外。紫石礦要挖礦練到相當火候才挖得到，有些江湖事件也會拿來當謝禮。",
+     "objectives": [
+      {
+       "id": "o_give",
+       "type": "DELIVER",
+       "npc": "n_jc_zhangyuanwai",
+       "item": "r_kuang_zi",
+       "count": 3,
+       "text": "交給張員外 3 塊紫石礦"
+      }
+     ],
+     "next": "END"
+    }
+   ],
+   "dialogues": {
+    "d_offer": {
+     "start": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "（張員外手裡的兩顆石球轉得咯咯響）這位朋友，你可識得礦石？",
+       "goto": "n1"
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "老夫平生沒別的嗜好，就愛收集奇石。那種泛著紫光的紫石礦，越看越愛……可惜礦工都嫌難挖，一年也見不到幾塊。",
+       "goto": "n2"
+      },
+      "n2": {
+       "speaker": "npc",
+       "text": "你若弄得到三塊紫石礦，老夫出三百六十兩收，比鐵匠舖給的價錢強多了。如何？",
+       "choices": [
+        {
+         "id": "c_yes",
+         "label": "員外等著，我這就去弄。",
+         "do": [
+          {
+           "do": "accept"
+          }
+         ],
+         "goto": "n_yes"
+        },
+        {
+         "id": "c_no",
+         "label": "石頭有什麼好看的。",
+         "goto": "n_no"
+        }
+       ]
+      },
+      "n_yes": {
+       "speaker": "npc",
+       "text": "好，好！老夫天天在這廣場上曬太陽，你隨時來。"
+      },
+      "n_no": {
+       "speaker": "npc",
+       "text": "（張員外搖頭晃腦）俗人，俗人。"
+      }
+     }
+    }
+   },
+   "outcomes": {
+    "default": {
+     "label": "張員外收下紫石礦",
+     "rewards": {
+      "money": 360,
+      "fame": 1
+     },
+     "src": "proposal"
+    }
+   },
+   "test_plan": [
+    {
+     "quest": "q_jc_zhangyuanwai",
+     "outcome": "default",
+     "setup": {
+      "items": {
+       "r_kuang_zi": 3
+      }
+     },
+     "path": [
+      "walk@dl_square",
+      "accept@n_jc_zhangyuanwai",
+      "choose@n_jc_zhangyuanwai:n2:c_yes",
+      "talk@n_jc_zhangyuanwai"
+     ],
+     "expect": {
+      "money_gain": 360,
+      "items_absent": [
+       "r_kuang_zi"
+      ],
+      "done": "q_jc_zhangyuanwai"
+     }
+    }
+   ]
+  }
+ ],
+ "text_templates": [
+  {
+   "id": "talk_n_jc_cha_n",
+   "era": "1.0B",
+   "self": "{npc_name}翻開簿子：「出了北門，山路上沒人替你記落腳處。往丐幫、雁門關去的，先在這兒記上一筆吧。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_jc_guard_n",
+   "era": "1.0B",
+   "self": "{npc_name}喝道：「北門外的山路不太平，護國法師、煞風寨的強人時常出沒。沒兩下子的別往深處走。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_jc_guard_n@NIGHT",
+   "era": "1.0B",
+   "self": "{npc_name}提著燈籠：「這麼晚還要出城？山路上黑燈瞎火的，自己當心。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_jc_jailer",
+   "era": "1.0B",
+   "self": "{npc_name}晃著鑰匙：「裡頭關的都是背叛師門、被同門捉回來的。想保人出來？十萬兩，一文不能少。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_jc_bukuai",
+   "era": "1.0B",
+   "self": "{npc_name}拱拱手：「京城地面上的案子多得辦不完。往後衙門要是貼出懸賞榜，還得仰仗各位江湖朋友。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_jc_smith",
+   "era": "1.0B",
+   "self": "{npc_name}撥著算盤：「京城的貨，比西夏、大理的都講究。客官看中哪件？」",
+   "src": "proposal"
+  },
+  {
+   "id": "jc_smith_refuse_gb",
+   "era": "1.0B",
+   "self": "{npc_name}捏著鼻子直擺手：「去去去，叫化子買什麼刀劍？別髒了我的鋪子！」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_jc_pharmacist",
+   "era": "1.0B",
+   "self": "{npc_name}捻著鬍子：「金創藥、解毒藥都有。行走江湖，身上總得帶幾樣。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_jc_pharmacist@NIGHT",
+   "era": "1.0B",
+   "self": "{npc_name}隔著門板咳了兩聲：「打烊了，急症敲後門。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_jc_buzhuang",
+   "era": "1.0B",
+   "self": "{npc_name}拿尺子比著布：「後院的紡紗機、織布機、烘皮爐都借得用，會織布的儘管來。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_jc_tiejiang",
+   "era": "1.0B",
+   "self": "{npc_name}放下大鎚，抹了把汗：「十字鎬、打鐵鎚、焦炭，要什麼自己挑。爐子空著也能借你用。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_jc_zijin_guard",
+   "era": "1.0B",
+   "self": "{npc_name}冷冷地說：「紫禁城重地，閒人不得逗留。再往前一步，休怪刀劍無眼。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_tdh_zhanggui",
+   "era": "1.0B",
+   "self": "{npc_name}頭也不抬：「買棺材左手邊挑，訂壽材要等半個月。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_tdh_chenjinnan",
+   "era": "1.0B",
+   "self": "{npc_name}微微一笑：「平生不識陳近南，就稱英雄也枉然——這是江湖朋友抬愛。兄弟們在外行走，凡事小心。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_tdh_shop",
+   "era": "1.0B",
+   "self": "{npc_name}點點頭：「自家兄弟，要什麼儘管拿，算你本錢。」",
+   "src": "proposal"
+  },
+  {
+   "id": "tdh_shop_refuse",
+   "era": "1.0B",
+   "self": "{npc_name}上下打量你：「你是哪一堂的？面生得很。這裡的東西，不賣外人。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_jc_lidashen",
+   "era": "1.0B",
+   "self": "{npc_name}往街頭張望：「我家小保那孩子，一轉眼又不知道野到哪兒去了……」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_jc_xiaobao",
+   "era": "1.0B",
+   "self": "{npc_name}仰著頭：「大俠，你會不會拔刀？侍衛換班的時候，刀會一起拔出來喔！」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_jc_roubao",
+   "era": "1.0B",
+   "self": "{npc_name}掀開蒸籠，白氣直冒：「剛出籠的肉包子！六兩一個，皮薄餡多！」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_jc_roubao@NIGHT",
+   "era": "1.0B",
+   "self": "{npc_name}收著攤子：「今天的包子賣完啦，明兒趕早。」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_jc_zhangyuanwai",
+   "era": "1.0B",
+   "self": "{npc_name}把石球舉到太陽底下端詳：「你瞧這紋理，天生地養，比什麼字畫都耐看。」",
+   "src": "proposal"
+  },
+  {
+   "id": "fail_q_tdh_ruhui_bribe",
+   "era": "1.0B",
+   "self": "你收下了捕快的銀子。這件事很快就傳到棺材鋪掌櫃耳裡，他從此對你不理不睬。（三十日內不能再向他求入天地會）",
+   "src": "proposal"
+  },
+  {
+   "id": "tell_q_jc_lingquan_feed",
+   "era": "1.0B",
+   "self": "你掰開一個肉包子丟過去，小黃三兩口吞下肚，搖著尾巴在你腳邊轉了兩圈。",
+   "src": "proposal"
+  },
+  {
+   "id": "tell_q_jc_lingquan_dig",
+   "era": "1.0B",
+   "self": "小黃咬著你的褲腳拖到城牆根下，前爪刨個不停，竟刨出一個爛了半邊的舊錢袋！裡頭有一百二十兩碎銀。",
+   "src": "proposal"
+  },
+  {
+   "id": "rmr_q_tdh_ruhui_first",
+   "era": "1.0B",
+   "self": "聽說{name}在京城過了天地會的三關，進了香堂拜見總舵主。江湖上又多了一句：平生不識陳近南，就稱英雄也枉然。",
+   "other": "聽說{name}在京城過了天地會的三關，進了香堂拜見總舵主。江湖上又多了一句：平生不識陳近南，就稱英雄也枉然。",
+   "src": "proposal"
+  },
+  {
+   "id": "rmr_q_tdh_ruhui_fs",
+   "era": "1.0B",
+   "self": "京城有人說，北大街那家棺材鋪生意冷清，掌櫃卻從不著急，半夜裡還常有人進出。",
+   "src": "proposal"
+  },
+  {
+   "id": "rmr_q_jc_xiaobao_fs",
+   "era": "1.0B",
+   "self": "京城大街的李大嬸又在滿街找她家小保了，聽說那孩子最愛往紫禁城跑。",
+   "src": "proposal"
+  },
+  {
+   "id": "rmr_q_jc_lingquan_fs",
+   "era": "1.0B",
+   "self": "京城的叫化子說，城裡那幾條小黃狗是有靈性的，誰餵過牠們，牠們一輩子都記得。",
+   "src": "proposal"
+  },
+  {
+   "id": "rmr_q_jc_zhangyuanwai_fs",
+   "era": "1.0B",
+   "self": "大理來的商人說，大理廣場有位張員外，見了紫石礦就走不動路，出的價比鐵匠舖高出一大截。",
+   "src": "proposal"
+  },
+  {
+   "id": "amb_g_jc_inn_drunk",
+   "era": "1.0B",
+   "self": "角落裡一個醉漢趴在桌上喃喃自語：「地振高岡……一派溪山……嗝……後半句是什麼來著……」",
+   "src": "proposal"
+  },
+  {
+   "id": "amb_g_jc_square_day",
+   "era": "1.0B",
+   "self": "廣場上說書的一拍醒木：「上回說到，神鵰大俠楊過在絕情谷……」圍觀的人哄然叫好。",
+   "src": "proposal"
+  },
+  {
+   "id": "amb_g_jc_night",
+   "era": "1.0B",
+   "self": "更夫敲著梆子走過：「天乾物燥，小心火燭——」京城的街巷漸漸安靜下來。",
+   "src": "proposal"
+  },
+  {
+   "id": "amb_g_jc_jail",
+   "era": "1.0B",
+   "self": "牢房深處有人用鐵鍊敲著柵欄，嘶聲喊冤，看守人連眼皮都懶得抬。",
+   "src": "proposal"
+  },
+  {
+   "id": "amb_g_jc_zijin",
+   "era": "1.0B",
+   "self": "宮門裡傳出一陣整齊的腳步聲，侍衛換班了，刀鞘碰得叮噹作響。",
+   "src": "proposal"
+  }
+ ],
+ "rumors": [
+  {
+   "id": "rm_q_tdh_ruhui_fs",
+   "kind": "FORESHADOW",
+   "quest": "q_tdh_ruhui",
+   "text": "rmr_q_tdh_ruhui_fs",
+   "requires_world": {
+    "not_first": "q_tdh_ruhui"
+   },
+   "hours": [
+    "子",
+    "丑",
+    "亥"
+   ],
+   "weight": 1,
+   "era": "1.0B",
+   "src": "proposal",
+   "src_note": "系統傳聞【設計提案・非原作】"
+  },
+  {
+   "id": "rm_q_jc_xiaobao_fs",
+   "kind": "FORESHADOW",
+   "quest": "q_jc_xiaobao",
+   "text": "rmr_q_jc_xiaobao_fs",
+   "requires_world": {
+    "not_first": "q_jc_xiaobao"
+   },
+   "hours": [],
+   "weight": 1,
+   "era": "1.0B",
+   "src": "proposal",
+   "src_note": "系統傳聞【設計提案・非原作】"
+  },
+  {
+   "id": "rm_q_jc_lingquan_fs",
+   "kind": "FORESHADOW",
+   "quest": "q_jc_lingquan",
+   "text": "rmr_q_jc_lingquan_fs",
+   "requires_world": {
+    "not_first": "q_jc_lingquan"
+   },
+   "hours": [],
+   "weight": 1,
+   "era": "1.0B",
+   "src": "proposal",
+   "src_note": "系統傳聞【設計提案・非原作】"
+  },
+  {
+   "id": "rm_q_jc_zhangyuanwai_fs",
+   "kind": "FORESHADOW",
+   "quest": "q_jc_zhangyuanwai",
+   "text": "rmr_q_jc_zhangyuanwai_fs",
+   "requires_world": {
+    "not_first": "q_jc_zhangyuanwai"
+   },
+   "hours": [],
+   "weight": 1,
+   "era": "1.0B",
+   "src": "proposal",
+   "src_note": "系統傳聞【設計提案・非原作】"
+  }
+ ],
+ "ambient": [
+  {
+   "id": "amb_g_jc_inn_drunk",
+   "room": "jc_inn",
+   "periods": [
+    "NIGHT",
+    "DUSK"
+   ],
+   "requires": [],
+   "weight": 1,
+   "text": "amb_g_jc_inn_drunk",
+   "era": "1.0B",
+   "src": "proposal",
+   "src_note": "環境句【設計提案・非原作】（STORY_PLAN §5.3）"
+  },
+  {
+   "id": "amb_g_jc_square_day",
+   "room": "jc_square",
+   "periods": [
+    "DAY"
+   ],
+   "requires": [],
+   "weight": 1,
+   "text": "amb_g_jc_square_day",
+   "era": "1.0B",
+   "src": "proposal",
+   "src_note": "環境句【設計提案・非原作】（STORY_PLAN §5.3）"
+  },
+  {
+   "id": "amb_g_jc_night",
+   "region": "jingcheng",
+   "periods": [
+    "NIGHT"
+   ],
+   "requires": [],
+   "weight": 1,
+   "text": "amb_g_jc_night",
+   "era": "1.0B",
+   "src": "proposal",
+   "src_note": "環境句【設計提案・非原作】（STORY_PLAN §5.3）"
+  },
+  {
+   "id": "amb_g_jc_jail",
+   "room": "jc_jail_gate",
+   "periods": [],
+   "requires": [],
+   "weight": 1,
+   "text": "amb_g_jc_jail",
+   "era": "1.0B",
+   "src": "proposal",
+   "src_note": "環境句【設計提案・非原作】（STORY_PLAN §5.3）"
+  },
+  {
+   "id": "amb_g_jc_zijin",
+   "room": "jc_zijin",
+   "periods": [
+    "DAWN",
+    "DAY"
+   ],
+   "requires": [],
+   "weight": 1,
+   "text": "amb_g_jc_zijin",
+   "era": "1.0B",
+   "src": "proposal",
+   "src_note": "環境句【設計提案・非原作】（STORY_PLAN §5.3）"
+  }
+ ],
+ "patches_1_0b": [
+  {
+   "id": "p1b_jc_guard_talk",
+   "target_table": "text_templates",
+   "target_id": "talk_n_jc_guard",
+   "op": "merge",
+   "set": {
+    "self": "{npc_name}喝道：「南門外往華山、少林的路都通；東南小路進得去山谷，北門出去是往丐幫和雁門關的山路。」"
+   },
+   "src": "proposal",
+   "src_note": "M3B_PLAN §8.3：既有 talk_n_jc_guard 改寫（京城完整後南北都有路）"
+  },
+  {
+   "id": "p1b_jc_station_talk",
+   "target_table": "text_templates",
+   "target_id": "talk_n_jc_station",
+   "op": "merge",
+   "set": {
+    "self": "{npc_name}打著官腔：「往西夏一百二十兩，往大理一百五十兩，車馬齊備，隨到隨走。」"
+   },
+   "src": "proposal",
+   "src_note": "京城完整後驛站不再是「剛設起來」；價錢照既有 travel"
+  }
+ ],
+ "art_requests": {
+  "units": [
+   {
+    "id": "n_tdh_chenjinnan",
+    "alias": "n_chenjialuo",
+    "prompt": "陳近南：四十來歲的青衫文士，方巾長袍，神色和藹而有威嚴，負手而立；天地會總舵主。全身立繪"
+   },
+   {
+    "id": "n_jc_jailer",
+    "alias": "n_dl_bukuai",
+    "prompt": "京城監獄看守人：滿臉橫肉的牢頭，皂衣紅帶，腰間一大串鐵鑰匙，手持短棍。全身立繪"
+   },
+   {
+    "id": "n_tdh_zhanggui",
+    "alias": "n_xx_pharmacist",
+    "prompt": "棺材鋪掌櫃：瘦削精悍的中年漢子，捲著袖子、繫著皮圍裙，手拿木刨，眼神警覺。全身立繪"
+   },
+   {
+    "id": "n_jc_bukuai",
+    "alias": "n_dl_bukuai",
+    "prompt": "京城捕快：皂衣紅纓帽、腰挎官刀，笑容和氣但眼神精明。全身立繪"
+   },
+   {
+    "id": "n_jc_smith",
+    "alias": "n_xx_smith",
+    "prompt": "京城兵器防具鋪老闆：衣著體面的胖掌櫃，捏著鼻子一臉嫌棄。全身立繪"
+   },
+   {
+    "id": "n_jc_pharmacist",
+    "alias": "n_xx_pharmacist",
+    "prompt": "京城藥鋪郎中：鬚髮花白的老郎中，長衫，手捻長鬚。全身立繪"
+   },
+   {
+    "id": "n_jc_buzhuang",
+    "alias": "n_xx_buzhuang",
+    "prompt": "京城布莊掌櫃：衣著考究的中年人，肩上搭著布尺。全身立繪"
+   },
+   {
+    "id": "n_jc_tiejiang",
+    "alias": "n_xx_smith",
+    "prompt": "京城鐵匠：赤膊壯漢，皮圍裙，肩扛大鐵鎚，滿身煤灰。全身立繪"
+   },
+   {
+    "id": "n_jc_zijin_guard",
+    "alias": "n_xx_guard",
+    "prompt": "大內侍衛：黃馬褂、紅纓涼帽、腰懸寶刀的清宮侍衛，挺立不動。全身立繪"
+   },
+   {
+    "id": "n_jc_cha_n",
+    "alias": "n_xx_cha",
+    "prompt": "查小鏞：戴瓜皮帽的老先生，手拿簿子與毛筆。全身立繪"
+   },
+   {
+    "id": "n_jc_guard_n",
+    "alias": "n_xx_guard",
+    "prompt": "京城北門守衛：盔甲鮮明的禁軍，手按腰刀。全身立繪"
+   },
+   {
+    "id": "n_tdh_shop",
+    "alias": "n_xx_innkeeper",
+    "prompt": "天地會管事：短打扮的老兄弟，頭纏布巾，手捧一疊夜行衣。全身立繪"
+   },
+   {
+    "id": "n_jc_lidashen",
+    "alias": "n_dl_furen",
+    "prompt": "李大嬸：繫圍裙的中年婦人，焦急地踮腳張望。全身立繪"
+   },
+   {
+    "id": "n_jc_xiaobao",
+    "alias": "n_dl_furen",
+    "prompt": "小保：七八歲虎頭虎腦的小男孩，梳沖天辮，手拿樹枝。全身立繪（縮小比例）"
+   },
+   {
+    "id": "n_jc_roubao",
+    "alias": "n_dl_furen",
+    "prompt": "王大娘：胖胖的賣包子大娘，身旁一疊冒白氣的蒸籠。全身立繪"
+   },
+   {
+    "id": "n_jc_zhangyuanwai",
+    "alias": "n_dl_wangdafu",
+    "prompt": "張員外：穿綢緞的富態員外，手裡盤著兩顆石球。全身立繪"
+   },
+   {
+    "id": "m_jc_qigaitou",
+    "alias": "m_bandit",
+    "prompt": "乞丐頭子：蓬頭垢面、衣衫襤褸的壯年乞丐，拄著油亮的打狗棍，一臉兇相。戰鬥立繪"
+   },
+   {
+    "id": "m_jc_buliang",
+    "alias": "m_bandit",
+    "prompt": "不良少年：斜戴帽子、敞著衣襟、嘴叼草根的京城混混少年，擺出打架架勢。戰鬥立繪"
+   }
+  ],
+  "backgrounds": [
+   {
+    "id": "jc_jail",
+    "alias": "jingcheng",
+    "prompt": "京城監獄：陰暗石砌牢房，鐵柵小窗透進一道光，地上發霉稻草，牆上鐵鍊。戰鬥背景"
+   },
+   {
+    "id": "jc_tdh_hall",
+    "alias": "jingcheng",
+    "prompt": "天地會香堂：棺材鋪暗門後的密室香堂，正中供「反清復明」木牌，香爐煙霧繚繞，兩側燭台。戰鬥背景"
+   }
+  ]
+ },
+ "test_plan": [
+  {
+   "quest": "q_tdh_ruhui",
+   "outcome": "default",
+   "note": "對錯暗號一次後重來；拒絕賄賂；setup.combat_xp 需要 bot 支援（或 debug_set）",
+   "setup": {
+    "combat_xp": 5000,
+    "morality": 0
+   },
+   "path": [
+    "walk@jc_coffin",
+    "accept@n_tdh_zhanggui",
+    "choose@n_tdh_zhanggui:n0:c_code2",
+    "accept@n_tdh_zhanggui",
+    "choose@n_tdh_zhanggui:n0:c_code1",
+    "choose@n_tdh_zhanggui:n1:c_new",
+    "choose@n_tdh_zhanggui:n3:c_accept",
+    "walk@dl_yamen",
+    "talk@n_dl_wangbutou",
+    "choose@n_dl_wangbutou:n0:c_letter",
+    "walk@jc_coffin",
+    "talk@n_tdh_zhanggui",
+    "choose@n_tdh_zhanggui:n0:c_give",
+    "walk@jc_yamen",
+    "talk@n_jc_bukuai",
+    "choose@n_jc_bukuai:n0:c_deny",
+    "choose@n_jc_bukuai:n1:c_refuse",
+    "walk@jc_coffin",
+    "talk@n_tdh_zhanggui",
+    "choose@n_tdh_zhanggui:n0:c_tell",
+    "walk@jc_tdh_hall",
+    "talk@n_tdh_chenjinnan",
+    "choose@n_tdh_chenjinnan:n1:c_swear"
+   ],
+   "expect": {
+    "flags": [
+     "tdh_member"
+    ],
+    "fame_gain": 20,
+    "done": "q_tdh_ruhui",
+    "items_absent": [
+     "i_tdh_mihan",
+     "i_tdh_huitiao"
+    ]
+   }
+  },
+  {
+   "quest": "q_tdh_ruhui",
+   "outcome": "fail",
+   "branch": "bribe",
+   "note": "收下賄賂 → 任務失敗、得 100 兩、30 遊戲日冷卻；香堂進不去",
+   "setup": {
+    "combat_xp": 5000,
+    "morality": 0
+   },
+   "path": [
+    "walk@jc_coffin",
+    "accept@n_tdh_zhanggui",
+    "choose@n_tdh_zhanggui:n0:c_code1",
+    "choose@n_tdh_zhanggui:n1:c_new",
+    "choose@n_tdh_zhanggui:n3:c_accept",
+    "walk@dl_yamen",
+    "talk@n_dl_wangbutou",
+    "choose@n_dl_wangbutou:n0:c_letter",
+    "walk@jc_coffin",
+    "talk@n_tdh_zhanggui",
+    "choose@n_tdh_zhanggui:n0:c_give",
+    "walk@jc_yamen",
+    "talk@n_jc_bukuai",
+    "choose@n_jc_bukuai:n0:c_deny",
+    "choose@n_jc_bukuai:n1:c_take",
+    "expect_menu_absent@n_tdh_zhanggui:q_tdh_ruhui"
+   ],
+   "expect": {
+    "active_absent": [
+     "q_tdh_ruhui"
+    ],
+    "money_gain": 100,
+    "items_absent": [
+     "i_tdh_huitiao"
+    ]
+   }
+  },
+  {
+   "quest": "q_jc_xiaobao",
+   "outcome": "default",
+   "path": [
+    "walk@jc_street",
+    "accept@n_jc_lidashen",
+    "choose@n_jc_lidashen:n1:c_help",
+    "walk@jc_zijin",
+    "talk@n_jc_zijin_guard",
+    "choose@n_jc_zijin_guard:n0:c_ask",
+    "talk@n_jc_xiaobao",
+    "choose@n_jc_xiaobao:n0:c_mom",
+    "choose@n_jc_xiaobao:n1:c_promise",
+    "walk@jc_street",
+    "talk@n_jc_lidashen"
+   ],
+   "expect": {
+    "money_gain": 50,
+    "fame_gain": 3,
+    "lilian_gain": 5,
+    "done": "q_jc_xiaobao"
+   }
+  },
+  {
+   "quest": "q_jc_lingquan",
+   "outcome": "default",
+   "note": "一般玩家",
+   "path": [
+    "walk@jc_square",
+    "accept@n_jc_roubao",
+    "choose@n_jc_roubao:n2:c_yes",
+    "buy@n_jc_roubao:c_jc_roubao:3",
+    "act@q_jc_lingquan:a_feed_square",
+    "walk@jc_street_n",
+    "act@q_jc_lingquan:a_feed_street",
+    "walk@jc_gate_n",
+    "act@q_jc_lingquan:a_feed_gate",
+    "act@q_jc_lingquan:a_follow",
+    "walk@jc_square",
+    "talk@n_jc_roubao",
+    "choose@n_jc_roubao:n0:c_tell"
+   ],
+   "expect": {
+    "money_gain": 102,
+    "fame_gain": 3,
+    "items": {
+     "c_jc_roubao": 1
+    },
+    "done": "q_jc_lingquan"
+   }
+  },
+  {
+   "quest": "q_jc_lingquan",
+   "outcome": "default",
+   "branch": "gaibang",
+   "note": "丐幫弟子的額外選項",
+   "setup": {
+    "sect": "gaibang"
+   },
+   "path": [
+    "walk@jc_square",
+    "accept@n_jc_roubao",
+    "choose@n_jc_roubao:n2:c_gb",
+    "buy@n_jc_roubao:c_jc_roubao:3",
+    "act@q_jc_lingquan:a_feed_square",
+    "walk@jc_street_n",
+    "act@q_jc_lingquan:a_feed_street",
+    "walk@jc_gate_n",
+    "act@q_jc_lingquan:a_feed_gate",
+    "act@q_jc_lingquan:a_follow",
+    "walk@jc_square",
+    "talk@n_jc_roubao",
+    "choose@n_jc_roubao:n0:c_tell"
+   ],
+   "expect": {
+    "done": "q_jc_lingquan"
+   }
+  },
+  {
+   "quest": "q_jc_zhangyuanwai",
+   "outcome": "default",
+   "setup": {
+    "items": {
+     "r_kuang_zi": 3
+    }
+   },
+   "path": [
+    "walk@dl_square",
+    "accept@n_jc_zhangyuanwai",
+    "choose@n_jc_zhangyuanwai:n2:c_yes",
+    "talk@n_jc_zhangyuanwai"
+   ],
+   "expect": {
+    "money_gain": 360,
+    "items_absent": [
+     "r_kuang_zi"
+    ],
+    "done": "q_jc_zhangyuanwai"
+   }
+  }
+ ],
+ "todo_verify": [
+  "【待考證】京城監獄的位置：官方門派監獄頁（index_jy1-2-5-4）沒寫在京城，也沒寫取代思過處；本作照 O12 放在京城衙門後（jc_yamen N → jc_jail_gate → jc_jail）。",
+  "【待考證】京城 2001 的街坊配置：只有 DIAO/2-1（中華鏢局、紫禁城、天地會、結婚）與官方標準城內設施清單；房間相對方位全部【設計提案】。",
+  "【待考證】天地會入會步驟：DIAO/2-1 只寫「嚴密審核、交辦事宜、確定忠誠度」；暗號、送信對象（大理王捕頭）、捕快利誘、香堂位置（棺材鋪暗門，依《鹿鼎記》）全部【設計提案】。",
+  "【待考證】天地會商店貨色與價錢（解毒靈藥、金創藥、蒙汗藥、夜行衣）【設計提案】；原作是否有會眾商店不明。",
+  "【待考證】李大嬸找小保、靈犬小黃（第七話 2001-11-22）、愛好礦石的張員外（第九話 2001-12-06）只確認標題與一句預告，步驟、地點、獎勵全部【設計提案】。",
+  "【待考證】京城兵器鋪拒賣丐幫（2001-10-09 單一來源，可能是 bug）；照 O10 做成 refuse_if。2001-10-09 同篇提到「黑市 狼牙棒 8000」，黑市位置與存在本作未做。",
+  "【待考證】乞丐頭子、不良少年的數值（2001-10-13 只說 0–10 級、實戰 0–2000 的練功點）；combat_xp_ref 400／300 為【設計提案】，供 lint 新手白名單（≤ 500）。",
+  "【待考證】京城北門的查小鏞 n_jc_cha_n：2001 只確定丐幫山門沒有查小鏞；各城門都有查小鏞是後期擺法。",
+  "【待考證】京城可出生的出生房：2001-11-06 只說「選京城為出生地」，出生點在哪個房間不明；取 jc_square。",
+  "【待考證】監獄看守人保釋金十萬（官方後期頁）在 1.0B 是否相同。"
+ ],
+ "owner_decisions": [
+  "O1",
+  "O3",
+  "O10",
+  "O12",
+  "O22"
+ ],
+ "notes": "1. maps.jingcheng、maps.jingcheng_wild 是完整替換（M3B_PLAN §3.2）：保留 jc_station、jc_street、jc_inn、jc_gate_s 與 jcw_crossroad、jcw_huashan、jcw_songshan 的 id 與原有出口；jc_street 新增 E→jc_square；房間 desc 改寫成京城已完工的樣子。\n2. 跨碎片出口：jc_gate_n N→jcn_road1（gaibang 碎片擁有 jcn_road1，反向 S 由 gaibang 寫）；jcw_crossroad 的 SE→jq_road1 與 desc 由 jueqinggu 的 exit_patches 在地圖合併後套用（本碎片的 jcw_crossroad desc 是 jueqinggu patch 缺席時的版本）。\n3. 其他碎片放進本碎片房間的 NPC（WP-MERGE 依 npcs[].room 自動加進房間 npcs，本碎片的 rooms[].npcs 只列本碎片與既有 NPC）：_econ 的京城錢莊、中華鏢局 NPC（jc_bank、jc_biaoju）；_org 的 n_og_jc_shuli（jc_yamen）；gaibang 的 n_gb_jiang（jc_square）、n_gb_jc_informant（jc_smithy）；lifeskills_content 的 n_ls_jc_mujiang（jc_street_n）。若 _econ 沒有提供京城錢莊／鏢局 NPC，jc_bank、jc_biaoju 會是空房間。\n4. M3B_PLAN 缺漏（給 WP-SECT）：監獄看守人放在 jc_jail_gate（官方「監獄旁」），但 SectSystem.npc_menu 的 JAIL 服務用 prisoners_in(room_of_npc) 找犯人，會找 jc_jail_gate 而不是 jc_jail。本碎片在 n_jc_jailer 加了選填欄位 \"jail_room\": \"jc_jail\"，建議 JAIL 選單優先讀這欄。\n5. M3B_PLAN 缺漏：§8.3 要求 jc_jail「requires 只許坐牢中的人進」，但沒有「坐牢中」條件型別；坐牢是 teleport（不檢查 requires）。本碎片用一個沒人會有的旗標 quest_flag jc_jail_visitor 擋住步行進入；若 WP-SECT 加了 jailed 條件型別可改用。\n6. 物品 t_zhenxian、t_shizigao、t_caishaqi、t_tiechui、r_jiaotan 由 lifeskills_content 建立（§4.6 綁定 id），本碎片只在京城布莊、打鐵舖的商店引用。m_jc_qigaitou、m_jc_buliang 由本碎片建立，gaibang 碎片的 jcn_road1／jcn_road2 遇敵表會引用。\n7. patches_1_0b 改寫既有模板 talk_n_jc_guard（§8.3 指定）與 talk_n_jc_station（不再是「剛設起來」）；target_table 用 text_templates（PatchApplier 對任何生效表都能 merge）。\n8. art_requests：jingcheng、jingcheng_wild 背景在 data/art.json 已有條目，不重複列（避免 id 撞號）；建議重畫 prompt——jingcheng：「京城街坊：青石大街、牌樓、遠處紫禁城紅牆黃瓦，熱鬧的商號招牌」；jingcheng_wild：「京城南郊：丘陵古道、松柏、遠處城牆」。jc_jail、jc_tdh_hall 是房間級背景，現行 ArtRegistry 只依地區取背景，先列為需求。\n9. test_plan 的 setup.combat_xp 目前 bot 慣例未出現，整合者若不支援請改用 debug_set；q_tdh_ruhui 失敗分支的 outcome 寫 \"fail\"（沒有對應 outcomes 列，是失敗路徑）。\n10. 靈犬小黃的獎勵：s_follow 房間動作給 120 兩（reward 動作）＋結局 1 個肉包子；一般路線 money_gain 102 = 120 − 3×6。"
+}

@@ -1,0 +1,292 @@
+{
+  "fragment": "ev_xuzhu", "version": 1, "author": "WP-C-ev_xuzhu",
+  "quests": [
+    { "id": "q_xuzhu", "name": "尋找虛竹", "chapter": "少林派", "group": "ev_xuzhu",
+      "giver": "n_sl_daopin", "era": "1.0A", "src": "verified", "dialogue_src": "proposal",
+      "src_note": "研究 尋找虛竹：17173 tishi 2001-07-18 區塊；17173「虛竹的任務的解法」2001-7-23 n996_912972（web.archive.org）。步驟與獎勵已證實；對白、選項文字、勝負處理、門派限定、回信物品化為【設計提案】",
+      "text": "道品師兄因虛竹師弟下山去，有好一陣子沒有消息而非常擔心，於是指派少林弟子下山去找尋他的消息。",
+      "requires": [ { "type": "sect", "sect": "shaolin" } ],
+      "give_items": [],
+      "repeat": { "max": 1, "cooldown_days": 0 },
+      "abandon": true, "party_credit": true,
+      "start": "s_find",
+      "offer": "d_offer",
+      "stages": [
+        { "id": "s_find", "title": "下山尋找虛竹",
+          "log": "道品師兄託你下山打聽虛竹的消息。出少林山門往西下山，經少室山腳、嵩山松林、嵩山古道、南郊岔路、華山古道、華陰道到恆山岔路，再經恆山岸邊、路邊茶棚、黑龍潭、礦區與東門外官道，從東門進西夏城。虛竹就在城裡左上方的西夏衙門，公告欄旁邊（西夏廣場往西北）。",
+          "hint_room": "xx_yamen",
+          "objectives": [ { "id": "o_xuzhu", "type": "TALK", "npc": "n_xx_xuzhu", "dialogue": "d_xuzhu_1", "text": "到西夏衙門公告欄旁找虛竹" } ],
+          "next": "s_escort" },
+        { "id": "s_escort", "title": "陪虛竹去皇宮",
+          "log": "虛竹想到皇宮門口問一聲宮裡的故人，卻不敢一個人去。帶著他從衙門往東南回到西夏廣場，往西走到西大街，再往西北就是皇宮門口。路上別把他弄丟了。",
+          "hint_room": "xx_palace",
+          "objectives": [ { "id": "o_escort", "type": "ESCORT", "npc": "n_xx_xuzhu", "to_room": "xx_palace", "text": "護送虛竹到皇宮門口" } ],
+          "next": "s_guard" },
+        { "id": "s_guard", "title": "皇宮門口",
+          "log": "在皇宮門口跟左邊的守衛交涉：先好言相求，聽他怎麼回話，再決定是退是闖。說錯了話不打緊，再找他談一次就是。宮門守衛武功極高，打不過就逃，逃得掉也算交差；若被打倒，回到皇宮門口可以再「硬闖宮門」。",
+          "hint_room": "xx_palace",
+          "objectives": [
+            { "id": "o_guard", "type": "TALK", "npc": "n_xx_palace_guard_l", "dialogue": "d_guard", "text": "跟皇宮左守衛交涉" },
+            { "id": "o_fight", "type": "FIGHT", "win": "WIN_OR_FLEE", "text": "與宮門守衛交手（打贏或逃走都算）" }
+          ],
+          "room_actions": [
+            { "id": "a_chuang", "room": "xx_palace", "label": "硬闖宮門", "hours": [],
+              "requires": [ { "type": "quest_var", "quest": "q_xuzhu", "var": "guard_angry", "value": true } ],
+              "repeat": true,
+              "do": [ { "do": "tell", "key": "tell_xz_guard_strong" },
+                      { "do": "fight", "monsters": ["m_xx_palace_guard"], "no_flee": false, "solo": false, "obj": "o_fight", "npc": "n_xx_palace_guard_l" } ] }
+          ],
+          "on_complete": [ { "do": "escort_end", "npc": "n_xx_xuzhu" }, { "do": "tell", "key": "tell_xz_xuzhu_flee" } ],
+          "next": "s_reply" },
+        { "id": "s_reply", "title": "虛竹的回信",
+          "log": "一場混亂之後，虛竹逃回西夏衙門去了。回衙門公告欄旁找他（西夏廣場往西北），他說要寫回信。",
+          "hint_room": "xx_yamen",
+          "objectives": [ { "id": "o_reply", "type": "TALK", "npc": "n_xx_xuzhu", "dialogue": "d_xuzhu_2", "text": "回西夏衙門找虛竹拿回信" } ],
+          "next": "s_return" },
+        { "id": "s_return", "title": "回少林覆命",
+          "log": "帶著虛竹的回信回少林：出西夏東門，經東門外官道、礦區、黑龍潭、路邊茶棚、恆山岔路、華陰道、南郊岔路、嵩山古道到少林山門。進前院後往西北，山門左廂房裡就是道品。",
+          "hint_room": "sl_leftroom",
+          "objectives": [ { "id": "o_return", "type": "TALK", "npc": "n_sl_daopin", "dialogue": "d_daopin_2", "text": "把虛竹的回信交給道品" } ],
+          "next": "END:default" }
+      ],
+      "dialogues": {
+        "d_offer": { "start": "n0", "nodes": {
+          "n0": { "speaker": "npc", "text": "阿彌陀佛。（道品雙手合十，眉頭卻皺成一團）師弟，你來得正好，貧僧有一事相託。",
+                  "src_note": "依據 17173 tishi 2001-07-18：「道品師兄因虛竹師弟下山去，有好一陣子沒有消息而非常擔心，於是指派少林弟子下山去找尋他的消息」；對白為【設計提案】",
+                  "goto": "n1" },
+          "n1": { "speaker": "npc", "text": "虛竹師弟奉方丈之命下山辦事，一去好一陣子，至今音訊全無。他為人老實，不通世故，江湖上風波險惡，貧僧實在放心不下。", "goto": "n2" },
+          "n2": { "speaker": "npc", "text": "往來的香客說，西夏城裡有人見過一個呆頭呆腦的小和尚。師弟可願替我走一趟，探探他的消息？",
+                  "choices": [
+                    { "id": "c_accept", "label": "師兄放心，弟子這就下山去找虛竹師兄。", "do": [ { "do": "accept" } ], "goto": "n_yes" },
+                    { "id": "c_ask", "label": "虛竹師兄是個怎樣的人？", "goto": "n_desc" },
+                    { "id": "c_no", "label": "弟子另有要務，改日再說。", "goto": "n_no" } ] },
+          "n_desc": { "speaker": "npc", "text": "虛竹師弟濃眉大眼，鼻孔朝天，相貌嘛……實在不怎麼好看。可他心地極好，走路都怕踩死了螞蟻。你見了一個對著告示發呆的小和尚，多半就是他。", "goto": "n2" },
+          "n_yes": { "speaker": "npc", "text": "善哉善哉。出山門往西下山，沿嵩山古道、華陰道、恆山岔路一路往西，便到西夏東門。找到他，請他捎封回信給我，貧僧也好安心。", "goto": "END" },
+          "n_no": { "speaker": "npc", "text": "阿彌陀佛，那貧僧再託旁人吧。", "goto": "END" } } },
+
+        "d_xuzhu_1": { "start": "n0", "resume": "n0", "nodes": {
+          "n0": { "speaker": "npc", "text": "（一個小和尚正對著公告欄發呆，見你走近，嚇得退了一步）啊……阿彌陀佛，施主有何見教？",
+                  "src_note": "依據 17173 2001-7-23 n996_912972：虛竹在西夏「城裡左上（公告欄邊上）」，要求帶他去皇宮；對白為【設計提案】",
+                  "choices": [
+                    { "id": "c_xz_yes", "label": "虛竹師兄，道品師兄託我來找你。", "goto": "n1" },
+                    { "id": "c_xz_no", "label": "沒事，認錯人了。", "goto": "END" } ] },
+          "n1": { "speaker": "npc", "text": "道品師兄？哎呀，小僧離寺這麼久，師兄定是急壞了。（虛竹搔搔光頭，一張臉漲得通紅）", "goto": "n2" },
+          "n2": { "speaker": "npc", "text": "不瞞師弟，小僧到了西夏，聽說……聽說皇宮裡有一位故人。小僧只想去宮門口問一聲，可是……可是一個人實在不敢去。", "goto": "n3" },
+          "n3": { "speaker": "npc", "text": "師弟武功比小僧高明得多，能不能陪小僧到皇宮走一趟？問過了，小僧就寫回信給道品師兄。",
+                  "choices": [
+                    { "id": "c_go", "label": "好，我陪你去皇宮。", "do": [ { "do": "complete", "obj": "o_xuzhu" }, { "do": "escort_start", "npc": "n_xx_xuzhu" } ], "goto": "n_go" },
+                    { "id": "c_later", "label": "等我準備一下再來。", "goto": "END" } ] },
+          "n_go": { "speaker": "npc", "text": "多謝師弟！皇宮在西大街的西北邊，咱們這就走。（虛竹低著頭，亦步亦趨地跟在你身後）", "goto": "END" } } },
+
+        "d_guard": { "start": "n0", "resume": "n0", "nodes": {
+          "n0": { "speaker": "npc", "text": "站住！皇宮重地，閒雜人等不得靠近！你們是什麼人？",
+                  "src_note": "依據 17173 2001-7-23 n996_912972：「到皇宮門口跟左邊的守衛說話，選1，等他回話，選2」→ 戰鬥 → 逃跑；選項原文只有編號，文字為【設計提案】，正確選項保持在第 1、第 2 個位置",
+                  "choices": [
+                    { "id": "c_1", "label": "這位是少林寺的虛竹師父，有事求見宮中的人，煩請通報一聲。", "goto": "n_reply" },
+                    { "id": "c_2", "label": "沒什麼，路過看看。", "goto": "n_shoo" },
+                    { "id": "c_3", "label": "（拉著虛竹轉身離開）", "goto": "END" } ] },
+          "n_shoo": { "speaker": "npc", "text": "沒事就滾遠點，別在宮門前晃來晃去！", "goto": "END" },
+          "n_reply": { "speaker": "npc", "text": "（左守衛上下打量虛竹，冷笑一聲）少林寺的和尚？出家人跑到皇宮來找人，成何體統！", "goto": "n_reply2" },
+          "n_reply2": { "speaker": "npc", "text": "近日宮中有大事，上頭有令，任何人不得擅入。再不走，休怪刀劍無眼！",
+                  "choices": [
+                    { "id": "c_back", "label": "是，是，我們這就走。", "goto": "n_back" },
+                    { "id": "c_force", "label": "今天這宮門，我們非進不可！", "do": [ { "do": "var", "name": "guard_angry", "value": true }, { "do": "complete", "obj": "o_guard" } ], "goto": "n_fight" } ] },
+          "n_back": { "speaker": "npc", "text": "哼，算你識相。", "goto": "END" },
+          "n_fight": { "speaker": "npc", "text": "大膽狂徒！（左右守衛刀光一閃，同時搶上前來）",
+                  "do": [ { "do": "tell", "key": "tell_xz_guard_strong" },
+                          { "do": "fight", "monsters": ["m_xx_palace_guard"], "no_flee": false, "solo": false, "obj": "o_fight", "npc": "n_xx_palace_guard_l" } ] } } },
+
+        "d_xuzhu_2": { "start": "n0", "resume": "n0", "nodes": {
+          "n0": { "speaker": "npc", "text": "（虛竹還在喘氣）阿彌陀佛，阿彌陀佛……師弟沒事吧？都是小僧不好，害你和宮裡的人動手。",
+                  "src_note": "依據 17173 2001-7-23 n996_912972：逃跑後「回去找虛竹，就給你回信了」；對白為【設計提案】",
+                  "goto": "n1" },
+          "n1": { "speaker": "npc", "text": "看來宮裡那位故人，小僧是見不著了。也罷，佛說萬法皆是緣，緣分到了自然相見，強求不得。", "goto": "n2" },
+          "n2": { "speaker": "npc", "text": "這封信煩師弟帶回少林，交給道品師兄。就說小僧一切平安，事情辦完了，自會回寺向方丈請罪。",
+                  "choices": [
+                    { "id": "c_take", "label": "師兄保重，我這就回少林。", "do": [ { "do": "give", "item": "i_xz_huixin", "n": 1 }, { "do": "complete", "obj": "o_reply" } ], "goto": "n3" } ] },
+          "n3": { "speaker": "npc", "text": "（虛竹恭恭敬敬地向你合十行禮）師弟一路小心。", "goto": "END" } } },
+
+        "d_daopin_2": { "start": "n0", "resume": "n0", "nodes": {
+          "n0": { "speaker": "npc", "text": "師弟回來了！可有虛竹師弟的消息？",
+                  "src_note": "依據 17173 2001-7-23 n996_912972：回去找道品，得「3個大還丹」；對白為【設計提案】",
+                  "choices": [
+                    { "id": "c_give", "label": "虛竹師兄平安無事，這是他的回信。",
+                      "requires": [ { "type": "has_item", "item": "i_xz_huixin", "n": 1 } ],
+                      "do": [ { "do": "take", "item": "i_xz_huixin", "n": 1 }, { "do": "complete", "obj": "o_return" } ], "goto": "n1" },
+                    { "id": "c_wait", "label": "還沒有，我再去一趟。", "goto": "END" } ] },
+          "n1": { "speaker": "npc", "text": "（道品拆開信，看著看著，眉頭漸漸舒展）阿彌陀佛，平安就好，平安就好。", "goto": "n2" },
+          "n2": { "speaker": "npc", "text": "這孩子信裡顛三倒四，又是皇宮、又是故人……罷了，他自有他的緣法。", "goto": "n3" },
+          "n3": { "speaker": "npc", "text": "師弟辛苦了。這三顆大還丹，精、氣、神都能補上不少，行走江湖用得著，你收下吧。", "goto": "END" } } }
+      },
+      "outcomes": {
+        "default": { "label": "虛竹的回信送回了少林",
+                     "rewards": { "items": [ { "id": "c_dahuandan", "n": 3 } ] },
+                     "src": "verified",
+                     "src_note": "17173 2001-7-23 n996_912972：「3個大還丹（精，氣，神，都補300點，賣藥店1400元一個）」；守衛戰逃跑或打贏都導到同一結局（研究 Owner default，打贏【設計提案】）" }
+      },
+      "rumors": { "first": "rmr_q_xuzhu_first", "each": "rmr_q_xuzhu_each", "foreshadow": "rmr_q_xuzhu_fs" }
+    }
+  ],
+
+  "npcs": [
+    { "id": "n_sl_daopin", "name": "道品", "kind": "STORY", "region": "shaolin", "room": "sl_leftroom", "alignment": "GOOD",
+      "talk": "talk_n_sl_daopin", "services": ["QUEST"], "night_closed": false, "quests": ["q_xuzhu"],
+      "desc": "少林寺的中年僧人，手裡一串念珠撥個不停，眉宇間帶著幾分憂色。",
+      "era": "1.0A", "src": "verified",
+      "src_note": "研究 尋找虛竹：「一進少林左邊房子」的「道品和尚」（17173 2001-7-23）；外貌【設計提案】" },
+    { "id": "n_xx_xuzhu", "name": "虛竹", "kind": "STORY", "region": "xixia", "room": "xx_yamen", "alignment": "GOOD",
+      "talk": "talk_n_xx_xuzhu", "services": [], "night_closed": false,
+      "desc": "濃眉大眼、鼻孔上翻的小和尚，相貌樸拙，一身灰布僧袍洗得發白，正對著公告欄發呆。",
+      "era": "1.0A", "src": "verified",
+      "src_note": "研究 尋找虛竹：西夏「城裡左上（公告欄邊上）」（17173 2001-7-23）；外貌依《天龍八部》；ali213 2020 的 (3445,799) 是後期八荒鏈位置，不合併" },
+    { "id": "n_xx_palace_guard_l", "name": "皇宮左守衛", "kind": "STORY", "region": "xixia", "room": "xx_palace", "alignment": "NEUTRAL",
+      "talk": "talk_n_xx_palace_guard_l", "services": [], "night_closed": false,
+      "desc": "身披金漆鎧甲、手執長刀的西夏皇宮侍衛，站在宮門左側，目光凌厲。",
+      "era": "1.0A", "src": "verified",
+      "src_note": "研究 尋找虛竹：「皇宮門口跟左邊的守衛說話」（17173 2001-7-23）；外貌【設計提案】" },
+    { "id": "n_xx_palace_guard_r", "name": "皇宮右守衛", "kind": "STORY", "region": "xixia", "room": "xx_palace", "alignment": "NEUTRAL",
+      "talk": "talk_n_xx_palace_guard_r", "services": [], "night_closed": false,
+      "desc": "身披金漆鎧甲、手執長刀的西夏皇宮侍衛，站在宮門右側，一動也不動。",
+      "era": "1.0A", "src": "proposal",
+      "src_note": "攻略只提到「左邊的守衛」，可推知門口有兩名守衛；右守衛的存在與外貌【設計提案】" },
+    { "id": "n_xx_ada", "name": "阿大", "kind": "EVIL_NPC", "region": "xixia", "room": "xx_palace", "alignment": "EVIL",
+      "talk": "talk_n_xx_ada", "services": [], "night_closed": false,
+      "desc": "一個枯瘦的老者，衣衫樸素，懷抱長劍倚在宮牆下，雙目半閉，偶一睜眼卻銳利如刀。",
+      "era": "1.0A", "src": "proposal",
+      "src_note": "STORY_PLAN §3.2 指定由本碎片建立、供 sect_stories（武當黑玉）使用；位置照 §3.2，外貌依《倚天屠龍記》汝陽王府的阿大（八臂神劍方東白）；本碎片不給 fight 欄（沒有對應怪物，§3.4 未列），戰鬥由 sect_stories 以任務 fight 動作自備怪物【設計提案】" }
+  ],
+
+  "npc_links": [],
+
+  "shop_patches": [ { "npc": "n_xx_pharmacist", "add_items": ["c_dahuandan"] } ],
+
+  "art_patches": [],
+
+  "items": [
+    { "id": "c_dahuandan", "name": "大還丹", "tab": "OTHER", "slot": "", "atk": 0, "def": 0, "weight": 1, "price": 1400,
+      "stack": 99, "spoil_days": 0,
+      "effects": [ { "type": "restore", "stat": "jing", "value": 300 }, { "type": "restore", "stat": "qi", "value": 300 }, { "type": "restore", "stat": "shen", "value": 300 } ],
+      "usable": true, "usable_in_battle": true, "no_sell": false, "quest_item": false,
+      "desc": "少林寺秘製的靈丹，精、氣、神各恢復 300 點。",
+      "era": "1.0A", "src": "verified",
+      "src_note": "17173 2001-7-23 n996_912972：「精，氣，神，都補300點，賣藥店1400元一個」；1400 解讀為藥鋪售價（研究：中高信心）；放在西夏藥鋪賣（D6）" },
+    { "id": "i_xz_huixin", "name": "虛竹的回信", "tab": "OTHER", "slot": "", "atk": 0, "def": 0, "weight": 0, "price": 0,
+      "stack": 1, "spoil_days": 0, "effects": [], "usable": false, "usable_in_battle": false,
+      "no_sell": true, "quest_item": true, "sect_only": "shaolin",
+      "desc": "虛竹寫給道品的回信，字跡歪歪扭扭，信封上還沾著幾點香灰。",
+      "era": "1.0A", "src": "proposal",
+      "src_note": "攻略只寫「就給你回信了」，沒有說回信是物品；做成任務物品、交給道品時收回是研究 Owner default【設計提案】" }
+  ],
+
+  "monsters": [
+    { "id": "m_xx_palace_guard", "name": "西夏皇宮守衛", "short": "守衛", "kind": "ELITE", "alignment": "NEUTRAL",
+      "desc": "守衛西夏皇宮的金甲侍衛，刀法精熟，等閒江湖人物不是對手。（存在：已證實；數值：設計提案）",
+      "stats": { "qi": 3000, "neili": 300, "jing": 600, "str": 30, "guts": 30, "wit": 20, "luck": 20, "cal": 30, "agi": 28,
+        "con": 30 },
+      "skills": { "basic_dodge": 80, "basic_parry": 80, "basic_inner": 60 }, "arts": [ { "art": "mon_blade", "level": 80 } ],
+      "weapon_type": "BLADE", "weapon_power": 40, "armor_power": 60, "combat_xp_ref": 60000, "combat_xp": 0,
+      "learn_points": 0, "drops": [], "money": {}, "morality_on_kill": 0, "killing_intent_on_kill": 0,
+      "ai": "melee_basic", "no_rewards": true, "era": "1.0A", "src": "proposal",
+      "src_note": "研究 尋找虛竹：攻略要玩家「逃跑」，守衛設計上打不贏；數值照 m_city_guard 級距（60000）" }
+  ],
+
+  "martial_arts": [], "masters": [],
+
+  "text_templates": [
+    { "id": "talk_n_sl_daopin", "era": "1.0A", "self": "{npc_name}撥著念珠，低聲自語：「虛竹師弟下山這麼久，也不知過得好不好……」", "src": "proposal" },
+    { "id": "talk_n_xx_xuzhu", "era": "1.0A", "self": "{npc_name}雙手合十，紅著臉道：「阿彌陀佛，小僧……小僧只是在這裡看看告示。」", "src": "proposal" },
+    { "id": "talk_n_xx_palace_guard_l", "era": "1.0A", "self": "{npc_name}橫刀攔在宮門前，喝道：「皇宮重地，閒雜人等退開！」", "src": "proposal" },
+    { "id": "talk_n_xx_palace_guard_r", "era": "1.0A", "self": "{npc_name}目不斜視，手按刀柄，一句話也不跟你說。", "src": "proposal" },
+    { "id": "talk_n_xx_ada", "era": "1.0A", "self": "{npc_name}抱劍倚著宮牆，眼皮也不抬：「離遠些。老夫手裡這柄劍，可不認得人。」", "src": "proposal" },
+    { "id": "tell_xz_guard_strong", "era": "1.0A", "self": "宮門守衛刀法凌厲，遠非你所能敵！打不過就快逃，逃得掉也算交差。", "src": "proposal" },
+    { "id": "tell_xz_xuzhu_flee", "era": "1.0A", "self": "混亂中，虛竹嚇得臉色發白，連聲念佛，一溜煙逃回衙門公告欄旁去了。", "src": "proposal" },
+    { "id": "rmr_q_xuzhu_first", "era": "1.0A", "self": "聽說少林弟子{name}護著一個小和尚到西夏皇宮門口討人，跟金甲侍衛動上了手，居然全身而退。", "src": "proposal" },
+    { "id": "rmr_q_xuzhu_each", "era": "1.0A", "self": "西夏皇宮門口又鬧了一場，聽說又是少林弟子替一個小和尚出頭。", "src": "proposal" },
+    { "id": "rmr_q_xuzhu_fs", "era": "1.0A", "self": "西夏城裡有個濃眉大眼的小和尚，整天對著衙門的公告欄發呆，聽說少林寺那邊正四處打聽他的下落。", "src": "proposal" }
+  ],
+
+  "rumors": [
+    { "id": "rmr_fs_q_xuzhu", "kind": "FORESHADOW", "quest": "q_xuzhu", "text": "rmr_q_xuzhu_fs",
+      "requires_world": { "not_first": "q_xuzhu" }, "hours": [], "weight": 1,
+      "era": "1.0A", "src": "proposal", "src_note": "系統江湖傳聞【設計提案・非原作】（D14）" }
+  ],
+
+  "ambient": [],
+
+  "art_requests": {
+    "units": [
+      { "id": "n_sl_daopin", "alias": "n_sl_zhike", "prompt": "中年少林僧人，灰色僧袍，手持念珠，面帶憂色，全身立繪" },
+      { "id": "n_xx_xuzhu", "alias": "n_sl_zhike", "prompt": "年輕小和尚，濃眉大眼、鼻孔上翻、相貌樸拙憨厚，灰布舊僧袍，雙手合十、神情靦腆，全身立繪" },
+      { "id": "n_xx_palace_guard_l", "alias": "n_xx_guard", "prompt": "西夏皇宮侍衛，金漆鎧甲，手執長刀，面向右方，全身立繪" },
+      { "id": "n_xx_palace_guard_r", "alias": "n_xx_guard", "prompt": "西夏皇宮侍衛，金漆鎧甲，手執長刀，面向左方，全身立繪" },
+      { "id": "n_xx_ada", "alias": "n_xx_guard", "prompt": "枯瘦老劍客，樸素長衫，懷抱長劍，目光銳利，全身立繪" }
+    ],
+    "backgrounds": []
+  },
+
+  "test_plan": [
+    { "quest": "q_xuzhu", "outcome": "default", "branch": "flee",
+      "setup": { "sect": "shaolin" }, "save_reload_at": "s_escort",
+      "path": [ "walk@sl_leftroom", "talk@n_sl_daopin", "choose@n_sl_daopin:n2:c_accept",
+                "walk@xx_yamen", "talk@n_xx_xuzhu", "choose@n_xx_xuzhu:n0:c_xz_yes", "choose@n_xx_xuzhu:n3:c_go",
+                "walk@xx_palace", "talk@n_xx_palace_guard_l", "choose@n_xx_palace_guard_l:n0:c_1", "choose@n_xx_palace_guard_l:n_reply2:c_force", "fight:FLEE",
+                "walk@xx_yamen", "talk@n_xx_xuzhu", "choose@n_xx_xuzhu:n2:c_take",
+                "walk@sl_leftroom", "talk@n_sl_daopin", "choose@n_sl_daopin:n0:c_give" ],
+      "expect": { "items": { "c_dahuandan": 3, "i_xz_huixin": 0 } } },
+    { "quest": "q_xuzhu", "outcome": "default", "branch": "win",
+      "setup": { "sect": "shaolin", "note": "打贏需 debug 拉高實戰與技能；守衛 combat_xp_ref 60000" },
+      "path": [ "walk@sl_leftroom", "talk@n_sl_daopin", "choose@n_sl_daopin:n2:c_accept",
+                "walk@xx_yamen", "talk@n_xx_xuzhu", "choose@n_xx_xuzhu:n0:c_xz_yes", "choose@n_xx_xuzhu:n3:c_go",
+                "walk@xx_palace", "talk@n_xx_palace_guard_l", "choose@n_xx_palace_guard_l:n0:c_1", "choose@n_xx_palace_guard_l:n_reply2:c_force", "fight:WIN",
+                "walk@xx_yamen", "talk@n_xx_xuzhu", "choose@n_xx_xuzhu:n2:c_take",
+                "walk@sl_leftroom", "talk@n_sl_daopin", "choose@n_sl_daopin:n0:c_give" ],
+      "expect": { "items": { "c_dahuandan": 3, "i_xz_huixin": 0 } } },
+    { "quest": "q_xuzhu", "outcome": "default", "branch": "wrong_choice_then_retry",
+      "setup": { "sect": "shaolin", "note": "先選錯（c_2、c_back）只結束對話；被打倒後用房間動作 a_chuang 重打" },
+      "path": [ "walk@sl_leftroom", "talk@n_sl_daopin", "choose@n_sl_daopin:n2:c_accept",
+                "walk@xx_yamen", "talk@n_xx_xuzhu", "choose@n_xx_xuzhu:n0:c_xz_yes", "choose@n_xx_xuzhu:n3:c_go",
+                "walk@xx_palace", "talk@n_xx_palace_guard_l", "choose@n_xx_palace_guard_l:n0:c_2",
+                "talk@n_xx_palace_guard_l", "choose@n_xx_palace_guard_l:n0:c_1", "choose@n_xx_palace_guard_l:n_reply2:c_back",
+                "talk@n_xx_palace_guard_l", "choose@n_xx_palace_guard_l:n0:c_1", "choose@n_xx_palace_guard_l:n_reply2:c_force", "fight:FLEE",
+                "walk@xx_yamen", "talk@n_xx_xuzhu", "choose@n_xx_xuzhu:n2:c_take",
+                "walk@sl_leftroom", "talk@n_sl_daopin", "choose@n_sl_daopin:n0:c_give" ],
+      "expect": { "items": { "c_dahuandan": 3, "i_xz_huixin": 0 } } },
+    { "quest": "q_xuzhu", "outcome": "default", "branch": "room_action_retry",
+      "setup": { "sect": "shaolin", "note": "觸發守衛戰後，回到 xx_palace 用 act 重新開戰；驗證 a_chuang 只在 guard_angry 後出現" },
+      "path": [ "walk@sl_leftroom", "talk@n_sl_daopin", "choose@n_sl_daopin:n2:c_accept",
+                "walk@xx_yamen", "talk@n_xx_xuzhu", "choose@n_xx_xuzhu:n0:c_xz_yes", "choose@n_xx_xuzhu:n3:c_go",
+                "walk@xx_palace", "talk@n_xx_palace_guard_l", "choose@n_xx_palace_guard_l:n0:c_1", "choose@n_xx_palace_guard_l:n_reply2:c_force", "fight:DEFEAT",
+                "walk@xx_palace", "act@q_xuzhu:a_chuang", "fight:FLEE",
+                "walk@xx_yamen", "talk@n_xx_xuzhu", "choose@n_xx_xuzhu:n2:c_take",
+                "walk@sl_leftroom", "talk@n_sl_daopin", "choose@n_sl_daopin:n0:c_give" ],
+      "expect": { "items": { "c_dahuandan": 3, "i_xz_huixin": 0 } } }
+  ],
+
+  "todo_verify": [
+    "【待考證】所有對白（研究：原作沒有留下任何逐字對白）；道品、虛竹、守衛的台詞全為【設計提案】",
+    "【待考證】守衛兩次選項的原文：攻略只寫「選1」「選2」，選項文字由建造者補寫，正確選項保持在第 1、第 2 個位置",
+    "【待考證】打贏或被打倒守衛的原作處理（攻略只寫逃跑）；本碎片：逃或贏都算（WIN_OR_FLEE），被打倒照一般死亡規則，可用房間動作「硬闖宮門」重打",
+    "【待考證】虛竹為何要去皇宮：原作未說明；對白以「宮裡有一位故人」暗示《天龍八部》的夢姑（西夏公主），屬【設計提案】",
+    "【待考證】「回信」是否為物品：攻略只寫「就給你回信了」；做成任務物品 i_xz_huixin",
+    "【待考證】大還丹 1400 兩是藥鋪售價還是收購價（研究：解讀為售價，中高信心）",
+    "【待考證】非少林弟子能否接、有無時辰限制、可否重複、善惡／佛法變化：原作未記；採少林限定、無時辰、一次",
+    "【待考證】宮門前守衛人數與皇宮守衛戰的對手數量：本碎片只開一名守衛（m_xx_palace_guard ×1）",
+    "【待考證】阿大在皇宮門口的位置與身分（STORY_PLAN §3.2 指定）；本碎片只給閒聊，戰鬥交給 sect_stories",
+    "【待考證】道品的輩分與外貌（攻略只稱「道品師兄」「道品和尚」）"
+  ],
+
+  "owner_decisions": [
+    "D6：少林弟子限定（requires sect shaolin）；守衛戰逃跑或打贏都算（FIGHT win WIN_OR_FLEE）；回信是任務物品，交給道品時以 take 收回；大還丹 1400 兩加到 n_xx_pharmacist 商店",
+    "D2：每角色一次（repeat max 1）",
+    "D18 例外：研究 Owner default 寫明「reward only 3 大還丹」，所以本任務不給歷練（lilian）；研究優先於 D18 的通則",
+    "新預設：逃與勝導到同一個結局 default（引擎沒有能區分逃／勝的條件型別）；test_plan 用 branch flee／win 分別覆蓋，供 story_acceptance 的「q_xuzhu 逃/勝」",
+    "新預設：「回去找虛竹」解讀為虛竹在混戰後自己逃回衙門：s_guard 的 on_complete 執行 escort_end，再到 xx_yamen 找他拿回信（避免對隨行 NPC 交談的引擎不確定性）",
+    "新預設：選錯選項（c_2、c_3、c_back）只結束對話，重找守衛從頭來；被守衛打倒後可在 xx_palace 用房間動作「硬闖宮門」重打（需 guard_angry）",
+    "新預設：守衛戰只開一名 m_xx_palace_guard（較易逃脫，符合「設計上逃」）；不能逃的旗標為 false",
+    "新預設：道品 kind STORY 但給 services [\"QUEST\"] 與 quests [\"q_xuzhu\"]，讓 NPC 選單出現可接任務",
+    "新預設：阿大 EVIL_NPC 不給 fight 欄（§3.4 沒有阿大的怪物）；sect_stories 若要打阿大，以任務 fight 動作自備怪物",
+    "新預設：本碎片不寫 talk_*@NIGHT，避免與 _ambient 碎片（§5.3 負責所有 @NIGHT）id 重複"
+  ],
+
+  "notes": "依賴 _world 碎片建立的房間：sl_leftroom（sl_court NW）、xx_yamen（xx_square NW）、xx_palace（xx_street NW）。走路路線（BFS 已核對既有地圖）：xx_square→xx_gate_e→xw_road→xe_road→xe_mine→xe_heilong→xe_river→hf_paddy→hf_teahouse→hf_shore→hf_fork→hy_road→hy_foot→jcw_huashan→jcw_crossroad→jcw_songshan→sy_pines→sy_foot→sl_gate→sl_court。對話第二段守衛選項觸發戰鬥放在節點 n_fight 的 do（先顯示台詞再開戰）。若回信在 s_return 階段遺失（任務物品原則上不會掉），目前沒有補發路徑：引擎缺少「沒有某物品」的條件型別（STORY_PLAN 缺漏：建議 has_item 加 not 或新增 lacks_item），可放棄任務重接。test_plan 的 setup 欄（sect）與 fight:DEFEAT 是本碎片對 bot 動作語彙的延伸（STORY_PLAN 缺漏：§7.1 語彙沒有門派設定與 DEFEAT）。"
+}

@@ -1,0 +1,3 @@
+{ "table": "text_templates", "version": 1, "rows": [
+  { "id": "move_fist_basic", "era": "1.0A", "self": "你出拳", "other": "{atk}出拳" }
+] }

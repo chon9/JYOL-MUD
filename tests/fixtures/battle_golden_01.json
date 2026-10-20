@@ -1,0 +1,426 @@
+{
+  "_how": "godot --headless --path . --script <產生器> 呼叫 test_battle_replay.gd 的 build_golden()；改動戰鬥邏輯後需重新產生並人工確認差異",
+  "commands": [
+    {
+      "cmd": {
+        "cmd": "MOVE",
+        "target": [
+          2,
+          4
+        ]
+      },
+      "peer": 1,
+      "tick": 15
+    },
+    {
+      "cmd": {
+        "cmd": "MOVE",
+        "target": [
+          4,
+          4
+        ]
+      },
+      "peer": 1,
+      "tick": 24
+    },
+    {
+      "cmd": {
+        "art": "sl_changquan",
+        "cmd": "ART",
+        "move": "sl_cq_2",
+        "power_tenths": 10,
+        "target": [
+          5,
+          4
+        ]
+      },
+      "peer": 1,
+      "tick": 33
+    },
+    {
+      "cmd": {
+        "art": "sl_changquan",
+        "cmd": "ART",
+        "move": "sl_cq_2",
+        "power_tenths": 10,
+        "target": [
+          4,
+          3
+        ]
+      },
+      "peer": 1,
+      "tick": 49
+    },
+    {
+      "cmd": {
+        "art": "sl_changquan",
+        "cmd": "ART",
+        "move": "sl_cq_2",
+        "power_tenths": 10,
+        "target": [
+          5,
+          4
+        ]
+      },
+      "peer": 1,
+      "tick": 65
+    },
+    {
+      "cmd": {
+        "art": "sl_changquan",
+        "cmd": "ART",
+        "move": "sl_cq_2",
+        "power_tenths": 10,
+        "target": [
+          5,
+          4
+        ]
+      },
+      "peer": 1,
+      "tick": 81
+    },
+    {
+      "cmd": {
+        "art": "sl_changquan",
+        "cmd": "ART",
+        "move": "sl_cq_1",
+        "power_tenths": 10,
+        "target": [
+          5,
+          4
+        ]
+      },
+      "peer": 1,
+      "tick": 97
+    },
+    {
+      "cmd": {
+        "art": "sl_changquan",
+        "cmd": "ART",
+        "move": "sl_cq_1",
+        "power_tenths": 10,
+        "target": [
+          5,
+          4
+        ]
+      },
+      "peer": 1,
+      "tick": 113
+    },
+    {
+      "cmd": {
+        "art": "sl_changquan",
+        "cmd": "ART",
+        "move": "sl_cq_1",
+        "power_tenths": 10,
+        "target": [
+          5,
+          4
+        ]
+      },
+      "peer": 1,
+      "tick": 129
+    },
+    {
+      "cmd": {
+        "art": "sl_changquan",
+        "cmd": "ART",
+        "move": "sl_cq_1",
+        "power_tenths": 10,
+        "target": [
+          5,
+          4
+        ]
+      },
+      "peer": 1,
+      "tick": 145
+    },
+    {
+      "cmd": {
+        "art": "sl_changquan",
+        "cmd": "ART",
+        "move": "sl_cq_1",
+        "power_tenths": 10,
+        "target": [
+          5,
+          4
+        ]
+      },
+      "peer": 1,
+      "tick": 161
+    },
+    {
+      "cmd": {
+        "art": "sl_changquan",
+        "cmd": "ART",
+        "move": "sl_cq_1",
+        "power_tenths": 10,
+        "target": [
+          5,
+          4
+        ]
+      },
+      "peer": 1,
+      "tick": 177
+    },
+    {
+      "cmd": {
+        "art": "sl_changquan",
+        "cmd": "ART",
+        "move": "sl_cq_1",
+        "power_tenths": 10,
+        "target": [
+          5,
+          4
+        ]
+      },
+      "peer": 1,
+      "tick": 193
+    },
+    {
+      "cmd": {
+        "art": "sl_changquan",
+        "cmd": "ART",
+        "move": "sl_cq_1",
+        "power_tenths": 10,
+        "target": [
+          5,
+          4
+        ]
+      },
+      "peer": 1,
+      "tick": 209
+    },
+    {
+      "cmd": {
+        "art": "sl_changquan",
+        "cmd": "ART",
+        "move": "sl_cq_1",
+        "power_tenths": 10,
+        "target": [
+          5,
+          4
+        ]
+      },
+      "peer": 1,
+      "tick": 225
+    }
+  ],
+  "events_json": "[{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"battle_gauges\",\"p\":{\"bid\":1,\"tick\":0,\"units\":[[1,0.0,7.0,true],[2,0.0,6.25,true],[3,0.0,7.3,true]]},\"ui\":true},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"battle_move\",\"p\":{\"bid\":1,\"from\":[10,4],\"name\":\"野狼\",\"peer\":0,\"to\":[8,4],\"uid\":3}},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"battle_gauges\",\"p\":{\"bid\":1,\"tick\":14,\"units\":[[1,98.0,7.0,true],[2,87.5,6.25,true],[3,50.0,7.3,true]]},\"ui\":true},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"battle_await\",\"p\":{\"bid\":1,\"deadline_tick\":215,\"units\":[1]},\"ui\":true},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"battle_gauges\",\"p\":{\"bid\":1,\"tick\":15,\"units\":[[1,100.0,7.0,false],[2,93.75,6.25,false],[3,57.3,7.3,false]]},\"ui\":true},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"battle_move\",\"p\":{\"bid\":1,\"from\":[1,3],\"name\":\"測試俠客\",\"peer\":1,\"to\":[2,4],\"uid\":1}},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"battle_gauges\",\"p\":{\"bid\":1,\"tick\":16,\"units\":[[1,50.0,7.0,true],[2,93.75,6.25,true],[3,57.3,7.3,true]]},\"ui\":true},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"battle_move\",\"p\":{\"bid\":1,\"from\":[10,3],\"name\":\"野兔\",\"peer\":0,\"to\":[8,3],\"uid\":2}},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"battle_gauges\",\"p\":{\"bid\":1,\"tick\":17,\"units\":[[1,57.0,7.0,true],[2,50.0,6.25,true],[3,64.6,7.3,true]]},\"ui\":true},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"battle_move\",\"p\":{\"bid\":1,\"from\":[8,4],\"name\":\"野狼\",\"peer\":0,\"to\":[6,4],\"uid\":3}},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"battle_gauges\",\"p\":{\"bid\":1,\"tick\":22,\"units\":[[1,92.0,7.0,true],[2,81.25,6.25,true],[3,50.0,7.3,true]]},\"ui\":true},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"battle_await\",\"p\":{\"bid\":1,\"deadline_tick\":224,\"units\":[1]},\"ui\":true},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"battle_gauges\",\"p\":{\"bid\":1,\"tick\":24,\"units\":[[1,100.0,7.0,false],[2,93.75,6.25,false],[3,64.6,7.3,false]]},\"ui\":true},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"battle_move\",\"p\":{\"bid\":1,\"from\":[2,4],\"name\":\"測試俠客\",\"peer\":1,\"to\":[4,4],\"uid\":1}},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"battle_gauges\",\"p\":{\"bid\":1,\"tick\":25,\"units\":[[1,50.0,7.0,true],[2,93.75,6.25,true],[3,64.6,7.3,true]]},\"ui\":true},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"battle_move\",\"p\":{\"bid\":1,\"from\":[8,3],\"name\":\"野兔\",\"peer\":0,\"to\":[6,3],\"uid\":2}},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"battle_gauges\",\"p\":{\"bid\":1,\"tick\":26,\"units\":[[1,57.0,7.0,true],[2,50.0,6.25,true],[3,71.9,7.3,true]]},\"ui\":true},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"battle_move\",\"p\":{\"bid\":1,\"from\":[6,4],\"name\":\"野狼\",\"peer\":0,\"to\":[5,4],\"uid\":3}},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"battle_gauges\",\"p\":{\"bid\":1,\"tick\":30,\"units\":[[1,85.0,7.0,true],[2,75.0,6.25,true],[3,50.0,7.3,true]]},\"ui\":true},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"battle_await\",\"p\":{\"bid\":1,\"deadline_tick\":233,\"units\":[1]},\"ui\":true},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"battle_gauges\",\"p\":{\"bid\":1,\"tick\":33,\"units\":[[1,100.0,7.0,false],[2,93.75,6.25,false],[3,71.9,7.3,false]]},\"ui\":true},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"battle_miss\",\"p\":{\"atk\":\"測試俠客\",\"atk_peer\":1,\"atk_uid\":1,\"bid\":1,\"cat\":\"FIST\",\"counter\":false,\"def\":\"野狼\",\"def_peer\":0,\"def_uid\":3,\"move\":\"雙龍搶珠\"}},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"battle_gauges\",\"p\":{\"bid\":1,\"tick\":34,\"units\":[[1,0.0,7.0,true],[2,93.75,6.25,true],[3,71.9,7.3,true]]},\"ui\":true},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"battle_move\",\"p\":{\"bid\":1,\"from\":[6,3],\"name\":\"野兔\",\"peer\":0,\"to\":[4,3],\"uid\":2}},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"battle_gauges\",\"p\":{\"bid\":1,\"tick\":35,\"units\":[[1,7.0,7.0,true],[2,50.0,6.25,true],[3,79.2,7.3,true]]},\"ui\":true},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"move_claw\",\"p\":{\"art\":\"利爪\",\"atk\":\"野狼\",\"atk_neili\":0,\"atk_peer\":0,\"atk_uid\":3,\"bid\":1,\"cat\":\"FIST\",\"counter\":false,\"crit\":false,\"def\":\"測試俠客\",\"def_peer\":1,\"def_qi\":166,\"def_uid\":1,\"dmg\":14,\"move\":\"利爪撕扯\",\"part\":\"左腿\",\"tenths\":10}},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"battle_gauges\",\"p\":{\"bid\":1,\"tick\":38,\"units\":[[1,28.0,7.0,true],[2,68.75,6.25,true],[3,0.0,7.3,true]]},\"ui\":true},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"battle_proc_DEFENSE\",\"p\":{\"bid\":1,\"name\":\"測試俠客\",\"peer\":1,\"skill_name\":\"佛法\",\"uid\":1}},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"move_bite\",\"p\":{\"art\":\"撕咬\",\"atk\":\"野兔\",\"atk_neili\":0,\"atk_peer\":0,\"atk_uid\":2,\"bid\":1,\"cat\":\"FIST\",\"counter\":false,\"crit\":false,\"def\":\"測試俠客\",\"def_peer\":1,\"def_qi\":164,\"def_uid\":1,\"dmg\":2,\"move\":\"撲咬\",\"part\":\"左肩\",\"tenths\":10}},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"battle_gauges\",\"p\":{\"bid\":1,\"tick\":43,\"units\":[[1,63.0,7.0,true],[2,0.0,6.25,true],[3,36.5,7.3,true]]},\"ui\":true},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"battle_await\",\"p\":{\"bid\":1,\"deadline_tick\":249,\"units\":[1]},\"ui\":true},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"battle_gauges\",\"p\":{\"bid\":1,\"tick\":49,\"units\":[[1,100.0,7.0,false],[2,37.5,6.25,false],[3,80.3,7.3,false]]},\"ui\":true},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"move_fist_basic\",\"p\":{\"art\":\"少林長拳\",\"atk\":\"測試俠客\",\"atk_neili\":20,\"atk_peer\":1,\"atk_uid\":1,\"bid\":1,\"cat\":\"FIST\",\"counter\":false,\"crit\":false,\"def\":\"野兔\",\"def_peer\":0,\"def_qi\":2,\"def_uid\":2,\"dmg\":58,\"move\":\"雙龍搶珠\",\"part\":\"胸口\",\"tenths\":10}},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"battle_gauges\",\"p\":{\"bid\":1,\"tick\":50,\"units\":[[1,0.0,7.0,true],[2,37.5,6.25,true],[3,80.3,7.3,true]]},\"ui\":true},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"battle_proc_DEFENSE\",\"p\":{\"bid\":1,\"name\":\"測試俠客\",\"peer\":1,\"skill_name\":\"佛法\",\"uid\":1}},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"move_claw\",\"p\":{\"art\":\"利爪\",\"atk\":\"野狼\",\"atk_neili\":0,\"atk_peer\":0,\"atk_uid\":3,\"bid\":1,\"cat\":\"FIST\",\"counter\":false,\"crit\":false,\"def\":\"測試俠客\",\"def_peer\":1,\"def_qi\":154,\"def_uid\":1,\"dmg\":10,\"move\":\"利爪撕扯\",\"part\":\"胸口\",\"tenths\":10}},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"battle_gauges\",\"p\":{\"bid\":1,\"tick\":53,\"units\":[[1,21.0,7.0,true],[2,56.25,6.25,true],[3,0.0,7.3,true]]},\"ui\":true},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"battle_move\",\"p\":{\"bid\":1,\"from\":[4,3],\"name\":\"野兔\",\"peer\":0,\"to\":[3,2],\"uid\":2}},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"battle_gauges\",\"p\":{\"bid\":1,\"tick\":60,\"units\":[[1,70.0,7.0,true],[2,50.0,6.25,true],[3,51.1,7.3,true]]},\"ui\":true},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"battle_await\",\"p\":{\"bid\":1,\"deadline_tick\":265,\"units\":[1]},\"ui\":true},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"battle_gauges\",\"p\":{\"bid\":1,\"tick\":65,\"units\":[[1,100.0,7.0,false],[2,81.25,6.25,false],[3,87.6,7.3,false]]},\"ui\":true},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"move_fist_basic\",\"p\":{\"art\":\"少林長拳\",\"atk\":\"測試俠客\",\"atk_neili\":10,\"atk_peer\":1,\"atk_uid\":1,\"bid\":1,\"cat\":\"FIST\",\"counter\":false,\"crit\":false,\"def\":\"野狼\",\"def_peer\":0,\"def_qi\":194,\"def_uid\":3,\"dmg\":56,\"move\":\"雙龍搶珠\",\"part\":\"左肩\",\"tenths\":10}},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"battle_gauges\",\"p\":{\"bid\":1,\"tick\":66,\"units\":[[1,0.0,7.0,true],[2,81.25,6.25,true],[3,87.6,7.3,true]]},\"ui\":true},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"battle_miss\",\"p\":{\"atk\":\"野狼\",\"atk_peer\":0,\"atk_uid\":3,\"bid\":1,\"cat\":\"FIST\",\"counter\":false,\"def\":\"測試俠客\",\"def_peer\":1,\"def_uid\":1,\"move\":\"利爪撕扯\"}},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"battle_gauges\",\"p\":{\"bid\":1,\"tick\":68,\"units\":[[1,14.0,7.0,true],[2,93.75,6.25,true],[3,0.0,7.3,true]]},\"ui\":true},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"battle_move\",\"p\":{\"bid\":1,\"from\":[3,2],\"name\":\"野兔\",\"peer\":0,\"to\":[3,1],\"uid\":2}},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"battle_gauges\",\"p\":{\"bid\":1,\"tick\":69,\"units\":[[1,21.0,7.0,true],[2,50.0,6.25,true],[3,7.3,7.3,true]]},\"ui\":true},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"battle_defend\",\"p\":{\"bid\":1,\"name\":\"野兔\",\"peer\":0,\"uid\":2}},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"battle_gauges\",\"p\":{\"bid\":1,\"tick\":77,\"units\":[[1,77.0,7.0,true],[2,0.0,6.25,true],[3,65.7,7.3,true]]},\"ui\":true},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"battle_await\",\"p\":{\"bid\":1,\"deadline_tick\":281,\"units\":[1]},\"ui\":true},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"battle_gauges\",\"p\":{\"bid\":1,\"tick\":81,\"units\":[[1,100.0,7.0,false],[2,25.0,6.25,false],[3,94.9,7.3,false]]},\"ui\":true},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"move_fist_basic\",\"p\":{\"art\":\"少林長拳\",\"atk\":\"測試俠客\",\"atk_neili\":0,\"atk_peer\":1,\"atk_uid\":1,\"bid\":1,\"cat\":\"FIST\",\"counter\":false,\"crit\":false,\"def\":\"野狼\",\"def_peer\":0,\"def_qi\":147,\"def_uid\":3,\"dmg\":47,\"move\":\"雙龍搶珠\",\"part\":\"右腿\",\"tenths\":10}},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"battle_gauges\",\"p\":{\"bid\":1,\"tick\":82,\"units\":[[1,0.0,7.0,true],[2,25.0,6.25,true],[3,94.9,7.3,true]]},\"ui\":true},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"move_claw\",\"p\":{\"art\":\"利爪\",\"atk\":\"野狼\",\"atk_neili\":0,\"atk_peer\":0,\"atk_uid\":3,\"bid\":1,\"cat\":\"FIST\",\"counter\":false,\"crit\":false,\"def\":\"測試俠客\",\"def_peer\":1,\"def_qi\":140,\"def_uid\":1,\"dmg\":14,\"move\":\"利爪撕扯\",\"part\":\"胸口\",\"tenths\":10}},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"battle_gauges\",\"p\":{\"bid\":1,\"tick\":83,\"units\":[[1,7.0,7.0,true],[2,31.25,6.25,true],[3,0.0,7.3,true]]},\"ui\":true},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"battle_flee\",\"p\":{\"bid\":1,\"name\":\"野兔\",\"peer\":0,\"uid\":2}},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"battle_gauges\",\"p\":{\"bid\":1,\"tick\":94,\"units\":[[1,84.0,7.0,true],[2,100.0,6.25,false],[3,80.3,7.3,true]]},\"ui\":true},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"battle_await\",\"p\":{\"bid\":1,\"deadline_tick\":297,\"units\":[1]},\"ui\":true},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"battle_gauges\",\"p\":{\"bid\":1,\"tick\":97,\"units\":[[1,100.0,7.0,false],[2,100.0,6.25,false],[3,100.0,7.3,false]]},\"ui\":true},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"move_fist_basic\",\"p\":{\"art\":\"少林長拳\",\"atk\":\"測試俠客\",\"atk_neili\":0,\"atk_peer\":1,\"atk_uid\":1,\"bid\":1,\"cat\":\"FIST\",\"counter\":false,\"crit\":false,\"def\":\"野狼\",\"def_peer\":0,\"def_qi\":112,\"def_uid\":3,\"dmg\":35,\"move\":\"黑虎掏心\",\"part\":\"小腹\",\"tenths\":10}},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"move_claw\",\"p\":{\"art\":\"利爪\",\"atk\":\"野狼\",\"atk_neili\":0,\"atk_peer\":0,\"atk_uid\":3,\"bid\":1,\"cat\":\"FIST\",\"counter\":false,\"crit\":false,\"def\":\"測試俠客\",\"def_peer\":1,\"def_qi\":126,\"def_uid\":1,\"dmg\":14,\"move\":\"利爪撕扯\",\"part\":\"頭頂\",\"tenths\":10}},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"battle_gauges\",\"p\":{\"bid\":1,\"tick\":98,\"units\":[[1,0.0,7.0,true],[2,100.0,6.25,false],[3,0.0,7.3,true]]},\"ui\":true},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"move_claw\",\"p\":{\"art\":\"利爪\",\"atk\":\"野狼\",\"atk_neili\":0,\"atk_peer\":0,\"atk_uid\":3,\"bid\":1,\"cat\":\"FIST\",\"counter\":false,\"crit\":false,\"def\":\"測試俠客\",\"def_peer\":1,\"def_qi\":114,\"def_uid\":1,\"dmg\":12,\"move\":\"利爪撕扯\",\"part\":\"小腹\",\"tenths\":10}},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"battle_gauges\",\"p\":{\"bid\":1,\"tick\":112,\"units\":[[1,98.0,7.0,true],[2,100.0,6.25,false],[3,0.0,7.3,true]]},\"ui\":true},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"battle_await\",\"p\":{\"bid\":1,\"deadline_tick\":313,\"units\":[1]},\"ui\":true},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"battle_gauges\",\"p\":{\"bid\":1,\"tick\":113,\"units\":[[1,100.0,7.0,false],[2,100.0,6.25,false],[3,7.3,7.3,false]]},\"ui\":true},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"battle_miss\",\"p\":{\"atk\":\"測試俠客\",\"atk_peer\":1,\"atk_uid\":1,\"bid\":1,\"cat\":\"FIST\",\"counter\":false,\"def\":\"野狼\",\"def_peer\":0,\"def_uid\":3,\"move\":\"黑虎掏心\"}},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"battle_gauges\",\"p\":{\"bid\":1,\"tick\":114,\"units\":[[1,0.0,7.0,true],[2,100.0,6.25,false],[3,7.3,7.3,true]]},\"ui\":true},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"move_claw\",\"p\":{\"art\":\"利爪\",\"atk\":\"野狼\",\"atk_neili\":0,\"atk_peer\":0,\"atk_uid\":3,\"bid\":1,\"cat\":\"FIST\",\"counter\":false,\"crit\":false,\"def\":\"測試俠客\",\"def_peer\":1,\"def_qi\":101,\"def_uid\":1,\"dmg\":13,\"move\":\"利爪撕扯\",\"part\":\"左肩\",\"tenths\":10}},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"battle_gauges\",\"p\":{\"bid\":1,\"tick\":127,\"units\":[[1,91.0,7.0,true],[2,100.0,6.25,false],[3,0.0,7.3,true]]},\"ui\":true},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"battle_await\",\"p\":{\"bid\":1,\"deadline_tick\":329,\"units\":[1]},\"ui\":true},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"battle_gauges\",\"p\":{\"bid\":1,\"tick\":129,\"units\":[[1,100.0,7.0,false],[2,100.0,6.25,false],[3,14.6,7.3,false]]},\"ui\":true},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"move_fist_basic\",\"p\":{\"art\":\"少林長拳\",\"atk\":\"測試俠客\",\"atk_neili\":0,\"atk_peer\":1,\"atk_uid\":1,\"bid\":1,\"cat\":\"FIST\",\"counter\":false,\"crit\":false,\"def\":\"野狼\",\"def_peer\":0,\"def_qi\":72,\"def_uid\":3,\"dmg\":40,\"move\":\"黑虎掏心\",\"part\":\"小腹\",\"tenths\":10}},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"battle_gauges\",\"p\":{\"bid\":1,\"tick\":130,\"units\":[[1,0.0,7.0,true],[2,100.0,6.25,false],[3,14.6,7.3,true]]},\"ui\":true},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"move_claw\",\"p\":{\"art\":\"利爪\",\"atk\":\"野狼\",\"atk_neili\":0,\"atk_peer\":0,\"atk_uid\":3,\"bid\":1,\"cat\":\"FIST\",\"counter\":false,\"crit\":false,\"def\":\"測試俠客\",\"def_peer\":1,\"def_qi\":87,\"def_uid\":1,\"dmg\":14,\"move\":\"利爪撕扯\",\"part\":\"後背\",\"tenths\":10}},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"battle_gauges\",\"p\":{\"bid\":1,\"tick\":142,\"units\":[[1,84.0,7.0,true],[2,100.0,6.25,false],[3,0.0,7.3,true]]},\"ui\":true},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"battle_await\",\"p\":{\"bid\":1,\"deadline_tick\":345,\"units\":[1]},\"ui\":true},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"battle_gauges\",\"p\":{\"bid\":1,\"tick\":145,\"units\":[[1,100.0,7.0,false],[2,100.0,6.25,false],[3,21.9,7.3,false]]},\"ui\":true},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"move_fist_basic\",\"p\":{\"art\":\"少林長拳\",\"atk\":\"測試俠客\",\"atk_neili\":0,\"atk_peer\":1,\"atk_uid\":1,\"bid\":1,\"cat\":\"FIST\",\"counter\":false,\"crit\":false,\"def\":\"野狼\",\"def_peer\":0,\"def_qi\":41,\"def_uid\":3,\"dmg\":31,\"move\":\"黑虎掏心\",\"part\":\"左肩\",\"tenths\":10}},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"battle_gauges\",\"p\":{\"bid\":1,\"tick\":146,\"units\":[[1,0.0,7.0,true],[2,100.0,6.25,false],[3,21.9,7.3,true]]},\"ui\":true},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"move_claw\",\"p\":{\"art\":\"利爪\",\"atk\":\"野狼\",\"atk_neili\":0,\"atk_peer\":0,\"atk_uid\":3,\"bid\":1,\"cat\":\"FIST\",\"counter\":false,\"crit\":false,\"def\":\"測試俠客\",\"def_peer\":1,\"def_qi\":74,\"def_uid\":1,\"dmg\":13,\"move\":\"利爪撕扯\",\"part\":\"胸口\",\"tenths\":10}},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"battle_gauges\",\"p\":{\"bid\":1,\"tick\":157,\"units\":[[1,77.0,7.0,true],[2,100.0,6.25,false],[3,0.0,7.3,true]]},\"ui\":true},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"battle_await\",\"p\":{\"bid\":1,\"deadline_tick\":361,\"units\":[1]},\"ui\":true},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"battle_gauges\",\"p\":{\"bid\":1,\"tick\":161,\"units\":[[1,100.0,7.0,false],[2,100.0,6.25,false],[3,29.2,7.3,false]]},\"ui\":true},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"battle_miss\",\"p\":{\"atk\":\"測試俠客\",\"atk_peer\":1,\"atk_uid\":1,\"bid\":1,\"cat\":\"FIST\",\"counter\":false,\"def\":\"野狼\",\"def_peer\":0,\"def_uid\":3,\"move\":\"黑虎掏心\"}},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"battle_gauges\",\"p\":{\"bid\":1,\"tick\":162,\"units\":[[1,0.0,7.0,true],[2,100.0,6.25,false],[3,29.2,7.3,true]]},\"ui\":true},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"move_claw\",\"p\":{\"art\":\"利爪\",\"atk\":\"野狼\",\"atk_neili\":0,\"atk_peer\":0,\"atk_uid\":3,\"bid\":1,\"cat\":\"FIST\",\"counter\":false,\"crit\":false,\"def\":\"測試俠客\",\"def_peer\":1,\"def_qi\":62,\"def_uid\":1,\"dmg\":12,\"move\":\"利爪撕扯\",\"part\":\"頭頂\",\"tenths\":10}},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"battle_gauges\",\"p\":{\"bid\":1,\"tick\":172,\"units\":[[1,70.0,7.0,true],[2,100.0,6.25,false],[3,0.0,7.3,true]]},\"ui\":true},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"battle_await\",\"p\":{\"bid\":1,\"deadline_tick\":377,\"units\":[1]},\"ui\":true},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"battle_gauges\",\"p\":{\"bid\":1,\"tick\":177,\"units\":[[1,100.0,7.0,false],[2,100.0,6.25,false],[3,36.5,7.3,false]]},\"ui\":true},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"move_fist_basic\",\"p\":{\"art\":\"少林長拳\",\"atk\":\"測試俠客\",\"atk_neili\":0,\"atk_peer\":1,\"atk_uid\":1,\"bid\":1,\"cat\":\"FIST\",\"counter\":false,\"crit\":false,\"def\":\"野狼\",\"def_peer\":0,\"def_qi\":5,\"def_uid\":3,\"dmg\":36,\"move\":\"黑虎掏心\",\"part\":\"小腹\",\"tenths\":10}},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"battle_gauges\",\"p\":{\"bid\":1,\"tick\":178,\"units\":[[1,0.0,7.0,true],[2,100.0,6.25,false],[3,36.5,7.3,true]]},\"ui\":true},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"move_claw\",\"p\":{\"art\":\"利爪\",\"atk\":\"野狼\",\"atk_neili\":0,\"atk_peer\":0,\"atk_uid\":3,\"bid\":1,\"cat\":\"FIST\",\"counter\":false,\"crit\":false,\"def\":\"測試俠客\",\"def_peer\":1,\"def_qi\":51,\"def_uid\":1,\"dmg\":11,\"move\":\"利爪撕扯\",\"part\":\"右臂\",\"tenths\":10}},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"battle_gauges\",\"p\":{\"bid\":1,\"tick\":187,\"units\":[[1,63.0,7.0,true],[2,100.0,6.25,false],[3,0.0,7.3,true]]},\"ui\":true},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"battle_await\",\"p\":{\"bid\":1,\"deadline_tick\":393,\"units\":[1]},\"ui\":true},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"battle_gauges\",\"p\":{\"bid\":1,\"tick\":193,\"units\":[[1,100.0,7.0,false],[2,100.0,6.25,false],[3,43.8,7.3,false]]},\"ui\":true},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"battle_miss\",\"p\":{\"atk\":\"測試俠客\",\"atk_peer\":1,\"atk_uid\":1,\"bid\":1,\"cat\":\"FIST\",\"counter\":false,\"def\":\"野狼\",\"def_peer\":0,\"def_uid\":3,\"move\":\"黑虎掏心\"}},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"battle_gauges\",\"p\":{\"bid\":1,\"tick\":194,\"units\":[[1,0.0,7.0,true],[2,100.0,6.25,false],[3,43.8,7.3,true]]},\"ui\":true},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"move_claw\",\"p\":{\"art\":\"利爪\",\"atk\":\"野狼\",\"atk_neili\":0,\"atk_peer\":0,\"atk_uid\":3,\"bid\":1,\"cat\":\"FIST\",\"counter\":false,\"crit\":false,\"def\":\"測試俠客\",\"def_peer\":1,\"def_qi\":40,\"def_uid\":1,\"dmg\":11,\"move\":\"利爪撕扯\",\"part\":\"後背\",\"tenths\":10}},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"battle_gauges\",\"p\":{\"bid\":1,\"tick\":202,\"units\":[[1,56.0,7.0,true],[2,100.0,6.25,false],[3,0.0,7.3,true]]},\"ui\":true},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"battle_await\",\"p\":{\"bid\":1,\"deadline_tick\":409,\"units\":[1]},\"ui\":true},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"battle_gauges\",\"p\":{\"bid\":1,\"tick\":209,\"units\":[[1,100.0,7.0,false],[2,100.0,6.25,false],[3,51.1,7.3,false]]},\"ui\":true},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"battle_miss\",\"p\":{\"atk\":\"測試俠客\",\"atk_peer\":1,\"atk_uid\":1,\"bid\":1,\"cat\":\"FIST\",\"counter\":false,\"def\":\"野狼\",\"def_peer\":0,\"def_uid\":3,\"move\":\"黑虎掏心\"}},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"battle_gauges\",\"p\":{\"bid\":1,\"tick\":210,\"units\":[[1,0.0,7.0,true],[2,100.0,6.25,false],[3,51.1,7.3,true]]},\"ui\":true},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"move_claw\",\"p\":{\"art\":\"利爪\",\"atk\":\"野狼\",\"atk_neili\":0,\"atk_peer\":0,\"atk_uid\":3,\"bid\":1,\"cat\":\"FIST\",\"counter\":false,\"crit\":false,\"def\":\"測試俠客\",\"def_peer\":1,\"def_qi\":26,\"def_uid\":1,\"dmg\":14,\"move\":\"利爪撕扯\",\"part\":\"左腿\",\"tenths\":10}},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"battle_gauges\",\"p\":{\"bid\":1,\"tick\":217,\"units\":[[1,49.0,7.0,true],[2,100.0,6.25,false],[3,0.0,7.3,true]]},\"ui\":true},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"battle_await\",\"p\":{\"bid\":1,\"deadline_tick\":425,\"units\":[1]},\"ui\":true},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"battle_gauges\",\"p\":{\"bid\":1,\"tick\":225,\"units\":[[1,100.0,7.0,false],[2,100.0,6.25,false],[3,58.4,7.3,false]]},\"ui\":true},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"move_fist_basic\",\"p\":{\"art\":\"少林長拳\",\"atk\":\"測試俠客\",\"atk_neili\":0,\"atk_peer\":1,\"atk_uid\":1,\"bid\":1,\"cat\":\"FIST\",\"counter\":false,\"crit\":false,\"def\":\"野狼\",\"def_peer\":0,\"def_qi\":1,\"def_uid\":3,\"dmg\":40,\"move\":\"黑虎掏心\",\"part\":\"右臂\",\"tenths\":10}},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"battle_kill\",\"p\":{\"bid\":1,\"by\":\"測試俠客\",\"by_uid\":1,\"name\":\"野狼\",\"peer\":0,\"uid\":3}},{\"bid\":1,\"ch\":\"BATTLE\",\"key\":\"battle_end\",\"p\":{\"bid\":1,\"result\":\"VICTORY\"},\"ui\":true}]",
+  "opts": {
+    "escape_tiles": 2,
+    "wait_mode": true,
+    "wait_mode_round_budget_s": 45,
+    "wait_mode_timeout_min_s": 8,
+    "wait_mode_timeout_s": 20
+  },
+  "result": "VICTORY",
+  "seed": 20261017,
+  "specs": [
+    {
+      "ai": "",
+      "armor_power": 2,
+      "arts": [
+        "sl_changquan"
+      ],
+      "attrs": {
+        "agi": 20,
+        "cal": 19,
+        "con": 20,
+        "guts": 19,
+        "luck": 19,
+        "str": 20,
+        "wit": 21
+      },
+      "carry_ratio": 0.12,
+      "combat_xp": 0,
+      "effective_inner": 10,
+      "jing": 92,
+      "jing_max": 92,
+      "killing_intent": 0,
+      "kind": "PLAYER",
+      "lightness": 0,
+      "monster_row": "",
+      "name": "測試俠客",
+      "neili": 40,
+      "neili_max": 50,
+      "peer": 1,
+      "qi": 180,
+      "qi_max": 180,
+      "ref": "ch_test0001",
+      "sect_skill": {
+        "effect": "DEFENSE",
+        "id": "foxa",
+        "level": 10
+      },
+      "shen": 88,
+      "shen_max": 88,
+      "side": 0,
+      "skills": {
+        "basic_dodge": 10,
+        "basic_fist": 30,
+        "basic_inner": 10,
+        "basic_parry": 10,
+        "foxa": 10,
+        "sl_changquan": 30
+      },
+      "weapon": {
+        "atk": 0,
+        "item_id": "",
+        "name": "",
+        "uid": "",
+        "weapon_type": "FIST"
+      },
+      "weapon_options": [
+        {
+          "atk": 4,
+          "item_id": "w_mudao",
+          "name": "木刀",
+          "uid": "it_0001",
+          "weapon_type": "BLADE"
+        },
+        {
+          "atk": 4,
+          "item_id": "w_mujian",
+          "name": "木劍",
+          "uid": "it_0002",
+          "weapon_type": "SWORD"
+        }
+      ]
+    },
+    {
+      "ai": "coward",
+      "armor_power": 31,
+      "arts": [
+        "mon_bite"
+      ],
+      "attrs": {
+        "agi": 15,
+        "cal": 5,
+        "con": 10,
+        "guts": 5,
+        "luck": 5,
+        "str": 8,
+        "wit": 5
+      },
+      "battle_items": [],
+      "carry_ratio": 0.0,
+      "cmd_arts": {
+        "ACUPOINT": [],
+        "FORMATION": [],
+        "HIDDEN": [],
+        "INNER": [],
+        "MEDIC": [],
+        "POISON": []
+      },
+      "effective_inner": 0,
+      "gender": "",
+      "hidden_items": [],
+      "jing": 50,
+      "jing_max": 50,
+      "killing_intent": 0,
+      "kind": "MONSTER",
+      "lightness": 0,
+      "monster_row": "m_rabbit",
+      "name": "野兔",
+      "neili": 0,
+      "neili_max": 0,
+      "party_id": "",
+      "peer": 0,
+      "qi": 60,
+      "qi_max": 60,
+      "ref": "m_rabbit",
+      "sect": "",
+      "sect_skill": {
+
+      },
+      "shen": 50,
+      "shen_max": 50,
+      "short": "",
+      "side": 1,
+      "skills": {
+        "basic_dodge": 5,
+        "mon_bite": 1
+      },
+      "statuses": {
+
+      },
+      "weapon": {
+        "atk": 0,
+        "item_id": "",
+        "name": "",
+        "uid": "",
+        "weapon_type": "FIST"
+      },
+      "weapon_options": []
+    },
+    {
+      "ai": "melee_basic",
+      "armor_power": 28,
+      "arts": [
+        "mon_claw"
+      ],
+      "attrs": {
+        "agi": 22,
+        "cal": 12,
+        "con": 15,
+        "guts": 12,
+        "luck": 5,
+        "str": 10,
+        "wit": 5
+      },
+      "battle_items": [],
+      "carry_ratio": 0.0,
+      "cmd_arts": {
+        "ACUPOINT": [],
+        "FORMATION": [],
+        "HIDDEN": [],
+        "INNER": [],
+        "MEDIC": [],
+        "POISON": []
+      },
+      "effective_inner": 0,
+      "gender": "",
+      "hidden_items": [],
+      "jing": 80,
+      "jing_max": 80,
+      "killing_intent": 0,
+      "kind": "MONSTER",
+      "lightness": 0,
+      "monster_row": "m_wolf",
+      "name": "野狼",
+      "neili": 0,
+      "neili_max": 0,
+      "party_id": "",
+      "peer": 0,
+      "qi": 250,
+      "qi_max": 250,
+      "ref": "m_wolf",
+      "sect": "",
+      "sect_skill": {
+
+      },
+      "shen": 80,
+      "shen_max": 80,
+      "short": "",
+      "side": 1,
+      "skills": {
+        "basic_dodge": 15,
+        "basic_parry": 5,
+        "mon_claw": 10
+      },
+      "statuses": {
+
+      },
+      "weapon": {
+        "atk": 0,
+        "item_id": "",
+        "name": "",
+        "uid": "",
+        "weapon_type": "FIST"
+      },
+      "weapon_options": []
+    }
+  ],
+  "ticks": 226
+}

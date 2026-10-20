@@ -1,0 +1,37 @@
+{
+  "region_id": "dali_wild",
+  "era": "1.0A",
+  "src": "proposal",
+  "desc": "大理城外，蒼山十九峰連綿，洱海碧波萬頃，田野間稻浪起伏。",
+  "escape_tiles_hint": 2,
+  "rooms": [
+    { "id": "dlw_road", "name": "北門外大道", "desc": "出了北門，一條大道穿過田野。東邊是陶耘的稻田，西邊是洱海，往北到河邊，過了石橋就是往西夏的河川古道。",
+      "exits": [
+        {"dir": "S", "to": "dl_gate_n"},
+        {"dir": "N", "to": "dlw_river"},
+        {"dir": "E", "to": "dlw_paddy"},
+        {"dir": "W", "to": "dlw_lake"}
+      ],
+      "npcs": [], "features": [], "requires": [],
+      "encounter": {"rate": 0.1, "table": [{"monster": "m_rabbit", "w": 100, "count": [1, 1]}]} },
+    { "id": "dlw_river", "name": "城北河畔", "desc": "大理城北的一條河，河邊石階上有人洗衣。往西北過石橋、順著河往上游走，就是往西夏的古道；往東是蒼山林道。",
+      "exits": [{"dir": "NW", "to": "rr_bridge"}, {"dir": "S", "to": "dlw_road"}, {"dir": "E", "to": "dlw_forest"}],
+      "npcs": [], "features": ["WATER"], "requires": [],
+      "encounter": { "rate": 0.1,
+        "table": [{"monster": "m_rabbit", "w": 70, "count": [1, 1]}, {"monster": "m_bigrabbit", "w": 30, "count": [1, 1]}] } },
+    {"id": "dlw_paddy", "name": "陶耘稻田", "desc": "一片綠油油的水田，稻穗低垂。田埂上一位老農捲著褲管，正彎腰插秧。東邊有一片樹林。", "exits": [{"dir": "W", "to": "dlw_road"}, {"dir": "E", "to": "dlw_eastwood"}], "npcs": ["n_taoyun", "n_sm_qiaofu_dl"], "features": ["FIELD"], "requires": [], "encounter": {"rate": 0.08, "table": [{"monster": "m_rabbit", "w": 100, "count": [1, 1]}]}},
+    {"id": "dlw_lake", "name": "洱海岸", "desc": "洱海湖水碧藍，岸邊停著幾艘漁船，是垂釣的好地方。往西的荒地裡有個沙漠洞窟。", "exits": [{"dir": "E", "to": "dlw_road"}, {"dir": "W", "to": "dlw_desertcave"}], "npcs": ["n_dl_limochou", "n_sm_zhangqing"], "features": ["WATER"], "requires": [], "encounter": {"rate": 0.1, "table": [{"monster": "m_rabbit", "w": 100, "count": [1, 1]}]}},
+    {"id": "dlw_forest", "name": "蒼山林道", "desc": "林木蔽日，山道崎嶇。樹叢裡偶爾閃過人影，聽說有山賊在這一帶出沒。林道到這裡已是蒼山腳下，再往裡就沒有路了。", "exits": [{"dir": "W", "to": "dlw_river"}], "npcs": [], "features": ["HUNT"], "requires": [], "encounter": {"rate": 0.25, "table": [{"monster": "m_boar", "w": 60, "count": [1, 1]}, {"monster": "m_bandit", "w": 25, "count": [1, 1]}, {"monster": "m_wolf", "w": 15, "count": [1, 1]}]}, "hunt_table": [{"monster": "m_hunt_shanzhu", "w": 65}, {"monster": "m_hunt_lang", "w": 35}]},
+    {"id": "dlw_eastwood", "name": "東邊樹林", "desc": "大理城東邊的一片樹林，林間小徑鋪滿落葉。樵夫說穿過樹林往東北，從前是往崆峒、峨嵋的路。", "exits": [{"dir": "W", "to": "dlw_paddy"}, {"dir": "E", "to": "dlw_fork"}], "npcs": ["n_amb_etou_dlw", "n_sm_shangqiaofu"], "features": ["WOOD"], "requires": [], "encounter": {"rate": 0.1, "table": [{"monster": "m_rabbit", "w": 60, "count": [1, 1]}, {"monster": "m_bigrabbit", "w": 30, "count": [1, 1]}, {"monster": "m_wolf", "w": 10, "count": [1, 1]}]}},
+    { "id": "dlw_fork", "name": "崆峒道口", "desc": "幾條山路在這裡交會。往北通崆峒的路還被落石堵著；往東北的小路已經清開，可以走到峨嵋山和終南山。",
+      "exits": [{"dir": "W", "to": "dlw_eastwood"}, {"dir": "NE", "to": "em_road1"}], "npcs": [], "features": [],
+      "requires": [],
+      "encounter": { "rate": 0.12,
+        "table": [
+          {"monster": "m_wolf", "w": 50, "count": [1, 1]},
+          {"monster": "m_boar", "w": 40, "count": [1, 1]},
+          {"monster": "m_bigrabbit", "w": 10, "count": [1, 1]}
+        ] } },
+    {"id": "dlw_desertcave", "name": "大理西沙漠洞窟", "desc": "洱海西岸的荒地裡有個幽深的洞窟，洞口沙土上留著雜亂的腳印。往東回洱海岸。", "exits": [{"dir": "E", "to": "dlw_lake"}], "npcs": ["n_dlw_guiyi"], "features": [], "requires": [], "encounter": {"rate": 0.1, "table": [{"monster": "m_wolf", "w": 60, "count": [1, 1]}, {"monster": "m_bandit", "w": 40, "count": [1, 1]}]}}
+  ]
+}

@@ -1,0 +1,701 @@
+{
+ "fragment": "ev_xingxia",
+ "version": 1,
+ "author": "WP-C-ev_xingxia",
+ "quests": [
+  {
+   "id": "q_xingxia",
+   "name": "行俠仗義",
+   "chapter": "雁門關・行俠仗義",
+   "group": "ev_xingxia",
+   "alias": "靈芝商人任務",
+   "giver": "n_ym_lingzhi",
+   "era": "1.0A",
+   "src": "verified",
+   "dialogue_src": "proposal",
+   "src_note": "研究 行俠仗義（靈芝商人）：17173 tishi.htm 2001-07-18 事件名「行俠仗義」；other.htm 靈芝商人任務流程「先和靈芝商對話，接完任務後在下方不遠處找到盜匪，取回寶盒交給商人」「每次三粒靈芝草，另加名聲和歷練」。兩個名字是同一事件係依內容推定（研究）。",
+   "text": "要去大理做靈芝買賣的商人，剛到雁門關就被搶了，附近卻沒有人。雁門關口的靈芝商人求你從關外橋邊的強盜手中拿回寶盒。（從西夏東門出城，經東門外官道、東北官道、礦區、黑龍潭、潭東河岸、恆山外稻田、路邊茶棚、恆山岸邊到恆山岔路，再往東北走雁門古道，往北就是雁門關口。）",
+   "requires": [],
+   "give_items": [],
+   "repeat": {
+    "max": 0,
+    "cooldown_days": 1
+   },
+   "repeat_src": "proposal",
+   "repeat_src_note": "「每次」三粒靈芝草 → 可重複【已證實】；冷卻 1 遊戲日【設計提案】（STORY_PLAN D8、§11 #10）",
+   "abandon": true,
+   "party_credit": true,
+   "start": "s_bandit",
+   "offer": "d_offer",
+   "stages": [
+    {
+     "id": "s_bandit",
+     "title": "橋邊的強盜",
+     "log": "靈芝商人的寶盒被強盜奪走了。從雁門關口往東南下去，到關外橋邊找到那個強盜，打敗他把寶盒奪回來。（雁門關口的走法：從西夏東門出城，經東門外官道、東北官道、礦區、黑龍潭、潭東河岸、恆山外稻田、路邊茶棚、恆山岸邊到恆山岔路，再往東北走雁門古道，往北就是雁門關口。）",
+     "hint_room": "ym_bridge",
+     "objectives": [
+      {
+       "id": "o_fight",
+       "type": "FIGHT",
+       "npc": "n_ym_qiangdao",
+       "dialogue": "d_qiangdao",
+       "win": "WIN",
+       "text": "到關外橋邊打敗強盜",
+       "src": "later",
+       "src_note": "「打一場，打贏」只見於 2019+ 攻略；一場戰鬥【設計提案】"
+      }
+     ],
+     "on_complete": [
+      {
+       "do": "give",
+       "item": "i_ym_baohe",
+       "n": 1
+      },
+      {
+       "do": "tell",
+       "key": "tell_q_xingxia_baohe"
+      }
+     ],
+     "next": "s_return"
+    },
+    {
+     "id": "s_return",
+     "title": "物歸原主",
+     "log": "寶盒奪回來了。從關外橋邊往西北走回雁門關口，把寶盒交還給靈芝商人。",
+     "hint_room": "ym_gate",
+     "objectives": [
+      {
+       "id": "o_return",
+       "type": "TALK",
+       "npc": "n_ym_lingzhi",
+       "dialogue": "d_return",
+       "text": "把寶盒交還雁門關口的靈芝商人"
+      }
+     ],
+     "next": "END:default"
+    }
+   ],
+   "dialogues": {
+    "d_offer": {
+     "start": "n0",
+     "resume": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "src": "proposal",
+       "src_note": "研究 行俠仗義：17173 tishi.htm 2001-07-18「要去大理做靈芝買賣的商人，剛到雁門關就被搶了，附近卻沒有人．．．」；other.htm（約 2001-08～09）「靈芝商人任務：雁門關外的靈芝商人要你從盜匪手中拿回寶盒」；對白為依簡介改寫的【設計提案】",
+       "text": "（一個滿身塵土的商人坐在關口石階上，捶胸頓足。）唉！唉！我從關外收了一批上好的靈芝，要運到大理去賣，哪知道才到雁門關，就被強盜給搶了！附近連個官兵的影子都沒有……這位{name}，看你身上帶著傢伙，能不能替小的把寶盒討回來？",
+       "choices": [
+        {
+         "id": "c_again",
+         "label": "怎麼，又給人搶了？",
+         "requires": [
+          {
+           "type": "quest_done",
+           "quest": "q_xingxia"
+          }
+         ],
+         "hide_if_locked": true,
+         "goto": "n_again"
+        },
+        {
+         "id": "c_help",
+         "label": "路見不平，自當拔刀相助。寶盒包在我身上。",
+         "do": [
+          {
+           "do": "accept"
+          }
+         ],
+         "goto": "n_yes"
+        },
+        {
+         "id": "c_ask",
+         "label": "強盜在哪裡？是什麼來頭？",
+         "goto": "n_where"
+        },
+        {
+         "id": "c_no",
+         "label": "強盜兇狠，這趟渾水我可不蹚。",
+         "goto": "n_no"
+        }
+       ]
+      },
+      "n_where": {
+       "speaker": "npc",
+       "text": "就在關口往東南下去不遠，關外那座橋邊。那廝一把鬼頭刀，見了做買賣的就攔，小的一盒靈芝全給他奪了去。聽說橋再過去還有更兇的傢伙出沒，俠士千萬小心。",
+       "choices": [
+        {
+         "id": "c_help",
+         "label": "路見不平，自當拔刀相助。寶盒包在我身上。",
+         "do": [
+          {
+           "do": "accept"
+          }
+         ],
+         "goto": "n_yes"
+        },
+        {
+         "id": "c_no",
+         "label": "強盜兇狠，這趟渾水我可不蹚。",
+         "goto": "n_no"
+        }
+       ]
+      },
+      "n_again": {
+       "speaker": "npc",
+       "text": "可不是！雁門關外這條路，強盜趕走一個又來一個。小的這回又收了一盒靈芝，剛出關口就……唉！俠士是老相識了，就再幫小的一回吧！",
+       "choices": [
+        {
+         "id": "c_help",
+         "label": "也罷，我再走一趟。",
+         "do": [
+          {
+           "do": "accept"
+          }
+         ],
+         "goto": "n_yes"
+        },
+        {
+         "id": "c_no",
+         "label": "今日另有要事，改天吧。",
+         "goto": "n_no"
+        }
+       ]
+      },
+      "n_yes": {
+       "speaker": "npc",
+       "text": "多謝俠士！多謝俠士！您從這兒往東南下去，過了那座橋就看得見他。寶盒拿回來，小的定有靈芝相贈。",
+       "goto": "END"
+      },
+      "n_no": {
+       "speaker": "npc",
+       "text": "唉……也是，這年頭誰肯為了個不相干的生意人去拚命。",
+       "goto": "END"
+      }
+     }
+    },
+    "d_qiangdao": {
+     "start": "n0",
+     "resume": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "src": "proposal",
+       "src_note": "研究：gaoshou/23 強盜 20196.3760「靈芝商人右下橋附近」；other.htm「在下方不遠處找到盜匪，取回寶盒」；對白【設計提案】",
+       "text": "（一個敞著衣襟的漢子橫刀坐在橋頭，腳邊擱著一隻雕花木盒。）站住！這座橋是大爺開的，要過橋，先把買路錢留下！",
+       "choices": [
+        {
+         "id": "c_ask",
+         "label": "那隻寶盒是靈芝商人的，還來。",
+         "goto": "n1"
+        },
+        {
+         "id": "c_leave",
+         "label": "（暫且退開）",
+         "goto": "n_leave"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "還？哈哈哈！大爺搶來的東西，從來沒有還回去的道理。你這{name}多管閒事，想要寶盒，就憑本事來拿！",
+       "choices": [
+        {
+         "id": "c_fight",
+         "label": "那就得罪了！",
+         "do": [
+          {
+           "do": "fight",
+           "monsters": [
+            "m_ym_qiangdao"
+           ],
+           "obj": "o_fight",
+           "npc": "n_ym_qiangdao",
+           "no_flee": false,
+           "solo": false
+          }
+         ],
+         "goto": "END"
+        },
+        {
+         "id": "c_leave",
+         "label": "（先退下，準備妥當再來）",
+         "goto": "n_leave"
+        }
+       ]
+      },
+      "n_leave": {
+       "speaker": "npc",
+       "text": "哼，沒膽的東西，滾遠點！",
+       "goto": "END"
+      }
+     }
+    },
+    "d_return": {
+     "start": "n0",
+     "resume": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "src": "proposal",
+       "src_note": "研究：other.htm「取回寶盒交給商人」「每次三粒靈芝草，另加名聲和歷練」；對白【設計提案】",
+       "text": "俠士回來了！那強盜……您可是把他打發了？",
+       "choices": [
+        {
+         "id": "c_give",
+         "label": "寶盒在此，物歸原主。",
+         "requires": [
+          {
+           "type": "has_item",
+           "item": "i_ym_baohe",
+           "n": 1
+          }
+         ],
+         "do": [
+          {
+           "do": "take",
+           "item": "i_ym_baohe",
+           "n": 1
+          },
+          {
+           "do": "complete",
+           "obj": "o_return"
+          }
+         ],
+         "goto": "n1"
+        },
+        {
+         "id": "c_later",
+         "label": "還沒，我再去一趟。",
+         "goto": "END"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "（商人打開寶盒，一株株靈芝完好無缺，喜得合不攏嘴。）一株都沒少！一株都沒少！俠士真是好人有好報……",
+       "goto": "n2"
+      },
+      "n2": {
+       "speaker": "npc",
+       "text": "小的身上沒什麼值錢東西，這三株靈芝草您收下，運功調息時服上一株，最能補氣。往後小的一路逢人便說：雁門關外，有位{name}大俠行俠仗義！",
+       "goto": "END"
+      }
+     }
+    }
+   },
+   "outcomes": {
+    "default": {
+     "label": "寶盒物歸原主",
+     "rewards": {
+      "items": [
+       {
+        "id": "c_lingzhicao",
+        "n": 3
+       }
+      ],
+      "fame": 5,
+      "lilian": 5
+     },
+     "src": "later",
+     "src_note": "靈芝草 ×3：other.htm「每次三粒靈芝草」【已證實】；名聲 +5、江湖歷練 +5 只見於 2019 jy2001 與 jytzst【後期版】；GDD【提案】善惡 +20 無依據，已拿掉（D8）"
+    }
+   },
+   "rumors": {
+    "first": "rmr_q_xingxia_first",
+    "each": "rmr_q_xingxia_each",
+    "foreshadow": "rmr_q_xingxia_fs"
+   }
+  }
+ ],
+ "npcs": [
+  {
+   "id": "n_ym_lingzhi",
+   "name": "靈芝商人",
+   "kind": "QUEST",
+   "region": "yanmen",
+   "room": "ym_gate",
+   "alignment": "GOOD",
+   "talk": "talk_n_ym_lingzhi",
+   "services": [
+    "QUEST"
+   ],
+   "night_closed": false,
+   "quests": [
+    "q_xingxia"
+   ],
+   "desc": "滿身塵土的行商，抱著空空的行囊坐在雁門關口，不住往東南的橋頭張望。",
+   "era": "1.0A",
+   "src": "verified",
+   "src_note": "研究：17173 gaoshou/23 靈芝商人 20078.2310「雁門關口」（→ [837,96]，關外）；外貌【設計提案】"
+  },
+  {
+   "id": "n_ym_qiangdao",
+   "name": "強盜",
+   "kind": "EVIL_NPC",
+   "region": "yanmen",
+   "room": "ym_bridge",
+   "alignment": "EVIL",
+   "talk": "talk_n_ym_qiangdao",
+   "services": [],
+   "night_closed": false,
+   "desc": "敞著衣襟、橫刀坐在橋頭的漢子，專搶過往的生意人。",
+   "era": "1.0A",
+   "src": "verified",
+   "src_note": "研究：17173 gaoshou/23 強盜 20196.3760「靈芝商人右下橋附近」（→ [842,157]）；只在 q_xingxia 的 s_bandit 階段經任務對話開打（沒有 FIGHT 服務），STORY_PLAN §2.2"
+  }
+ ],
+ "npc_links": [],
+ "shop_patches": [],
+ "art_patches": [],
+ "items": [
+  {
+   "id": "i_ym_baohe",
+   "name": "寶盒",
+   "tab": "OTHER",
+   "slot": "",
+   "atk": 0,
+   "def": 0,
+   "weight": 1,
+   "price": 0,
+   "stack": 1,
+   "spoil_days": 0,
+   "effects": [],
+   "usable": false,
+   "usable_in_battle": false,
+   "no_sell": true,
+   "quest_item": true,
+   "desc": "靈芝商人裝貨的雕花木盒，盒縫裡透出一股淡淡的藥香。",
+   "era": "1.0A",
+   "src": "verified",
+   "src_note": "研究：other.htm「從盜匪手中拿回寶盒」"
+  },
+  {
+   "id": "c_lingzhicao",
+   "name": "靈芝草",
+   "tab": "OTHER",
+   "slot": "",
+   "atk": 0,
+   "def": 0,
+   "weight": 1,
+   "price": 120,
+   "stack": 99,
+   "spoil_days": 0,
+   "effects": [
+    {
+     "type": "restore",
+     "stat": "qi",
+     "value": 250
+    }
+   ],
+   "usable": true,
+   "usable_in_battle": true,
+   "no_sell": false,
+   "quest_item": false,
+   "desc": "關外採來的靈芝，嚼上一株，恢復 250 點氣。",
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "物品存在【已證實】（other.htm「每次三粒靈芝草」）；效果與價格研究查無，回氣 250、價 120【設計提案】（介於金創藥 100 氣／50 兩與大還丹 300／1400 兩之間）"
+  }
+ ],
+ "monsters": [
+  {
+   "id": "m_ym_qiangdao",
+   "name": "強盜",
+   "short": "強盜",
+   "kind": "EVIL_NPC",
+   "alignment": "EVIL",
+   "desc": "雁門關外橋邊攔路的強盜，一把鬼頭刀使得頗為狠辣。（存在：已證實；數值：設計提案，3000 級距同山賊）",
+   "stats": {
+    "qi": 650,
+    "neili": 60,
+    "jing": 160,
+    "str": 21,
+    "guts": 22,
+    "wit": 15,
+    "luck": 15,
+    "cal": 18,
+    "agi": 20,
+    "con": 21
+   },
+   "skills": {
+    "basic_dodge": 26,
+    "basic_parry": 26,
+    "basic_inner": 12
+   },
+   "arts": [
+    {
+     "art": "mon_blade",
+     "level": 26
+    }
+   ],
+   "weapon_type": "BLADE",
+   "weapon_power": 10,
+   "armor_power": 30,
+   "combat_xp_ref": 3000,
+   "combat_xp": 45,
+   "learn_points": 16,
+   "drops": [
+    {
+     "item": "c_qiyao",
+     "chance": 0.2,
+     "min": 1,
+     "max": 1
+    }
+   ],
+   "money": {
+    "min": 20,
+    "max": 60
+   },
+   "morality_on_kill": 3,
+   "killing_intent_on_kill": 5,
+   "ai": "melee_basic",
+   "no_rewards": false,
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "研究：強盜存在（gaoshou/23）；一場戰鬥、數值照 m_bandit 級距【設計提案】；寶盒不走掉落，由階段 on_complete 的 give 給（避開 drops chance 單位問題）"
+  }
+ ],
+ "martial_arts": [],
+ "masters": [],
+ "text_templates": [
+  {
+   "id": "talk_n_ym_lingzhi",
+   "era": "1.0A",
+   "self": "{npc_name}抱著行囊縮在關口石階邊，不住往東南的橋頭張望：「雁門關外這條路，真不是做買賣的人走的……」",
+   "src": "proposal"
+  },
+  {
+   "id": "talk_n_ym_qiangdao",
+   "era": "1.0A",
+   "self": "{npc_name}橫刀攔在橋頭，斜眼打量你：「看什麼看？要過橋，先留下買路錢！」",
+   "src": "proposal"
+  },
+  {
+   "id": "tell_q_xingxia_baohe",
+   "era": "1.0A",
+   "self": "強盜撇下鬼頭刀落荒而逃，你從橋頭拾起那隻雕花寶盒，盒裡隱隱飄出靈芝的藥香。",
+   "src": "proposal"
+  },
+  {
+   "id": "rmr_q_xingxia_fs",
+   "era": "1.0A",
+   "self": "聽說有個要去大理做靈芝買賣的商人，剛到雁門關就被搶了，附近卻沒有人……",
+   "src": "verified",
+   "src_note": "17173 tishi.htm 2001-07-18 行俠仗義簡介原文（繁體轉寫）；作為系統傳聞播出是【設計提案・非原作】"
+  },
+  {
+   "id": "rmr_q_xingxia_first",
+   "era": "1.0A",
+   "self": "江湖傳言：{name}在雁門關外橋邊打跑了攔路的強盜，替一個靈芝商人奪回寶盒，是頭一個管這樁閒事的俠客。",
+   "src": "proposal",
+   "src_note": "【設計提案・非原作】系統傳聞"
+  },
+  {
+   "id": "rmr_q_xingxia_each",
+   "era": "1.0A",
+   "self": "雁門關的靈芝商人逢人便說，{name}又替他從強盜手裡討回了寶盒。",
+   "src": "proposal",
+   "src_note": "【設計提案・非原作】系統傳聞"
+  },
+  {
+   "id": "amb_ym_bridge_1",
+   "era": "1.0A",
+   "self": "橋下河水嘩嘩作響，橋頭泥地上散著幾道車轍和凌亂的腳印，看來常有人在這裡被攔下。",
+   "src": "proposal",
+   "src_note": "【設計提案・非原作】環境句"
+  },
+  {
+   "id": "amb_ym_gate_1",
+   "era": "1.0A",
+   "self": "關口的風颳得旗桿嗚嗚作響，往來的行商都低著頭快步走過，沒人敢在關外多停。",
+   "src": "proposal",
+   "src_note": "【設計提案・非原作】環境句"
+  }
+ ],
+ "rumors": [
+  {
+   "id": "rm_q_xingxia_fs",
+   "kind": "FORESHADOW",
+   "quest": "q_xingxia",
+   "text": "rmr_q_xingxia_fs",
+   "requires_world": {
+    "not_first": "q_xingxia"
+   },
+   "hours": [],
+   "weight": 1,
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "文字是 2001-07-18 簡介原文；系統預告傳聞【設計提案・非原作】"
+  }
+ ],
+ "ambient": [
+  {
+   "id": "amb_ym_bridge_1",
+   "room": "ym_bridge",
+   "periods": [
+    "DAWN",
+    "DAY",
+    "DUSK"
+   ],
+   "requires": [],
+   "weight": 1,
+   "text": "amb_ym_bridge_1",
+   "era": "1.0A",
+   "src": "proposal"
+  },
+  {
+   "id": "amb_ym_gate_1",
+   "room": "ym_gate",
+   "periods": [],
+   "requires": [],
+   "weight": 1,
+   "text": "amb_ym_gate_1",
+   "era": "1.0A",
+   "src": "proposal"
+  }
+ ],
+ "art_requests": {
+  "units": [
+   {
+    "id": "n_ym_lingzhi",
+    "alias": "n_xx_pharmacist",
+    "prompt": "靈芝商人：風塵僕僕的中年行商，粗布短褂、背著空行囊，愁眉苦臉；同既有 NPC 立繪畫風（wuxia traveling herb merchant, dusty, worried）"
+   },
+   {
+    "id": "n_ym_qiangdao",
+    "alias": "n_bandit_chief",
+    "prompt": "強盜：敞著衣襟、手提鬼頭刀的關外強盜，絡腮鬍，凶相（frontier bandit with ghost-head saber, open-collared robe）"
+   },
+   {
+    "id": "m_ym_qiangdao",
+    "alias": "m_bandit",
+    "prompt": "同 n_ym_qiangdao，戰鬥立繪"
+   }
+  ],
+  "backgrounds": []
+ },
+ "test_plan": [
+  {
+   "quest": "q_xingxia",
+   "outcome": "default",
+   "save_reload_at": "s_return",
+   "path": [
+    "walk@ym_gate",
+    "talk@n_ym_lingzhi",
+    "choose@n_ym_lingzhi:n0:c_help",
+    "walk@ym_bridge",
+    "talk@n_ym_qiangdao",
+    "choose@n_ym_qiangdao:n0:c_ask",
+    "choose@n_ym_qiangdao:n1:c_fight",
+    "fight:WIN",
+    "walk@ym_gate",
+    "talk@n_ym_lingzhi",
+    "choose@n_ym_lingzhi:n0:c_give"
+   ],
+   "expect": {
+    "items": {
+     "c_lingzhicao": 3,
+     "i_ym_baohe": 0
+    },
+    "fame": 5,
+    "lilian": 5,
+    "morality": 0
+   }
+  },
+  {
+   "quest": "q_xingxia",
+   "outcome": "default",
+   "note": "逃跑或戰敗不算完成，重談強盜可再打",
+   "path": [
+    "walk@ym_gate",
+    "talk@n_ym_lingzhi",
+    "choose@n_ym_lingzhi:n0:c_help",
+    "walk@ym_bridge",
+    "talk@n_ym_qiangdao",
+    "choose@n_ym_qiangdao:n0:c_ask",
+    "choose@n_ym_qiangdao:n1:c_fight",
+    "fight:FLEE",
+    "expect_stage:s_bandit",
+    "talk@n_ym_qiangdao",
+    "choose@n_ym_qiangdao:n0:c_ask",
+    "choose@n_ym_qiangdao:n1:c_fight",
+    "fight:WIN",
+    "walk@ym_gate",
+    "talk@n_ym_lingzhi",
+    "choose@n_ym_lingzhi:n0:c_give"
+   ],
+   "expect": {
+    "items": {
+     "c_lingzhicao": 3
+    },
+    "fame": 5,
+    "lilian": 5
+   }
+  },
+  {
+   "quest": "q_xingxia",
+   "outcome": "default",
+   "note": "可重複：完成後立刻再接被冷卻擋（quest_cooldown）；wait:days=1 後再接，offer 出現 c_again",
+   "path": [
+    "walk@ym_gate",
+    "talk@n_ym_lingzhi",
+    "choose@n_ym_lingzhi:n0:c_help",
+    "walk@ym_bridge",
+    "talk@n_ym_qiangdao",
+    "choose@n_ym_qiangdao:n0:c_ask",
+    "choose@n_ym_qiangdao:n1:c_fight",
+    "fight:WIN",
+    "walk@ym_gate",
+    "talk@n_ym_lingzhi",
+    "choose@n_ym_lingzhi:n0:c_give",
+    "talk@n_ym_lingzhi",
+    "expect_menu:COOLDOWN",
+    "wait:days=1",
+    "talk@n_ym_lingzhi",
+    "choose@n_ym_lingzhi:n0:c_again",
+    "choose@n_ym_lingzhi:n_again:c_help",
+    "walk@ym_bridge",
+    "talk@n_ym_qiangdao",
+    "choose@n_ym_qiangdao:n0:c_ask",
+    "choose@n_ym_qiangdao:n1:c_fight",
+    "fight:WIN",
+    "walk@ym_gate",
+    "talk@n_ym_lingzhi",
+    "choose@n_ym_lingzhi:n0:c_give"
+   ],
+   "expect": {
+    "items": {
+     "c_lingzhicao": 6
+    },
+    "fame": 10,
+    "lilian": 10,
+    "done_n": 2
+   }
+  }
+ ],
+ "todo_verify": [
+  "【待考證】靈芝草的效果與售價：研究查無；本碎片用回氣 250、價 120【設計提案】。",
+  "【待考證】名聲 +5、江湖歷練 +5 的數值只見於 2019 jy2001／jytzst（src later）；2001 other.htm 只說「另加名聲和歷練」。",
+  "【待考證】強盜是否只打一場、強度多少：「打一場，打贏」只見於 2019+；一場、3000 級距【設計提案】。",
+  "【待考證】重複冷卻長度：原作只說「每次」，1 遊戲日【設計提案】（STORY_PLAN §11 #10）。",
+  "【待考證】「行俠仗義」（2001-07-18 事件名）與「靈芝商人任務」（other.htm）是同一事件：依內容推定，沒有來源明說。",
+  "【待考證】強盜位置「靈芝商人右下橋附近」換成關外橋邊 SE：2001 地圖 y 軸方向未證實（研究前言）。",
+  "【待考證】原作有沒有「寶盒丟失」或任務失敗的處理：查無；本碎片不設失敗，可放棄重接。",
+  "【待考證】全部對白、選項文字：原作無逐字對白留存（研究），全為【設計提案】改寫。",
+  "未做（研究有、非本任務）：強盜下方的「淫魔」、雁門關外右下的苗人鳳；馬王洞（2019）、史沖（2022）屬後期，不做。"
+ ],
+ "owner_decisions": [
+  "D8：獎勵 靈芝草 ×3 + 名聲 5 + 歷練 5；可重複 repeat {max:0, cooldown_days:1}；拿掉 GDD 善惡 +20。",
+  "D2：本任務是明確寫「每次」的可重複任務。",
+  "D16：雁門關小地區（ym_gate 靈芝商人、ym_bridge 強盜）由 _world 碎片建立，本碎片只放 NPC。",
+  "D18：歷練走新欄位 lilian。",
+  "D19：party_credit true；同場隊友若也在 s_bandit 階段，各自完成 FIGHT、各自拿到寶盒。",
+  "新預設【設計提案】：寶盒在打贏後由階段 on_complete 的 give 給（不走怪物掉落），避免 drops chance 單位（STORY_PLAN 寫 100、現有資料用 1.0）的歧義。",
+  "新預設【設計提案】：強盜沒有 FIGHT 服務，平時交談只有一句狠話；只有在 s_bandit 階段經任務對話才開打（符合 §2.2「只在 q_xingxia 目前步驟時可打」）。戰鬥可逃；逃或敗都留在 s_bandit，可重打。",
+  "新預設【設計提案】：交還寶盒用 TALK + take + complete（take 不夠時選項不執行），不用 DELIVER，流程定義明確。",
+  "新預設【設計提案】：重複接時 offer 多一個只在完成過後出現的選項「怎麼，又給人搶了？」（hide_if_locked）。",
+  "新預設：@NIGHT 閒聊交給 _ambient 碎片（§5.3、§7.3），本碎片不寫，避免 text_templates id 跨碎片重複。"
+ ],
+ "notes": "STORY_PLAN 缺漏：(1) §3.4／§8.5 #5 寫任務掉落 chance 100，但現有 monsters.json 的 chance 是 0～1 小數；本碎片不用掉落，寶盒由 on_complete give 給。(2) FIGHT 目標帶 npc＋dialogue（§4.1「任何階段的任何目標都能指定 NPC」），開打由對話選項的 fight 動作（obj o_fight）。(3) 任務列多了 alias、repeat_src、repeat_src_note 與節點／目標上的 src、src_note 欄位，引擎應忽略。(4) test_plan 用了 expect_stage:、expect_menu: 兩個額外驗證步驟，story bot 不認得可略過。依賴 _world 碎片的房間：ym_gate、ym_bridge（地區 yanmen）。"
+}

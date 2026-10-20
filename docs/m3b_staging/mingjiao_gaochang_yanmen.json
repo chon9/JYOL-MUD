@@ -1,0 +1,3053 @@
+{
+ "fragment": "mingjiao_gaochang_yanmen",
+ "version": 1,
+ "author": "WP-C-mingjiao_gaochang_yanmen",
+ "sects": [],
+ "sect_rules": [],
+ "sect_ranks": [],
+ "regions": [
+  {
+   "id": "mawang",
+   "name": "馬王洞",
+   "type": "DUNGEON",
+   "city": "xixia",
+   "map": "res://data/maps/mawang.json",
+   "world_pos": [
+    820,
+    96
+   ],
+   "suggested_xp": [
+    20000,
+    60000
+   ],
+   "pk_allowed": true,
+   "birth_allowed": false,
+   "birth_room": "",
+   "night_closed": [],
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "研究 馬王洞：2002-01-26 山洞介紹（冰之蒼穹）「馬王洞在雁門關附近，從靈芝商人沿山往左找，7 隻馬王掉黃甲」＋2001-11-12「（丐幫）那兒離馬王洞不遠」→ 雁門關口西側（M3B_PLAN E4）；兩來源皆未能重抓【待考證】；鐵心網 FAQ「7 隻馬王會掉黃甲」【已證實】"
+  },
+  {
+   "id": "gaochang_road",
+   "name": "高昌古道",
+   "type": "WILD",
+   "city": "xixia",
+   "map": "res://data/maps/gaochang_road.json",
+   "world_pos": [
+    130,
+    70
+   ],
+   "suggested_xp": [
+    0,
+    10000
+   ],
+   "pk_allowed": true,
+   "birth_allowed": false,
+   "birth_room": "",
+   "night_closed": [],
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "M3B_PLAN §3.1：天山道與高昌之間內插【設計提案】；駝隊歇腳處是休息點（§3.4 規則 6）"
+  },
+  {
+   "id": "gaochang",
+   "name": "高昌",
+   "type": "WILD",
+   "city": "xixia",
+   "map": "res://data/maps/gaochang.json",
+   "world_pos": [
+    16,
+    84
+   ],
+   "suggested_xp": [
+    0,
+    30000
+   ],
+   "pk_allowed": true,
+   "birth_allowed": false,
+   "birth_room": "",
+   "night_closed": [],
+   "era": "1.0A",
+   "src": "verified",
+   "src_note": "研究 高昌：gaoshou/23 香香公主、霍青桐 391,2005「高昌迷宮外左方」→ [16,84]；計老人、李文秀「高昌左下方小屋」；jyfree jy1_2 場景表「高昌室外景、高昌計老人（室內、室外）、計老人居外景」【已證實】"
+  },
+  {
+   "id": "gaochang_maze",
+   "name": "高昌迷宮",
+   "type": "DUNGEON",
+   "city": "xixia",
+   "map": "res://data/maps/gaochang_maze.json",
+   "world_pos": [
+    12,
+    80
+   ],
+   "suggested_xp": [
+    30000,
+    200000
+   ],
+   "pk_allowed": true,
+   "birth_allowed": false,
+   "birth_room": "",
+   "night_closed": [],
+   "era": "1.0A",
+   "src": "verified",
+   "src_note": "研究 高昌：jyfree jy1_2 場景表「高昌迷宮1–6」【已證實】；1.0A 已存在【待考證：2001-09-02 峨嵋攻略與 n399 未重抓】"
+  }
+ ],
+ "maps": {
+  "mawang": {
+   "region_id": "mawang",
+   "era": "1.0A",
+   "src": "proposal",
+   "desc": "雁門關口西邊靠山的一個深洞，洞裡馬糞腥臊、人聲雜沓，一夥馬賊奉著幾個叫「馬王」的頭子在此落腳。",
+   "escape_tiles_hint": 2,
+   "rooms": [
+    {
+     "id": "mw_mouth",
+     "name": "馬王洞口",
+     "desc": "山壁下一個黑黝黝的洞口，地上滿是雜亂的馬蹄印。往東回雁門關口，往北鑽進洞裡。",
+     "exits": [
+      {
+       "dir": "E",
+       "to": "ym_gate"
+      },
+      {
+       "dir": "N",
+       "to": "mw_cave1"
+      }
+     ],
+     "npcs": [],
+     "features": [],
+     "requires": [],
+     "encounter": {
+      "rate": 0.1,
+      "table": [
+       {
+        "monster": "m_mw_mazei",
+        "w": 100,
+        "count": [
+         1,
+         1
+        ]
+       }
+      ]
+     },
+     "src": "proposal",
+     "src_note": "研究：2002-01「從靈芝商人沿山往左找」→ 關口西側；房間配置【設計提案】"
+    },
+    {
+     "id": "mw_cave1",
+     "name": "拴馬石洞",
+     "desc": "洞裡寬得能拴上幾十匹馬，石壁釘滿鐵環，幾匹瘦馬不安地刨著蹄子。往南出洞口，往北洞更深。",
+     "exits": [
+      {
+       "dir": "S",
+       "to": "mw_mouth"
+      },
+      {
+       "dir": "N",
+       "to": "mw_cave2"
+      }
+     ],
+     "npcs": [],
+     "features": [],
+     "requires": [],
+     "encounter": {
+      "rate": 0.3,
+      "table": [
+       {
+        "monster": "m_mw_mazei",
+        "w": 65,
+        "count": [
+         1,
+         2
+        ]
+       },
+       {
+        "monster": "m_mw_mawang",
+        "w": 35,
+        "count": [
+         1,
+         1
+        ]
+       }
+      ]
+     },
+     "src": "proposal"
+    },
+    {
+     "id": "mw_cave2",
+     "name": "馬賊窩",
+     "desc": "火堆旁散著酒罈、骨頭和搶來的包袱，幾個馬賊圍著擲骰子。往南回拴馬石洞，往北是洞底。",
+     "exits": [
+      {
+       "dir": "S",
+       "to": "mw_cave1"
+      },
+      {
+       "dir": "N",
+       "to": "mw_deep"
+      }
+     ],
+     "npcs": [],
+     "features": [],
+     "requires": [],
+     "encounter": {
+      "rate": 0.3,
+      "table": [
+       {
+        "monster": "m_mw_mazei",
+        "w": 40,
+        "count": [
+         1,
+         2
+        ]
+       },
+       {
+        "monster": "m_mw_mawang",
+        "w": 60,
+        "count": [
+         1,
+         1
+        ]
+       }
+      ]
+     },
+     "src": "proposal"
+    },
+    {
+     "id": "mw_deep",
+     "name": "馬王洞底",
+     "desc": "洞底鋪著幾張虎皮，三個身披黃甲的彪形大漢踞坐其上，正是這夥馬賊的首領「馬王」。往南退回馬賊窩。",
+     "exits": [
+      {
+       "dir": "S",
+       "to": "mw_cave2"
+      }
+     ],
+     "npcs": [],
+     "features": [],
+     "requires": [],
+     "src": "proposal",
+     "src_note": "研究：「7 隻馬王」→ 洞底固定 3 隻（q_ym_mawang 的房間動作戰）＋拴馬石洞、馬賊窩遇敵（M3B_PLAN §8.3）"
+    }
+   ]
+  },
+  "gaochang_road": {
+   "region_id": "gaochang_road",
+   "era": "1.0A",
+   "src": "proposal",
+   "desc": "從天山腳下的雪原往西南，一條駝隊踩出來的古道穿過戈壁，通往沙漠中的高昌。",
+   "escape_tiles_hint": 2,
+   "rooms": [
+    {
+     "id": "gc_road1",
+     "name": "古道沙梁",
+     "desc": "雪原到這裡漸漸變成碎石沙梁，地上留著駝隊的蹄印。往東北回雪原小徑，往西沿古道走。",
+     "exits": [
+      {
+       "dir": "NE",
+       "to": "ts_road1"
+      },
+      {
+       "dir": "W",
+       "to": "gc_road2"
+      }
+     ],
+     "npcs": [],
+     "features": [],
+     "requires": [],
+     "encounter": {
+      "rate": 0.1,
+      "table": [
+       {
+        "monster": "m_rabbit",
+        "w": 50,
+        "count": [
+         1,
+         1
+        ]
+       },
+       {
+        "monster": "m_bigrabbit",
+        "w": 40,
+        "count": [
+         1,
+         1
+        ]
+       },
+       {
+        "monster": "m_wolf",
+        "w": 10,
+        "count": [
+         1,
+         1
+        ]
+       }
+      ]
+     },
+     "src": "proposal"
+    },
+    {
+     "id": "gc_road2",
+     "name": "駝隊歇腳處",
+     "desc": "幾頂氈帳圍著一口苦水井，往來高昌的駝隊都在這裡歇腳飲水。往東、往西都是古道。",
+     "exits": [
+      {
+       "dir": "E",
+       "to": "gc_road1"
+      },
+      {
+       "dir": "W",
+       "to": "gc_road3"
+      }
+     ],
+     "npcs": [
+      "n_gc_tuodui"
+     ],
+     "features": [],
+     "requires": [],
+     "src": "proposal"
+    },
+    {
+     "id": "gc_road3",
+     "name": "戈壁古道",
+     "desc": "四下一片礫石戈壁，熱風捲著沙子打在臉上，遠處看得見古城的殘垣。往東回駝隊歇腳處，往西就到高昌。",
+     "exits": [
+      {
+       "dir": "E",
+       "to": "gc_road2"
+      },
+      {
+       "dir": "W",
+       "to": "gc_outside"
+      }
+     ],
+     "npcs": [],
+     "features": [],
+     "requires": [],
+     "encounter": {
+      "rate": 0.12,
+      "table": [
+       {
+        "monster": "m_bigrabbit",
+        "w": 55,
+        "count": [
+         1,
+         1
+        ]
+       },
+       {
+        "monster": "m_wolf",
+        "w": 30,
+        "count": [
+         1,
+         1
+        ]
+       },
+       {
+        "monster": "m_xh_scorpion",
+        "w": 15,
+        "count": [
+         1,
+         1
+        ]
+       }
+      ]
+     },
+     "src": "proposal"
+    }
+   ]
+  },
+  "gaochang": {
+   "region_id": "gaochang",
+   "era": "1.0A",
+   "src": "verified",
+   "desc": "沙漠中的高昌古城早已荒廢，斷垣殘壁之間只剩幾戶人家，和一座傳說藏著高昌國寶物的迷宮。",
+   "escape_tiles_hint": 2,
+   "rooms": [
+    {
+     "id": "gc_outside",
+     "name": "高昌迷宮外",
+     "desc": "斷牆圍著半埋在黃沙裡的古城門，門洞黑沉沉的，便是高昌迷宮的入口。往東回戈壁古道，往北進迷宮，西南方有間小屋。",
+     "exits": [
+      {
+       "dir": "E",
+       "to": "gc_road3"
+      },
+      {
+       "dir": "SW",
+       "to": "gc_jihut_out"
+      },
+      {
+       "dir": "N",
+       "to": "gc_maze1"
+      }
+     ],
+     "npcs": [
+      "n_gc_xiangxiang",
+      "n_gc_huoqingtong"
+     ],
+     "features": [],
+     "requires": [],
+     "encounter": {
+      "rate": 0.1,
+      "table": [
+       {
+        "monster": "m_bigrabbit",
+        "w": 50,
+        "count": [
+         1,
+         1
+        ]
+       },
+       {
+        "monster": "m_wolf",
+        "w": 35,
+        "count": [
+         1,
+         1
+        ]
+       },
+       {
+        "monster": "m_xh_scorpion",
+        "w": 15,
+        "count": [
+         1,
+         1
+        ]
+       }
+      ]
+     },
+     "src": "verified",
+     "src_note": "研究：jyfree jy1_2「高昌室外景」；香香公主、霍青桐「高昌迷宮外左方」（gaoshou/23）"
+    },
+    {
+     "id": "gc_jihut_out",
+     "name": "計老人居外",
+     "desc": "沙丘背風處圍著一圈籬笆，院裡曬著羊皮，一匹老白馬拴在柱上。往東北回迷宮外，往南進屋。",
+     "exits": [
+      {
+       "dir": "NE",
+       "to": "gc_outside"
+      },
+      {
+       "dir": "S",
+       "to": "gc_jihut"
+      }
+     ],
+     "npcs": [],
+     "features": [],
+     "requires": [],
+     "encounter": {
+      "rate": 0.05,
+      "table": [
+       {
+        "monster": "m_rabbit",
+        "w": 100,
+        "count": [
+         1,
+         1
+        ]
+       }
+      ]
+     },
+     "src": "verified",
+     "src_note": "研究：jyfree jy1_2「計老人居外景」；白馬是《白馬嘯西風》典故【設計提案】"
+    },
+    {
+     "id": "gc_jihut",
+     "name": "計老人居",
+     "desc": "小屋收拾得乾乾淨淨，爐上煮著奶茶，牆上掛著一把舊胡琴。往北出門。",
+     "exits": [
+      {
+       "dir": "N",
+       "to": "gc_jihut_out"
+      }
+     ],
+     "npcs": [
+      "n_gc_jilaoren",
+      "n_gc_liwenxiu"
+     ],
+     "features": [],
+     "requires": [],
+     "safe": true,
+     "src": "verified",
+     "src_note": "研究：jyfree jy1_2「高昌計老人（室內）」；gaoshou/23 計老人、李文秀「高昌左下方小屋」"
+    }
+   ]
+  },
+  "gaochang_maze": {
+   "region_id": "gaochang_maze",
+   "era": "1.0A",
+   "src": "verified",
+   "desc": "古高昌國留在黃沙底下的迷宮，甬道錯綜，暗處守著不知誰造的機關人，據說最深處藏著高昌國的寶物。",
+   "escape_tiles_hint": 2,
+   "rooms": [
+    {
+     "id": "gc_maze1",
+     "name": "迷宮甬道",
+     "desc": "黃土夯成的甬道又窄又低，兩旁壁上畫著褪了色的佛像。往南出迷宮，往北深入。",
+     "exits": [
+      {
+       "dir": "S",
+       "to": "gc_outside"
+      },
+      {
+       "dir": "N",
+       "to": "gc_maze2"
+      }
+     ],
+     "npcs": [],
+     "features": [],
+     "requires": [],
+     "encounter": {
+      "rate": 0.3,
+      "table": [
+       {
+        "monster": "m_gc_jiguanren",
+        "w": 100,
+        "count": [
+         1,
+         1
+        ]
+       }
+      ]
+     },
+     "src": "verified",
+     "src_note": "jy1_2「高昌迷宮1」；機關人（gaoshou/25）；房間文字【設計提案】"
+    },
+    {
+     "id": "gc_maze2",
+     "name": "機關廊",
+     "desc": "地上的石板一踩便咯咯作響，牆縫裡伸出銅管，不知通往何處。往南、往北都是甬道。",
+     "exits": [
+      {
+       "dir": "S",
+       "to": "gc_maze1"
+      },
+      {
+       "dir": "N",
+       "to": "gc_maze3"
+      }
+     ],
+     "npcs": [],
+     "features": [],
+     "requires": [],
+     "encounter": {
+      "rate": 0.35,
+      "table": [
+       {
+        "monster": "m_gc_jiguanren",
+        "w": 85,
+        "count": [
+         1,
+         1
+        ]
+       },
+       {
+        "monster": "m_gc_ezei",
+        "w": 15,
+        "count": [
+         1,
+         1
+        ]
+       }
+      ]
+     },
+     "src": "verified",
+     "src_note": "jy1_2「高昌迷宮2」；惡賊：2001-09-02「連環殺人案」目標之一在高昌迷宮（研究 替天行道，未重抓）"
+    },
+    {
+     "id": "gc_maze3",
+     "name": "殘佛殿",
+     "desc": "一座塌了半邊的佛殿，佛像的頭顱滾在地上，殿角堆著不知哪年的白骨。往南、往北都是甬道。",
+     "exits": [
+      {
+       "dir": "S",
+       "to": "gc_maze2"
+      },
+      {
+       "dir": "N",
+       "to": "gc_maze4"
+      }
+     ],
+     "npcs": [],
+     "features": [],
+     "requires": [],
+     "encounter": {
+      "rate": 0.35,
+      "table": [
+       {
+        "monster": "m_gc_jiguanren",
+        "w": 85,
+        "count": [
+         1,
+         2
+        ]
+       },
+       {
+        "monster": "m_gc_ezei",
+        "w": 15,
+        "count": [
+         1,
+         1
+        ]
+       }
+      ]
+     },
+     "src": "verified",
+     "src_note": "jy1_2「高昌迷宮3」"
+    },
+    {
+     "id": "gc_maze4",
+     "name": "銅鏡石室",
+     "desc": "石室四壁嵌著銅鏡，映出好幾個你，還有幾個不是你的影子在移動。往南、往北都是甬道。",
+     "exits": [
+      {
+       "dir": "S",
+       "to": "gc_maze3"
+      },
+      {
+       "dir": "N",
+       "to": "gc_maze5"
+      }
+     ],
+     "npcs": [],
+     "features": [],
+     "requires": [],
+     "encounter": {
+      "rate": 0.35,
+      "table": [
+       {
+        "monster": "m_gc_jiguanren",
+        "w": 60,
+        "count": [
+         1,
+         2
+        ]
+       },
+       {
+        "monster": "m_gc_jiguanren2",
+        "w": 40,
+        "count": [
+         1,
+         1
+        ]
+       }
+      ]
+     },
+     "src": "verified",
+     "src_note": "jy1_2「高昌迷宮4」"
+    },
+    {
+     "id": "gc_maze5",
+     "name": "迴旋石階",
+     "desc": "石階繞著一根巨柱往下盤旋，越往下越冷，機括聲在腳底隆隆作響。往南回銅鏡石室，往北再下一層。",
+     "exits": [
+      {
+       "dir": "S",
+       "to": "gc_maze4"
+      },
+      {
+       "dir": "N",
+       "to": "gc_maze6"
+      }
+     ],
+     "npcs": [],
+     "features": [],
+     "requires": [],
+     "encounter": {
+      "rate": 0.4,
+      "table": [
+       {
+        "monster": "m_gc_jiguanren",
+        "w": 50,
+        "count": [
+         1,
+         2
+        ]
+       },
+       {
+        "monster": "m_gc_jiguanren2",
+        "w": 50,
+        "count": [
+         1,
+         1
+        ]
+       }
+      ]
+     },
+     "src": "verified",
+     "src_note": "jy1_2「高昌迷宮5」"
+    },
+    {
+     "id": "gc_maze6",
+     "name": "迷宮深處",
+     "desc": "石室裡堆滿了發霉的漢人書卷、瓷器和紡車，原來傳說中的高昌寶物不過如此。往南回迴旋石階。",
+     "exits": [
+      {
+       "dir": "S",
+       "to": "gc_maze5"
+      }
+     ],
+     "npcs": [],
+     "features": [],
+     "requires": [],
+     "encounter": {
+      "rate": 0.4,
+      "table": [
+       {
+        "monster": "m_gc_jiguanren",
+        "w": 30,
+        "count": [
+         1,
+         1
+        ]
+       },
+       {
+        "monster": "m_gc_jiguanren2",
+        "w": 70,
+        "count": [
+         1,
+         2
+        ]
+       }
+      ]
+     },
+     "src": "verified",
+     "src_note": "jy1_2「高昌迷宮6」；寶物是漢人器物：《白馬嘯西風》典故【設計提案】"
+    }
+   ]
+  }
+ },
+ "extra_rooms": {
+  "yanmen": [
+   {
+    "id": "ym_outside",
+    "name": "雁門關外",
+    "desc": "出了關是一望無際的荒原，北風捲著枯草，一個背負長劍的黃臉漢子獨自佇立風中。往西回關外橋邊。",
+    "exits": [
+     {
+      "dir": "W",
+      "to": "ym_bridge"
+     }
+    ],
+    "npcs": [
+     "n_ym_miaorenfeng"
+    ],
+    "features": [],
+    "requires": [],
+    "encounter": {
+     "rate": 0.1,
+     "table": [
+      {
+       "monster": "m_bigrabbit",
+       "w": 55,
+       "count": [
+        1,
+        1
+       ]
+      },
+      {
+       "monster": "m_wolf",
+       "w": 40,
+       "count": [
+        1,
+        1
+       ]
+      },
+      {
+       "monster": "m_bandit",
+       "w": 5,
+       "count": [
+        1,
+        1
+       ]
+      }
+     ]
+    },
+    "src": "verified",
+    "src_note": "研究：gaoshou/23 苗人鳳「雁門關外右下」；other.htm 稱「雁門關外的靈芝商人」→ 關口即關外；房間文字【設計提案】"
+   },
+   {
+    "id": "ym_stele",
+    "name": "刻字石碑",
+    "desc": "關內巷底立著一塊丈許高的大石碑，碑上刻滿了字，有一大片卻被人用利器刮得模糊難辨。往東回關內長街。",
+    "exits": [
+     {
+      "dir": "E",
+      "to": "ym_inner"
+     }
+    ],
+    "npcs": [
+     "n_ym_keshi"
+    ],
+    "features": [],
+    "requires": [],
+    "safe": true,
+    "src": "verified",
+    "src_note": "研究：other.htm 拓印「去雁門關，與在刻字石塊前的NPC講話」【已證實】；石塊在關內【設計提案】；字被刮去取材《天龍八部》蕭遠山石壁遺書被智光刮去【設計提案】"
+   }
+  ]
+ },
+ "exit_patches": [
+  {
+   "room": "ym_gate",
+   "add_exits": [
+    {
+     "dir": "W",
+     "to": "mw_mouth"
+    }
+   ],
+   "desc": "雄關聳立，城樓上旌旗獵獵。關口邊擺著幾個商販的攤子。往南回雁門古道，往北進關，東南出關有座小橋。關口西邊靠山處有個黑黝黝的山洞。"
+  },
+  {
+   "room": "ym_bridge",
+   "add_exits": [
+    {
+     "dir": "E",
+     "to": "ym_outside"
+    }
+   ],
+   "desc": "關外一座木橋橫跨乾涸的河床，常有歹人在橋下埋伏過路的商旅。往西北回雁門關口，往南可以下到橋下的河床，往東是一望無際的關外荒原。"
+  },
+  {
+   "room": "ym_inner",
+   "add_exits": [
+    {
+     "dir": "W",
+     "to": "ym_stele"
+    }
+   ],
+   "desc": "關內一條長街，酒旗招展，戍邊的軍士與南來北往的豪客擠在一起喝酒。往南出關口，往西的巷底立著一塊刻字石碑。"
+  },
+  {
+   "room": "ts_road1",
+   "add_exits": [
+    {
+     "dir": "SW",
+     "to": "gc_road1"
+    }
+   ],
+   "desc": "白茫茫的雪原上只有一條踩實的小徑向西延伸，偶爾有雪狐從雪堆裡探出頭來。往東回西夏北郊的雪地；西南方有條駝隊踩出的古道，通往高昌。"
+  }
+ ],
+ "npcs": [
+  {
+   "id": "n_mj_fanyao",
+   "name": "范遙",
+   "kind": "STORY",
+   "region": "xixia_north",
+   "room": "xn_slope",
+   "alignment": "NEUTRAL",
+   "talk": "talk_n_mj_fanyao",
+   "services": [],
+   "night_closed": false,
+   "desc": "面目醜陋、滿臉刀痕的中年頭陀，獨自坐在山坡的大石上俯瞰西夏城，對誰都不理不睬。",
+   "era": "1.0A",
+   "src": "verified",
+   "src_note": "研究 明教：gaoshou/23 明教右使范遙 7423,1323「西夏上方的山坡」【已證實】；2001-08-14「明教進入方法」（搏擊20、基內10…→ 范右使 → 趙敏 → 張無忌…）三天後 2001-08-17「明教=叛教?我要哭~!」證實是騙局：范遙連話都不跟她說；決戰光明頂官方也說不開放拜明教（juezhan/4）→ 沒有 JOIN、沒有任務（O11）；外貌取《倚天屠龍記》苦頭陀【設計提案】"
+  },
+  {
+   "id": "n_ym_miaorenfeng",
+   "name": "苗人鳳",
+   "kind": "STORY",
+   "region": "yanmen",
+   "room": "ym_outside",
+   "alignment": "GOOD",
+   "talk": "talk_n_ym_miaorenfeng",
+   "services": [],
+   "night_closed": false,
+   "desc": "黃臉長身的漢子，背負一柄長劍，神色落寞，人稱「金面佛」。",
+   "era": "1.0A",
+   "src": "verified",
+   "src_note": "研究 雁門關：gaoshou/23 苗人鳳「雁門關外右下」【已證實】；只對話（2001 無任務記載）；外貌取《雪山飛狐》【設計提案】"
+  },
+  {
+   "id": "n_ym_azhu",
+   "name": "阿朱",
+   "kind": "QUEST",
+   "region": "yanmen",
+   "room": "ym_inner",
+   "alignment": "GOOD",
+   "talk": "talk_n_ym_azhu",
+   "services": [
+    "QUEST"
+   ],
+   "night_closed": false,
+   "quests": [
+    "q_ym_xiaofeng"
+   ],
+   "desc": "俏麗靈巧的少女，一雙眼睛水汪汪的，總倚在關內土牆邊望著關外。",
+   "era": "1.0A",
+   "src": "verified",
+   "src_note": "研究 雁門關：gaoshou/23 胡斐、阿朱「雁門關內」【已證實】；other.htm「雁門關內的阿朱要你幫忙找蕭峰」；2001-10-05 易容（關外阿朱）無法重抓，不做【待考證】"
+  },
+  {
+   "id": "n_ym_keshi",
+   "name": "拓碑人",
+   "kind": "STORY",
+   "region": "yanmen",
+   "room": "ym_stele",
+   "alignment": "NEUTRAL",
+   "talk": "talk_n_ym_keshi",
+   "services": [],
+   "night_closed": false,
+   "desc": "乾瘦的老頭，腰間插著棕刷與墨拓包，整日守在石碑前。",
+   "era": "1.0A",
+   "src": "verified",
+   "src_note": "研究 雁門關：other.htm「刻字石塊前的NPC」【已證實存在、無名】；後期官方 index_jy3-3 名「石有田」【後期版】，本作沿用 2001 的無名稱呼"
+  },
+  {
+   "id": "n_gc_tuodui",
+   "name": "駝隊領隊",
+   "kind": "FUNC",
+   "region": "gaochang_road",
+   "room": "gc_road2",
+   "alignment": "NEUTRAL",
+   "talk": "talk_n_gc_tuodui",
+   "services": [
+    "INN",
+    "SHOP"
+   ],
+   "night_closed": false,
+   "inn_price": 15,
+   "shop": {
+    "items": [
+     "c_mantou",
+     "c_water",
+     "c_qiyao"
+    ]
+   },
+   "desc": "滿臉風沙的回人漢子，帶著駝隊往來高昌與天山之間，也讓過路人在氈帳裡歇一晚。",
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "M3B_PLAN §3.4 規則 6：gc_road2 休息點 INN 15 兩【設計提案】"
+  },
+  {
+   "id": "n_gc_xiangxiang",
+   "name": "香香公主",
+   "kind": "STORY",
+   "region": "gaochang",
+   "room": "gc_outside",
+   "alignment": "GOOD",
+   "talk": "talk_n_gc_xiangxiang",
+   "services": [],
+   "night_closed": false,
+   "desc": "天真爛漫的回部少女，肌膚勝雪，身上自有一股淡淡的幽香。",
+   "era": "1.0A",
+   "src": "verified",
+   "src_note": "研究 高昌：gaoshou/23「香相公主,霍青桐」（原文錯字）391,2005「高昌迷宮外左方」【已證實】；只對話"
+  },
+  {
+   "id": "n_gc_huoqingtong",
+   "name": "霍青桐",
+   "kind": "STORY",
+   "region": "gaochang",
+   "room": "gc_outside",
+   "alignment": "GOOD",
+   "talk": "talk_n_gc_huoqingtong",
+   "services": [],
+   "night_closed": false,
+   "desc": "英氣勃勃的回部女子，黃衫綠帶，腰插短劍，人稱「翠羽黃衫」。",
+   "era": "1.0A",
+   "src": "verified",
+   "src_note": "研究 高昌：gaoshou/23 霍青桐 391,2005「高昌迷宮外左方」【已證實】；只對話"
+  },
+  {
+   "id": "n_gc_jilaoren",
+   "name": "計老人",
+   "kind": "STORY",
+   "region": "gaochang",
+   "room": "gc_jihut",
+   "alignment": "NEUTRAL",
+   "talk": "talk_n_gc_jilaoren",
+   "services": [],
+   "night_closed": false,
+   "desc": "佝僂著背的漢人老頭，在大漠裡住了許多年，煮得一手好奶茶。",
+   "era": "1.0A",
+   "src": "verified",
+   "src_note": "研究 高昌：gaoshou/23 計老人「高昌左下方小屋」【已證實】；jyfree「高昌計老人」場景；對話內容【待考證】"
+  },
+  {
+   "id": "n_gc_liwenxiu",
+   "name": "李文秀",
+   "kind": "STORY",
+   "region": "gaochang",
+   "room": "gc_jihut",
+   "alignment": "GOOD",
+   "talk": "talk_n_gc_liwenxiu",
+   "services": [],
+   "night_closed": false,
+   "desc": "穿著哈薩克衣裳的漢人姑娘，眉目清秀，歌聲婉轉，眼神裡總帶著一點寂寞。",
+   "era": "1.0A",
+   "src": "verified",
+   "src_note": "研究 高昌：gaoshou/23 李文秀「高昌左下方小屋」【已證實】；只對話，內容取《白馬嘯西風》【待考證】"
+  }
+ ],
+ "masters": [],
+ "martial_arts": [
+  {
+   "id": "mon_mw_mawang",
+   "name": "馬王刀法",
+   "sect_id": "",
+   "category": "BLADE",
+   "base_skill": "basic_blade",
+   "difficulty": 0.9,
+   "tier": "BASIC",
+   "self_study_until": 0,
+   "self_study_cap": 0,
+   "party_size": 0,
+   "monster_only": true,
+   "requires": [],
+   "desc": "關外馬賊馬背上練出來的刀法，大開大闔。",
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "怪物專用；招名【設計提案】；威力比照 mon_kaishan",
+   "moves": [
+    {
+     "id": "mon_mw_mawang_1",
+     "name": "回馬刀",
+     "unlock_level": 1,
+     "power": 20,
+     "range": 1,
+     "aoe": "SINGLE",
+     "cost_inner": 0,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "move_blade_basic",
+     "src": "proposal"
+    },
+    {
+     "id": "mon_mw_mawang_2",
+     "name": "踏蹄斬",
+     "unlock_level": 50,
+     "power": 28,
+     "range": 1,
+     "aoe": "SINGLE",
+     "cost_inner": 0,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "move_blade_basic",
+     "src": "proposal"
+    }
+   ]
+  },
+  {
+   "id": "mon_gc_jiguan",
+   "name": "機關鐵臂",
+   "sect_id": "",
+   "category": "FIST",
+   "base_skill": "basic_fist",
+   "difficulty": 0.9,
+   "tier": "BASIC",
+   "self_study_until": 0,
+   "self_study_cap": 0,
+   "party_size": 0,
+   "monster_only": true,
+   "requires": [],
+   "desc": "高昌機關人的銅臂鐵拳，一下一下沉重無比，擋也擋不住。",
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "研究：鐵心網 FAQ「高昌機關人防禦還打 200+」【已證實】→ 用高威力招式與高臂力表達，不改戰鬥公式；數值【設計提案】，由 balance_sim 驗證",
+   "moves": [
+    {
+     "id": "mon_gc_jiguan_1",
+     "name": "鐵臂橫掃",
+     "unlock_level": 1,
+     "power": 34,
+     "range": 1,
+     "aoe": "SINGLE",
+     "cost_inner": 0,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "move_ram",
+     "src": "proposal"
+    },
+    {
+     "id": "mon_gc_jiguan_2",
+     "name": "連環鐵拳",
+     "unlock_level": 100,
+     "power": 44,
+     "range": 1,
+     "aoe": "SINGLE",
+     "cost_inner": 0,
+     "cost_jing": 0,
+     "status": "",
+     "status_chance": 0.0,
+     "flavor": "move_ram",
+     "src": "proposal"
+    }
+   ]
+  }
+ ],
+ "monsters": [
+  {
+   "id": "m_mw_mazei",
+   "name": "馬賊",
+   "short": "馬賊",
+   "kind": "EVIL_NPC",
+   "alignment": "EVIL",
+   "desc": "關外來去如風的馬賊，皮襖彎刀，下了馬一樣兇狠。（存在【設計提案】：「馬王」的嘍囉；數值：設計提案）",
+   "stats": {
+    "qi": 1000,
+    "neili": 120,
+    "jing": 250,
+    "str": 24,
+    "guts": 24,
+    "wit": 14,
+    "luck": 15,
+    "cal": 20,
+    "agi": 24,
+    "con": 24
+   },
+   "skills": {
+    "basic_dodge": 40,
+    "basic_parry": 38,
+    "basic_inner": 20
+   },
+   "arts": [
+    {
+     "art": "mon_blade",
+     "level": 40
+    }
+   ],
+   "weapon_type": "BLADE",
+   "weapon_power": 20,
+   "armor_power": 40,
+   "combat_xp_ref": 10000,
+   "combat_xp": 70,
+   "learn_points": 30,
+   "drops": [
+    {
+     "item": "c_qiyao",
+     "chance": 0.2,
+     "min": 1,
+     "max": 1
+    }
+   ],
+   "money": {
+    "min": 20,
+    "max": 80
+   },
+   "morality_on_kill": 3,
+   "killing_intent_on_kill": 5,
+   "ai": "melee_basic",
+   "no_rewards": false,
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "嘍囉【設計提案】，級距比照熊霸天（8000）與獨眼仁（12000）之間"
+  },
+  {
+   "id": "m_mw_mawang",
+   "name": "馬王",
+   "short": "馬王",
+   "kind": "ELITE",
+   "alignment": "EVIL",
+   "desc": "披著黃甲的馬賊頭子，一身橫肉，刀沉力猛，卻不怎麼靈活。（存在：已證實「7 隻馬王掉黃甲」；氣 2000：待考證；其餘：設計提案）",
+   "stats": {
+    "qi": 2000,
+    "neili": 250,
+    "jing": 450,
+    "str": 28,
+    "guts": 26,
+    "wit": 16,
+    "luck": 16,
+    "cal": 24,
+    "agi": 22,
+    "con": 30
+   },
+   "skills": {
+    "basic_dodge": 50,
+    "basic_parry": 55,
+    "basic_inner": 40,
+    "basic_blade": 50
+   },
+   "arts": [
+    {
+     "art": "mon_mw_mawang",
+     "level": 55
+    }
+   ],
+   "weapon_type": "BLADE",
+   "weapon_power": 30,
+   "armor_power": 55,
+   "combat_xp_ref": 30000,
+   "combat_xp": 160,
+   "learn_points": 70,
+   "drops": [
+    {
+     "item": "a_huangjia",
+     "chance": 0.15,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "item": "c_qiyao",
+     "chance": 0.5,
+     "min": 1,
+     "max": 1
+    }
+   ],
+   "money": {
+    "min": 80,
+    "max": 200
+   },
+   "morality_on_kill": 5,
+   "killing_intent_on_kill": 5,
+   "ai": "melee_basic",
+   "no_rewards": false,
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "研究：鐵心網 FAQ「7 隻馬王會掉黃甲」【已證實】；17173 gaoshou/25 只有「馬賊王｜弱｜黃罩甲+35｜2000｜武當｜18」→ 馬王可能是馬賊王的簡稱，氣 2000 取它【待考證】；「弱」→ 攻擊偏低、氣多；級距 30000【設計提案】"
+  },
+  {
+   "id": "m_gc_jiguanren",
+   "name": "機關人",
+   "short": "機關人",
+   "kind": "ELITE",
+   "alignment": "NEUTRAL",
+   "desc": "古高昌國工匠造的木身銅臂機關人，不知疲倦也不知疼痛，每一拳都打得人骨頭發麻。（存在、氣 3000：已證實；其餘：設計提案）",
+   "stats": {
+    "qi": 3000,
+    "neili": 0,
+    "jing": 999,
+    "str": 40,
+    "guts": 30,
+    "wit": 5,
+    "luck": 5,
+    "cal": 40,
+    "agi": 18,
+    "con": 40
+   },
+   "skills": {
+    "basic_dodge": 30,
+    "basic_parry": 70,
+    "basic_inner": 0,
+    "basic_fist": 90
+   },
+   "arts": [
+    {
+     "art": "mon_gc_jiguan",
+     "level": 90
+    }
+   ],
+   "weapon_type": "FIST",
+   "weapon_power": 0,
+   "armor_power": 80,
+   "combat_xp_ref": 60000,
+   "combat_xp": 220,
+   "learn_points": 80,
+   "drops": [
+    {
+     "item": "r_gc_lingjian",
+     "chance": 0.3,
+     "min": 1,
+     "max": 1
+    }
+   ],
+   "money": {},
+   "morality_on_kill": 0,
+   "killing_intent_on_kill": 0,
+   "ai": "melee_basic",
+   "no_rewards": false,
+   "era": "1.0A",
+   "src": "verified",
+   "src_note": "研究：gaoshou/25「机关人｜中｜--｜3000｜灵鹫｜27」（地點欄寫靈鷲，視為誤植）【已證實 3000】；GDD 20 萬氣作廢（E5）；「防禦還打 200+」→ 高臂力、高威力；級距 60000【設計提案】"
+  },
+  {
+   "id": "m_gc_jiguanren2",
+   "name": "銅甲機關人",
+   "short": "銅甲機關人",
+   "kind": "ELITE",
+   "alignment": "NEUTRAL",
+   "desc": "迷宮深層的機關人，通身包著銅甲，比上層的更加沉重兇猛。（設計提案）",
+   "stats": {
+    "qi": 4500,
+    "neili": 0,
+    "jing": 999,
+    "str": 44,
+    "guts": 32,
+    "wit": 5,
+    "luck": 5,
+    "cal": 44,
+    "agi": 18,
+    "con": 45
+   },
+   "skills": {
+    "basic_dodge": 30,
+    "basic_parry": 85,
+    "basic_inner": 0,
+    "basic_fist": 110
+   },
+   "arts": [
+    {
+     "art": "mon_gc_jiguan",
+     "level": 110
+    }
+   ],
+   "weapon_type": "FIST",
+   "weapon_power": 0,
+   "armor_power": 95,
+   "combat_xp_ref": 120000,
+   "combat_xp": 380,
+   "learn_points": 140,
+   "drops": [
+    {
+     "item": "r_gc_lingjian",
+     "chance": 0.5,
+     "min": 1,
+     "max": 2
+    }
+   ],
+   "money": {},
+   "morality_on_kill": 0,
+   "killing_intent_on_kill": 0,
+   "ai": "melee_basic",
+   "no_rewards": false,
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "M3B_PLAN §8.3：4–6 層另有加強型；名稱與數值【設計提案】（原作各層怪物不詳【待考證】）"
+  },
+  {
+   "id": "m_gc_ezei",
+   "name": "高昌惡賊",
+   "short": "惡賊",
+   "kind": "EVIL_NPC",
+   "alignment": "EVIL",
+   "desc": "躲進高昌迷宮避風頭的兇徒，身上背著好幾條人命。（存在：研究「連環殺人案」目標之一；數值：設計提案）",
+   "stats": {
+    "qi": 1500,
+    "neili": 200,
+    "jing": 400,
+    "str": 26,
+    "guts": 28,
+    "wit": 18,
+    "luck": 15,
+    "cal": 22,
+    "agi": 26,
+    "con": 26
+   },
+   "skills": {
+    "basic_dodge": 50,
+    "basic_parry": 48,
+    "basic_inner": 30,
+    "basic_blade": 50
+   },
+   "arts": [
+    {
+     "art": "mon_blade",
+     "level": 50
+    }
+   ],
+   "weapon_type": "BLADE",
+   "weapon_power": 30,
+   "armor_power": 45,
+   "combat_xp_ref": 25000,
+   "combat_xp": 120,
+   "learn_points": 50,
+   "drops": [
+    {
+     "item": "c_qiyao",
+     "chance": 0.3,
+     "min": 1,
+     "max": 1
+    }
+   ],
+   "money": {
+    "min": 50,
+    "max": 150
+   },
+   "morality_on_kill": 10,
+   "killing_intent_on_kill": 5,
+   "ai": "melee_basic",
+   "no_rewards": false,
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "研究 替天行道：2001-09-02「連環殺人案」四目標含「高昌迷宮惡賊」（未重抓）；q_em_lianhuan 當時因高昌未做而略過，本列先放在迷宮遇敵，是否補進該任務由整合者決定（notes）"
+  }
+ ],
+ "items": [
+  {
+   "id": "a_huangjia",
+   "name": "黃甲",
+   "tab": "ARMOR",
+   "slot": "ARMOR",
+   "atk": 0,
+   "def": 30,
+   "weight": 8,
+   "price": 1500,
+   "stack": 1,
+   "spoil_days": 0,
+   "effects": [],
+   "usable": false,
+   "usable_in_battle": false,
+   "no_sell": false,
+   "quest_item": false,
+   "desc": "關外馬賊頭子身上剝下來的黃銅鱗甲，沉甸甸的，刀砍上去鏗鏗作響。",
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "研究：鐵心網 FAQ「7 隻馬王會掉黃甲」【已證實存在】；防具強度 30 沿用 GDD §9 提案；價格、重量【設計提案】；與 gaibang 碎片的黃罩甲（a_jcn_huangzhaojia，馬賊王 +35）可能是同一件【待考證】"
+  },
+  {
+   "id": "r_gc_lingjian",
+   "name": "機關零件",
+   "tab": "MATERIAL",
+   "slot": "",
+   "atk": 0,
+   "def": 0,
+   "weight": 1,
+   "price": 80,
+   "stack": 50,
+   "spoil_days": 0,
+   "effects": [],
+   "usable": false,
+   "usable_in_battle": false,
+   "no_sell": false,
+   "quest_item": false,
+   "desc": "從高昌機關人身上拆下來的銅軸、鐵簧和齒輪，做工精巧，鐵匠鋪肯出價收。",
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "GDD §7.2 m_gc_robot 掉「機關零件」【設計提案】；只是賣錢的戰利品"
+  },
+  {
+   "id": "i_ym_tuoyin",
+   "name": "拓印",
+   "tab": "OTHER",
+   "slot": "",
+   "atk": 0,
+   "def": 0,
+   "weight": 1,
+   "price": 0,
+   "stack": 1,
+   "spoil_days": 0,
+   "effects": [],
+   "usable": false,
+   "usable_in_battle": false,
+   "no_sell": true,
+   "quest_item": true,
+   "desc": "從雁門關刻字石碑上拓下來的麻布，黑底白字，有一大片字跡被刮得只剩模糊的刀痕。",
+   "era": "1.0A",
+   "src": "verified",
+   "src_note": "研究：other.htm「完成拓印，再把拓印帶回大理給白勇」【已證實】；外觀【設計提案】"
+  }
+ ],
+ "item_patches": [],
+ "shop_patches": [],
+ "npc_links": [
+  {
+   "npc": "n_lj_baiyong",
+   "add_quests": [
+    "q_ym_tuoyin"
+   ]
+  },
+  {
+   "npc": "n_xx_qiaofeng",
+   "add_quests": [
+    "q_ym_douji"
+   ]
+  },
+  {
+   "npc": "n_ym_hufei",
+   "add_quests": [
+    "q_ym_mawang"
+   ]
+  }
+ ],
+ "quests": [
+  {
+   "id": "q_ym_tuoyin",
+   "name": "雁門關拓印",
+   "chapter": "雁門關・拓印",
+   "group": "mingjiao_gaochang_yanmen",
+   "giver": "n_lj_baiyong",
+   "era": "1.0A",
+   "src": "verified",
+   "dialogue_src": "proposal",
+   "src_note": "研究 雁門關：17173 other.htm（約 2001-08～09）「你要買兩個麻布，兩個焦炭去雁門關，與在刻字石塊前的NPC講話，完成拓印，再把拓印帶回大理給白勇」（觸發、獎勵「不詳」）【已證實】；後期官方 index_jy3-3：白勇在大理食堂前、卯時、石有田、歷練 +5【後期版】。本作：2001 沒寫時辰 → 不限時辰；白勇託付的理由（霍島主）【設計提案】",
+   "text": "大理五華樓前的白勇託你帶兩張麻布、兩塊焦炭到雁門關，請刻字石碑前的拓碑人拓一份碑文，再把拓印帶回大理。",
+   "requires": [],
+   "give_items": [],
+   "repeat": {
+    "max": 0,
+    "cooldown_days": 1
+   },
+   "repeat_src": "proposal",
+   "repeat_src_note": "可重複與冷卻 1 遊戲日【設計提案】（M3B_PLAN §8.3）",
+   "abandon": true,
+   "party_credit": true,
+   "start": "s_buy",
+   "offer": "d_offer",
+   "stages": [
+    {
+     "id": "s_buy",
+     "title": "備齊麻布焦炭",
+     "log": "先備齊兩張麻布、兩塊焦炭（麻布是布莊的貨，也可以自己織；焦炭打鐵舖有賣）。",
+     "objectives": [
+      {
+       "id": "o_mabu",
+       "type": "COLLECT",
+       "item": "r_mabu",
+       "count": 2,
+       "text": "備齊兩張麻布"
+      },
+      {
+       "id": "o_jiaotan",
+       "type": "COLLECT",
+       "item": "r_jiaotan",
+       "count": 2,
+       "text": "備齊兩塊焦炭"
+      }
+     ],
+     "next": "s_stele"
+    },
+    {
+     "id": "s_stele",
+     "title": "雁門關的刻字石碑",
+     "log": "帶著麻布、焦炭到雁門關，找刻字石碑前的拓碑人拓印。（從大理北門出城，沿西路經綠洲回到西夏東門外，再照東路走到恆山岔路，往東北上雁門古道，進雁門關口往北到關內長街，石碑在長街西邊的巷底。）",
+     "hint_room": "ym_stele",
+     "objectives": [
+      {
+       "id": "o_stele",
+       "type": "TALK",
+       "npc": "n_ym_keshi",
+       "dialogue": "d_keshi",
+       "text": "請雁門關刻字石碑前的拓碑人拓印"
+      }
+     ],
+     "next": "s_back"
+    },
+    {
+     "id": "s_back",
+     "title": "拓印交給白勇",
+     "log": "拓印到手了。原路回大理（出雁門關口往南到恆山岔路，走東路回西夏東門外，再沿西路經綠洲到大理北門），白勇在廣場五華樓前。",
+     "hint_room": "dl_square",
+     "objectives": [
+      {
+       "id": "o_back",
+       "type": "TALK",
+       "npc": "n_lj_baiyong",
+       "dialogue": "d_back",
+       "text": "把拓印交給大理的白勇"
+      }
+     ],
+     "next": "END"
+    }
+   ],
+   "dialogues": {
+    "d_offer": {
+     "start": "n0",
+     "resume": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "（白勇搓著兩隻大手，左右張望了一下。）喂，你是走江湖的吧？俺家霍島主託俺辦件事，俺一個粗人，實在辦不來。",
+       "src": "proposal",
+       "src_note": "研究：other.htm 拓印流程；白勇是霍島主手下（程清霜的煩惱，既有 talk）；對白【設計提案】",
+       "choices": [
+        {
+         "id": "c_again",
+         "label": "又要拓碑？",
+         "requires": [
+          {
+           "type": "quest_done",
+           "quest": "q_ym_tuoyin"
+          }
+         ],
+         "hide_if_locked": true,
+         "goto": "n_again"
+        },
+        {
+         "id": "c_ask",
+         "label": "什麼事，說來聽聽。",
+         "goto": "n1"
+        },
+        {
+         "id": "c_no",
+         "label": "沒空。",
+         "goto": "n_no"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "雁門關裡有塊老石碑，上頭刻的字，島主說要一份拓印回去琢磨。聽說拓碑要兩張麻布、兩塊焦炭，你備齊了，去關裡找守著石碑的老頭，請他拓一份。",
+       "choices": [
+        {
+         "id": "c_yes",
+         "label": "這事我接了。",
+         "do": [
+          {
+           "do": "accept"
+          }
+         ],
+         "goto": "n_yes"
+        },
+        {
+         "id": "c_no",
+         "label": "雁門關太遠，改天吧。",
+         "goto": "n_no"
+        }
+       ]
+      },
+      "n_again": {
+       "speaker": "npc",
+       "text": "島主說上回那份拓得好，要再多拓幾份，分給島上的兄弟們看。照舊兩張麻布、兩塊焦炭。",
+       "choices": [
+        {
+         "id": "c_yes",
+         "label": "好，我再跑一趟。",
+         "do": [
+          {
+           "do": "accept"
+          }
+         ],
+         "goto": "n_yes"
+        },
+        {
+         "id": "c_no",
+         "label": "今日不便。",
+         "goto": "n_no"
+        }
+       ]
+      },
+      "n_yes": {
+       "speaker": "npc",
+       "text": "好！拓印拿回來，島主的賞錢少不了你的。麻布布莊有，焦炭打鐵舖有，俺也只知道這些。",
+       "goto": "END"
+      },
+      "n_no": {
+       "speaker": "npc",
+       "text": "唉，那俺再找別人問問。",
+       "goto": "END"
+      }
+     }
+    },
+    "d_keshi": {
+     "start": "n0",
+     "resume": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "（一個乾瘦老頭蹲在碑前，拿棕刷輕輕拍著碑面。）要拓碑？東西帶來了沒有？兩張麻布、兩塊焦炭，少一樣都不成。",
+       "src": "proposal",
+       "src_note": "研究：other.htm「與在刻字石塊前的NPC講話，完成拓印」；對白【設計提案】",
+       "choices": [
+        {
+         "id": "c_give",
+         "label": "麻布、焦炭都在這裡，有勞老丈。",
+         "requires": [
+          {
+           "type": "has_item",
+           "item": "r_mabu",
+           "n": 2
+          },
+          {
+           "type": "has_item",
+           "item": "r_jiaotan",
+           "n": 2
+          }
+         ],
+         "do": [
+          {
+           "do": "take",
+           "item": "r_mabu",
+           "n": 2
+          },
+          {
+           "do": "take",
+           "item": "r_jiaotan",
+           "n": 2
+          },
+          {
+           "do": "give",
+           "item": "i_ym_tuoyin",
+           "n": 1
+          },
+          {
+           "do": "complete",
+           "obj": "o_stele"
+          }
+         ],
+         "goto": "n1"
+        },
+        {
+         "id": "c_ask",
+         "label": "這碑上刻的是什麼？",
+         "goto": "n_story"
+        },
+        {
+         "id": "c_later",
+         "label": "東西還沒備齊，我再去張羅。",
+         "goto": "END"
+        }
+       ]
+      },
+      "n_story": {
+       "speaker": "npc",
+       "text": "老漢也說不清。這碑有些年頭了，聽人說原本刻的是契丹字，後來有個和尚拿刀刮去了一大片。剩下的，就靠拓下來慢慢琢磨嘍。",
+       "src": "proposal",
+       "src_note": "《天龍八部》蕭遠山雁門關石壁遺書被智光刮去的典故【設計提案】",
+       "choices": [
+        {
+         "id": "c_give",
+         "label": "麻布、焦炭都在這裡，有勞老丈。",
+         "requires": [
+          {
+           "type": "has_item",
+           "item": "r_mabu",
+           "n": 2
+          },
+          {
+           "type": "has_item",
+           "item": "r_jiaotan",
+           "n": 2
+          }
+         ],
+         "do": [
+          {
+           "do": "take",
+           "item": "r_mabu",
+           "n": 2
+          },
+          {
+           "do": "take",
+           "item": "r_jiaotan",
+           "n": 2
+          },
+          {
+           "do": "give",
+           "item": "i_ym_tuoyin",
+           "n": 1
+          },
+          {
+           "do": "complete",
+           "obj": "o_stele"
+          }
+         ],
+         "goto": "n1"
+        },
+        {
+         "id": "c_later",
+         "label": "我先去備齊東西。",
+         "goto": "END"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "（老頭把焦炭搗成細粉調了墨，將麻布浸濕貼上碑面，一下一下拍打。不多時，一幅黑底白字的拓印便揭了下來。）拿好，別折著了。",
+       "goto": "END"
+      }
+     }
+    },
+    "d_back": {
+     "start": "n0",
+     "resume": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "拓印拿來了？",
+       "src": "proposal",
+       "src_note": "研究：other.htm「把拓印帶回大理給白勇」；對白【設計提案】",
+       "choices": [
+        {
+         "id": "c_give",
+         "label": "拓印在此。",
+         "requires": [
+          {
+           "type": "has_item",
+           "item": "i_ym_tuoyin",
+           "n": 1
+          }
+         ],
+         "do": [
+          {
+           "do": "take",
+           "item": "i_ym_tuoyin",
+           "n": 1
+          },
+          {
+           "do": "complete",
+           "obj": "o_back"
+          }
+         ],
+         "goto": "n1"
+        },
+        {
+         "id": "c_later",
+         "label": "還在路上耽擱，再等等。",
+         "goto": "END"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "（白勇把拓印小心捲好，塞進懷裡。）好，好！島主準高興。這點盤纏你拿去，路上買碗酒喝。",
+       "goto": "END"
+      }
+     }
+    }
+   },
+   "outcomes": {
+    "default": {
+     "label": "拓印交到白勇手上",
+     "rewards": {
+      "lilian": 5,
+      "money": 50
+     },
+     "src": "later",
+     "src_note": "2001 獎勵「不詳」；歷練 +5 取後期官方 index_jy3-3【後期版】；銀兩 50【設計提案】"
+    }
+   },
+   "rumors": {
+    "foreshadow": "rmr_q_ym_tuoyin_fs"
+   }
+  },
+  {
+   "id": "q_ym_xiaofeng",
+   "name": "找蕭峰",
+   "chapter": "雁門關・找蕭峰",
+   "group": "mingjiao_gaochang_yanmen",
+   "giver": "n_ym_azhu",
+   "era": "1.0A",
+   "src": "verified",
+   "dialogue_src": "proposal",
+   "src_note": "研究 雁門關：other.htm「雁門關內的阿朱要你幫忙找蕭峰。」【已證實，只有這一句】；蕭峰＝西夏客棧的喬峰（既有 n_xx_qiaofeng）；流程與對白取《天龍八部》阿朱雁門關苦候喬峰【設計提案】",
+   "text": "雁門關內的阿朱一直望著關外，像在等什麼人。她請你幫忙找蕭峰。",
+   "requires": [],
+   "give_items": [],
+   "repeat": {
+    "max": 1,
+    "cooldown_days": 0
+   },
+   "abandon": true,
+   "party_credit": true,
+   "start": "s_find",
+   "offer": "d_offer",
+   "stages": [
+    {
+     "id": "s_find",
+     "title": "西夏客棧的喬大爺",
+     "log": "阿朱說喬大爺常在西夏城的客棧裡喝酒。（出雁門關口往南走雁門古道到恆山岔路，經恆山岸邊、路邊茶棚、恆山外稻田、潭東河岸、黑龍潭、礦區、東北官道、東門外官道，進西夏東門；客棧在廣場往北。）",
+     "hint_room": "xx_inn",
+     "objectives": [
+      {
+       "id": "o_find",
+       "type": "TALK",
+       "npc": "n_xx_qiaofeng",
+       "dialogue": "d_qiao",
+       "text": "到西夏客棧找喬峰"
+      }
+     ],
+     "next": "s_back"
+    },
+    {
+     "id": "s_back",
+     "title": "回雁門關覆命",
+     "log": "把喬峰的話帶回雁門關給阿朱。（從西夏東門出城，經東門外官道、東北官道、礦區、黑龍潭、潭東河岸、恆山外稻田、路邊茶棚、恆山岸邊到恆山岔路，再往東北走雁門古道，往北就是雁門關口，再往北進關。）",
+     "hint_room": "ym_inner",
+     "objectives": [
+      {
+       "id": "o_back",
+       "type": "TALK",
+       "npc": "n_ym_azhu",
+       "dialogue": "d_back",
+       "text": "回雁門關內告訴阿朱"
+      }
+     ],
+     "next": "END"
+    }
+   ],
+   "dialogues": {
+    "d_offer": {
+     "start": "n0",
+     "resume": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "（俏麗的少女倚著關內土牆，一雙眼睛只望著關外。）這位{name}，你在江湖上走動，可曾見過一位身材魁偉、愛喝烈酒的喬大爺？",
+       "src": "proposal",
+       "src_note": "other.htm「阿朱要你幫忙找蕭峰」；對白取《天龍八部》【設計提案】",
+       "choices": [
+        {
+         "id": "c_why",
+         "label": "姑娘找他做什麼？",
+         "goto": "n1"
+        },
+        {
+         "id": "c_no",
+         "label": "沒見過。",
+         "goto": "n_no"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "他……他是天下第一等的好人，偏偏人人冤他是契丹胡虜。他說過要來雁門關的，我在這裡等了他好些日子，風沙吹得眼睛都疼了。",
+       "choices": [
+        {
+         "id": "c_yes",
+         "label": "我替妳去找他。",
+         "do": [
+          {
+           "do": "accept"
+          }
+         ],
+         "goto": "n_yes"
+        },
+        {
+         "id": "c_no",
+         "label": "江湖之大，我也幫不上忙。",
+         "goto": "n_no"
+        }
+       ]
+      },
+      "n_yes": {
+       "speaker": "npc",
+       "text": "多謝你！聽說他常在西夏城的客棧裡喝酒。見著他，就說……就說阿朱在雁門關等他。",
+       "goto": "END"
+      },
+      "n_no": {
+       "speaker": "npc",
+       "text": "（阿朱輕輕嘆了口氣，又轉頭望著關外。）",
+       "goto": "END"
+      }
+     }
+    },
+    "d_qiao": {
+     "start": "n0",
+     "resume": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "（喬峰放下酒碗，一雙虎目打量著你。）朋友找喬某有事？",
+       "src": "proposal",
+       "src_note": "對白【設計提案】",
+       "choices": [
+        {
+         "id": "c_azhu",
+         "label": "雁門關的阿朱姑娘託我來找你。",
+         "goto": "n1"
+        },
+        {
+         "id": "c_later",
+         "label": "沒什麼，打擾了。",
+         "goto": "END"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "（喬峰身子一震，碗裡的酒潑了出來。）阿朱……她在雁門關等我？",
+       "goto": "n2"
+      },
+      "n2": {
+       "speaker": "npc",
+       "text": "（他沉默半晌，仰頭喝乾了一大碗。）喬峰是契丹人也好，漢人也罷，這世上總算還有一個人信我。朋友，煩你回去告訴她：蕭峰這就動身，教她別再站在風口裡了。",
+       "do": [
+        {
+         "do": "complete",
+         "obj": "o_find"
+        }
+       ],
+       "goto": "END"
+      }
+     }
+    },
+    "d_back": {
+     "start": "n0",
+     "resume": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "你見著他了？他……他怎麼說？",
+       "src": "proposal",
+       "src_note": "對白【設計提案】",
+       "choices": [
+        {
+         "id": "c_tell",
+         "label": "他說「蕭峰這就動身」，教妳別在風口裡站著。",
+         "do": [
+          {
+           "do": "complete",
+           "obj": "o_back"
+          }
+         ],
+         "goto": "n1"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "（阿朱眼圈一紅，隨即又笑了起來。）他肯認自己姓蕭了……好，好。這份情，阿朱記下了。",
+       "goto": "END"
+      }
+     }
+    }
+   },
+   "outcomes": {
+    "default": {
+     "label": "替阿朱找到了蕭峰",
+     "rewards": {
+      "lilian": 10
+     },
+     "src": "proposal",
+     "src_note": "2001 只有任務名與一句簡介；歷練 +10【設計提案】（M3B_PLAN §8.3）"
+    }
+   },
+   "rumors": {
+    "foreshadow": "rmr_q_ym_xiaofeng_fs"
+   }
+  },
+  {
+   "id": "q_ym_douji",
+   "name": "蕭峰鬥酒",
+   "chapter": "西夏・蕭峰鬥酒",
+   "group": "mingjiao_gaochang_yanmen",
+   "giver": "n_xx_qiaofeng",
+   "era": "1.0A",
+   "src": "verified",
+   "dialogue_src": "proposal",
+   "src_note": "研究 雁門關：other.htm 蕭峰鬥酒 西夏客店「特定時間（好像是未時）」「按滑鼠左鍵，等酒剛好滿杯放開左鍵就喝酒」，獎勵「內力熟練度+10，學點40點，幾點歷練，酒醉度上限加一半」【已證實】（GDD E12）。本作沒有酒醉度，略；滑鼠滿杯小遊戲改成房間動作「斟酒」＋屬性判定（根骨 20、臂力 22、或基本內功 50 以內力逼酒，任一）【設計提案】；與 q_em_baifang 的 s_qiao 鬥酒是否同一事件【待考證】（GDD §8.2）",
+   "text": "西夏客棧的喬峰要跟你比酒量：未時到客棧，斟滿一碗一口喝乾，看誰先倒下。",
+   "requires": [],
+   "give_items": [],
+   "repeat": {
+    "max": 0,
+    "cooldown_days": 1
+   },
+   "repeat_src": "proposal",
+   "repeat_src_note": "每遊戲日一次【設計提案】（M3B_PLAN §8.3）",
+   "abandon": true,
+   "party_credit": false,
+   "start": "s_pour",
+   "offer": "d_offer",
+   "stages": [
+    {
+     "id": "s_pour",
+     "title": "未時鬥酒",
+     "log": "喬峰在西夏客棧（廣場往北）等你。未時（午後）到客棧，按「斟酒」把酒斟得剛好滿碗，與他對飲。",
+     "hint_room": "xx_inn",
+     "objectives": [
+      {
+       "id": "o_pour",
+       "type": "STATE",
+       "requires": [
+        {
+         "type": "quest_var",
+         "quest": "q_ym_douji",
+         "var": "poured",
+         "value": true
+        }
+       ],
+       "text": "未時在西夏客棧「斟酒」與喬峰鬥酒"
+      }
+     ],
+     "room_actions": [
+      {
+       "id": "a_pour",
+       "room": "xx_inn",
+       "label": "斟酒",
+       "hours": [
+        "未"
+       ],
+       "requires": [],
+       "repeat": false,
+       "do": [
+        {
+         "do": "tell",
+         "key": "tell_q_ym_douji_pour"
+        },
+        {
+         "do": "var",
+         "name": "poured",
+         "value": true
+        },
+        {
+         "do": "complete",
+         "obj": "o_pour"
+        }
+       ],
+       "src": "verified",
+       "src_note": "other.htm「好像是未時」；斟酒取代滑鼠滿杯小遊戲【設計提案】"
+      }
+     ],
+     "next": [
+      {
+       "if": [
+        {
+         "type": "any_of",
+         "options": [
+          [
+           {
+            "type": "attr_min",
+            "attr": "con",
+            "value": 20
+           }
+          ],
+          [
+           {
+            "type": "attr_min",
+            "attr": "str",
+            "value": 22
+           }
+          ],
+          [
+           {
+            "type": "skill_min",
+            "skill": "basic_inner",
+            "value": 50
+           }
+          ]
+         ]
+        }
+       ],
+       "goto": "END:win"
+      },
+      {
+       "goto": "END:drunk"
+      }
+     ]
+    }
+   ],
+   "dialogues": {
+    "d_offer": {
+     "start": "n0",
+     "resume": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "（喬峰把一罈酒往桌上一頓，震得碗筷亂跳。）這位{name}，敢不敢跟喬某比一比酒量？",
+       "src": "proposal",
+       "src_note": "對白【設計提案】",
+       "choices": [
+        {
+         "id": "c_again",
+         "label": "今天再來比過！",
+         "requires": [
+          {
+           "type": "quest_done",
+           "quest": "q_ym_douji"
+          }
+         ],
+         "hide_if_locked": true,
+         "do": [
+          {
+           "do": "accept"
+          }
+         ],
+         "goto": "n_yes"
+        },
+        {
+         "id": "c_ask",
+         "label": "怎麼個比法？",
+         "goto": "n1"
+        },
+        {
+         "id": "c_no",
+         "label": "我酒量淺，改天吧。",
+         "goto": "n_no"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "簡單。未時客人少，你到這桌來，自己斟滿一碗，一口喝乾。酒要斟得剛好滿碗，灑了一滴都算輸。",
+       "choices": [
+        {
+         "id": "c_yes",
+         "label": "奉陪到底！",
+         "do": [
+          {
+           "do": "accept"
+          }
+         ],
+         "goto": "n_yes"
+        },
+        {
+         "id": "c_no",
+         "label": "我酒量淺，改天吧。",
+         "goto": "n_no"
+        }
+       ]
+      },
+      "n_yes": {
+       "speaker": "npc",
+       "text": "痛快！未時再來，喬某在這裡等你。",
+       "goto": "END"
+      },
+      "n_no": {
+       "speaker": "npc",
+       "text": "哈哈，不喝酒的朋友也是朋友。",
+       "goto": "END"
+      }
+     }
+    }
+   },
+   "outcomes": {
+    "win": {
+     "label": "與喬峰鬥酒，喝得他拍案叫好",
+     "rewards": {
+      "skill_prof": {
+       "basic_inner": 10
+      },
+      "learn_points": 40,
+      "lilian": 5
+     },
+     "src": "verified",
+     "src_note": "other.htm「內力熟練度+10，學點40點，幾點歷練」【已證實】；「幾點」→ 5【設計提案】；酒醉度上限略（本作沒有）"
+    },
+    "drunk": {
+     "label": "幾碗下肚便醉倒在桌底下",
+     "rewards": {},
+     "src": "proposal",
+     "src_note": "鬥輸沒有獎勵【設計提案】；隔一遊戲日可再比"
+    }
+   },
+   "rumors": {
+    "first": "rmr_q_ym_douji_first"
+   }
+  },
+  {
+   "id": "q_ym_mawang",
+   "name": "馬王洞的馬賊",
+   "chapter": "雁門關・馬王洞",
+   "group": "mingjiao_gaochang_yanmen",
+   "giver": "n_ym_hufei",
+   "era": "1.0A",
+   "src": "proposal",
+   "dialogue_src": "proposal",
+   "src_note": "M3B_PLAN §8.3「mw_deep 固定 3 隻（房間動作戰）」：房間動作必須掛在任務階段（STORY_PLAN §4.3）→ 本任務是它的載體【設計提案】；馬王洞與 7 隻馬王掉黃甲【已證實：鐵心網 FAQ】；給任務的胡斐（雁門關內）【設計提案】",
+   "text": "雁門關內的胡斐說，關口西邊的山洞裡窩著一夥馬賊，領頭的幾個自稱「馬王」，專劫出關的商隊。",
+   "requires": [
+    {
+     "type": "combat_xp_min",
+     "value": 10000
+    }
+   ],
+   "give_items": [],
+   "repeat": {
+    "max": 0,
+    "cooldown_days": 1
+   },
+   "repeat_src": "proposal",
+   "repeat_src_note": "可重複、冷卻 1 遊戲日【設計提案】（黃甲要多打幾次）",
+   "abandon": true,
+   "party_credit": true,
+   "start": "s_deep",
+   "offer": "d_offer",
+   "stages": [
+    {
+     "id": "s_deep",
+     "title": "洞底的馬王",
+     "log": "從雁門關口往西進馬王洞，經拴馬石洞、馬賊窩一路往北到洞底，按「挑戰馬王」。三個馬王會一齊上，最好找幾個朋友同去。",
+     "hint_room": "mw_deep",
+     "objectives": [
+      {
+       "id": "o_deep",
+       "type": "FIGHT",
+       "win": "WIN",
+       "text": "在馬王洞底打敗三個馬王"
+      }
+     ],
+     "room_actions": [
+      {
+       "id": "a_mawang",
+       "room": "mw_deep",
+       "label": "挑戰馬王",
+       "hours": [],
+       "requires": [],
+       "repeat": true,
+       "do": [
+        {
+         "do": "fight",
+         "monsters": [
+          "m_mw_mawang",
+          "m_mw_mawang",
+          "m_mw_mawang"
+         ],
+         "obj": "o_deep"
+        }
+       ]
+      }
+     ],
+     "next": "s_back"
+    },
+    {
+     "id": "s_back",
+     "title": "回報胡斐",
+     "log": "馬王都打發了。出洞往東回雁門關口，往北進關找胡斐。",
+     "hint_room": "ym_inner",
+     "objectives": [
+      {
+       "id": "o_back",
+       "type": "TALK",
+       "npc": "n_ym_hufei",
+       "dialogue": "d_back",
+       "text": "回雁門關內告訴胡斐"
+      }
+     ],
+     "next": "END"
+    }
+   ],
+   "dialogues": {
+    "d_offer": {
+     "start": "n0",
+     "resume": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "（胡斐把單刀往石階上一擱。）關口西邊那個山洞，窩著一夥馬賊，領頭的幾個自稱「馬王」，專劫出關的商隊。我一個人殺得了三五個，殺不盡一窩。",
+       "src": "proposal",
+       "src_note": "對白【設計提案】；胡斐性子取《飛狐外傳》",
+       "choices": [
+        {
+         "id": "c_again",
+         "label": "那夥馬賊又回來了？",
+         "requires": [
+          {
+           "type": "quest_done",
+           "quest": "q_ym_mawang"
+          }
+         ],
+         "hide_if_locked": true,
+         "goto": "n_again"
+        },
+        {
+         "id": "c_ask",
+         "label": "馬王是什麼來頭？",
+         "goto": "n_ask"
+        },
+        {
+         "id": "c_yes",
+         "label": "我去端了他們的老窩。",
+         "do": [
+          {
+           "do": "accept"
+          }
+         ],
+         "goto": "n_yes"
+        },
+        {
+         "id": "c_no",
+         "label": "這夥人我惹不起。",
+         "goto": "n_no"
+        }
+       ]
+      },
+      "n_ask": {
+       "speaker": "npc",
+       "text": "都是關外橫行慣了的馬賊頭子，身上披著搶來的黃甲，刀砍上去鏗鏗作響。洞口往北一直走到底，就是他們的老窩。",
+       "choices": [
+        {
+         "id": "c_yes",
+         "label": "我去端了他們的老窩。",
+         "do": [
+          {
+           "do": "accept"
+          }
+         ],
+         "goto": "n_yes"
+        },
+        {
+         "id": "c_no",
+         "label": "這夥人我惹不起。",
+         "goto": "n_no"
+        }
+       ]
+      },
+      "n_again": {
+       "speaker": "npc",
+       "text": "殺了一批又來一批，關外的馬賊就跟野草一樣。商隊又湊了些銀子，託我找人再去一趟。",
+       "choices": [
+        {
+         "id": "c_yes",
+         "label": "交給我。",
+         "do": [
+          {
+           "do": "accept"
+          }
+         ],
+         "goto": "n_yes"
+        },
+        {
+         "id": "c_no",
+         "label": "今日不便。",
+         "goto": "n_no"
+        }
+       ]
+      },
+      "n_yes": {
+       "speaker": "npc",
+       "text": "好漢子！洞底那三個馬王是一齊上的，你多留神。打完了回來說一聲。",
+       "goto": "END"
+      },
+      "n_no": {
+       "speaker": "npc",
+       "text": "（胡斐點點頭，也不勉強，又低頭擦他的刀。）",
+       "goto": "END"
+      }
+     }
+    },
+    "d_back": {
+     "start": "n0",
+     "resume": "n0",
+     "nodes": {
+      "n0": {
+       "speaker": "npc",
+       "text": "怎麼樣？",
+       "src": "proposal",
+       "src_note": "對白【設計提案】",
+       "choices": [
+        {
+         "id": "c_done",
+         "label": "洞底的馬王都打發了。",
+         "do": [
+          {
+           "do": "complete",
+           "obj": "o_back"
+          }
+         ],
+         "goto": "n1"
+        }
+       ]
+      },
+      "n1": {
+       "speaker": "npc",
+       "text": "（胡斐哈哈大笑，在你肩上重重一拍。）痛快！這一帶的商隊總算能過幾天太平日子。這些銀子是商隊湊來的，你收下。",
+       "goto": "END"
+      }
+     }
+    }
+   },
+   "outcomes": {
+    "default": {
+     "label": "剿了馬王洞的馬賊",
+     "rewards": {
+      "money": 200,
+      "fame": 3,
+      "lilian": 3
+     },
+     "src": "proposal",
+     "src_note": "獎勵【設計提案】；黃甲走馬王的掉落（0.15）"
+    }
+   },
+   "rumors": {
+    "foreshadow": "rmr_q_ym_mawang_fs",
+    "first": "rmr_q_ym_mawang_first"
+   }
+  }
+ ],
+ "text_templates": [
+  {
+   "id": "talk_n_mj_fanyao",
+   "era": "1.0A",
+   "self": "{npc_name}只是冷冷地瞪著你，一言不發，彷彿是個啞巴。",
+   "src": "verified",
+   "src_note": "研究：2001-08-17「范遙連話都不跟她說」【已證實】；裝啞取《倚天屠龍記》苦頭陀【設計提案】"
+  },
+  {
+   "id": "talk_n_mj_fanyao@NIGHT",
+   "era": "1.0A",
+   "self": "夜色裡，{npc_name}像塊石頭似的坐在坡上，你走近時，他連眼皮都沒抬一下。",
+   "src": "proposal",
+   "src_note": "閒聊句【設計提案】"
+  },
+  {
+   "id": "talk_n_ym_miaorenfeng",
+   "era": "1.0A",
+   "self": "{npc_name}望著關外的荒原，淡淡地道：「關內那個使刀的小子，刀法裡倒有幾分胡一刀的影子。」",
+   "src": "proposal",
+   "src_note": "閒聊句【設計提案】；取《雪山飛狐》"
+  },
+  {
+   "id": "talk_n_ym_miaorenfeng@NIGHT",
+   "era": "1.0A",
+   "self": "北風呼嘯，{npc_name}仍舊抱劍站在風裡：「夜裡荒原上狼多，{honorific}早些回關吧。」",
+   "src": "proposal",
+   "src_note": "閒聊句【設計提案】"
+  },
+  {
+   "id": "talk_n_ym_azhu",
+   "era": "1.0A",
+   "self": "{npc_name}倚著土牆，不住往關外張望：「這位{honorific}，你可曾見過一位身材魁偉、愛喝烈酒的喬大爺？」",
+   "src": "proposal",
+   "src_note": "閒聊句【設計提案】"
+  },
+  {
+   "id": "talk_n_ym_azhu@NIGHT",
+   "era": "1.0A",
+   "self": "{npc_name}裹著一件舊斗篷坐在牆根下，輕聲道：「他說過要來的……他說過的。」",
+   "src": "proposal",
+   "src_note": "閒聊句【設計提案】"
+  },
+  {
+   "id": "talk_n_ym_keshi",
+   "era": "1.0A",
+   "self": "{npc_name}拿棕刷在碑上輕輕拍著：「要拓碑？兩張麻布、兩塊焦炭，少一樣都不成。」",
+   "src": "verified",
+   "src_note": "研究：other.htm「兩個麻布，兩個焦炭」【已證實】；口吻【設計提案】"
+  },
+  {
+   "id": "talk_n_ym_keshi@NIGHT",
+   "era": "1.0A",
+   "self": "{npc_name}就著油燈端詳碑上被刮花的地方，嘴裡唸唸有詞，也不知在唸些什麼。",
+   "src": "proposal",
+   "src_note": "閒聊句【設計提案】"
+  },
+  {
+   "id": "talk_n_gc_tuodui",
+   "era": "1.0A",
+   "self": "{npc_name}拍了拍駱駝的脖子：「往西再走一段就是高昌。沙地上夜裡冷得緊，歇一晚再走吧。」",
+   "src": "proposal",
+   "src_note": "閒聊句【設計提案】"
+  },
+  {
+   "id": "talk_n_gc_xiangxiang",
+   "era": "1.0A",
+   "self": "{npc_name}身上散出一陣淡淡的幽香，睜著一雙清澈的大眼睛朝你一笑：「你也是來看沙漠裡的古城嗎？」",
+   "src": "proposal",
+   "src_note": "閒聊句【設計提案】；取《書劍恩仇錄》"
+  },
+  {
+   "id": "talk_n_gc_xiangxiang@NIGHT",
+   "era": "1.0A",
+   "self": "{npc_name}仰頭數著天上的星星，輕輕哼著回部的小調。",
+   "src": "proposal",
+   "src_note": "閒聊句【設計提案】"
+  },
+  {
+   "id": "talk_n_gc_huoqingtong",
+   "era": "1.0A",
+   "self": "{npc_name}按著腰間短劍：「迷宮裡的機關人厲害得很，一拳下來防也防不住，沒幾分本事別拿性命開玩笑。」",
+   "src": "verified",
+   "src_note": "研究：鐵心網 FAQ「高昌機關人防禦還打 200+」【已證實】；口吻【設計提案】"
+  },
+  {
+   "id": "talk_n_gc_huoqingtong@NIGHT",
+   "era": "1.0A",
+   "self": "{npc_name}在篝火旁拭著短劍，頭也不抬：「夜裡別進迷宮，裡頭的東西不睡覺。」",
+   "src": "proposal",
+   "src_note": "閒聊句【設計提案】"
+  },
+  {
+   "id": "talk_n_gc_jilaoren",
+   "era": "1.0A",
+   "self": "{npc_name}佝僂著背在爐邊煮奶茶，見你進來，點點頭：「外頭風沙大，進來喝碗熱茶吧。」",
+   "src": "proposal",
+   "src_note": "閒聊句【設計提案】；內容【待考證】"
+  },
+  {
+   "id": "talk_n_gc_jilaoren@NIGHT",
+   "era": "1.0A",
+   "self": "{npc_name}拉著那把舊胡琴，琴聲嗚嗚咽咽，像大漠上的風。",
+   "src": "proposal",
+   "src_note": "閒聊句【設計提案】"
+  },
+  {
+   "id": "talk_n_gc_liwenxiu",
+   "era": "1.0A",
+   "self": "{npc_name}坐在門邊，輕輕唱著一支哈薩克的歌，見你在聽，低聲道：「那些都是很久以前的事了……」",
+   "src": "proposal",
+   "src_note": "閒聊句【設計提案】；取《白馬嘯西風》，內容【待考證】"
+  },
+  {
+   "id": "talk_n_gc_liwenxiu@NIGHT",
+   "era": "1.0A",
+   "self": "{npc_name}倚著門框望著遠方：「那些都是很好很好的，可是我偏偏不喜歡。」",
+   "src": "proposal",
+   "src_note": "《白馬嘯西風》結尾句化用【設計提案】"
+  },
+  {
+   "id": "tell_q_ym_douji_pour",
+   "era": "1.0A",
+   "self": "你提起酒罈，屏住氣緩緩斟酒，酒面漲到碗沿便穩穩停住，一滴不灑。喬峰哈哈一笑，端起碗來：「乾！」兩人一碗接一碗喝了下去……",
+   "src": "proposal",
+   "src_note": "取代原作滑鼠滿杯小遊戲【設計提案】"
+  },
+  {
+   "id": "rmr_q_ym_tuoyin_fs",
+   "era": "1.0A",
+   "self": "聽說雁門關裡那塊刻字石碑，近來有人專程帶著麻布焦炭去拓字，碑上的字到底寫了什麼，誰也說不清。",
+   "src": "proposal",
+   "src_note": "系統傳聞【設計提案・非原作】"
+  },
+  {
+   "id": "rmr_q_ym_xiaofeng_fs",
+   "era": "1.0A",
+   "self": "聽說雁門關內有個俏姑娘，天天倚著土牆望著關外，像是在等什麼人。",
+   "src": "proposal",
+   "src_note": "系統傳聞【設計提案・非原作】"
+  },
+  {
+   "id": "rmr_q_ym_douji_first",
+   "era": "1.0A",
+   "self": "江湖傳言：{name}在西夏客棧與喬峰對飲，一碗接一碗，喝得喬大俠拍案叫好，是頭一個陪他喝痛快的人。",
+   "src": "proposal",
+   "src_note": "系統傳聞【設計提案・非原作】"
+  },
+  {
+   "id": "rmr_q_ym_mawang_fs",
+   "era": "1.0A",
+   "self": "聽說雁門關西邊的山洞裡窩著一夥馬賊，領頭的「馬王」身披黃甲，連官兵都不敢去惹。",
+   "src": "proposal",
+   "src_note": "系統傳聞【設計提案・非原作】"
+  },
+  {
+   "id": "rmr_q_ym_mawang_first",
+   "era": "1.0A",
+   "self": "江湖傳言：{name}闖進雁門關外的馬王洞，把洞底的三個馬王一併打發了，關外的商隊總算鬆了口氣。",
+   "src": "proposal",
+   "src_note": "系統傳聞【設計提案・非原作】"
+  },
+  {
+   "id": "amb_xn_slope_fanyao",
+   "era": "1.0A",
+   "self": "坡上那個滿臉刀痕的頭陀一動也不動，目光始終落在山下的西夏城。",
+   "src": "proposal",
+   "src_note": "環境句【設計提案・非原作】"
+  },
+  {
+   "id": "amb_ym_stele_1",
+   "era": "1.0A",
+   "self": "一陣北風刮過，石碑上被刮花的地方積著細沙，隱隱約約像是一行歪斜的異族文字。",
+   "src": "proposal",
+   "src_note": "環境句【設計提案・非原作】"
+  },
+  {
+   "id": "amb_gc_road2_1",
+   "era": "1.0A",
+   "self": "氈帳外駱駝跪臥著反芻，駝鈴偶爾叮噹一響，井邊的回人婦女正打著苦水。",
+   "src": "proposal",
+   "src_note": "環境句【設計提案・非原作】"
+  },
+  {
+   "id": "amb_gc_maze_1",
+   "era": "1.0A",
+   "self": "黑暗深處傳來一陣咯吱咯吱的機括聲，忽遠忽近，聽不出是從哪條甬道來的。",
+   "src": "proposal",
+   "src_note": "環境句【設計提案・非原作】"
+  },
+  {
+   "id": "amb_mw_1",
+   "era": "1.0A",
+   "self": "洞裡傳來一陣粗野的笑罵聲和馬嘶，火光把人影投在石壁上，晃得老長。",
+   "src": "proposal",
+   "src_note": "環境句【設計提案・非原作】"
+  }
+ ],
+ "rumors": [
+  {
+   "id": "rum_q_ym_tuoyin_fs",
+   "kind": "FORESHADOW",
+   "quest": "q_ym_tuoyin",
+   "text": "rmr_q_ym_tuoyin_fs",
+   "requires_world": {
+    "not_first": "q_ym_tuoyin"
+   },
+   "hours": [],
+   "weight": 1,
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "系統傳聞【設計提案・非原作】"
+  },
+  {
+   "id": "rum_q_ym_xiaofeng_fs",
+   "kind": "FORESHADOW",
+   "quest": "q_ym_xiaofeng",
+   "text": "rmr_q_ym_xiaofeng_fs",
+   "requires_world": {
+    "not_first": "q_ym_xiaofeng"
+   },
+   "hours": [],
+   "weight": 1,
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "系統傳聞【設計提案・非原作】"
+  },
+  {
+   "id": "rum_q_ym_mawang_fs",
+   "kind": "FORESHADOW",
+   "quest": "q_ym_mawang",
+   "text": "rmr_q_ym_mawang_fs",
+   "requires_world": {
+    "not_first": "q_ym_mawang"
+   },
+   "hours": [],
+   "weight": 1,
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "系統傳聞【設計提案・非原作】"
+  }
+ ],
+ "ambient": [
+  {
+   "id": "amb_xn_slope_fanyao",
+   "room": "xn_slope",
+   "periods": [
+    "DAWN",
+    "DAY",
+    "DUSK"
+   ],
+   "requires": [],
+   "weight": 1,
+   "text": "amb_xn_slope_fanyao",
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "環境句【設計提案・非原作】"
+  },
+  {
+   "id": "amb_ym_stele_1",
+   "room": "ym_stele",
+   "periods": [],
+   "requires": [],
+   "weight": 1,
+   "text": "amb_ym_stele_1",
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "環境句【設計提案・非原作】"
+  },
+  {
+   "id": "amb_gc_road2_1",
+   "room": "gc_road2",
+   "periods": [
+    "DAWN",
+    "DAY",
+    "DUSK"
+   ],
+   "requires": [],
+   "weight": 1,
+   "text": "amb_gc_road2_1",
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "環境句【設計提案・非原作】"
+  },
+  {
+   "id": "amb_gc_maze_1",
+   "region": "gaochang_maze",
+   "periods": [],
+   "requires": [],
+   "weight": 1,
+   "text": "amb_gc_maze_1",
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "環境句【設計提案・非原作】"
+  },
+  {
+   "id": "amb_mw_1",
+   "region": "mawang",
+   "periods": [],
+   "requires": [],
+   "weight": 1,
+   "text": "amb_mw_1",
+   "era": "1.0A",
+   "src": "proposal",
+   "src_note": "環境句【設計提案・非原作】"
+  }
+ ],
+ "art_requests": {
+  "units": [
+   {
+    "id": "n_mj_fanyao",
+    "alias": "n_xx_wushi",
+    "prompt": "范遙（明教光明右使，扮作苦頭陀）：面目醜陋、滿臉刀疤的中年頭陀，披髮、灰褐僧袍、腰繫麻繩，盤坐山石，神情冷漠（disfigured scarred ascetic monk, cold silent stare）"
+   },
+   {
+    "id": "n_ym_miaorenfeng",
+    "alias": "n_chenjialuo",
+    "prompt": "苗人鳳（金面佛）：黃臉高瘦的中年劍客，背負長劍、灰布長袍在北風中翻飛，神色落寞（gaunt sallow-faced swordsman, sword on back, frontier wind）"
+   },
+   {
+    "id": "n_ym_azhu",
+    "alias": "emei_f",
+    "prompt": "阿朱：十七八歲的俏麗少女，淡紅衫子、雙丫髻，倚牆遠望，眼神溫柔而焦急（pretty young girl in pink, leaning on a wall, longing gaze）"
+   },
+   {
+    "id": "n_ym_keshi",
+    "alias": "n_taoyun",
+    "prompt": "拓碑人：乾瘦的老頭，粗布短衣，手拿棕刷與墨拓包，蹲在石碑前（thin old man doing stone rubbing with brush and ink pad）"
+   },
+   {
+    "id": "n_gc_tuodui",
+    "alias": "n_de_host",
+    "prompt": "駝隊領隊：回人漢子，白纏頭、皮襖，牽著駱駝，滿臉風沙（Uyghur caravan leader with camel）"
+   },
+   {
+    "id": "n_gc_xiangxiang",
+    "alias": "n_em_yingyueer",
+    "prompt": "香香公主：天真絕美的回部少女，白衣、頭插翠羽、長辮，身旁有蝴蝶縈繞（innocent Uyghur princess in white, butterflies around her）"
+   },
+   {
+    "id": "n_gc_huoqingtong",
+    "alias": "emei_f",
+    "prompt": "霍青桐（翠羽黃衫）：英氣勃勃的回部女將，黃衫、綠腰帶、帽插翠羽，腰懸短劍（heroic Uyghur woman in yellow robe with green feather, short sword）"
+   },
+   {
+    "id": "n_gc_jilaoren",
+    "alias": "n_taoyun",
+    "prompt": "計老人：佝僂的漢人老頭，羊皮襖，手捧奶茶碗，眼神深沉（hunched old man in sheepskin coat holding milk tea）"
+   },
+   {
+    "id": "n_gc_liwenxiu",
+    "alias": "n_em_jinxiaomei",
+    "prompt": "李文秀：穿哈薩克衣裳的漢人姑娘，長辮、繡花小帽，倚門輕唱，神情寂寞（Han girl in Kazakh dress, braids, wistful singing）"
+   },
+   {
+    "id": "m_mw_mazei",
+    "alias": "m_bandit",
+    "prompt": "馬賊：關外馬賊，皮帽皮襖、手持彎刀，凶悍（frontier horse bandit with curved saber, fur hat）"
+   },
+   {
+    "id": "m_mw_mawang",
+    "alias": "n_bandit_chief",
+    "prompt": "馬王：身披黃銅鱗甲的魁梧馬賊首領，大刀、絡腮鬍（burly bandit chief in yellow brass scale armor, big saber）"
+   },
+   {
+    "id": "m_gc_jiguanren",
+    "alias": "m_sl_tongren_3",
+    "prompt": "高昌機關人：木身銅臂的古代機關人偶，關節外露齒輪，西域佛窟風格紋飾（ancient wooden automaton with bronze arms, exposed gears, Central Asian motifs）"
+   },
+   {
+    "id": "m_gc_jiguanren2",
+    "alias": "m_sl_tongren_3",
+    "prompt": "銅甲機關人：通身包覆銅甲的大型機關人，更厚重（larger bronze-armored automaton）"
+   },
+   {
+    "id": "m_gc_ezei",
+    "alias": "m_bandit",
+    "prompt": "高昌惡賊：躲在迷宮裡的兇徒，蒙面、短刀、衣衫破爛沾著沙土（masked fugitive killer with short blade, dusty rags）"
+   }
+  ],
+  "backgrounds": [
+   {
+    "id": "mawang",
+    "alias": "guiwang",
+    "prompt": "馬王洞：山腹中的大洞，火堆、酒罈、拴馬鐵環，洞底鋪虎皮（bandit cave with campfire, wine jars, horse rings, tiger pelts）"
+   },
+   {
+    "id": "gaochang_road",
+    "alias": "desert_edge",
+    "prompt": "高昌古道：雪原漸變為礫石戈壁，駝隊氈帳與苦水井（gravel gobi caravan road, felt tents, well）"
+   },
+   {
+    "id": "gaochang",
+    "alias": "desert_edge",
+    "prompt": "高昌：黃沙半埋的古城殘垣與城門洞（ruined ancient desert city gate half-buried in sand）"
+   },
+   {
+    "id": "gaochang_maze",
+    "alias": "guiwang",
+    "prompt": "高昌迷宮：黃土甬道、褪色佛像壁畫、銅管機關（underground mud-brick maze with faded Buddhist murals and bronze pipes）"
+   }
+  ]
+ },
+ "test_plan": [
+  {
+   "quest": "q_ym_tuoyin",
+   "outcome": "default",
+   "setup": {
+    "items": {
+     "r_mabu": 2,
+     "r_jiaotan": 2
+    }
+   },
+   "save_reload_at": "s_back",
+   "path": [
+    "walk@dl_square",
+    "accept@n_lj_baiyong",
+    "walk@ym_stele",
+    "talk@n_ym_keshi",
+    "choose@n_ym_keshi:n0:c_give",
+    "walk@dl_square",
+    "talk@n_lj_baiyong",
+    "choose@n_lj_baiyong:n0:c_give"
+   ],
+   "expect": {
+    "items": {
+     "r_mabu": 0,
+     "r_jiaotan": 0,
+     "i_ym_tuoyin": 0
+    },
+    "lilian": 5,
+    "money_delta": 50
+   }
+  },
+  {
+   "quest": "q_ym_tuoyin",
+   "outcome": "default",
+   "note": "東西不夠時交不出去（選項鎖住），補齊後才能拓",
+   "setup": {
+    "items": {
+     "r_mabu": 1,
+     "r_jiaotan": 2
+    }
+   },
+   "path": [
+    "walk@dl_square",
+    "accept@n_lj_baiyong",
+    "walk@ym_stele",
+    "talk@n_ym_keshi",
+    "expect_locked@n_ym_keshi:n0:c_give",
+    "choose@n_ym_keshi:n0:c_later",
+    "debug_give:r_mabu:1",
+    "talk@n_ym_keshi",
+    "choose@n_ym_keshi:n0:c_give",
+    "walk@dl_square",
+    "talk@n_lj_baiyong",
+    "choose@n_lj_baiyong:n0:c_give"
+   ],
+   "expect": {
+    "lilian": 5
+   }
+  },
+  {
+   "quest": "q_ym_xiaofeng",
+   "outcome": "default",
+   "path": [
+    "walk@ym_inner",
+    "accept@n_ym_azhu",
+    "walk@xx_inn",
+    "talk@n_xx_qiaofeng",
+    "choose@n_xx_qiaofeng:n0:c_azhu",
+    "walk@ym_inner",
+    "talk@n_ym_azhu",
+    "choose@n_ym_azhu:n0:c_tell"
+   ],
+   "expect": {
+    "lilian": 10
+   }
+  },
+  {
+   "quest": "q_ym_douji",
+   "outcome": "win",
+   "setup": {
+    "attrs": {
+     "con": 22,
+     "str": 15
+    }
+   },
+   "path": [
+    "walk@xx_inn",
+    "accept@n_xx_qiaofeng",
+    "wait:hour=未",
+    "act@q_ym_douji:a_pour"
+   ],
+   "expect": {
+    "learn_points_delta": 40,
+    "lilian": 5,
+    "skill_prof_delta": {
+     "basic_inner": 10
+    }
+   }
+  },
+  {
+   "quest": "q_ym_douji",
+   "outcome": "drunk",
+   "setup": {
+    "attrs": {
+     "con": 12,
+     "str": 12
+    },
+    "skills": {
+     "basic_inner": 0
+    }
+   },
+   "path": [
+    "walk@xx_inn",
+    "accept@n_xx_qiaofeng",
+    "wait:hour=午",
+    "expect_no_act@q_ym_douji:a_pour",
+    "wait:hour=未",
+    "act@q_ym_douji:a_pour"
+   ],
+   "expect": {
+    "lilian": 0
+   }
+  },
+  {
+   "quest": "q_ym_mawang",
+   "outcome": "default",
+   "setup": {
+    "combat_xp": 60000
+   },
+   "path": [
+    "walk@ym_inner",
+    "accept@n_ym_hufei",
+    "walk@mw_deep",
+    "act@q_ym_mawang:a_mawang",
+    "fight:WIN",
+    "walk@ym_inner",
+    "talk@n_ym_hufei",
+    "choose@n_ym_hufei:n0:c_done"
+   ],
+   "expect": {
+    "money_delta": 200,
+    "fame": 3,
+    "lilian": 3
+   }
+  },
+  {
+   "quest": "q_ym_mawang",
+   "outcome": "default",
+   "note": "逃跑不算，留在 s_deep 可再挑戰",
+   "setup": {
+    "combat_xp": 60000
+   },
+   "path": [
+    "walk@ym_inner",
+    "accept@n_ym_hufei",
+    "walk@mw_deep",
+    "act@q_ym_mawang:a_mawang",
+    "fight:FLEE",
+    "expect_stage:s_deep",
+    "act@q_ym_mawang:a_mawang",
+    "fight:WIN",
+    "walk@ym_inner",
+    "talk@n_ym_hufei",
+    "choose@n_ym_hufei:n0:c_done"
+   ],
+   "expect": {
+    "fame": 3
+   }
+  }
+ ],
+ "todo_verify": [
+  "【待考證】馬王洞的位置：只有 2002-01-26 山洞介紹（冰之蒼穹，雁門關附近、靈芝商人沿山往左）與 2001-11-12「（丐幫）那兒離馬王洞不遠」兩個來源，都未能重抓；本作放雁門關口西側（M3B_PLAN E4）。",
+  "【待考證】馬王＝17173 gaoshou/25 的「馬賊王」（弱、黃罩甲+35、2000、武當、18）？黃甲≈黃罩甲；那張表把馬賊王放在武當。m_mw_mawang 氣 2000 取它；a_huangjia 與 gaibang 碎片的 a_jcn_huangzhaojia 可能是同一件。",
+  "【待考證】馬王 2001-08 就存在：只出自本身是騙局的 2001-08-14 明教文章（「15級秒殺馬王」）。",
+  "【待考證】黃甲的防具數值（沿用 GDD 提案 30）與掉落率（0.15）。",
+  "【待考證】高昌迷宮 1.0A 就存在：2001-09-02 峨嵋攻略（連環殺人案目標惡賊在高昌迷宮）與 n399 未重抓；jy1_2 場景表只證明 1.0 有。",
+  "【待考證】高昌迷宮各層的怪物與內容、2001 高昌入口座標（2002-01-25 西夏、高昌、星宿、靈鷲換過地圖位置）；第 4–6 層的銅甲機關人、迷宮深處的漢人器物都是【設計提案】。",
+  "【待考證】機關人「防禦還打 200+」本輪未重查；以高臂力、高威力招式表達，實際傷害待 balance_sim 驗證。gaoshou/25 機關人地點寫「靈鷲」，視為誤植。",
+  "【待考證】jy1_2 另有「古高昌國外景、古高昌迷宮」兩個場景，本作未建（與高昌迷宮的關係不明）。",
+  "【待考證】計老人居內容、李文秀的對話（研究只有名字與位置）；目前只取《白馬嘯西風》做閒聊。",
+  "【待考證】拓印的觸發與 2001 獎勵（other.htm 寫「不詳」）；歷練 +5 取後期官方，銀兩 50、可重複、冷卻 1 日是【設計提案】；後期的卯時限制未採用。",
+  "【待考證】拓碑人的名字：2001 只寫「刻字石塊前的NPC」，後期官方叫石有田；石碑在關內或關外不明（本作放關內 ym_stele）。",
+  "【待考證】找蕭峰的流程與獎勵：2001 只有一句簡介；流程（阿朱 → 西夏客棧喬峰 → 回阿朱）與歷練 +10 是【設計提案】。",
+  "【待考證】蕭峰鬥酒與 q_em_baifang（拜訪名人 2001-09-02）的喬峰阿紫鬥酒是否同一事件（GDD §8.2）；本碎片照 M3B_PLAN 另做一條。「幾點歷練」→ 5、勝負門檻（根骨 20／臂力 22／基本內功 50）是【設計提案】；酒醉度上限本作沒有，略。",
+  "【待考證】阿朱在關內還是關外：兩份 2001 玩家資料都說關內（採用）；2001-10-05 n322「找雁門關外的阿朱免費易容一次」無法重抓，易容不做。",
+  "【待考證】苗人鳳在 1.0 有沒有任務：研究只有位置（雁門關外右下），本作只對話。",
+  "【待考證】范遙的位置與明教 NPC：2001 只確認范遙（西夏上方山坡）與張無忌；2001-06-20「明教晚會現場」未查；「峨嵋尋找明教任務」（other.htm 只有標題，2001-9-1）未做。",
+  "【待考證】雁門關其他後期內容（酒肉頭陀山洞、史沖包袱、桃枝仙打韃子兵、羅煞劍、血洗雁門關）都是後期版，不做。",
+  "【待考證】練功馬車（n358，2002-01-02，含高昌迷宮、雁門關山洞）無法重抓且屬 2002，不做。"
+ ],
+ "owner_decisions": [
+  "O11：明教不能拜、沒有入口任務；只放范遙（xn_slope，交談只回一句冷話，沒有 JOIN、沒有任務）；張無忌既有 talk 模板已存在，不動；不建立任何 q_mj_*。",
+  "E4：馬王洞從華山搬到雁門關口西側（mawang [820,96]），兩個來源都【待考證】，寫進 todo_verify。",
+  "E5：高昌機關人以 gaoshou/25 的 3000 氣為基準（GDD 20 萬氣作廢）；深層銅甲機關人 4500【設計提案】。",
+  "E8：雁門關 1.0A 就有（2001-07-18）；新房、NPC、任務都是 era 1.0A。",
+  "E12：拓印、蕭峰鬥酒採 other.htm 為 2001 出處【已證實】。",
+  "新預設【設計提案】：mw_deep 的「固定 3 隻馬王房間動作戰」掛在新任務 q_ym_mawang（給予者：既有胡斐，npc_links），因為房間動作必須屬於任務階段；需要實戰 1 萬、可重複、冷卻 1 遊戲日。",
+  "新預設【設計提案】：鬥酒的滑鼠滿杯小遊戲 → 未時房間動作「斟酒」＋屬性判定（根骨 ≥ 20 或 臂力 ≥ 22 或 基本內功 ≥ 50 為勝，否則醉倒）；引擎沒有擲骰動作，所以 M3B_PLAN「依臂力＋根骨擲」改成確定性門檻。勝負都算完成，每遊戲日一次。",
+  "新預設【設計提案】：拓印的麻布、焦炭用 COLLECT 計數，交給拓碑人時以 TALK＋take（數量不夠選項鎖住），不扣錯物品；拓印 i_ym_tuoyin 是任務物（不可賣、不可存）。",
+  "新預設【設計提案】：新增 m_gc_ezei 高昌惡賊（2001「連環殺人案」目標之一）放在迷宮 2–3 層遇敵；是否補進 q_em_lianhuan 由整合者決定（本碎片不能改別人的任務）。",
+  "新預設【設計提案】：高昌古道 gc_road2 駝隊歇腳處是休息點（INN 15 兩），gc_road1 只放野兔、大野兔、野狼；所有 WILD 房遇敵率 ≤ 0.15；地牢（DUNGEON）0.3–0.4。"
+ ],
+ "notes": "跨碎片依賴：(1) r_mabu、r_jiaotan 由 lifeskills_content 建立（M3B_PLAN §4.6 綁定 id）；拓印任務要在 1.0A 世界做得完，需要某家店賣麻布（建議 xx_buzhuang／jc_buzhuang 的 SHOP）或織布配方產出 r_mabu；焦炭由張鐵（n_xx_zhangtie）賣。(2) n_mj_fanyao 放既有房 xn_slope、n_ym_azhu 放既有房 ym_inner：依 §8.1 由 WP-MERGE 把 NPC id 加進房間 npcs；本碎片的新房 ym_outside、ym_stele、gc_*、mw_* 自己列好 npcs。(3) npc_links：n_lj_baiyong、n_xx_qiaofeng、n_ym_hufei 只追加 quests。(4) exit_patches 的 desc 是整句替換（比照 m3a 碎片 dlw_fork 的寫法），只動 §3.3 列出的 ym_gate、ym_bridge、ym_inner、ts_road1。(5) 怪物專用武功 mon_mw_mawang、mon_gc_jiguan 是本碎片新增的 martial_arts 列（§3.6 沒列武功前綴，取 mon_<碎片前綴>_ 避免撞名）。(6) q_em_lianhuan 的 src_note 寫「高昌迷宮是 1.0B 地區不做」已過時（M3B_PLAN §3.1 高昌迷宮是 1.0A）；整合者可考慮把 m_gc_ezei 補成第四個目標。(7) art_requests 的 yanmen 背景已存在（alias xixia_north），本碎片不重複申請；雁門關外 ym_outside 沿用 yanmen 背景。(8) test_plan 用了 setup.items／attrs／skills／combat_xp、expect 的 *_delta、expect_stage:、expect_locked@、expect_no_act@、debug_give: 等驗證步驟，story bot 不認得的可略過。(9) 任務列、目標、節點上的 src／src_note、repeat_src 等額外欄位引擎應忽略（比照 story 碎片）。"
+}

@@ -1,0 +1,11 @@
+{
+  "table": "escort_routes", "version": 1,
+  "rows": [
+    {"id": "er_xx_dl", "from_city": "xixia", "to_city": "dali", "consign_delay_shichen": 4, "job_quest": "q_ec_biao_xx_dl", "era": "1.0A", "src": "proposal", "src_note": "官方鏢局頁：托鏢寄物、拿取貨品、保鏢（研究 經濟）；城際送達時辰【設計提案】（M3B_PLAN §10）"},
+    {"id": "er_dl_xx", "from_city": "dali", "to_city": "xixia", "consign_delay_shichen": 4, "job_quest": "q_ec_biao_dl_xx", "era": "1.0A", "src": "proposal", "src_note": "官方鏢局頁：托鏢寄物、拿取貨品、保鏢（研究 經濟）；城際送達時辰【設計提案】（M3B_PLAN §10）"},
+    {"id": "er_xx_jc", "from_city": "xixia", "to_city": "jingcheng", "consign_delay_shichen": 3, "job_quest": "q_ec_biao_xx_jc", "era": "1.0B", "src": "proposal", "src_note": "官方鏢局頁：托鏢寄物、拿取貨品、保鏢（研究 經濟）；城際送達時辰【設計提案】（M3B_PLAN §10）"},
+    {"id": "er_jc_xx", "from_city": "jingcheng", "to_city": "xixia", "consign_delay_shichen": 3, "job_quest": "q_ec_biao_jc_xx", "era": "1.0B", "src": "proposal", "src_note": "官方鏢局頁：托鏢寄物、拿取貨品、保鏢（研究 經濟）；城際送達時辰【設計提案】（M3B_PLAN §10）"},
+    {"id": "er_dl_jc", "from_city": "dali", "to_city": "jingcheng", "consign_delay_shichen": 5, "job_quest": "q_ec_biao_dl_jc", "era": "1.0B", "src": "proposal", "src_note": "官方鏢局頁：托鏢寄物、拿取貨品、保鏢（研究 經濟）；城際送達時辰【設計提案】（M3B_PLAN §10）"},
+    {"id": "er_jc_dl", "from_city": "jingcheng", "to_city": "dali", "consign_delay_shichen": 5, "job_quest": "q_ec_biao_jc_dl", "era": "1.0B", "src": "proposal", "src_note": "官方鏢局頁：托鏢寄物、拿取貨品、保鏢（研究 經濟）；城際送達時辰【設計提案】（M3B_PLAN §10）"}
+  ]
+}
