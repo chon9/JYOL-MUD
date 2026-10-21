@@ -9,11 +9,15 @@ extends RefCounted
 ## 無辜的隊友不該被拖去打 qi 3000 的官兵、替別人承擔死亡懲罰。要幫忙就用 battle_join 自願加入。
 const PULL_KINDS := ["ENCOUNTER", "FIGHT"]
 ## M3B_PLAN §5.1.5：SEIZE（捉拿公敵）也是 PvP：沒有實戰／學點、不能中途加入、對方欄位遮蔽；結算交 PkSystem（不加懲罰）
-const PVP_KINDS := ["CHALLENGE", "FORCED", "SEIZE"]
+## M3D_PLAN §9.2（WP-EVENTS）：ROB（劫鏢）、DUEL（比武的切磋模式）
+const PVP_KINDS := ["CHALLENGE", "FORCED", "SEIZE", "ROB", "DUEL"]
 ## M3B_PLAN §5.1.8：生活技能打獵（LifeSystem.on_hunt_settled）、小黃追咬（一般獎勵）
 const KIND_HUNT := "HUNT"
 const KIND_HARASS := "HARASS"
 const KIND_SEIZE := "SEIZE"
+const KIND_ROB := "ROB"        # M3d WP-EVENTS：劫鏢（side 0＝劫鏢方、side 1＝押鏢者＋鏢單位）
+const KIND_DUEL := "DUEL"      # M3d WP-EVENTS：比武（切磋模式；沒有死亡懲罰）
+const DUEL_LIMIT_DEFAULT_S := 600.0
 const DEFAULT_MAX_HUMANS := 8
 
 var host: GameHost
@@ -36,6 +40,7 @@ func battle_opts(region_id: String, kind: String = "") -> Dictionary:
 		"kind": kind,
 		# M3A_PLAN 5.1：內、穴兩個指令是否開放（規則 later_battle_cmds；缺省 true）
 		"later_battle_cmds": bool(host.rules.get("later_battle_cmds", true)),
+		"dodge_cmd": bool(host.rules.get("dodge_cmd", true)),   # M3d WP-COMBAT
 	}
 
 func max_humans() -> int:
@@ -92,6 +97,8 @@ func start_ex(s: Session, monster_ids: Array, kind: String, opts: Dictionary) ->
 	for spec in Encounter.monster_specs(first, host.tables):   # 同名多隻 → 野兔甲、野兔乙
 		spec["side"] = 1
 		spec["peer"] = 0
+		if opts.has("hunter_xp"):   # M3d 審查：賞金獵人依被追的人的實戰決定數值（BountyRules.apply_hunter_xp）
+			BountyRules.apply_hunter_xp(spec, int(opts["hunter_xp"]), host.tables)
 		if npc_id != "":
 			_npc_unit_spec(spec, npc_id)   # M3C_PLAN §5.7：攻擊 NPC 的主單位（只有第一個）
 			npc_id = ""
@@ -135,18 +142,27 @@ func start_pvp(atk: Session, def: Session, kind: String, opts: Dictionary = {}) 
 	var bid := _next_id
 	_next_id += 1
 	var room := atk.room_id()
-	var b := Battle.new(bid, host.rng.randi(), battle_opts(host.index.region_of(room), kind))
+	var bo := battle_opts(host.index.region_of(room), kind)
+	if kind == KIND_DUEL:
+		bo["duel_limit_s"] = float(opts.get("duel_limit_s", DUEL_LIMIT_DEFAULT_S))   # M3d WP-EVENTS：Battle 判定用戰鬥時間
+	var b := Battle.new(bid, host.rng.randi(), bo)
 	var entry := _new_entry(b, kind, room)
 	entry["opts"] = opts.duplicate(true)
 	_add_player(entry, atk, 0)
 	_add_player(entry, def, 1)
 	if bool(opts.get("pull_party", false)):
+		# M3d 審查：劫鏢（ROB）帶 pull_min_xp（新手保護與劫鏢實戰門檻）與 pull_skip_chars（持照者），同 start_ex 的 S7 修正
+		var min_xp := int(opts.get("pull_min_xp", 0))
+		var skip: Array = opts.get("pull_skip_chars", []) if opts.get("pull_skip_chars", []) is Array else []
 		for o in _pull_candidates(atk):
 			if b.humans() >= max_humans():
 				break
 			if o == def:
 				continue
+			if int(o.character.combat_xp) < min_xp or skip.has(str(o.character.id)):
+				continue
 			_add_player(entry, o, 0)
+	_m3d_events_pre_begin(entry)   # M3d WP-EVENTS：劫鏢的鏢單位
 	return _begin(entry)
 
 func _new_entry(b: Battle, kind: String, room: String) -> Dictionary:
@@ -157,7 +173,11 @@ func _new_entry(b: Battle, kind: String, room: String) -> Dictionary:
 func _add_player(entry: Dictionary, s: Session, side: int) -> void:
 	var b: Battle = entry["battle"]
 	var ch = s.character
-	b.add_unit(ch.to_combatant(host.tables, host.options, side, s.peer_id))
+	var spec: Dictionary = ch.to_combatant(host.tables, host.options, side, s.peer_id)
+	spec["equip_cd_ms"] = IntentsItem.equip_cooldown_ms(host)   # M3d 審查：換裝兩秒只在 1.0B 世界
+	if str(entry.get("kind", "")) == KIND_DUEL:
+		_m3d_duel_spec(entry, spec)   # M3d WP-EVENTS：切磋模式不觸發門技、拿掉召喚類道具
+	b.add_unit(spec)
 	_register_player(entry, s, ch)
 	s.battle_id = b.id
 
@@ -214,6 +234,7 @@ func _state_for(entry: Dictionary, peer: int) -> Dictionary:
 	for d in state.get("units", []):
 		list.append(redact_unit(d, my_side))
 	state["units"] = list
+	_m3d_events_state(entry, state, my_side)   # M3d WP-EVENTS：劫鏢方不能逃、比武倒數
 	return state
 
 ## 敵方的玩家單位：只留與怪物相同的公開欄位＋look
@@ -248,6 +269,8 @@ func tick(dt: float) -> void:
 		var b: Battle = entry["battle"]
 		var evs: Array = b.step(dt, host.tables)
 		_forward(entry, evs)
+		if not b.is_over():
+			_m3d_events_tick(entry)   # M3d WP-EVENTS：比武限時與棄權、鏢單位倒下
 		if b.is_over():
 			_finish(entry)
 
@@ -259,6 +282,8 @@ func _forward(entry: Dictionary, evs: Array) -> void:
 			continue
 		for peer in entry["peers"]:
 			host.ws.forward_event(int(peer), redact_event_for(b, e, int(peer)) if pvp else e)
+	if str(entry.get("kind", "")) == KIND_DUEL:
+		_m3d_duel_spectate(entry, evs)   # M3d WP-EVENTS：擂臺與休息區的人收到每一擊的文字
 
 ## PvP 時不給對方看的單位欄位（4.5.3：敵方玩家只有與怪物相同的公開欄位）。開場快照由 redact_unit 處理；
 ## 戰鬥中的事件（例：battle_rest 帶 neili、neili_gain）在這裡逐一收件人剔除（M2 第三輪審查）
@@ -297,6 +322,9 @@ func submit(s: Session, args: Dictionary) -> Dictionary:
 	var b: Battle = active[bid]["battle"]
 	if b.is_over():
 		return GameHost.fail("battle_over")
+	var no_flee := _m3d_rob_no_flee(active[bid], s, args)   # M3d WP-EVENTS：劫鏢方不能逃（烙跑鞋也不行）
+	if no_flee != "":
+		return GameHost.fail(no_flee)
 	var cmd := { "cmd": str(args.get("cmd", "")) }
 	for k in ["target", "art", "move", "power_tenths", "item_uid", "mode"]:
 		if args.has(k):
@@ -320,7 +348,9 @@ func join(s: Session, bid: int) -> Dictionary:
 	var b: Battle = entry["battle"]
 	var side := int(chk["side"])
 	var ch = s.character
-	var uid := b.join_unit(ch.to_combatant(host.tables, host.options, side, s.peer_id), host.tables)
+	var jspec: Dictionary = ch.to_combatant(host.tables, host.options, side, s.peer_id)
+	jspec["equip_cd_ms"] = IntentsItem.equip_cooldown_ms(host)   # M3d 審查：換裝兩秒只在 1.0B 世界
+	var uid := b.join_unit(jspec, host.tables)
 	if uid == 0:
 		return GameHost.fail("battle_full")
 	_register_player(entry, s, ch)
@@ -486,6 +516,8 @@ func detach_for(s: Session) -> void:
 	var b: Battle = entry["battle"]
 	if not b.is_over():
 		b.detach_peer(s.peer_id)
+	if not b.is_over() and str(entry.get("kind", "")) == KIND_DUEL:
+		_m3d_duel_forfeit(entry)   # M3d WP-EVENTS：比武中斷線＝棄權
 	if not (entry["peers"] as Array).is_empty() and not b.is_over():
 		return   # 還有其他在線玩家：照常由 tick 推進
 	while not b.is_over():
@@ -509,8 +541,10 @@ func _finish(entry: Dictionary) -> void:
 		return
 	active.erase(b.id)
 	var out: Dictionary = b.outcome()
-	var result := str(out.get("result", "ABORTED"))
 	var kind := str(entry.get("kind", ""))
+	if kind == KIND_DUEL:
+		_m3d_duel_outcome(out)   # M3d WP-EVENTS：一方逃走（棄權）時另一方算勝（不是「全部逃走」）
+	var result := str(out.get("result", "ABORTED"))
 	var pvp := is_pvp_kind(kind)
 	var rewards: Dictionary = {}
 	if result == "VICTORY" and not pvp:
@@ -544,6 +578,11 @@ func _finish(entry: Dictionary) -> void:
 				"killed_by_char": _killer_char(b, int(u.get("killed_by", 0))),
 			})
 	host.regions.mark_room_dirty(str(entry.get("room", "")))
+	# M3d WP-EVENTS：劫鏢的分贓與押鏢失敗、比武的晉級（DUEL 不交給 PkSystem：比武不轉移神兵、不加 PK值與殺氣、不廣播）
+	_m3d_events_finish(entry, out)
+	if kind == KIND_DUEL:
+		host.m2_call(host.get("npcpk"), "on_battle_finished", [entry, out])
+		return
 	if pvp and result != "ABORTED":
 		var pk = host.get("pk")
 		if pk != null:
@@ -624,10 +663,12 @@ static func _killer_char(b: Battle, killer_uid: int) -> String:
 func _settle_player(entry: Dictionary, s: Session, ch, u: Dictionary, r: Variant, result: String) -> void:
 	var b: Battle = entry["battle"]
 	var pvp := is_pvp_kind(str(entry.get("kind", "")))
+	var duel := str(entry.get("kind", "")) == KIND_DUEL   # M3d WP-EVENTS
 	ch.apply_battle_outcome(u, host.tables, host.options)
 	_settle_consumed(s, ch, u)       # M3A_PLAN 5.8 #1
-	_settle_conditions(ch, u)        # M3A_PLAN 5.8 #2
-	var died := bool(u.get("died", false))
+	if not duel:
+		_settle_conditions(ch, u)    # M3A_PLAN 5.8 #2（切磋模式：戰鬥中的狀態不帶出來）
+	var died := bool(u.get("died", false)) and not duel   # 切磋模式沒有死亡（M3D_PLAN §5.3.4）
 	var fled := bool(u.get("fled", false))
 	var per := result
 	if died:
@@ -635,7 +676,8 @@ func _settle_player(entry: Dictionary, s: Session, ch, u: Dictionary, r: Variant
 	elif fled or result == "ALL_FLED":
 		per = "FLED"
 	# 勝利但沒有任何敵人被打死＝對手全部逃走，沒有獎勵（UI 顯示「對手逃走了」）
-	var enemies_fled := per == "VICTORY" and not b.units.any(func(x): return x.side != int(u.get("side", 0)) and x.is_dead())
+	# M3d：比武（DUEL）判定勝、對手棄權都不算「對手逃走」
+	var enemies_fled := per == "VICTORY" and not duel and not b.units.any(func(x): return x.side != int(u.get("side", 0)) and x.is_dead())
 	var close := {
 		"bid": b.id, "result": per, "you_died": died, "enemies_fled": enemies_fled,
 		"rewards": { "combat_xp": 0, "learn_points": 0, "money": 0, "items": [] },
@@ -695,11 +737,14 @@ func _settle_player(entry: Dictionary, s: Session, ch, u: Dictionary, r: Variant
 		host.m2_call(host.life, "on_hunt_settled", [s, ch, summary])
 	if died:
 		close["death"] = handle_death(s, ch, str(entry.get("room", "")), summary)
+	if duel:
+		_m3d_duel_restore(ch, close)   # M3d WP-EVENTS：戰後精氣神內力補滿
 	if s != null:
 		s.battle_id = 0
 		ClientState.deliver_battle_close(s.peer_id, close)
 		_battle_changed(s)
 		host.flush_session(s, true)
+	host.m3d_battle_settled(s, ch, summary)   # M3d
 	host.save_char(ch)
 
 ## M3A_PLAN 5.8 #1：HIDDEN 用掉的暗器、ITEM 用掉的藥從背包扣，並送 item_lost
@@ -779,15 +824,28 @@ func battle_summary(entry: Dictionary, u: Dictionary, per: String) -> Dictionary
 		killed_by = { "kind": "PLAYER" if k.is_player() else "MONSTER", "ref": str(k.spec.get("ref", "")), "sect": k.sect() }
 	var me: BattleUnit = b.unit(int(u.get("uid", 0)))
 	var same: Array = []
+	if kind == KIND_DUEL:
+		me = null   # M3d WP-EVENTS：比武打倒同門不算同門相殘
 	if me != null and me.sect() != "":
 		for v in b.units:
 			if v != me and v.is_player() and v.is_dead() and v.killed_by == me.uid and v.sect() == me.sect():
 				same.append(str(v.spec.get("ref", "")))
 	var opts: Variant = entry.get("opts", {})
 	var tag: Variant = opts.get("quest_tag", {}) if opts is Dictionary else {}
+	# M3d 審查：同一邊的其他玩家（角色 id）與「有沒有打倒任何對手」——ComboSystem 判斷合體夥伴一起打贏（戰鬥結束時 active 已移除）
+	var my_side := int(u.get("side", 0))
+	var allies: Array = []
+	var foes_killed := false
+	for v in b.units:
+		if v.side == my_side:
+			if v.is_player() and v.uid != int(u.get("uid", 0)):
+				allies.append(v.char_id())
+		elif v.is_dead():
+			foes_killed = true
 	return {
+		"allies": allies, "foes_killed": foes_killed,
 		"kind": kind, "result": per, "kills": (u.get("kills", []) as Array).duplicate(),
-		"killed_by": killed_by, "died": bool(u.get("died", false)),
+		"killed_by": killed_by, "died": bool(u.get("died", false)) and kind != KIND_DUEL,   # 切磋模式沒有死亡（M3d）
 		"pvp_initiator": is_pvp_kind(kind) and int(u.get("side", 0)) == 0,
 		"same_sect_kills": same,
 		# STORY_PLAN §4.8：開戰動作帶的任務標籤、本人結果、同一方隊友打倒的怪物
@@ -862,4 +920,189 @@ func handle_death(s: Session, ch, death_room: String, summary: Dictionary = {}) 
 	if jailed:
 		out["jailed"] = true
 		out["respawn_room_name"] = str(capture.get("room_name", ""))
+	return out
+
+# ==== M3d WP-EVENTS ====
+## M3D_PLAN §5.2.2（劫鏢 ROB）、§5.3.3–5.3.4（比武 DUEL）。ROB：side 0＝劫鏢方（不能逃）、side 1＝押鏢者＋鏢單位
+## （鏢車 m_ev_jb_cart／客商 m_ev_jb_client）；鏢單位倒下＝劫鏢成功，戰鬥當場結束。DUEL：切磋模式（不觸發門技、
+## 拿掉召喚類道具、沒有死亡懲罰、戰後補滿），限時 opts.duel_limit_s（戰鬥時間）到了由 Battle._duel_check 判定，
+## 逃走與斷線＝棄權；擂臺與休息區的旁觀者收到每一擊的文字（ev_duel_line）。
+const DUEL_LINE := "ev_duel_line"
+const DUEL_LINE_MISS := "ev_duel_line_miss"
+
+## start_pvp：_begin 之前（Battle 還在 SETUP）。ROB → side 1 加一個鏢單位（opts.jb.kind：hu 客商、huo 鏢車）
+func _m3d_events_pre_begin(entry: Dictionary) -> void:
+	if str(entry.get("kind", "")) != KIND_ROB:
+		return
+	var jb: Variant = entry.get("opts", {}).get("jb", {})
+	var kind := str(jb.get("kind", JiebiaoRules.KIND_HUO)) if jb is Dictionary else JiebiaoRules.KIND_HUO
+	var mid := str(JiebiaoRules.ROB_UNIT.get(kind, JiebiaoRules.ROB_UNIT[JiebiaoRules.KIND_HUO]))
+	if not host.tables.get("monsters", {}).has(mid):
+		return   # 資料還沒有（平行開發）：只打押鏢者本人
+	var b: Battle = entry["battle"]
+	for spec in Encounter.monster_specs([mid], host.tables):
+		spec["side"] = 1
+		spec["peer"] = 0
+		entry["rob_uid"] = b.add_unit(spec)
+		break
+
+## DUEL 規格：門技清空（不觸發）、召喚類道具（effects 有 SUMMON）拿掉、先報名者的順位（限時判定的最後一層）
+func _m3d_duel_spec(entry: Dictionary, spec: Dictionary) -> void:
+	spec["sect_skill"] = {}
+	var keep: Array = []
+	for it in spec.get("battle_items", []):
+		if it is Dictionary and _m3d_is_summon(it):
+			continue
+		keep.append(it)
+	spec["battle_items"] = keep
+	var order: Variant = entry.get("opts", {}).get("order", {})
+	if order is Dictionary:
+		spec["duel_order"] = int((order as Dictionary).get(str(spec.get("ref", "")), 1 << 20))
+
+static func _m3d_is_summon(it: Dictionary) -> bool:
+	for e in it.get("effects", []):
+		if e is Dictionary and str(e.get("type", "")).to_upper() == "SUMMON":
+			return true
+	return false
+
+## 開場快照：劫鏢方（side 0）一律不能逃；比武帶限時
+func _m3d_events_state(entry: Dictionary, state: Dictionary, my_side: int) -> void:
+	var kind := str(entry.get("kind", ""))
+	if kind == KIND_ROB and my_side == 0:
+		state["no_flee"] = true
+	if kind == KIND_DUEL:
+		var b: Battle = entry["battle"]
+		state["duel_limit_s"] = float(b.opts.get("duel_limit_s", DUEL_LIMIT_DEFAULT_S))
+		state["duel_left_s"] = maxf(0.0, float(state["duel_limit_s"]) - b.time_s())
+
+## battle_cmd：劫鏢方的 FLEE、QING ESCAPE → no_flee（烙跑鞋也不行；§5.2.2）
+func _m3d_rob_no_flee(entry: Dictionary, s: Session, args: Dictionary) -> String:
+	if str(entry.get("kind", "")) != KIND_ROB:
+		return ""
+	var cmd := str(args.get("cmd", ""))
+	if not (cmd == "FLEE" or (cmd == "QING" and str(args.get("mode", "")) == "ESCAPE")):
+		return ""
+	var b: Battle = entry["battle"]
+	var me: BattleUnit = b.unit(b.uid_for_peer(s.peer_id))
+	return "no_flee" if me != null and me.side == 0 else ""
+
+## 每 tick（戰鬥還沒結束時）：比武限時（Battle._check_end 只在有人行動後才看；這裡補上整段蓄力期間）、
+## 比武有人斷線＝棄權、劫鏢的鏢單位倒下＝劫鏢成功
+func _m3d_events_tick(entry: Dictionary) -> void:
+	var b: Battle = entry["battle"]
+	match str(entry.get("kind", "")):
+		KIND_DUEL:
+			if b.opts.has("duel_limit_s") and b._duel_check():
+				_forward(entry, b.drain_events())
+				return
+			for u in b.units:
+				if u.is_player() and u.detached and u.is_active():
+					_m3d_duel_forfeit(entry)
+					return
+		KIND_ROB:
+			var cart: BattleUnit = b.unit(int(entry.get("rob_uid", 0)))
+			if cart != null and cart.is_dead():
+				b.ev_end(0, "ROBBED")
+				_forward(entry, b.drain_events())
+
+## 比武棄權：還有在線（沒斷線、在場）玩家的一方勝；兩方都沒有 → 依限時判定的規則
+func _m3d_duel_forfeit(entry: Dictionary) -> void:
+	var b: Battle = entry["battle"]
+	if b.is_over():
+		return
+	var live := [false, false]
+	for u in b.units:
+		if u.is_player() and u.is_active() and not u.detached and (u.side == 0 or u.side == 1):
+			live[u.side] = true
+	if live[0] == live[1]:
+		var w := TourneyRules.judge(b._ev_side_stats(0), b._ev_side_stats(1))
+		b.ev_end(w, "FORFEIT")
+	else:
+		b.ev_end(0 if live[0] else 1, "FORFEIT")
+	_forward(entry, b.drain_events())
+
+## DUEL 結果：一方全部逃走（棄權）→ 另一方勝（Battle 判成 ALL_FLED）；how 寫進 out.duel_how（KO／JUDGE／FORFEIT）
+func _m3d_duel_outcome(out: Dictionary) -> void:
+	var units: Dictionary = out.get("units", {})
+	var active := [false, false]
+	var fled := [false, false]
+	for k in units:
+		var u: Dictionary = units[k]
+		var sd := clampi(int(u.get("side", 0)), 0, 1)
+		if bool(u.get("fled", false)):
+			fled[sd] = true
+		elif not bool(u.get("died", false)):
+			active[sd] = true
+	var result := str(out.get("result", ""))
+	if result == "ALL_FLED" and active[0] != active[1]:
+		var w := 0 if active[0] else 1
+		out["result"] = "VICTORY" if w == 0 else "DEFEAT"
+		out["winner_side"] = w
+	var how := "KO"
+	if fled[0] or fled[1]:
+		how = "FORFEIT"
+	out["duel_how"] = how
+
+## 結算之後：劫鏢分贓與押鏢失敗（JiebiaoSystem）、比武晉級（TourneySystem）；系統為 null 時略過
+func _m3d_events_finish(entry: Dictionary, out: Dictionary) -> void:
+	var b: Battle = entry["battle"]
+	var ev: Variant = b.opts.get("ev_end", {})
+	if ev is Dictionary and not (ev as Dictionary).is_empty():
+		out["ev_end"] = (ev as Dictionary).duplicate()
+		if str(entry.get("kind", "")) == KIND_DUEL:
+			out["duel_how"] = str(ev.get("how", "JUDGE"))
+	match str(entry.get("kind", "")):
+		KIND_ROB:
+			host.m2_call(host.get("jiebiao"), "on_rob_end", [entry, out])
+		KIND_DUEL:
+			host.m2_call(host.get("tourney"), "on_duel_end", [entry, out])
+
+## 比武戰後：精氣神內力補滿（沒有死亡、戰鬥中的狀態不帶出來）
+func _m3d_duel_restore(ch, close: Dictionary) -> void:
+	Survival.rest_full(ch, host.tables, host.options)
+	close["you_died"] = false
+	close["death"] = {}
+	close["duel"] = true
+
+## 擂臺與休息區不在這場戰鬥裡的人：每一擊的房間文字
+func _m3d_duel_spectate(entry: Dictionary, evs: Array) -> void:
+	var peers: Array = []
+	for s in host.sessions():
+		if s.character == null or (entry["peers"] as Array).has(s.peer_id):
+			continue
+		if s.room_id() in TourneyRules.ARENA_ROOMS:
+			peers.append(s.peer_id)
+	if peers.is_empty():
+		return
+	for e in evs:
+		if not (e is Dictionary):
+			continue
+		var p: Variant = e.get("p", {})
+		if not (p is Dictionary):
+			continue
+		var key := ""
+		var pp := {}
+		if (p as Dictionary).has("dmg") and (p as Dictionary).has("atk") and (p as Dictionary).has("def"):
+			key = DUEL_LINE
+			pp = { "atk": str(p["atk"]), "def": str(p["def"]), "dmg": int(p["dmg"]) }
+		elif str(e.get("key", "")) == "battle_miss":
+			key = DUEL_LINE_MISS
+			pp = { "atk": str(p.get("atk", "")), "def": str(p.get("def", "")) }
+		if key == "":
+			continue
+		for peer in peers:
+			host.ws.queue_event(int(peer), Protocol.CH_SCENE, key, pp.duplicate())
+
+## 某場戰鬥某一方的玩家：[{ peer, char_id, ch }]（含斷線者；JiebiaoSystem 開戰當下給劫鏢標記用）
+func side_players(bid: int, side: int) -> Array:
+	var out: Array = []
+	if not active.has(bid):
+		return out
+	var entry: Dictionary = active[bid]
+	var b: Battle = entry["battle"]
+	for u in b.units:
+		if not u.is_player() or u.side != side:
+			continue
+		var ch = entry["chars"].get(u.peer)
+		out.append({ "peer": u.peer, "char_id": str(u.spec.get("ref", "")), "ch": ch })
 	return out

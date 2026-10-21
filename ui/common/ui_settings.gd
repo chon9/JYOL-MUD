@@ -15,6 +15,7 @@ const DEFAULTS := {
 	"ui.battle_auto_return": true,    # 戰鬥結束自動返回
 	"ui.scale": 1.0,                  # 介面縮放 0.9／1.0／1.15
 	"ui.lanterns_collapsed": false,
+	"ui.night_dim": true,             # M3d：夜晚變暗（夜明珠不暗；純客戶端）
 	"ui.show_names": true,            # 顯示名稱（系統開關；M2_PLAN D5：純客戶端設定）
 	"ui.talk_channel": "輕聲細語",     # 上次選的發話頻道（AUTHENTIC_UI_SPEC §9.2：預設輕聲細語）
 	"ui.pk_key": "ctrl",

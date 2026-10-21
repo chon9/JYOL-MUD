@@ -100,3 +100,23 @@ func place_escape_tiles(n: int, p_units: Array, rng: RandomNumberGenerator) -> v
 		var idx := rng.randi_range(0, cands.size() - 1)
 		escape.append(cands[idx])
 		cands.remove_at(idx)
+
+## M3D_PLAN §3.2（WP-COMBAT）「輕」飛身越敵：曼哈頓距離 ≤ steps 的空格（不含起點），路徑可以越過有人的格子。
+## from 可以是格子（steps 必填）或 BattleUnit（steps 省略＝移動範圍 + 1）。依 y、x 排序（決定性）。
+func jump_targets(from: Variant, steps: int = -1) -> Array[Vector2i]:
+	var p: Vector2i
+	if from is BattleUnit:
+		p = (from as BattleUnit).pos
+		if steps < 0:
+			steps = BattleFormulas.move_range(from) + 1
+	else:
+		p = from
+	var out: Array[Vector2i] = []
+	if steps <= 0:
+		return out
+	for y in H:
+		for x in W:
+			var c := Vector2i(x, y)
+			if c != p and manhattan(c, p) <= steps and is_free(c):
+				out.append(c)
+	return out

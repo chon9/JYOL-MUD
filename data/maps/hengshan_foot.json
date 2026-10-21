@@ -5,7 +5,7 @@
   "desc": "恆山腳下水田連片，官道沿著河往東南通到華山。",
   "escape_tiles_hint": 2,
   "rooms": [
-    {"id": "hf_paddy", "name": "恆山外稻田", "desc": "山腳下開出一片稻田，田埂縱橫，水車吱呀作響。", "exits": [{"dir": "NW", "to": "xe_river"}, {"dir": "E", "to": "hf_teahouse"}], "npcs": ["n_sm_qiaofu_xx"], "features": ["FIELD"], "requires": [], "encounter": {"rate": 0.1, "table": [{"monster": "m_rabbit", "w": 50, "count": [1, 1]}, {"monster": "m_bigrabbit", "w": 40, "count": [1, 1]}, {"monster": "m_boar", "w": 10, "count": [1, 1]}]}},
+    {"id": "hf_paddy", "name": "恆山外稻田", "desc": "山腳下開出一片稻田，田埂縱橫，水車吱呀作響。", "exits": [{"dir": "NW", "to": "xe_river"}, {"dir": "E", "to": "hf_teahouse"}], "npcs": ["n_sm_qiaofu_xx", "n_er_xx_nongfu"], "features": ["FIELD"], "requires": [], "encounter": {"rate": 0.1, "table": [{"monster": "m_rabbit", "w": 50, "count": [1, 1]}, {"monster": "m_bigrabbit", "w": 40, "count": [1, 1]}, {"monster": "m_boar", "w": 10, "count": [1, 1]}]}},
     { "id": "hf_teahouse", "name": "路邊茶棚", "desc": "官道旁搭著一座茅草茶棚，幾張木桌坐滿歇腳的旅人。老闆說往東南再走半天就到華山腳下。",
       "exits": [{"dir": "W", "to": "hf_paddy"}, {"dir": "E", "to": "hf_shore"}], "npcs": ["n_hf_teaman"],
       "features": [], "requires": [] },

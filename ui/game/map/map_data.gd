@@ -131,6 +131,10 @@ static func fog(model: Dictionary, visited: Dictionary) -> Dictionary:
 		if visited.has(id):
 			vis[id] = true
 	for id in vis:
+		# M3d 審查：迷陣（房間列 hide_exit_names，八卦泥陣）不畫相鄰沒去過的「？」——
+		# 「？」畫在真正的方向上（走錯的單向出口不畫）＝小地圖直接洩漏解法
+		if bool(by_id[id].get("hide_exit_names", false)):
+			continue
 		for ex in by_id[id].get("exits", []):
 			if ex is Dictionary:
 				var to := str(ex.get("to", ""))

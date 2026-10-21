@@ -18,7 +18,7 @@ func before_each() -> void:
 
 func test_real_data_loads_without_errors() -> void:
 	assert_eq(loader.errors.size(), 0, "load errors: %s" % ", ".join(loader.errors))
-	assert_eq(loader.all_maps.size(), 44, "44 region maps (15 + 16 M3a + 3 故事包 in 1.0A + 2 京城 in 1.0B + M3b 8：京城北郊、丐幫、絕情谷、絕情谷地牢 1.0B；馬王洞、高昌古道、高昌、高昌迷宮 1.0A)")
+	assert_eq(loader.all_maps.size(), 44 + 1, "（M3d WP-ERRANDS +1：黑龍潭 1.0B）44 region maps (15 + 16 M3a + 3 故事包 in 1.0A + 2 京城 in 1.0B + M3b 8：京城北郊、丐幫、絕情谷、絕情谷地牢 1.0B；馬王洞、高昌古道、高昌、高昌迷宮 1.0A)")
 
 func test_activate_base_era_without_errors() -> void:
 	var v := loader.activate(["1.0A"])
@@ -62,6 +62,18 @@ func test_every_row_has_era_and_valid_src() -> void:
 		"n_na_xx_huanggou", "m_npc_huanggou", "r_gourou",
 		"n_na_xw_yang", "n_na_xe_kuangshi",
 		"r_zhangmuxiang"]   # M3c2 審查 #6：工匠（1.0B）的樟木箱   # M3c 第三輪審查：羊、採礦師唯一出處 2002-06-17 → 與黃狗同一規則改 1.0B   # M3c 第二輪審查：黃狗（2001-10 才有出處）、牠的戰鬥單位與黃狗肉是 1.0B；M3c WP-LOOT：武穆遺書（基本陣法只在 1.0B）、1.0B 精英掉落表；M3c 審查：結婚戒指 1.0B（DIAO/2-1 京城婚姻）
+	# M3d WP-ERRANDS（M3D_PLAN §6、T8）：1.0B 的跑腿列（柯鎮惡、郭靖、武林帖、黑龍潭）
+	m3b_1b_prefixes.append_array(["heilongtan", "n_er_kezhene", "n_er_guojing", "n_er_tiefan", "n_er_yinggu", "n_er_cien",
+		"q_er_kezhene", "q_er_jiuwei", "i_er_ke_xin", "i_er_wulintie", "i_er_hulixue", "m_er_wulin_", "m_er_jiuwei", "m_er_yang",
+		"p1b_er_"])
+	# M3d 整合（M3D_PLAN T8）：WP-LAW 京城列、WP-COMBAT 合體技與貨郎、WP-ARTS 1.0B 武功鏈、WP-EVENTS 劫鏢
+	m3b_1b_prefixes.append_array(["n_ev_jb_", "m_ev_jb_", "q_ev_jb_", "i_cb_", "n_cb_", "ms_ar_", "q_ar_qz_", "q_ar_lj_",
+		"q_ar_em_", "q_ar_xd_", "i_ar_qz_", "i_ar_ym_", "i_ar_luosha", "i_ar_huangyao", "i_ar_xd_", "m_ar_manbing"])
+	m3b_1b_ids.append_array(["qz_r_kill_gumu", "gm_suxin", "lj_bahuang", "qz_chongyang", "qz_kongming", "em_sixiang", "xd_xuemo",
+		"ms_gm_xiaolongnu_suxin", "ms_lj_tonglao_bahuang", "n_law_board_jc", "n_law_guanye_jc_a", "n_law_guanye_jc_b",
+		"n_law_banxian_jc", "n_ar_qz_shanju", "n_ar_qz_shuliu", "n_ar_qz_yunyou", "n_ar_qz_wangzhijin", "n_ar_lj_wuyazi",
+		"n_ar_ym_shouwei", "n_ar_guoxiang", "n_ar_xd_inf_heilong", "n_ar_xd_baoxiang", "n_ar_xd_inf_dali", "n_ar_dingbusan",
+		"n_ar_dingbusi", "n_ar_laokelian", "n_ar_xd_xuemo_laozu"])
 	var text_tables := ["text_templates", "rumors", "ambient"]   # 文字列的 era 由 lint 的參照檢查把關（1.0A NPC 不能用 1.0B 模板）
 	for t in loader.all_tables:
 		if t in DataLoader.NO_ERA_TABLES:
@@ -83,7 +95,8 @@ func test_every_row_has_era_and_valid_src() -> void:
 				if sid.begins_with(pf):
 					m3b = true
 			assert_eq(row.get("era", ""), "1.0B" if jc or m3b or sid in formation_1b else "1.0A", "%s.%s era" % [t, id])
-	var maps_1b := ["jingcheng", "jingcheng_wild", "jingcheng_north", "gaibang", "jueqinggu", "jueqinggu_dilao", "mawang"]
+	var maps_1b := ["jingcheng", "jingcheng_wild", "jingcheng_north", "gaibang", "jueqinggu", "jueqinggu_dilao", "mawang",
+		"heilongtan"]   # M3d WP-ERRANDS
 	for rid in loader.all_maps:
 		assert_true(loader.all_maps[rid].get("src", "") in DataLint.SRC_TAGS, "maps/%s src" % rid)
 		assert_eq(loader.all_maps[rid]["era"], "1.0B" if rid in maps_1b else "1.0A", "maps/%s era" % rid)
@@ -93,14 +106,14 @@ func test_1_0b_view_activates_and_lints_clean() -> void:
 	assert_eq(loader.activate_errors.size(), 0, "activate errors: %s" % ", ".join(loader.activate_errors))
 	var errs := DataLint.check_content(v)
 	assert_eq(errs.size(), 0, "1.0B content errors:\n  " + "\n  ".join(errs))
-	assert_eq(DataLint.room_index(v).size(), 266, "1.0B room count (78 + 105 M3a + 19 故事包 + 審查 1：關外橋下 + M3b 62 + 審查 京城武館)")
-	assert_eq(v["regions"].size(), 44, "1.0B region count")
+	assert_eq(DataLint.room_index(v).size(), 266 + 14, "1.0B room count (78 + 105 M3a + 19 故事包 + 審查 1：關外橋下 + M3b 62 + 審查 京城武館；M3d WP-ERRANDS +14：比武場 2、破廟、北橋、紡織店、馬王洞西雪地、黑龍潭 8)")
+	assert_eq(v["regions"].size(), 44 + 1, "1.0B region count（M3d WP-ERRANDS：黑龍潭泥沼 heilongtan）")
 
 # ---------------------------------------------------------------- 世界圖
 
 func test_every_room_reachable_from_xx_square() -> void:
 	var idx := DataLint.room_index(view)
-	assert_eq(idx.size(), 218, "room count (WORLD_2001 §3.17 的 71 + M3a 105 + 故事包 19 + 審查 1：關外橋下 + M3b 1.0A 22；馬王洞 4 間審查改 1.0B)")
+	assert_eq(idx.size(), 218 + 5, "room count (WORLD_2001 §3.17 的 71 + M3a 105 + 故事包 19 + 審查 1：關外橋下 + M3b 1.0A 22；馬王洞 4 間審查改 1.0B；M3d WP-ERRANDS 1.0A +5：比武場、休息區、破廟、北橋、紡織店)")
 	var seen := DataLint.reachable_rooms(view, "xx_square")
 	for id in idx:
 		assert_has(seen, id, "unreachable on foot:")
@@ -197,7 +210,9 @@ func test_rooms_match_plan_regions() -> void:
 		"gaochang": ["gc_outside", "gc_jihut_out", "gc_jihut"],
 		"gaochang_maze": ["gc_maze1", "gc_maze2", "gc_maze3", "gc_maze4", "gc_maze5", "gc_maze6"],
 	}
-	for extra in [m3a, story, m3b]:
+	# M3D_PLAN §9.5（1.0A 地圖上的房間；破廟、北橋在 1.0A 地圖檔裡，各時代都在）
+	var m3d := { "xixia": ["xx_biwu", "xx_biwu_rest"], "zhongnan_foot": ["zn_pomiao", "zn_bridge"], "dali": ["dl_fangzhi"] }
+	for extra in [m3a, story, m3b, m3d]:
 		for region in extra:
 			if not expect.has(region):
 				expect[region] = []
@@ -364,7 +379,7 @@ func test_all_m1_npcs_exist_with_services() -> void:
 		"n_bandit_chief": ["xw_hill", ["FIGHT"]],   # M2_PLAN 4.9（WP-PARTY Day-0）
 	}
 	# M3a：42 個 M1/M2 NPC + 少林補充 4 + 8 派 119；故事包 39（_world 1、_ambient 3、ev_* 24、sect_stories 11）
-	assert_eq(view["npcs"].size(), 264, "npc count（M3c2 審查：少林務農僧、火工頭陀 +2；M3c2：雜務 NPC n_ch_* +10、少林切磋弟子 n_sl_spar +1；審查修正 +12：王大富人、李裁縫、楊康、賣藝商人、婦人、清為、崔叟、豬哥義、朱珠、布莊老闆、菜商、江清睿；M3b 1.0A +32；M3c WP-NPCPK n_na_* +6；M3c 第二輪審查：黃狗改 1.0B −1；第三輪：羊、採礦師改 1.0B −2）")
+	assert_eq(view["npcs"].size(), 264 + 18, "npc count（M3d 1.0A +18：律法 8、跑腿 6、血池 3、比武報名員；M3c2 審查：少林務農僧、火工頭陀 +2；M3c2：雜務 NPC n_ch_* +10、少林切磋弟子 n_sl_spar +1；審查修正 +12：王大富人、李裁縫、楊康、賣藝商人、婦人、清為、崔叟、豬哥義、朱珠、布莊老闆、菜商、江清睿；M3b 1.0A +32；M3c WP-NPCPK n_na_* +6；M3c 第二輪審查：黃狗改 1.0B −1；第三輪：羊、採礦師改 1.0B −2）")
 	for nid in expect:
 		if not assert_has(view["npcs"], nid, "npc:"):
 			continue
@@ -419,9 +434,9 @@ func test_npc_service_details() -> void:
 	assert_eq(n1b["n_jc_innkeeper"]["inn_price"], 20)
 	for inn in ["n_xx_innkeeper", "n_dl_innkeeper"]:
 		assert_eq(n[inn]["inn_price"], 20, inn)
-	assert_eq(n["n_dl_innkeeper"]["shop"]["items"], ["c_mantou", "c_water"])
+	assert_eq(n["n_dl_innkeeper"]["shop"]["items"], ["c_mantou", "c_water", "i_er_shaodaozi", "i_ar_zhuangyuanhong"])   # M3D_PLAN §9.6：燒刀子酒（WP-ERRANDS）、狀元紅（WP-ARTS）
 	# 故事包 解救文泰來：西夏客棧加賣三種酒（ev_wentailai shop_patches）
-	assert_eq(n["n_xx_innkeeper"]["shop"]["items"], ["c_mantou", "c_water", "c_baijiu", "c_yangrujiu", "c_zhuyeqing"])
+	assert_eq(n["n_xx_innkeeper"]["shop"]["items"], ["c_mantou", "c_water", "c_baijiu", "c_yangrujiu", "c_zhuyeqing", "i_ar_zhuangyuanhong"])   # M3D_PLAN §9.6：狀元紅（WP-ARTS）
 	assert_true("c_dahuandan" in n["n_xx_pharmacist"]["shop"]["items"], "尋找虛竹：大還丹在西夏藥鋪")
 	for rest in ["n_hf_teaman", "n_sy_teaman", "n_de_host"]:
 		assert_eq(n[rest]["inn_price"], 15, rest)
@@ -562,7 +577,7 @@ func test_items_table() -> void:
 	for id in m3c2_econ:
 		assert_has(it, id, "M3c2 WP-ECON")
 	var older := it.keys().filter(func(k): return not str(k).begins_with("i_ch_") and not (str(k) in m3c2_econ))
-	assert_eq(older.size(), 236, "27 + _cmd 8 + 門派 11 + 皮鞭 + 故事包 50 + 審查 14（尋找楊康、陳大寶、2001 雜事）+ M3b 1.0A 44（審查 3：黃罩甲改 1.0B）+ M3c WP-LOOT 1.0A 81（武穆遺書、結婚戒指 1.0B）")
+	assert_eq(older.size(), 236 + 8, "M3d 1.0A +8（跑腿 5、狀元紅、小木鼎、盟主令牌）；27 + _cmd 8 + 門派 11 + 皮鞭 + 故事包 50 + 審查 14（尋找楊康、陳大寶、2001 雜事）+ M3b 1.0A 44（審查 3：黃罩甲改 1.0B）+ M3c WP-LOOT 1.0A 81（武穆遺書、結婚戒指 1.0B）")
 	# M3C_PLAN §1.4 F1：官方武器表第二個數字是重量 → 武器 def 一律 0
 	assert_eq([it["w_mudao"]["weapon_type"], it["w_mudao"]["atk"], it["w_mudao"]["def"], it["w_mudao"]["price"]], ["BLADE", 4, 0, 20])
 	assert_eq(it["a_cubudaopao"]["effects"], [{ "type": "attr", "stat": "wit", "value": 2 }])
@@ -580,7 +595,7 @@ func test_items_table() -> void:
 
 func test_monsters_table() -> void:
 	var m: Dictionary = view["monsters"]
-	assert_eq(m.size(), 118, "M3c2 少林切磋弟子 m_sl_dizi +1；M1 的 8 種 + M2_PLAN 4.9 的山賊頭目、守城官兵 + M3a 33 + 故事包 32 + 審查 8 + 第三輪審查 1（李莫愁）+ M3b 1.0A 15（馬賊、馬王審查改 1.0B）+ M3c m_npc_* 10 + M3c 審查 2（滅派專用 m_npc_gm_dizi、m_npc_wd_hushan）+ 第二輪審查 6（門口硬闖 m_npc_<p>_gate；黃狗 m_npc_huanggou 是 1.0B 不算）")
+	assert_eq(m.size(), 118 + 7, "M3d 1.0A +7（賞金獵人 3、沙漠白猿、血池三階）；M3c2 少林切磋弟子 m_sl_dizi +1；M1 的 8 種 + M2_PLAN 4.9 的山賊頭目、守城官兵 + M3a 33 + 故事包 32 + 審查 8 + 第三輪審查 1（李莫愁）+ M3b 1.0A 15（馬賊、馬王審查改 1.0B）+ M3c m_npc_* 10 + M3c 審查 2（滅派專用 m_npc_gm_dizi、m_npc_wd_hushan）+ 第二輪審查 6（門口硬闖 m_npc_<p>_gate；黃狗 m_npc_huanggou 是 1.0B 不算）")
 	assert_has(m, "m_bandit_chief", "M2 4.9:")
 	assert_has(m, "m_city_guard", "M2 4.9:")
 	if m.has("m_city_guard"):
@@ -633,7 +648,7 @@ func test_life_skills_table() -> void:
 
 func test_quests_table() -> void:
 	var q: Dictionary = view["quests"]
-	assert_eq(q.size(), 112, "M3c2 審查：少林幫農、學佛 +2；M3c2 1.0A 雜務 q_ch_* 40；M1/M2 6 + M3a 8 + 故事包 35（P0 12、門派 15、2001 雜事 7、第三輪審查的天龍寺前的李莫愁 1）+ M3b 1.0A 21（q_ym_mawang 審查改 1.0B）")
+	assert_eq(q.size(), 112 + 6, "M3d 1.0A +6（小木鼎、豬哥義、便當 2、酒鬼、阿虎）；M3c2 審查：少林幫農、學佛 +2；M3c2 1.0A 雜務 q_ch_* 40；M1/M2 6 + M3a 8 + 故事包 35（P0 12、門派 15、2001 雜事 7、第三輪審查的天龍寺前的李莫愁 1）+ M3b 1.0A 21（q_ym_mawang 審查改 1.0B）")
 	assert_eq(q["q_rabbit"]["rewards"]["money"], 100)
 	assert_eq(q["q_rabbit"]["rewards"]["learn_points"], 25)
 	assert_eq(q["q_rabbit"]["steps"][0]["item"], "r_bigrabbitskin")

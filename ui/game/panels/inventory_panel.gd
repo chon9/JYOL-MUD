@@ -288,10 +288,11 @@ func quick_use(uid: String) -> void:
 	if bool(it.get("usable", false)):
 		_send(UiKeys.I_USE_ITEM, { "item_uid": uid })
 	elif bool(it.get("equippable", false)) and str(it.get("equipped_slot", "")) == "":
-		_send(UiKeys.I_EQUIP, { "item_uid": uid })
+		send_equip(UiKeys.I_EQUIP, { "item_uid": uid })
 
 func _rebuild_detail() -> void:
 	UiBuild.clear(actions)
+	_cd_buttons.clear()
 	var it := find_item(selected_uid)
 	if it.is_empty():
 		detail_label.text = "（空）" if items_in_tab(current_tab).is_empty() else "點選物品；右鍵使用或裝備；拖到人形裝備、拖到 Alt 熱鍵列。"
@@ -306,11 +307,13 @@ func _rebuild_detail() -> void:
 		bu.pressed.connect(func(): _send(UiKeys.I_USE_ITEM, { "item_uid": uid }, [bu]))
 	if slot != "":
 		var bq := UiBuild.button(actions, "卸下")
-		bq.pressed.connect(func(): _send(UiKeys.I_UNEQUIP, { "slot": slot }, [bq]))
+		bq.pressed.connect(func(): send_equip(UiKeys.I_UNEQUIP, { "slot": slot }, [bq]))
+		_cd_buttons.append(bq)
 	elif bool(it.get("equippable", false)):
 		var be := UiBuild.button(actions, "裝備")
 		if bool(it.get("req_ok", true)):
-			be.pressed.connect(func(): _send(UiKeys.I_EQUIP, { "item_uid": uid }, [be]))
+			be.pressed.connect(func(): send_equip(UiKeys.I_EQUIP, { "item_uid": uid }, [be]))
+			_cd_buttons.append(be)
 		else:
 			be.disabled = true
 			be.tooltip_text = "條件不合：%s" % str(it.get("req_text", ""))
@@ -369,7 +372,7 @@ class EquipSlot extends JyButton:
 		var uid := str(((data as Dictionary)["source"] as JyButton).get_meta("item_uid"))
 		var it := panel.find_item(uid)
 		if bool(it.get("equippable", false)) and str(it.get("equipped_slot", "")) == "":
-			panel._send(UiKeys.I_EQUIP, { "item_uid": uid })
+			panel.send_equip(UiKeys.I_EQUIP, { "item_uid": uid })
 
 	func _draw() -> void:
 		super()
@@ -509,3 +512,47 @@ class LootSlot extends JyButton:
 			var p := Vector2(size.x - w - 3.0, size.y - 3.0)
 			draw_string_outline(font, p, cs, HORIZONTAL_ALIGNMENT_LEFT, -1, 11, 3, Color(0, 0, 0, 0.85))
 			draw_string(font, p, cs, HORIZONTAL_ALIGNMENT_LEFT, -1, 11, UiTheme.JY_LABEL)
+
+# ==== M3d WP-COMBAT：換裝兩秒（M3D_PLAN §3.6） ====
+## 換裝成功後 2 秒內「裝備／卸下」鈕灰掉、提示「換裝要間隔兩秒」；冷卻中右鍵快換、拖到人形也不送（主機另有 equip_cooldown）。
+## 冷卻長度用 world_info.equip_cooldown_ms（主機有給時），否則 2 秒。
+var equip_cd_until_ms := -1
+var _cd_buttons: Array = []
+var _cd_shown := false
+
+static func equip_cd_ms() -> int:
+	var wi := UiClient.world_info()
+	return clampi(int(wi.get("equip_cooldown_ms", int(UiKeys.EQUIP_COOLDOWN_S * 1000.0))), 0, 5000)
+
+func equip_cooling() -> bool:
+	return equip_cd_until_ms >= 0 and Time.get_ticks_msec() < equip_cd_until_ms
+
+func send_equip(kind: String, args: Dictionary, lock: Array = []) -> int:
+	if equip_cooling():
+		_fb().show_result(false, UiKeys.R_EQUIP_COOLDOWN)
+		return -1
+	var fb := _fb()
+	fb.begin()
+	return _gate().send(kind, args, lock, func(ok: bool, reason: String):
+		if ok:
+			equip_cd_until_ms = Time.get_ticks_msec() + equip_cd_ms()
+			_apply_cd()
+		if is_instance_valid(fb):
+			fb.show_result(ok, reason))
+
+func _apply_cd() -> void:
+	var on := equip_cooling()
+	_cd_shown = on
+	for b in _cd_buttons:
+		if is_instance_valid(b):
+			(b as Button).disabled = on or (b as Button).tooltip_text.begins_with("條件不合")
+			if on:
+				(b as Button).tooltip_text = UiKeys.EQUIP_COOLDOWN_TEXT
+			elif (b as Button).tooltip_text == UiKeys.EQUIP_COOLDOWN_TEXT:
+				(b as Button).tooltip_text = ""
+
+func _process(_delta: float) -> void:
+	if _cd_shown and not equip_cooling():
+		_apply_cd()
+	elif not _cd_shown and equip_cooling():
+		_apply_cd()

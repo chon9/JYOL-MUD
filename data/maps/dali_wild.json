@@ -12,11 +12,11 @@
         {"dir": "E", "to": "dlw_paddy"},
         {"dir": "W", "to": "dlw_lake"}
       ],
-      "npcs": [], "features": [], "requires": [],
+      "npcs": ["n_law_tianshi_dl"], "features": [], "requires": [],
       "encounter": {"rate": 0.1, "table": [{"monster": "m_rabbit", "w": 100, "count": [1, 1]}]} },
     { "id": "dlw_river", "name": "城北河畔", "desc": "大理城北的一條河，河邊石階上有人洗衣。往西北過石橋、順著河往上游走，就是往西夏的古道；往東是蒼山林道。",
       "exits": [{"dir": "NW", "to": "rr_bridge"}, {"dir": "S", "to": "dlw_road"}, {"dir": "E", "to": "dlw_forest"}],
-      "npcs": [], "features": ["WATER"], "requires": [],
+      "npcs": ["n_er_dl_qingqing"], "features": ["WATER"], "requires": [],
       "encounter": { "rate": 0.1,
         "table": [{"monster": "m_rabbit", "w": 70, "count": [1, 1]}, {"monster": "m_bigrabbit", "w": 30, "count": [1, 1]}] } },
     {"id": "dlw_paddy", "name": "陶耘稻田", "desc": "一片綠油油的水田，稻穗低垂。田埂上一位老農捲著褲管，正彎腰插秧。東邊有一片樹林。", "exits": [{"dir": "W", "to": "dlw_road"}, {"dir": "E", "to": "dlw_eastwood"}], "npcs": ["n_taoyun", "n_sm_qiaofu_dl"], "features": ["FIELD"], "requires": [], "encounter": {"rate": 0.08, "table": [{"monster": "m_rabbit", "w": 100, "count": [1, 1]}]}},
@@ -32,6 +32,6 @@
           {"monster": "m_boar", "w": 40, "count": [1, 1]},
           {"monster": "m_bigrabbit", "w": 10, "count": [1, 1]}
         ] } },
-    {"id": "dlw_desertcave", "name": "大理西沙漠洞窟", "desc": "洱海西岸的荒地裡有個幽深的洞窟，洞口沙土上留著雜亂的腳印。往東回洱海岸。", "exits": [{"dir": "E", "to": "dlw_lake"}], "npcs": ["n_dlw_guiyi"], "features": [], "requires": [], "encounter": {"rate": 0.1, "table": [{"monster": "m_wolf", "w": 60, "count": [1, 1]}, {"monster": "m_bandit", "w": 40, "count": [1, 1]}]}}
+    {"id": "dlw_desertcave", "name": "大理西沙漠洞窟", "desc": "洱海西岸的荒地裡有個幽深的洞窟，洞口沙土上留著雜亂的腳印。往東回洱海岸。", "exits": [{"dir": "E", "to": "dlw_lake"}], "npcs": ["n_dlw_guiyi"], "features": [], "requires": [], "encounter": {"rate": 0.1, "table": [{"monster": "m_wolf", "w": 60, "count": [1, 1]}, {"monster": "m_bandit", "w": 40, "count": [1, 1]}, {"monster": "m_er_baiyuan", "w": 30, "count": [1, 1]}]}, "src_note": "M3D_PLAN E5（M3d WP-ERRANDS）：鐵心「大理後面的沙漠山洞，裡頭有白猿可以打，很弱但扣善惡度」→ 白猿 m_er_baiyuan 加進遇敵表【已證實有白猿；權重【設計提案】】"}
   ]
 }

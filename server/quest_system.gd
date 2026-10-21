@@ -214,14 +214,21 @@ func accept(s: Session, npc_id: String, qid: String) -> Dictionary:
 	if str(quest_row(qid).get("offer", "")) != "":
 		_open_dialogue(s, npc_id, qid, str(quest_row(qid)["offer"]), true)
 	else:
-		_do_accept(s, qid)
+		var jb_why := _do_accept(s, qid)
+		if jb_why != "":
+			_end(s)
+			return GameHost.fail(jb_why)
 	_end(s)
 	host.npcs.refresh_menu(s, npc_id)
 	return GameHost.ok()
 
-func _do_accept(s: Session, qid: String) -> void:
+## 真的接下任務；回 "" 或原因碼（M3d：劫鏢的押金不夠 → 任務不成立）
+func _do_accept(s: Session, qid: String) -> String:
 	var ch = s.character
 	var row := quest_row(qid)
+	var jb_why := jb_on_accept(s, qid)   # M3d WP-EVENTS hook
+	if jb_why != "":
+		return jb_why
 	var now := host.now_s()
 	_active(ch)[qid] = { "v": QuestState.V, "stage": "", "objs": {}, "vars": {}, "since_world_s": now,
 		"stage_since_world_s": now, "escort": "" }
@@ -232,6 +239,7 @@ func _do_accept(s: Session, qid: String) -> void:
 			_give(s, str(gi.get("id", "")), int(gi.get("n", 1)), qid)
 	_enter_stage(s, qid, str(row.get("start", "")))
 	s.sheet_dirty = true
+	return ""
 
 # ---------------------------------------------------------------- 交談、對話
 ## quest_talk：開 offer 或目前階段在此 NPC 的對話；沒有對話的 TALK／DELIVER 目標直接完成
@@ -541,7 +549,9 @@ func _run_actions(s: Session, qid: String, npc_id: String, acts: Variant) -> voi
 		match str(a.get("do", "")):
 			"accept":
 				if st.is_empty() and _can_accept(s, qid) == "":
-					_do_accept(s, qid)
+					var acc_why := _do_accept(s, qid)
+					if acc_why != "":
+						host.tell(s, Protocol.CH_SYSTEM, "err_" + acc_why, {})
 			"complete":
 				if not st.is_empty():
 					_mark_complete(s, qid, str(a.get("obj", "")))
@@ -585,7 +595,7 @@ func _run_actions(s: Session, qid: String, npc_id: String, acts: Variant) -> voi
 				# 審查修正：放棄（或失敗）前已經領過的中途獎勵，重接後不再發（放棄→重接→再領的漏洞）
 				var pk := "reward:" + JSON.stringify(rw, "", true)
 				if not _consume_prepaid(ch, qid, pk):
-					_give_rewards(s, rw, false)
+					_give_rewards(s, chore_mid_rewards(s, qid, rw), false)   # M3d WP-ERRANDS：decay_all 的雜務中途獎勵也遞減
 				_note_paid(st, pk)   # 抵掉的也算這一次領過（再放棄時照樣記回去）
 			"flag":
 				ch.flags[str(a.get("flag", ""))] = true
@@ -1009,7 +1019,7 @@ func _finish(s: Session, qid: String, outcome: String) -> void:
 	host.tell(s, Protocol.CH_SYSTEM, Protocol.E_QUEST_COMPLETE, { "quest_name": str(def.get("name", qid)), "outcome_label": label })
 	var params := { "name": str(ch.name), "quest_name": str(def.get("name", qid)), "outcome_label": label,
 		"room_name": host.room_name(s.room_id()) }
-	_give_rewards(s, chore_rewards(s, qid, def, oc.get("rewards", {})), true, params)   # M3c2 WP-PACE：雜務
+	_give_rewards(s, chore_rewards(s, qid, def, oc.get("rewards", {}), oc), true, params)   # M3c2 WP-PACE：雜務（M3d：TOWN、decay_all、no_chore）
 	# 任務列的 rumors.first／each 由 RumorSystem 輪詢 ws.world.quest_firsts 與各角色的 done 次數發出（WP-AMBIENT，§5.1 #2），
 	# 這裡不再重複發；結局獎勵的 rumor 與動作 rumor 照上面直接交給 RumorSystem。
 	s.sheet_dirty = true
@@ -1027,6 +1037,7 @@ func _fail(s: Session, qid: String, reason_key: String) -> void:
 		return
 	var def := quest_row(qid)
 	var st := _st(ch, qid)
+	jb_on_fail(s, qid, reason_key)   # M3d WP-EVENTS hook
 	_active(ch).erase(qid)
 	_take_back(s, def, st)
 	_carry_paid(ch, qid, st)
@@ -1072,6 +1083,7 @@ func abandon(s: Session, qid: String) -> Dictionary:
 	if def.get("abandon", true) == false:
 		return GameHost.fail(Protocol.R_QUEST_NOT_NOW)   # STORY_PLAN 缺漏：不能放棄的任務沒有專用原因碼
 	var st := _st(ch, qid)
+	jb_on_fail(s, qid, "abandon")   # M3d WP-EVENTS hook（M3D_PLAN §5.2.1：放棄也算失敗）
 	_active(ch).erase(qid)
 	_take_back(s, def, st)
 	_carry_paid(ch, qid, st)
@@ -1494,10 +1506,15 @@ func chore_precheck(s: Session, qid: String, oid: String) -> String:
 static func chore_cost_reason(ch, c: Dictionary) -> String:
 	return Protocol.R_CHORE_TIRED if Learning.chore_cost_reason(ch, c) != "" else ""
 
-## _finish 的結局獎勵 → 雜務版（扣代價、算學點、過濾熟練度、記次數、必要時送 ch_no_lp）；不是雜務原樣回傳
-func chore_rewards(s: Session, qid: String, def: Dictionary, rw_in: Variant) -> Variant:
+## _finish 的結局獎勵 → 雜務版（扣代價、算學點、過濾熟練度、記次數、必要時送 ch_no_lp）；不是雜務原樣回傳。
+## M3D_PLAN §6.1（M3d WP-ERRANDS 接手）：chore.kind = "SECT"（預設，M3c2 行為不變）或 "TOWN"（任何人；學點不受新手期與
+## 規則 chore_xuedian 限制，照樣每日遞減，也不算進新手期一輩子上限 novice_lp）；chore.decay_all = true → decay_pct 也縮放
+## money、fame、lilian、combat_xp、learn_points（正值各自 floor；負值是代價，不縮放）。
+## 結局列帶 "no_chore": true（例：鬥酒醉倒）→ 這個結局不算一次雜務（不扣代價、不給雜務學點、不記次數）【M3D_PLAN 缺漏：
+## 雜務原本只有一種結局；多結局的城鎮任務沒說失敗的結局算不算，取「不算」】
+func chore_rewards(s: Session, qid: String, def: Dictionary, rw_in: Variant, oc: Dictionary = {}) -> Variant:
 	var c := chore_of(def)
-	if c.is_empty():
+	if c.is_empty() or bool(oc.get("no_chore", false)):
 		return rw_in
 	var ch = s.character
 	var rw := QuestDef.norm_rewards(rw_in)
@@ -1508,14 +1525,60 @@ func chore_rewards(s: Session, qid: String, def: Dictionary, rw_in: Variant) -> 
 				ch.vitals[str(k)] = maxi(0, int(ch.vitals.get(str(k), 0)) - CharData.to_int(cost[k]))
 	var cd := chore_day(ch)
 	var n := CharData.to_int((cd["n"] as Dictionary).get(qid, 0))
-	var got := Learning.chore_lp(c, n, ch, host.tables, host.rules)
+	var got: Dictionary
+	if is_town(c):
+		got = town_lp(c, n)
+		if bool(c.get("decay_all", false)):
+			rw = scale_decay_all(rw, chore_pct(c, n))
+	else:
+		got = Learning.chore_lp(c, n, ch, host.tables, host.rules)
+		Learning.note_novice_lp(ch, int(got["lp"]))   # M3c2 審查：雜務＋切磋學點的一輩子上限
 	cd["n"][qid] = n + 1
-	Learning.note_novice_lp(ch, int(got["lp"]))   # M3c2 審查：雜務＋切磋學點的一輩子上限
 	rw["learn_points"] = CharData.to_int(rw.get("learn_points", 0)) + int(got["lp"])
 	rw["skill_prof"] = Learning.chore_prof(rw.get("skill_prof", {}), CharData.to_int(c.get("prof_below", 50), 50), ch, host.tables)
 	var why := str(got["why"])
 	if why == "daily" or why == "novice":
 		host.tell(s, Protocol.CH_SYSTEM, Protocol.E_CH_NO_LP, { "quest_name": str(def.get("name", qid)), "why": why,
-			"text": _template_text("ch_no_lp_" + why) })
+			"text": _template_text(ER_TOWN_NO_LP if is_town(c) else "ch_no_lp_" + why) })
 	s.sheet_dirty = true
 	return rw
+
+## 任務中途的 reward 動作（例：三八紅先給 200 兩）：decay_all 的 TOWN 雜務照「本遊戲日已完成次數」遞減（還沒完成這一次，不記次數）
+func chore_mid_rewards(s: Session, qid: String, rw: Variant) -> Variant:
+	var c := chore_of(quest_row(qid))
+	if c.is_empty() or not is_town(c) or not bool(c.get("decay_all", false)) or not (rw is Dictionary) or s.character == null:
+		return rw
+	var n := CharData.to_int((chore_day(s.character)["n"] as Dictionary).get(qid, 0))
+	return scale_decay_all(QuestDef.norm_rewards(rw), chore_pct(c, n))
+
+# ---------------------------------------------------------------- 純邏輯（在 core/rules/errands_rules.gd，balance_sim 共用）
+const CHORE_KINDS := ErrandsRules.CHORE_KINDS
+const ER_TOWN_NO_LP := "er_town_no_lp"   # TOWN 遞減到 0 的提示（ch_no_lp_daily 講的是師兄，不適用城鎮）
+
+static func is_town(c: Dictionary) -> bool:
+	return ErrandsRules.is_town(c)
+
+static func chore_pct(c: Dictionary, n_today: int) -> int:
+	return ErrandsRules.chore_pct(c, n_today)
+
+static func town_lp(c: Dictionary, n_today: int) -> Dictionary:
+	return ErrandsRules.town_lp(c, n_today)
+
+static func scale_decay_all(rw: Dictionary, pct: int) -> Dictionary:
+	return ErrandsRules.scale_decay_all(rw, pct)
+
+
+# ==== M3d WP-EVENTS ====
+## M3D_PLAN §9.2：劫鏢（危險鏢）的接任務與失敗鉤子（WP-EVENTS 擁有本區塊；WP-ERRANDS Day-0 只建空函式與呼叫行）。
+## 接任務：requires 通過後、給物品前呼叫；回 "" 或原因碼（回原因碼 → 任務不成立）
+## 不是危險鏢（任務 group 不是 "jiebiao"）一律 ""；JiebiaoSystem 為 null（1.0A-only 不影響：危險鏢本身是 1.0B）→ ""
+func jb_on_accept(s: Session, qid: String) -> String:
+	if str(quest_row(qid).get("group", "")) != JiebiaoRules.QUEST_GROUP:
+		return ""
+	return str(host.m2_call(host.get("jiebiao"), "on_accept", [s, qid], ""))
+
+## 任務失敗（_fail）或放棄（abandon，why = "abandon"）時呼叫；呼叫時任務還在 active 裡
+func jb_on_fail(s: Session, qid: String, why: String) -> void:
+	if str(quest_row(qid).get("group", "")) != JiebiaoRules.QUEST_GROUP:
+		return
+	host.m2_call(host.get("jiebiao"), "on_quest_fail", [s, qid, why])

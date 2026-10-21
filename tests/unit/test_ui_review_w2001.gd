@@ -7,9 +7,12 @@ const STATE_SCRIPT := preload("res://tests/unit/test_ui_battle_view_model.gd")
 var _nodes: Array = []
 
 func before_each() -> void:
+	# 這個檔案量的是程式繪圖的地圖版面：強制不用地圖美術（ART_REQUEST §10 的圖已經匯入，見 test_ui_m3c_nav 的美術版測試）
+	MapArt.use_textures({})
 	UiSettings.reset_for_tests(true)
 
 func after_each() -> void:
+	MapArt.use_textures(null)
 	for n in _nodes:
 		if is_instance_valid(n):
 			n.queue_free()
@@ -184,3 +187,58 @@ func test_birth_map_keeps_the_original_geography() -> void:
 	assert_true(xx.get_center().x < bm.size.x * 0.5 and dl.get_center().x < bm.size.x * 0.5, "both on the west side")
 	assert_true(xx.position.y > 60.0, "西夏 seal stays below the title")
 	assert_true(bm._dots.size() > 0, "other places drawn faintly for context")
+
+## M3d 審查（第 3 輪）：人物列很長時，氣泡不蓋住同一列後面的名字（改放名字下方或上方）
+func test_npc_bubble_does_not_cover_other_names() -> void:
+	var holder := Control.new()
+	holder.size = Vector2(640, 300)
+	_add(holder)
+	var sp := ScenePanel.new()
+	holder.add_child(sp)
+	sp.size = Vector2(620, 280)
+	var npcs: Array = []
+	for i in 6:
+		npcs.append({ "id": "n_%d" % i, "name": ["京城半仙", "西域貨郎", "佈告欄", "官爺", "官爺", "武林帖販子"][i], "services": ["QUEST"] })
+	sp.apply_view({ "room_name": "京城廣場", "region_name": "京城", "safe": true, "desc": "廣場。",
+		"exits": [{ "dir": "E", "to_name": "東大街" }], "npcs": npcs, "players": [], "corpses": [], "features": [] })
+	await _frames(3)
+	var b: Button = sp.npc_buttons["n_0"]
+	var r := sp.bubble_rect(b, 220.0, 13)
+	for i in range(1, 6):
+		var o: Button = sp.npc_buttons["n_%d" % i]
+		var orr := Rect2(o.global_position - sp.bubble_layer.global_position, o.size)
+		assert_false(r.intersects(orr), "氣泡 %s 蓋住 %s %s" % [r, str(o.text), orr])
+	assert_false(r.intersects(Rect2(b.global_position - sp.bubble_layer.global_position, b.size)), "也不蓋自己的名字")
+
+## M3d 審查第三輪：幾位 NPC 同時說話時氣泡不疊在一起；氣泡也不蓋住「玩家」列的「某某（你）」
+func test_npc_bubbles_avoid_each_other_and_player_name() -> void:
+	var holder := Control.new()
+	holder.size = Vector2(640, 320)
+	_add(holder)
+	var sp := ScenePanel.new()
+	holder.add_child(sp)
+	sp.size = Vector2(620, 300)
+	sp.apply_sheet({ "char_id": "ch_me", "name": "介面俠客" })
+	var npcs: Array = []
+	for i in 3:
+		npcs.append({ "id": "n_%d" % i, "name": ["佈告欄", "官爺", "官爺"][i], "services": ["QUEST"] })
+	sp.apply_view({ "room_name": "西夏廣場", "region_name": "西夏", "safe": true, "desc": "廣場。",
+		"exits": [{ "dir": "E", "to_name": "東大街" }], "npcs": npcs,
+		"players": [{ "char_id": "ch_me", "name": "介面俠客" }], "corpses": [], "features": [] })
+	await _frames(3)
+	var placed: Array = []
+	for i in 3:
+		var b: Button = sp.npc_buttons["n_%d" % i]
+		var r := sp.bubble_rect(b, 200.0, 13, placed)
+		for pr in placed:
+			assert_false(r.intersects(pr), "氣泡 %d %s 疊到前面的氣泡 %s" % [i, r, pr])
+		placed.append(r)
+	var me_label: Label = null
+	for c in sp.players_box.get_children():
+		if c is Label and (c as Label).text.contains("（你）"):
+			me_label = c
+	assert_true(me_label != null, "玩家列有「介面俠客（你）」")
+	if me_label != null:
+		var mr := Rect2(me_label.global_position - sp.bubble_layer.global_position, me_label.size)
+		for r in placed:
+			assert_false((r as Rect2).intersects(mr), "氣泡 %s 蓋住自己的名字 %s" % [r, mr])

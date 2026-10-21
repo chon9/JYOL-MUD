@@ -297,7 +297,7 @@ func _rebuild_players() -> void:
 		if not (p is Dictionary):
 			continue
 		var align := str(p.get("align", UiKeys.ALIGN_NEUTRAL))
-		var t := str(p.get("name", "?"))
+		var t := str(p.get("name", "?")) + UiSocial.tags_suffix(p)   # M3d 整合：押鏢、劫鏢、懸賞、盟主、門派稱號
 		if bool(p.get("in_battle", false)):
 			t += "（戰鬥中）"
 		if UiSocial.is_self(p, my_peer, my_char):
@@ -586,16 +586,70 @@ func active_bubbles() -> Array:
 
 ## 氣泡的矩形（bubble_layer 座標）：§8.7「場景卷軸人物名旁」——畫在名字按鈕右邊、同一列，
 ## 右邊放不下就放左邊；不往上蓋到「出口」那一列（審查：以前畫在名字正上方，整排出口鈕被蓋住）
-func bubble_rect(b: Control, text_w: float, fs: int) -> Rect2:
+## M3d 審查：人物列變長（M3d 的官爺、佈告欄、貨郎…）之後，右邊的氣泡會蓋住同一列後面的名字（西夏廣場的官爺、京城廣場的貨郎）
+## → 依序試「右邊同列 → 左邊同列 → 名字正下方 → 名字正上方」，挑第一個不蓋到任何其他按鈕（人物、玩家、出口）的位置；
+## 都會蓋到時挑蓋到面積最小的
+## M3d 審查第三輪：也避開已經畫好的其他氣泡（placed；同時說話的幾位 NPC 不再疊在一起）與人物列的名字標籤（「某某（你）」）；
+## 正下方、正上方之後再試往下、往上多錯開一格
+func bubble_rect(b: Control, text_w: float, fs: int, placed: Array = []) -> Rect2:
 	var h := fs + 8.0
 	var w := text_w + 12.0
 	var bpos := b.global_position - bubble_layer.global_position
 	var y := bpos.y + (b.size.y - h) / 2.0
-	var x := bpos.x + b.size.x + 6.0
-	if x + w > bubble_layer.size.x - 4.0:
-		x = bpos.x - w - 6.0
-	x = clampf(x, 4.0, maxf(4.0, bubble_layer.size.x - w - 4.0))
-	return Rect2(Vector2(x, y), Vector2(w, h))
+	var lim := maxf(4.0, bubble_layer.size.x - w - 4.0)
+	var cands: Array = [
+		Vector2(bpos.x + b.size.x + 6.0, y),
+		Vector2(bpos.x - w - 6.0, y),
+		Vector2(bpos.x, bpos.y + b.size.y + 2.0),
+		Vector2(bpos.x, bpos.y - h - 2.0),
+		Vector2(bpos.x, bpos.y + b.size.y + h + 4.0),
+		Vector2(bpos.x, bpos.y - 2.0 * h - 4.0),
+	]
+	var obstacles := _bubble_obstacles(b)
+	for pr in placed:
+		if pr is Rect2:
+			obstacles.append((pr as Rect2).grow(2.0))
+	var best := Rect2()
+	var best_cost := INF
+	for i in cands.size():
+		var c: Vector2 = cands[i]
+		if i < 2 and (c.x < 4.0 or c.x + w > bubble_layer.size.x - 4.0):
+			continue   # 同一列放不下這一邊
+		var r := Rect2(Vector2(clampf(c.x, 4.0, lim), c.y), Vector2(w, h))
+		if bubble_layer.size.y > 0.0 and (r.position.y < 0.0 or r.end.y > bubble_layer.size.y):
+			continue   # 超出卷軸可見範圍
+		var cost := 0.0
+		for o in obstacles:
+			if (o as Rect2).intersects(r):
+				cost += (o as Rect2).intersection(r).get_area()
+		if cost <= 0.0:
+			return r
+		if cost < best_cost:
+			best_cost = cost
+			best = r
+	if best_cost == INF:
+		return Rect2(Vector2(clampf(bpos.x + b.size.x + 6.0, 4.0, lim), y), Vector2(w, h))
+	return best
+
+## 氣泡要避開的按鈕（bubble_layer 座標）：卷軸裡其他看得到的按鈕（人物、玩家、出口），不含這位 NPC 自己
+func _bubble_obstacles(b: Control) -> Array:
+	var out: Array = []
+	for n in find_children("*", "Button", true, false):
+		var c := n as Control
+		if c == null or c == b or not c.is_visible_in_tree():
+			continue
+		out.append(Rect2(c.global_position - bubble_layer.global_position, c.size).grow(1.0))
+	# M3d 審查第三輪：人物、玩家等列裡的文字標籤（「某某（你）」「（無）」、列名「玩家」）也要避開
+	for row in [exits_box, npcs_box, players_box, battles_box, corpses_box, life_box]:
+		if row == null or not is_instance_valid(row) or not row.is_visible_in_tree():
+			continue
+		var holder: Node = row.get_parent()
+		for n in holder.find_children("*", "Label", true, false):
+			var l := n as Control
+			if l == null or not l.is_visible_in_tree() or (l as Label).text == "":
+				continue
+			out.append(Rect2(l.global_position - bubble_layer.global_position, l.size).grow(1.0))
+	return out
 
 func _draw_bubbles() -> void:
 	var ci := bubble_layer
@@ -603,6 +657,7 @@ func _draw_bubbles() -> void:
 	var font := UiTheme.find_font()
 	if font == null:
 		font = ThemeDB.fallback_font
+	var placed: Array = []
 	for npc in _bubbles.keys():
 		var bdata: Dictionary = _bubbles[npc]
 		if now > int(bdata["until"]):
@@ -616,7 +671,8 @@ func _draw_bubbles() -> void:
 			t = t.left(17) + "…"
 		var fs := 13
 		var w := font.get_string_size(t, HORIZONTAL_ALIGNMENT_LEFT, -1, fs).x
-		var r := bubble_rect(b, w, fs)
+		var r := bubble_rect(b, w, fs, placed)
+		placed.append(r)
 		var sb := StyleBoxFlat.new()
 		sb.bg_color = Color.WHITE
 		sb.border_color = Color("5a4630")

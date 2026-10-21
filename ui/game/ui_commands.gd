@@ -16,10 +16,10 @@ const EXERT_COST := 20
 ## id -> { tab, label（完整名稱）, glyph（鈕面字）, tip }
 const COMMANDS := {
 	"look": { "tab": "ACTION", "label": "查看", "glyph": "查看", "tip": "重新查看四周；在野外會仔細偵察，發現怪物時可以選擇迎戰或離開" },
-	"meditate": { "tab": "MARTIAL", "label": "修煉內力", "glyph": "修煉", "tip": "需要基本內功；內力滿了會修煉，提升內力上限" },
-	"exert_qi": { "tab": "MARTIAL", "label": "施展內功回氣", "glyph": "回氣", "tip": "耗內力 20，回復氣" },
-	"exert_jing": { "tab": "MARTIAL", "label": "施展內功回精", "glyph": "回精", "tip": "耗內力 20，回復精" },
-	"exert_shen": { "tab": "MARTIAL", "label": "施展內功回神", "glyph": "回神", "tip": "耗內力 20，回復神" },
+	"meditate": { "tab": "MARTIAL", "label": "修煉內力", "glyph": "修煉", "tip": "需要基本內功；每次耗精 2 回內力。內力滿了改為修煉：內力用完、氣上限 +8（最多 基本內功×5 次）" },
+	"exert_qi": { "tab": "MARTIAL", "label": "施展內功回氣", "glyph": "回氣", "tip": "耗內力 20，回復氣上限的 15%" },
+	"exert_jing": { "tab": "MARTIAL", "label": "施展內功回精", "glyph": "回精", "tip": "耗內力 20，回復精上限的 15%" },
+	"exert_shen": { "tab": "MARTIAL", "label": "施展內功回神", "glyph": "回神", "tip": "耗內力 20，回復神上限的 15%" },
 	"quests": { "tab": "MISC", "label": "任務", "glyph": "任務", "tip": "任務清單（Ctrl+6）" },
 	"map": { "tab": "MISC", "label": "地圖", "glyph": "地圖", "tip": "江湖地圖（Ctrl+M／M）" },
 	# M3b

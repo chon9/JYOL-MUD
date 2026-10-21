@@ -5,7 +5,7 @@
   "desc": "大理城背倚蒼山、面臨洱海，四季如春，街上花香不斷。",
   "escape_tiles_hint": 2,
   "rooms": [
-    {"id": "dl_square", "name": "五華樓前", "desc": "五華樓高聳入雲，樓前廣場人來人往。西邊是驛站，北邊是城門，東邊是客棧，南邊是衙門；西南有武館，東南有雜貨鋪，西北是錢莊，東北是鏢局。", "exits": [{"dir": "W", "to": "dl_station"}, {"dir": "N", "to": "dl_gate_n"}, {"dir": "E", "to": "dl_inn"}, {"dir": "S", "to": "dl_yamen"}, {"dir": "SW", "to": "dl_wuguan"}, {"dir": "SE", "to": "dl_shop"}, {"dir": "NW", "to": "dl_bank"}, {"dir": "NE", "to": "dl_biaoju"}], "npcs": ["n_dl_cunmin", "n_lj_baiyong", "n_dl_furen", "n_sm_kuangye", "n_na_dl_xiaohai"], "features": [], "requires": []},
+    {"id": "dl_square", "name": "五華樓前", "desc": "五華樓高聳入雲，樓前廣場人來人往。西邊是驛站，北邊是城門，東邊是客棧，南邊是衙門；西南有武館，東南有雜貨鋪，西北是錢莊，東北是鏢局；樓下還開著一間小小的紡織店。", "exits": [{"dir": "W", "to": "dl_station"}, {"dir": "N", "to": "dl_gate_n"}, {"dir": "E", "to": "dl_inn"}, {"dir": "S", "to": "dl_yamen"}, {"dir": "SW", "to": "dl_wuguan"}, {"dir": "SE", "to": "dl_shop"}, {"dir": "NW", "to": "dl_bank"}, {"dir": "NE", "to": "dl_biaoju"}, {"dir": "IN", "to": "dl_fangzhi"}], "npcs": ["n_dl_cunmin", "n_lj_baiyong", "n_dl_furen", "n_sm_kuangye", "n_na_dl_xiaohai", "n_er_dl_ahu", "n_law_board_dl", "n_law_guanye_dl_a", "n_law_guanye_dl_b"], "features": [], "requires": []},
     { "id": "dl_station", "name": "大理驛站", "desc": "驛站裡拴著幾匹滇馬，是官府傳遞公文用的。管事正在清點要送往各地的信件。",
       "exits": [{"dir": "E", "to": "dl_square"}], "npcs": ["n_dl_station"], "features": [], "requires": [] },
     { "id": "dl_gate_n", "name": "大理北門", "desc": "北門城樓下守衛森嚴。城門邊的老先生擺了張小桌記帳。出了北門，大道通往蒼山與洱海。",
@@ -18,8 +18,9 @@
     { "id": "dl_wuguan", "name": "大理武館", "desc": "武館院子裡擺著兵器架，學徒們正對著木人樁練拳。",
       "exits": [{"dir": "NE", "to": "dl_square"}], "npcs": ["n_dl_wushi"], "features": [], "requires": [] },
     {"id": "dl_shop", "name": "雜貨鋪", "desc": "貨架上堆滿了乾糧、藥水、農具與釣具，老闆撥著算盤招呼客人。東邊隔著一道布簾是鑄劍師的打鐵舖，叮噹聲整天沒停過。", "exits": [{"dir": "NW", "to": "dl_square"}, {"dir": "E", "to": "dl_tiepu"}], "npcs": ["n_dl_grocer", "n_wd_dl_oldman", "n_dl_licaifeng"], "features": [], "requires": []},
-    {"id": "dl_bank", "name": "大理錢莊", "desc": "小小的錢莊收拾得一塵不染，掌櫃戴著老花眼鏡核對帳簿。三城的錢莊帳目相通。", "exits": [{"dir": "SE", "to": "dl_square"}], "npcs": ["n_ec_dl_banker"], "features": [], "requires": [], "era": "1.0A", "src": "proposal", "src_note": "M3B_PLAN §3.2；官方鏢局／錢莊頁只寫三城都有（研究 經濟），房間位置與描述【設計提案】"},
+    {"id": "dl_bank", "name": "大理錢莊", "desc": "小小的錢莊收拾得一塵不染，掌櫃戴著老花眼鏡核對帳簿。三城的錢莊帳目相通。", "exits": [{"dir": "SE", "to": "dl_square"}], "npcs": ["n_ec_dl_banker", "n_er_dl_zuigui"], "features": [], "requires": [], "era": "1.0A", "src": "proposal", "src_note": "M3B_PLAN §3.2；官方鏢局／錢莊頁只寫三城都有（研究 經濟），房間位置與描述【設計提案】"},
     {"id": "dl_biaoju", "name": "大理鏢局", "desc": "鏢局大門敞開，門口立著一對石獅子，院裡堆著等著上路的貨箱。", "exits": [{"dir": "SW", "to": "dl_square"}], "npcs": ["n_ec_dl_biaotou"], "features": [], "requires": [], "era": "1.0A", "src": "proposal", "src_note": "M3B_PLAN §3.2；官方鏢局／錢莊頁只寫三城都有（研究 經濟），房間位置與描述【設計提案】"},
-    {"id": "dl_tiepu", "name": "大理打鐵舖", "desc": "雜貨鋪後頭打通的一間鐵匠鋪，牆上掛著一排還沒開鋒的劍胚，鑄劍爐的火光把滿室映得通紅。", "exits": [{"dir": "W", "to": "dl_shop"}], "npcs": ["n_ls_dl_zhujian"], "features": ["FORGE", "CAST"], "requires": [], "era": "1.0A", "src": "proposal", "src_note": "§3.2 #62；官方標準城內設施有打鐵舖（index_jy1-1-2）；1.0 大理資料沒有打鐵舖房，接在雜貨鋪東邊【設計提案】"}
+    {"id": "dl_tiepu", "name": "大理打鐵舖", "desc": "雜貨鋪後頭打通的一間鐵匠鋪，牆上掛著一排還沒開鋒的劍胚，鑄劍爐的火光把滿室映得通紅。", "exits": [{"dir": "W", "to": "dl_shop"}], "npcs": ["n_ls_dl_zhujian"], "features": ["FORGE", "CAST"], "requires": [], "era": "1.0A", "src": "proposal", "src_note": "§3.2 #62；官方標準城內設施有打鐵舖（index_jy1-1-2）；1.0 大理資料沒有打鐵舖房，接在雜貨鋪東邊【設計提案】"},
+    {"id": "dl_fangzhi", "name": "大理紡織店", "desc": "五華樓下一間小小的紡織店，架上疊著一匹匹扎染的藍布，老闆娘坐在織機前，嘴裡哼著小調。出門就是五華樓前。", "exits": [{"dir": "OUT", "to": "dl_square"}], "npcs": ["n_er_sanbahong"], "features": [], "requires": [], "era": "1.0A", "src": "proposal", "src_note": "M3D_PLAN §6.2.2、§9.5：「大理紡織店裡的三八紅」（2001-11-06）【已證實店名】；五華樓前八個方向都有出口，用「進／出」接；位置與描述【設計提案】"}
   ]
 }

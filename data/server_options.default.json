@@ -66,5 +66,10 @@
   "org_petition_days": 3,
   "npc_respawn_pct": 100,
   "loot_drop_pct": 100,
-  "spar_daily_cap": 30
+  "spar_daily_cap": 30,
+  "bounty_enabled": true,
+  "bounty_hunters": true,
+  "equip_cooldown_ms": 2000,
+  "jiebiao_enabled": true,
+  "tourney_enabled": true
 }

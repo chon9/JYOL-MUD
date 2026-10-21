@@ -9,7 +9,9 @@ const EDITABLE_KEYS := ["rule_preset", "pk_mode", "wait_mode", "stagecoach_enabl
 	# M3C_PLAN §9.3（整合者：WP-NPCPK 的面板列需要主機開放）
 	"npc_respawn_pct", "loot_drop_pct",
 	# M3C2_PLAN §8.3（整合者：WP-PACE 的面板列需要主機開放）
-	"spar_daily_cap"]
+	"spar_daily_cap",
+	# M3D_PLAN §8.3（整合者：WP-LAW 的面板列需要主機開放）
+	"bounty_enabled", "bounty_hunters", "equip_cooldown_ms", "jiebiao_enabled", "tourney_enabled"]
 const LABELS := {
 	"rule_preset": "死亡規則", "pk_mode": "PK 模式", "wait_mode": "戰鬥等待模式", "stagecoach_enabled": "驛站馬車（非原作）",
 	"scout_enabled": "查看偵察（非原作）", "sect_hostile_entry": "門派敵對入山",
@@ -17,7 +19,21 @@ const LABELS := {
 	"seize_enabled": "捉拿公敵",
 	"npc_respawn_pct": "NPC 重生時間", "loot_drop_pct": "掉寶倍率",
 	"spar_daily_cap": "每日切磋獎勵",
+	"bounty_enabled": "衙門懸賞", "bounty_hunters": "賞金獵人追捕", "equip_cooldown_ms": "換裝間隔",
+	"jiebiao_enabled": "危險鏢與劫鏢", "tourney_enabled": "門派比武與武林大會",
 }
+## M3d：四個開關與換裝間隔（說明與面板 ServerOptionsDialog.M3D_OPTIONS 相同）
+const M3D_BOOL_KEYS := ["bounty_enabled", "bounty_hunters", "jiebiao_enabled", "tourney_enabled"]
+const EQUIP_CD_CHOICES := [0, 1000, 2000, 3000, 5000]
+const M3D_DESC := {
+	"bounty_enabled": "佈告欄的懸賞名單、賞金獵人執照與領賞。關掉時佈告欄只寫「衙門暫停懸賞」，NPC 賞金獵人也不出現。",
+	"bounty_hunters": "懸賞名單上的人走在野外，會被 NPC 賞金獵人追上（先警告、倒數內離開房間就能甩掉）。",
+	"equip_cooldown_ms": "兩次換裝之間至少要隔多久（原作 2001-10-09 起兩秒；只在開了 1.0B 的世界）；0 ＝ 不限制。",
+	"jiebiao_enabled": "鏢局二掌櫃的危險鏢（押金、成功拿雙倍）與玩家劫鏢（1.0B）。",
+	"tourney_enabled": "依遊戲日曆排程的比武大會，主機也可以隨時開辦。",
+}
+static func m3d_desc(key: String) -> String:
+	return str(M3D_DESC.get(key, ""))
 ## M3c2：每日切磋獎勵的選項（與面板 ServerOptionsDialog.SPAR_CAP_VALUES 相同；範圍 0–200）
 const SPAR_CAP_CHOICES := [0, 5, 10, 20, 30, 50, 100, 200]
 const SPAR_CAP_DESC := "每個遊戲日前幾場切磋給實戰與學點（學點只給新手）；0 ＝ 切磋沒有獎勵【設計提案】"
@@ -87,6 +103,10 @@ func current_value(key: String) -> String:
 			return str(int(host.options.get(key, 100)))
 		"spar_daily_cap":
 			return str(clampi(int(host.options.get(key, 30)), 0, 200))
+		"bounty_enabled", "bounty_hunters", "jiebiao_enabled", "tourney_enabled":
+			return "false" if host.options.get(key, true) == false else "true"
+		"equip_cooldown_ms":
+			return str(maxi(0, int(host.options.get(key, 2000))))
 	return ""
 
 ## 1.0B 的狀態：enabled（世界已開）／pending（options.pending_eras 有 1.0B）／off
@@ -205,6 +225,21 @@ func choices(key: String) -> Array:
 			for v in svals:
 				sc.append({ "value": str(v), "label": "%d 場" % v, "desc": SPAR_CAP_DESC })
 			return sc
+		"bounty_enabled", "bounty_hunters", "jiebiao_enabled", "tourney_enabled":
+			var bo: Array = ONOFF.duplicate(true)
+			for c in bo:
+				c["desc"] = m3d_desc(key)
+			return bo
+		"equip_cooldown_ms":
+			var eo: Array = []
+			var evals: Array = EQUIP_CD_CHOICES.duplicate()
+			var ecur := maxi(0, int(host.options.get(key, 2000)))
+			if not (ecur in evals):
+				evals.append(ecur)
+				evals.sort()
+			for v in evals:
+				eo.append({ "value": str(v), "label": "不限制" if v == 0 else "%.1f 秒" % (v / 1000.0), "desc": m3d_desc(key) })
+			return eo
 	return []
 
 func choice_label(key: String, value: String) -> String:
@@ -312,6 +347,10 @@ func opts_set(s: Session, key: String, value: String) -> Dictionary:
 			host.ws.options[key] = int(value)   # 只影響之後倒下的 NPC／之後的掉落
 		"spar_daily_cap":
 			host.ws.options[key] = int(value)   # 只影響之後的切磋（今天已領的場數照算）
+		"bounty_enabled", "bounty_hunters", "jiebiao_enabled", "tourney_enabled":
+			host.ws.options[key] = value == "true"   # M3d：只影響之後的統計、遭遇、接鏢與開辦
+		"equip_cooldown_ms":
+			host.ws.options[key] = int(value)   # M3d：只影響之後的換裝（戰鬥中的冷卻在開戰時讀）
 	SaveManager.save_options(host.ws.world_id, host.ws.options)
 	host.ws.save_now()
 	host.ws.broadcast_event(Protocol.CH_SYSTEM, Protocol.E_SERVER_OPTION_CHANGED,

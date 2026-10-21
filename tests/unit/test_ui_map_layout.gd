@@ -154,8 +154,8 @@ func test_room_danger() -> void:
 func test_region_model_out_exits() -> void:
 	var m := MapData.region_model(view, "xixia")
 	# 9 間 + 故事包 4 間（民房、衙門、皇宮門口、皇宮密道；STORY_PLAN §2.2）+ M3b 4 間（錢莊、鏢局、打鐵舖、布莊）
-	assert_eq((m["by_id"] as Dictionary).size(), 17)
-	assert_eq((m["pos"] as Dictionary).size(), 17)
+	assert_eq((m["by_id"] as Dictionary).size(), 17 + 2)   # M3d WP-ERRANDS：西夏比武場、比武場休息區
+	assert_eq((m["pos"] as Dictionary).size(), 17 + 2)
 	var found := false
 	for oe in m["out_exits"]:
 		if oe["from"] == "xx_gate_e" and oe["dir"] == "E":

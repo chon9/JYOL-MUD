@@ -43,7 +43,11 @@ func test_server_opts_get_shape() -> void:
 	assert_true(e.get("ui", false), "ui event")
 	var p: Dictionary = e.get("p", {})
 	var ed := _editable(p)
-	assert_eq(ed.keys().size(), 13, "M3a 的 6 個 + M3B_PLAN §4.11 的 4 個 + M3C_PLAN §9.3 的 2 個 + M3C2_PLAN §8.3 的 spar_daily_cap")
+	assert_eq(ed.keys().size(), 13 + 5, "M3a 的 6 個 + M3B_PLAN §4.11 的 4 個 + M3C_PLAN §9.3 的 2 個 + M3C2_PLAN §8.3 的 spar_daily_cap + M3D_PLAN §8.3 的 5 個")
+	for k in ["bounty_enabled", "bounty_hunters", "equip_cooldown_ms", "jiebiao_enabled", "tourney_enabled"]:
+		assert_has(ed, k, "M3d editable key")
+	assert_eq(str(ed["equip_cooldown_ms"]["value"]), "2000")
+	assert_eq(str(ed["bounty_enabled"]["value"]), "true")
 	for k in ["rule_preset", "pk_mode", "wait_mode", "stagecoach_enabled", "scout_enabled", "sect_hostile_entry",
 			"enable_era_1_0b", "jail_location", "gb_assembly", "seize_enabled", "npc_respawn_pct", "loot_drop_pct"]:
 		assert_has(ed, k, "editable key")
@@ -270,3 +274,20 @@ func test_server_opts_set_m3c_pct() -> void:
 	var parsed: Dictionary = ws.parse_cli_opts("npc_respawn_pct=200,loot_drop_pct=150", ws.options)
 	assert_eq(str(parsed["error"]), "")
 	assert_eq(int(parsed["values"]["loot_drop_pct"]), 150)
+
+## M3d 整合（M3D_PLAN §8.3）：五個 M3d 選項可以在伺服器設定面板改
+func test_server_opts_set_m3d_keys() -> void:
+	if not game_ok():
+		return
+	make_char("管理甲")
+	for k in ["bounty_enabled", "bounty_hunters", "jiebiao_enabled", "tourney_enabled"]:
+		ok("server_opts_set", { "key": k, "value": "false" })
+		assert_eq(ws.options[k], false, k)
+		ok("server_opts_set", { "key": k, "value": "true" })
+		assert_eq(ws.options[k], true, k)
+	ok("server_opts_set", { "key": "equip_cooldown_ms", "value": "0" })
+	assert_eq(int(ws.options["equip_cooldown_ms"]), 0)
+	assert_eq(IntentsItem.equip_cooldown_ms(host()), 0, "換裝間隔關掉")
+	assert_eq(reason("server_opts_set", { "key": "equip_cooldown_ms", "value": "1500" }), "bad_value:value", "只能選列出的值")
+	ok("server_opts_set", { "key": "equip_cooldown_ms", "value": "2000" })
+	assert_eq(IntentsItem.equip_cooldown_ms(host()), 2000)

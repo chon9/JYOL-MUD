@@ -4,7 +4,8 @@ extends RefCounted
 
 ## M3A_PLAN 5.1：Protocol.BATTLE_CMDS 與此相同（WP-RULES Day-0）
 const CMDS := ["MOVE", "ATTACK", "ART", "DEFEND", "REST", "EQUIP", "FLEE",
-	"POISON", "MEDIC", "HIDDEN", "FORMATION", "INNER", "ACUPOINT", "ITEM"]
+	"POISON", "MEDIC", "HIDDEN", "FORMATION", "INNER", "ACUPOINT", "ITEM",
+	"DODGE", "QING"]   # M3D_PLAN §3.1、§3.2（WP-COMBAT）
 const PARTS := ["胸口", "左肩", "右臂", "小腹", "後背", "頭頂", "左腿", "右腿"]   # 【設計提案】3.8.4
 const AFK_TIMEOUT_S := 3.0
 const BARE_HANDS := "拳腳"
@@ -14,6 +15,46 @@ const STATUS_DEFAULTS := {
 	"inner_wound": { "id": "inner_wound", "name": "內傷", "duration_actions": 5, "blocks": ["REST"],
 		"qi_pct_per_action": 0.02 },
 }
+
+## ---------------------------------------------------------------- M3d（M3D_PLAN §3；WP-COMBAT）
+## 數字全部【設計提案】（研究：閃「可減低中招機率」、輕「功能和使用與烙跑鞋一樣」，量沒有公布）
+const DODGE_BASE := 0.15               # 閃：命中率 −(0.15 + 基本閃躲/1000)，最多 −0.30
+const DODGE_MAX := 0.30
+const QING_MODES := ["JUMP", "ESCAPE"]
+const QING_JUMP_BASE := 10             # 飛身越敵：內力 10 + 2 × 移動範圍
+const QING_JUMP_PER_RANGE := 2
+const QING_ESCAPE_COST := 30           # 輕功脫身：內力 30
+const QING_ESCAPE_MIN := 20.0          # 成功率 clamp(20 + 輕功 × 0.4 + 基本輕功 × 0.2, 20, 80)%
+const QING_ESCAPE_MAX := 80.0
+## 烙跑鞋與輕功脫身都不能用的戰鬥（§3.4）：任務戰、試煉；另外劫鏢方（ROB 的 side 0）也不行
+const FLEE_SHOE_BLOCKED := ["QUEST", "TRIAL"]
+const EQUIP_CD_DEFAULT_MS := 0         # spec 與 opts 都沒帶冷卻時不限制（舊戰鬥規格、測試；主機的 spec 一律帶 equip_cd_ms）
+
+## 閃的人這一下命中率要減多少
+static func dodge_hit_drop(def: BattleUnit) -> float:
+	return minf(DODGE_MAX, DODGE_BASE + def.skill("basic_dodge") / 1000.0)
+
+static func qing_jump_cost(u: BattleUnit) -> int:
+	return QING_JUMP_BASE + QING_JUMP_PER_RANGE * BattleFormulas.move_range(u)
+
+## 輕功脫身成功率（0–1）
+static func qing_escape_chance(u: BattleUnit) -> float:
+	return clampf(QING_ESCAPE_MIN + u.lightness() * 0.4 + u.skill("basic_body") * 0.2, QING_ESCAPE_MIN, QING_ESCAPE_MAX) / 100.0
+
+## 這場戰鬥不讓「特殊脫身」（烙跑鞋、輕功脫身）：任務戰、試煉、劫鏢方
+static func special_flee_blocked(b: Battle, u: BattleUnit) -> bool:
+	var kind := str(b.opts.get("kind", ""))
+	return kind in FLEE_SHOE_BLOCKED or (kind == "ROB" and u.side == 0)
+
+## 換裝冷卻（秒）：spec.equip_cd_ms（主機依伺服器選項 equip_cooldown_ms 帶入）→ opts.equip_cooldown_ms → 0
+static func equip_cd_s(b: Battle, u: BattleUnit) -> float:
+	var ms := u.equip_cd_ms()
+	if ms < 0:
+		ms = int(b.opts.get("equip_cooldown_ms", EQUIP_CD_DEFAULT_MS))
+	return maxf(0.0, ms / 1000.0)
+
+static func dodge_enabled(b: Battle) -> bool:
+	return bool(b.opts.get("dodge_cmd", true))
 
 ## ---------------------------------------------------------------- 指令正規化
 
@@ -99,6 +140,8 @@ static func validate_cmd(b: Battle, u: BattleUnit, cmd: Dictionary, tables: Dict
 			var cat := str(art_row.get("category", "FIST"))
 			if cat != "FIST" and u.weapon_type() != cat:
 				return "need_weapon"
+			if not ComboRules.usable(b, u, art_row):
+				return "combo_partner_absent"   # M3d 審查：合體武功要夥伴同場（兩人同使）
 			# M3A_PLAN 5.2：範圍招式的 target 是中心格（AROUND 以自己為中心）
 			if BattleAoe.is_aoe(str(move_row.get("aoe", "SINGLE"))):
 				var aerr := BattleAoe.check(b, u, move_row, c.target)
@@ -123,11 +166,53 @@ static func validate_cmd(b: Battle, u: BattleUnit, cmd: Dictionary, tables: Dict
 				return "bad_cmd"
 			if c.item_uid != "" and weapon_option(u, c.item_uid).is_empty():
 				return "no_item"
+			# M3D_PLAN §3.6：換裝兩秒（戰鬥時間；開戰前在地圖上換過不算）
+			if b.time_s() - u.last_equip_t < equip_cd_s(b, u) - 0.0001:
+				return "equip_cooldown"
 		"FLEE":
+			# M3D_PLAN §3.4：無敵烙跑鞋 → 任何格子、追擊戰都能逃（任務戰、試煉、劫鏢方除外）
+			if u.flee_anywhere() and not special_flee_blocked(b, u):
+				return ""
 			if bool(b.opts.get("no_flee", false)):
 				return "no_flee"   # 追擊戰、試煉不能逃（M3A_PLAN 5.9）
 			if not b.grid.is_escape(u.pos):
 				return "not_on_escape"
+		"DODGE":
+			if not dodge_enabled(b):
+				return "dodge_off"
+		"QING":
+			return _validate_qing(b, u, c, tables)
+	return ""
+
+## 輕（M3D_PLAN §3.2）：later_battle_cmds 關 → qing_off；JUMP 照移動的封鎖、ESCAPE 照逃跑的封鎖
+static func _validate_qing(b: Battle, u: BattleUnit, c: Dictionary, tables: Dictionary) -> String:
+	if not BattleCmds.later_cmds(b):
+		return "qing_off"
+	var mode := str(c.get("mode", ""))
+	match mode:
+		"JUMP":
+			if is_blocked(u, "MOVE", tables):
+				return "status_blocked"
+			if not c.has("target") or c.target == null:
+				return "bad_cmd"
+			var t: Vector2i = c.target
+			if not BattleGrid.in_bounds(t):
+				return "out_of_range"
+			if b.unit_at(t) != null:
+				return "occupied"
+			if not b.grid.jump_targets(u.pos, BattleFormulas.move_range(u) + 1).has(t):
+				return "out_of_range"
+			if u.neili < qing_jump_cost(u):
+				return "not_enough_neili"
+		"ESCAPE":
+			if is_blocked(u, "FLEE", tables):
+				return "status_blocked"
+			if special_flee_blocked(b, u):
+				return "no_flee"
+			if u.neili < QING_ESCAPE_COST:
+				return "not_enough_neili"
+		_:
+			return "bad_cmd"
 	return ""
 
 ## 可在戰鬥中使用的武功列（會此武功、在 spec.arts 內、類別 FIST..SPEAR）；否則 {}
@@ -211,6 +296,7 @@ static func execute(b: Battle, u: BattleUnit, cmd: Dictionary, tables: Dictionar
 	if c.is_empty():
 		c = { "cmd": "DEFEND" }
 	u.defending = false          # 防禦姿態只維持到自己下次行動前
+	u.dodging = false            # M3d「閃」也一樣（M3D_PLAN §3.1）
 	u.state = BattleUnit.ACTING
 	u.actions += 1
 	# M3A_PLAN 5.7：行動開始前先看有沒有「跳過」「亂打」的狀態（次數在 _status_tick 遞減）
@@ -254,7 +340,11 @@ static func execute(b: Battle, u: BattleUnit, cmd: Dictionary, tables: Dictionar
 			else:
 				var tu := _enemy_at(b, u, c.target)
 				if tu != null:
+					var dealt0 := u.dmg_dealt
 					ev.append_array(resolve_strike(b, u, tu, art_row, move_row, tenths, tables, rng, false))
+					# M3D_PLAN §3.3.3：合體武功 → 記號、3 秒窗、依默契擲合體一擊
+					if not ComboRules.combo_of(art_row).is_empty():
+						ev.append_array(ComboRules.after_art(b, u, art_row, u.dmg_dealt - dealt0, rng, tu.uid))
 			ev.append_array(_recover_proc(b, u, tables, rng))
 		"DEFEND":
 			u.defending = true
@@ -279,6 +369,7 @@ static func execute(b: Battle, u: BattleUnit, cmd: Dictionary, tables: Dictionar
 			else:
 				u.weapon = BattleUnit._norm_weapon(weapon_option(u, c.item_uid))
 				item_name = str(u.weapon.name)
+			u.last_equip_t = b.time_s()   # M3D_PLAN §3.6
 			# M3C_PLAN §7.2（WP-FX）純表現：換兵器後的 wtype／wfx（別人的畫面也換武器特效與名牌圖示）
 			ev.append(b.make_event("battle_equip", _merge(who, { "item_name": item_name, "item_uid": str(u.weapon.uid),
 				"wtype": u.weapon_type(), "wfx": Battle.weapon_fx_of(u, tables) })))
@@ -289,9 +380,39 @@ static func execute(b: Battle, u: BattleUnit, cmd: Dictionary, tables: Dictionar
 			ev.append(b.make_event("battle_flee", who))
 		"POISON", "MEDIC", "HIDDEN", "FORMATION", "INNER", "ACUPOINT", "ITEM":
 			ev.append_array(BattleCmds.execute(b, u, c, tables, rng))
+		"DODGE":
+			u.dodging = true
+			ev.append(b.make_event("battle_dodge", who))
+		"QING":
+			ev.append_array(_execute_qing(b, u, c, tables, rng, who))
 	if u.state == BattleUnit.ACTING:
 		u.state = BattleUnit.CHARGING
-		u.gauge = Battle.MOVE_GAUGE if c.cmd == "MOVE" else 0.0
+		var moved: bool = c.cmd == "MOVE" or (c.cmd == "QING" and str(c.get("mode", "")) == "JUMP")
+		u.gauge = Battle.MOVE_GAUGE if moved else 0.0
+	return ev
+
+## 輕（M3D_PLAN §3.2）：JUMP 越過有人的格子落到移動範圍 +1 的空格（時間棒照移動）；ESCAPE 依機率原地脫身
+static func _execute_qing(b: Battle, u: BattleUnit, c: Dictionary, tables: Dictionary, rng: RandomNumberGenerator,
+		who: Dictionary) -> Array:
+	var ev: Array = []
+	match str(c.get("mode", "")):
+		"JUMP":
+			u.neili = maxi(0, u.neili - qing_jump_cost(u))
+			var from := u.pos
+			u.pos = c.target
+			ev.append(b.make_event("battle_qing_jump", _merge(who, { "from": [from.x, from.y], "to": [u.pos.x, u.pos.y],
+				"neili": u.neili })))
+			ev.append_array(_on_move(b, u, tables))
+		"ESCAPE":
+			u.neili = maxi(0, u.neili - QING_ESCAPE_COST)
+			var p := qing_escape_chance(u)
+			if rng.randf() < p:
+				if not u.formation.is_empty():
+					ev.append_array(BattleCmds.break_formation(b, u, tables))
+				u.state = BattleUnit.FLED
+				ev.append(b.make_event("battle_qing_escape", _merge(who, { "neili": u.neili })))
+			else:
+				ev.append(b.make_event("battle_qing_fail", _merge(who, { "neili": u.neili })))
 	return ev
 
 ## 一次普通攻擊或出招（含反擊）。結算順序見 4.7。
@@ -317,8 +438,15 @@ static func resolve_strike(b: Battle, att: BattleUnit, def: BattleUnit, art_row:
 	if BattleStatus.try_proc(b, def, "EVADE", tables):
 		hit_p = maxf(0.0, hit_p - BattleStatus.EVADE_HIT_DROP)
 		ev.append(BattleStatus.proc_event(b, def, "EVADE", tables, { "def_uid": att.uid }))
+	# M3D_PLAN §3.1：守方「閃」中 → 命中率再減 dodge_hit_drop（純表現：沒打中時 battle_miss 帶 dodged）
+	var dodged := def.dodging
+	if dodged:
+		hit_p = maxf(0.0, hit_p - dodge_hit_drop(def))
 	if rng.randf() >= hit_p:
-		ev.append(b.make_event("battle_miss", _merge(common, { "move": move_name })))
+		var mp := _merge(common, { "move": move_name })
+		if dodged:
+			mp["dodged"] = true
+		ev.append(b.make_event("battle_miss", mp))
 		return ev
 	# 爆擊
 	var crit := rng.randf() < BattleFormulas.crit_chance(att)
@@ -354,6 +482,8 @@ static func resolve_strike(b: Battle, att: BattleUnit, def: BattleUnit, art_row:
 	# 扣氣
 	def.qi = maxi(1, def.qi - dmg)
 	def.last_hitter = att.uid
+	att.dmg_dealt += dmg      # M3D_PLAN §9.2：比武判定用（含反擊）
+	att.hits_landed += 1
 	var part: String = PARTS[rng.randi_range(0, PARTS.size() - 1)]
 	var hit := _merge(common, { "dmg": dmg, "part": part, "crit": crit, "def_qi": def.qi })
 	var key: String
@@ -381,8 +511,8 @@ static func resolve_strike(b: Battle, att: BattleUnit, def: BattleUnit, art_row:
 	# 古墓 清心／靈鷲 定性／星宿 諂媚：命中後擲觸發
 	ev.append_array(BattleStatus.on_hit_procs(b, att, def, tables))
 	# 反擊（反擊不會再引發反擊；需相鄰；範圍招式不引發反擊）
-	if not is_counter and not no_counter and def.is_active() and att.is_active() \
-			and BattleGrid.manhattan(att.pos, def.pos) <= 1:
+	if not is_counter and not no_counter and def.is_active() and att.is_active() and not def.dodging \
+			and BattleGrid.manhattan(att.pos, def.pos) <= 1:   # M3d：「閃」的人不反擊
 		# 恆山 慈悲（COUNTER）先判；觸發就不再擲 M1 的定力反擊（不疊加）
 		if BattleStatus.try_proc(b, def, "COUNTER", tables):
 			ev.append(BattleStatus.proc_event(b, def, "COUNTER", tables, { "def_uid": att.uid }))

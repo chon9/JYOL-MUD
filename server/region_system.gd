@@ -82,6 +82,7 @@ func teleport(s: Session, to_room: String, hooks := true) -> void:
 	elif not hooks:
 		s.last_region = host.index.region_of(to_room)
 	if hooks:
+		host.m3d_enter_room(s, from, to_room)   # M3d WP-LAW
 		enter_status(s, to_room)
 
 ## move intent：jailed → no_exit → room_locked → overweight → 移動 → REACH → 門派（門規、敵對入山）→ 踩地雷
@@ -113,6 +114,7 @@ func move(s: Session, dir: String) -> Dictionary:
 		host.sects.on_enter_room(s, to)
 		if s.battle_id != 0 or ch.is_jailed():
 			return GameHost.ok()
+	host.m3d_enter_room(s, from, to)   # M3d WP-LAW
 	enter_status(s, to)   # M3B_PLAN §4.10：情花林等房間的 on_enter_status
 	roll_encounter(s)
 	return GameHost.ok()
@@ -241,6 +243,7 @@ func player_entry(o: Session, viewer: Session = null) -> Dictionary:
 		e.merge(og, true)
 	if host.sects != null:
 		e.merge(host.sects.player_tags(viewer, o), true)
+	e.merge(host.m3d_player_tags(viewer, o), true)   # M3d WP-LAW
 	return e
 
 ## 3.9.2
@@ -252,6 +255,8 @@ func view(s: Session) -> Dictionary:
 	var c := host.clock()
 	var exits: Array = []
 	var ctx := _ctx(s)
+	# M3d 審查：迷陣（房間列 hide_exit_names）的出口一律顯示本房的名字，不洩漏哪個方向通往陣口（八卦泥陣）【設計提案】
+	var hide_names := bool(room.get("hide_exit_names", false))
 	for ex in room.get("exits", []):
 		if not (ex is Dictionary):
 			continue
@@ -259,7 +264,7 @@ func view(s: Session) -> Dictionary:
 		var why := lock_reason(ch, to, ctx)
 		exits.append({
 			"dir": str(ex.get("dir", "")), "label": WorldIndex.dir_label(str(ex.get("dir", ""))),
-			"to": to, "to_name": host.room_name(to), "locked": why != "", "lock_reason": why,
+			"to": to, "to_name": str(room.get("name", "")) if hide_names else host.room_name(to), "locked": why != "", "lock_reason": why,
 		})
 	var npc_list: Array = []
 	# STORY_PLAN §4.11 #3、§4.14：appear 每位玩家各自判斷；護送中的 NPC 跟著玩家（escort: true）

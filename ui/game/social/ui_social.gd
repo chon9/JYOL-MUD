@@ -14,11 +14,24 @@ const ACT_FORCE_PK := "force_pk"
 ## M3b（M3B_PLAN §5.1.5、§5.3）：player_tags.seizable → 「捉拿」；我有邀請權且對方不在組織 → 「邀請入組織」
 const ACT_SEIZE := "seize"
 const ACT_ORG_INVITE := "org_invite"
+## M3d 整合（M3D_PLAN §5.2.2）：對方頭上有「押鏢」→ 「劫鏢」（主畫面開 JiebiaoConfirm）
+const ACT_ROB := "rob_escort"
+const TAG_ESCORTING := "押鏢"
 const ACT_LABELS := {
 	ACT_INVITE: "組隊邀請", ACT_CHALLENGE: "叫戰", ACT_WHISPER: "密語（傳音入密）", ACT_MAIL: "寄信（飛鴿傳書）",
 	ACT_KICK: "請出隊伍", ACT_LEAD: "移交領隊", ACT_FORCE_PK: "強行出手",
-	ACT_SEIZE: "捉拿", ACT_ORG_INVITE: "邀請入組織",
+	ACT_SEIZE: "捉拿", ACT_ORG_INVITE: "邀請入組織", ACT_ROB: "劫鏢",
 }
+
+## 房間玩家列名字後的標籤（M3d：player.tags；例「王五〔押鏢〕」）
+static func tags_suffix(player: Dictionary) -> String:
+	var tags: Variant = player.get("tags", [])
+	if not (tags is Array) or (tags as Array).is_empty():
+		return ""
+	var out := ""
+	for t in tags:
+		out += "〔%s〕" % str(t)
+	return out
 
 ## 強制 PK 的「連結鍵」（M2_PLAN 5.2：2001 年的說明叫「連結鍵」，Ctrl 只見於 newton → 可在系統窗「特殊開關」改）
 const PK_KEY_SETTING := "ui.pk_key"
@@ -172,6 +185,9 @@ static func player_menu(player: Dictionary, sheet: Dictionary) -> Array:
 		out.append([ACT_ORG_INVITE, act_label(ACT_ORG_INVITE)])
 	if bool(player.get("seizable", false)):
 		out.append([ACT_SEIZE, act_label(ACT_SEIZE)])
+	var tags: Variant = player.get("tags", [])
+	if not mate and tags is Array and TAG_ESCORTING in tags:
+		out.append([ACT_ROB, act_label(ACT_ROB)])
 	if not mate:
 		out.append([ACT_FORCE_PK, act_label(ACT_FORCE_PK)])
 	return out

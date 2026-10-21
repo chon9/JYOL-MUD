@@ -5,6 +5,7 @@ extends VBoxContainer
 ## 燈籠是 JyButton（LANTERN）：可讀名稱「武功(Ctrl+1)」，畫面上直排兩個黑色毛筆字。
 
 signal panel_requested(pid: String)
+signal combo_requested   # M3d WP-COMBAT：「默契」燈籠（合體默契視窗）
 
 const LANTERN_SIZE := Vector2(52, 60)
 
@@ -31,6 +32,7 @@ func ensure_built() -> void:
 		b.custom_minimum_size = LANTERN_SIZE
 		b.tooltip_text = "查看%s（快捷鍵：Ctrl+%d）" % [UiKeys.PANEL_LABELS[pid], i + 1]
 		lanterns[pid] = b
+	_m3d_build()   # M3d WP-COMBAT
 	knot = ChineseKnot.new()
 	knot.tooltip_text = "燈籠縮放開關"
 	knot.pressed.connect(toggle_collapsed)
@@ -43,6 +45,8 @@ func toggle_collapsed() -> void:
 func set_collapsed(on: bool, persist := true) -> void:
 	collapsed = on
 	lantern_box.visible = not on
+	if combo_lantern != null:
+		combo_lantern.visible = _combo_on and not on   # M3d WP-COMBAT
 	if persist:
 		UiSettings.set_value("ui.lanterns_collapsed", on)
 
@@ -82,3 +86,24 @@ class ChineseKnot extends Button:
 		for i in 5:
 			var x := cx + (i - 2) * 2.5
 			draw_line(Vector2(x, c.y + r), Vector2(x + (i - 2) * 0.8, size.y - 2.0), red, 1.5, true)
+
+# ==== M3d WP-COMBAT ====
+## M3D_PLAN §3.3.4：武功燈籠下方的「默契」小燈籠（1.0B；建立默契／取消默契／培養感情都在 ComboDialog）。
+## 1.0A-only 世界不顯示（set_combo_visible(false)）。
+var combo_lantern: JyButton
+
+## 放在五盞燈籠下方、中國結上方（不插進原作五盞的順序）；燈籠收合時一起收起
+var _combo_on := false
+
+func _m3d_build() -> void:
+	combo_lantern = UiBuild.lantern(self, "默契", func(): combo_requested.emit())
+	combo_lantern.name = "ComboLantern"
+	combo_lantern.custom_minimum_size = LANTERN_SIZE   # M3d 審查：原 46 px 高，燈籠帽蓋到「默」「契」兩字
+	combo_lantern.tooltip_text = "合體默契：%s、%s、%s" % [UiKeys.COMBO_BTN_BOND, UiKeys.COMBO_BTN_CANCEL, UiKeys.COMBO_BTN_NURTURE]
+	combo_lantern.visible = false
+
+func set_combo_visible(on: bool) -> void:
+	ensure_built()
+	_combo_on = on
+	if combo_lantern != null:
+		combo_lantern.visible = on and not collapsed

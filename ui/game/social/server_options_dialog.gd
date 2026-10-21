@@ -150,6 +150,7 @@ func apply_options(o: Dictionary) -> void:
 	_add_m3c_options(o)
 	_add_foreign_option(o)   # M3c2 WP-CARRY
 	_add_spar_cap_option(o)   # M3c2 WP-PACE
+	_add_m3d_options(o)   # M3d WP-LAW
 	_update_desc()
 	_build_players(info.get("players", []) if info.get("players", []) is Array else [], bool(info.get("ban_enforced", false)))
 
@@ -442,3 +443,71 @@ func _add_spar_cap_option(o: Dictionary) -> void:
 	ob.disabled = true
 	ob.tooltip_text = "%s\n（這個主機還沒開放在面板上修改；可在 options.json 設定 %s）" % [SPAR_CAP_DESC, SPAR_CAP_KEY]
 	options_grid.add_child(ob)
+
+# ==== M3d WP-LAW ====
+## M3D_PLAN §8.3：五個 M3d 伺服器選項（懸賞、賞金獵人、換裝間隔、劫鏢、比武）。主機 editable 有這個 key → 走一般路徑
+## （上面的迴圈）；沒有 → 照本機規格顯示目前值並灰掉、附說明。
+## M3D_PLAN 缺漏：主機端可改清單（server/admin_system.gd 的 EDITABLE_KEYS、choices、opts_set）不在任何 M3d WP 的檔案內，
+## 要由整合者加上；加了之後這裡自動改走一般路徑（可改）。
+const M3D_OPTIONS := [
+	{ "key": "bounty_enabled", "label": "衙門懸賞", "kind": "bool", "default": true,
+		"desc": "佈告欄的懸賞名單、賞金獵人執照與領賞。關掉時佈告欄只寫「衙門暫停懸賞」，NPC 賞金獵人也不出現。" },
+	{ "key": "bounty_hunters", "label": "賞金獵人追捕", "kind": "bool", "default": true,
+		"desc": "懸賞名單上的人走在野外，會被 NPC 賞金獵人追上（先警告、倒數內離開房間就能甩掉）。" },
+	{ "key": "equip_cooldown_ms", "label": "換裝間隔", "kind": "ms", "default": 2000, "values": [0, 1000, 2000, 3000, 5000],
+		"desc": "兩次換裝之間至少要隔多久（原作 2001-10-09 起兩秒）；0 ＝ 不限制。" },
+	{ "key": "jiebiao_enabled", "label": "危險鏢與劫鏢", "kind": "bool", "default": true,
+		"desc": "鏢局二掌櫃的危險鏢（押金、成功拿雙倍）與玩家劫鏢（1.0B）。" },
+	{ "key": "tourney_enabled", "label": "門派比武與武林大會", "kind": "bool", "default": true,
+		"desc": "依遊戲日曆排程的比武大會，主機也可以隨時開辦。" },
+]
+var m3d_rows: Dictionary = {}   # key -> OptionButton（主機 editable 的那一列，或本面板加的灰色列）
+
+func _add_m3d_options(o: Dictionary) -> void:
+	m3d_rows.clear()
+	for spec in M3D_OPTIONS:
+		var key := str(spec["key"])
+		if selectors.has(key):
+			m3d_rows[key] = selectors[key]
+			continue
+		UiBuild.muted(UiBuild.label(options_grid, str(spec["label"]), 15))
+		var ob := OptionButton.new()
+		ob.name = "Opt_" + key
+		ob.custom_minimum_size = Vector2(260, 0)
+		var cur: Variant = ServerOptionsDialog.m3d_value(key, o, spec["default"])
+		if str(spec["kind"]) == "bool":
+			ob.add_item("開", 0)
+			ob.set_item_metadata(0, "true")
+			ob.add_item("關", 1)
+			ob.set_item_metadata(1, "false")
+			ob.select(0 if cur == true else 1)
+			ob.set_meta("value", "true" if cur == true else "false")
+		else:
+			var vals: Array = (spec["values"] as Array).duplicate()
+			if not (int(cur) in vals):
+				vals.append(int(cur))
+				vals.sort()
+			for i in vals.size():
+				ob.add_item("不限制" if int(vals[i]) == 0 else "%.1f 秒" % (int(vals[i]) / 1000.0), i)
+				ob.set_item_metadata(i, str(vals[i]))
+				if int(vals[i]) == int(cur):
+					ob.select(i)
+			ob.set_meta("value", str(int(cur)))
+		ob.disabled = true
+		ob.tooltip_text = "%s\n（這個主機還沒開放在面板上修改；可在 options.json 設定 %s）" % [str(spec["desc"]), key]
+		options_grid.add_child(ob)
+		m3d_rows[key] = ob
+
+## 目前值：server_options.info.options → info → world_info → 預設
+static func m3d_value(key: String, o: Dictionary, def: Variant) -> Variant:
+	var info: Variant = o.get("info", {})
+	if info is Dictionary:
+		var io2: Variant = (info as Dictionary).get("options", {})
+		if io2 is Dictionary and (io2 as Dictionary).has(key):
+			return (io2 as Dictionary)[key]
+		if (info as Dictionary).has(key):
+			return (info as Dictionary)[key]
+	var wi := UiClient.world_info()
+	if wi.has(key):
+		return wi[key]
+	return def

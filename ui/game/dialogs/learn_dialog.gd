@@ -86,10 +86,20 @@ func open_list(p: Dictionary) -> void:
 
 func _row(e: Dictionary) -> void:
 	var row := UiBuild.hbox(list, 8)
+	# 學了加什麼（SkillEffects）：每列底下一行摘要，滑鼠停在名字上看完整說明
+	var eff_id := str(e.get("skill", ""))
+	var eff := SkillEffects.summary(eff_id, UiClient.tables())
+	if eff != "":
+		var el := UiBuild.muted(UiBuild.label(list, "　　" + eff, 13, true))
+		el.name = "LearnEffect_" + eff_id
 	var kind := str(e.get("kind", ""))
 	var ok := bool(e.get("ok", false))
 	var name_l := UiBuild.label(row, str(e.get("name", e.get("skill", ""))), 16)
 	name_l.custom_minimum_size = Vector2(130, 0)
+	var full := SkillEffects.text(eff_id, UiClient.tables())
+	if full != "":
+		name_l.tooltip_text = full
+		name_l.mouse_filter = Control.MOUSE_FILTER_PASS
 	UiBuild.muted(UiBuild.label(row, UiKeys.SKILL_KIND_LABELS.get(kind, kind), 14)).custom_minimum_size = Vector2(70, 0)
 	UiBuild.label(row, "%d / %d 級" % [UiBuild.num(e.get("level", 0)), UiBuild.num(e.get("cap", 0))], 15).custom_minimum_size = Vector2(90, 0)
 	var price := UiBuild.num(e.get("price", 0))

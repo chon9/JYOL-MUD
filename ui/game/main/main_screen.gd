@@ -312,6 +312,7 @@ func _build() -> void:
 	scene_panel.craft_requested.connect(open_craft)
 	npc_dialog.window_requested.connect(_on_npc_window)
 	hud.pigeon.pressed.connect(open_mail)
+	_m3d_combat_build()   # M3d WP-COMBAT：默契視窗、夜晚變暗
 	_apply_scale()
 	resized.connect(_layout_scene)
 	_layout_scene()
@@ -377,7 +378,7 @@ func prompt_band_bottom() -> float:
 
 func _dialogs() -> Array:
 	return [npc_dialog, shop_dialog, learn_dialog, corpse_dialog, mail_dialog, server_dialog, confirm_dialog, scout_dialog, story_dialog,
-		bank_window, escort_window, craft_window, org_panel, seize_dialog, look_dialog]
+		bank_window, escort_window, craft_window, org_panel, seize_dialog, look_dialog] + m3d_dialogs
 
 func _on_scene_moved(pos: Vector2) -> void:
 	UiSettings.set_value("ui.scene_pos", [int(pos.x), int(pos.y)])
@@ -397,6 +398,8 @@ func _on_option_changed(key: String, value: Variant) -> void:
 		"ui.atb_list", "ui.damage_text", "ui.grid_lines":
 			if _battle_open():
 				battle.apply_options()
+		UiKeys.SETTING_NIGHT_DIM:
+			_m3d_night_refresh()
 
 # ---------- 資料 ----------
 func apply_sheet(s: Dictionary) -> void:
@@ -419,6 +422,7 @@ func apply_sheet(s: Dictionary) -> void:
 			panels[pid].apply_sheet(s)
 	for d in [bank_window, escort_window, craft_window, org_panel]:
 		d.apply_sheet(s)
+	_m3d_combat_sheet(s)   # M3d WP-COMBAT
 
 func apply_view(v: Dictionary) -> void:
 	if _battle_settling():
@@ -440,6 +444,8 @@ func apply_view(v: Dictionary) -> void:
 			d.close()
 	craft_window.apply_view(v)
 	seize_dialog.apply_view(v)
+	if combo_dialog != null:
+		combo_dialog.apply_view(v)   # M3d WP-COMBAT
 	corpse_dialog.refresh_from_view(v)
 	var room := str(v.get("room", ""))
 	scout_dialog.on_room(room)
@@ -691,6 +697,8 @@ func handle_event(e: Dictionary) -> void:
 		last_talk_text = TextRenderer.render_plain(e, UiClient.my_peer(), UiClient.templates())
 		scene_panel.show_bubble(str(p.get("npc", key.trim_prefix(UiKeys.TALK_PREFIX))), last_talk_text)
 		return
+	if _m3d_dispatch(key, p):   # M3d（M3D_PLAN §9.2）：各 WP 的事件先處理；回 true＝已處理
+		return
 	match key:
 		UiKeys.E_NPC_MENU:
 			if bool(p.get("refresh", false)):
@@ -796,6 +804,8 @@ func _on_player_action(action: String, p: Dictionary) -> void:
 			seize_dialog.open_for(p, view)
 		UiSocial.ACT_ORG_INVITE:
 			send(UiKeys.I_ORG_INVITE, { "name": name })
+		UiSocial.ACT_ROB:
+			m3d_events_open_rob(p)   # M3d 整合：WP-EVENTS 劫鏢確認
 
 ## Ctrl+點玩家名：本機就知道不行（新手、不能動手的地方、PK 模式、同隊）→ 直接顯示原因、不送；否則確認框
 func request_force_pk(p: Dictionary) -> void:
@@ -873,6 +883,7 @@ func open_battle(state: Dictionary) -> void:
 	close_panel()
 	story_dialog.dismiss()
 	villain_prompt.dismiss()
+	law_hide_banner()   # M3d 審查：開戰就收起賞金獵人橫幅
 	for d in _dialogs():
 		d.visible = false
 	var scene := load(BATTLE_SCENE) as PackedScene
@@ -1023,3 +1034,329 @@ func request_npc_attack(p: Dictionary) -> void:
 	var nid := str(p.get("id", ""))
 	ask_confirm(NpcAttackUi.TITLE, NpcAttackUi.confirm_text(p, sheet, view), NpcAttackUi.OK_LABEL,
 		func(): send(UiKeys.I_NPC_ATTACK, { "npc": nid, "mode": NpcAttackUi.MODE_ATTACK }), true, NpcAttackUi.CANCEL_LABEL)
+
+# ==== M3d 事件分派（WP-COMBAT Day-0；M3D_PLAN §9.2） ====
+## 各 WP 的新對話框：m3d_add_dialog(d) 放進對話框層、接上 gate、加入 _dialogs()（互斥、Esc 關）
+var m3d_dialogs: Array = []
+
+func m3d_add_dialog(d: Control) -> void:
+	if d == null or m3d_dialogs.has(d):
+		return
+	d.set("gate", gate)
+	d.visible = false
+	if d.get_parent() == null:
+		dialog_layer.add_child(d)
+	m3d_dialogs.append(d)
+
+## 依 UiKeys.M3D_*_EVENTS 把事件交給各 WP 的處理函式（各在下面自己的具名區塊，回 true＝已處理）。
+## 不在任何清單裡的 key 也依序問一次（各 WP 可以處理自己新加的一般事件）；都回 false 就照舊往下。
+func _m3d_dispatch(key: String, p: Dictionary) -> bool:
+	if key in UiKeys.M3D_LAW_EVENTS:
+		return _m3d_law_event(key, p)
+	if key in UiKeys.M3D_COMBAT_EVENTS:
+		return _m3d_combat_event(key, p)
+	if key in UiKeys.M3D_ARTS_EVENTS:
+		return _m3d_arts_event(key, p)
+	if key in UiKeys.M3D_EVENTS_EVENTS:
+		return _m3d_events_event(key, p)
+	if key in UiKeys.M3D_ERRANDS_EVENTS:
+		return _m3d_errands_event(key, p)
+	return false
+
+# ==== M3d WP-LAW ====
+## 佈告欄名單（bounty_board → BountyDialog）、賞金獵人警告橫幅（law_hunter_warn，倒數；沒有回覆按鈕）。
+## 其他 law_* 事件照一般文字顯示（回 false）。M3d 審查：名單視窗經 m3d_add_dialog 加入 _dialogs()（Esc 關、與其他視窗互斥）。
+var bounty_dialog: BountyDialog = null
+var law_banner: PanelContainer = null
+var _law_banner_left := 0
+var _law_banner_gen := 0   # M3d 審查：每次新的警告換一代，舊的計時器鏈自己停（不會兩條一起倒數）
+
+func _m3d_law_event(key: String, p: Dictionary) -> bool:
+	match key:
+		UiKeys.E_BOUNTY_BOARD:
+			if bounty_dialog == null:
+				bounty_dialog = BountyDialog.new()
+				bounty_dialog.name = "BountyDialog"
+				m3d_add_dialog(bounty_dialog)
+			_show_dialog(bounty_dialog)
+			bounty_dialog.open_board(p)
+			return true
+		UiKeys.E_LAW_HUNTER_WARN:
+			_law_show_banner(str(p.get("npc_name", "賞金獵人")), int(p.get("warn_s", 3)))
+			return true   # 文字版（law_hunter_coming）另外送；這則 ui 事件本身不進訊息框
+		UiKeys.E_LAW_HUNTER_ESCAPED, UiKeys.E_LAW_HUNTER_ATTACK:
+			law_hide_banner()   # 離開房間（主機判定甩掉了）／打起來了：橫幅收起，文字照常顯示
+			return false
+	return false
+
+## 收起賞金獵人橫幅（換房間、開戰、甩掉、追上）
+func law_hide_banner() -> void:
+	_law_banner_gen += 1
+	_law_banner_left = 0
+	if law_banner != null:
+		law_banner.visible = false
+
+func _law_show_banner(npc_name: String, secs: int) -> void:
+	if law_banner == null:
+		law_banner = PanelContainer.new()
+		law_banner.name = "LawHunterBanner"
+		var st := StyleBoxFlat.new()
+		st.bg_color = Color(0.35, 0.05, 0.05, 0.9)
+		st.border_color = UiTheme.JY_GOLD
+		st.set_border_width_all(2)
+		st.set_corner_radius_all(6)
+		st.set_content_margin_all(8)
+		law_banner.add_theme_stylebox_override("panel", st)
+		law_banner.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		var l := UiBuild.label(law_banner, "", 18)
+		l.name = "Text"
+		l.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		add_child(law_banner)
+		# M3d 審查：放在視窗層與對話框層底下（不蓋住 NPC 視窗的 ✕、比武報名的標題）
+		var under := dialog_layer.get_index()
+		if panel_layer != null and panel_layer.get_parent() == self:
+			under = mini(under, panel_layer.get_index())
+		move_child(law_banner, under)
+	_law_banner_gen += 1
+	_law_banner_left = maxi(0, secs)
+	law_banner.visible = true
+	_law_tick_banner(npc_name, _law_banner_gen)
+
+func _law_tick_banner(npc_name: String, gen: int) -> void:
+	if law_banner == null or not law_banner.visible or gen != _law_banner_gen:
+		return
+	var l := law_banner.get_node("Text") as Label
+	l.text = "懸賞犯！%s逼近了——%d 秒內離開這裡就能甩掉他" % [npc_name, _law_banner_left] if _law_banner_left > 0 \
+		else "%s追上來了！" % npc_name
+	law_banner.reset_size()
+	law_banner.position = Vector2((size.x - law_banner.size.x) / 2.0, 56.0)
+	if _law_banner_left <= 0 or not is_inside_tree():
+		if is_inside_tree():
+			get_tree().create_timer(1.5).timeout.connect(func():
+				if law_banner != null and _law_banner_left <= 0 and gen == _law_banner_gen:
+					law_banner.visible = false)
+		return
+	_law_banner_left -= 1
+	get_tree().create_timer(1.0).timeout.connect(func(): _law_tick_banner(npc_name, gen))
+
+# ==== M3d WP-COMBAT ====
+## 合體默契（M3D_PLAN §3.3.4）：燈籠「默契」→ ComboDialog；cb_bond_request（ui）→ 同一個視窗的「接受／拒絕」；
+## cb_bond_changed（ui）→ 重畫（角色表的 combo 隨後也會更新）。
+## 夜晚變暗（§3.5）：時鐘 night 且背包沒有 LIGHT 道具（夜明珠）→ 場景圖、小地圖、區域圖蓋一層深藍半透明（alpha 0.35），
+## 小地圖只亮目前房間與相鄰房間；設定 ui.night_dim（預設開；純客戶端）。
+var combo_dialog: ComboDialog
+var night_scene: NightVeil
+var night_mini: NightVeil
+var night_map: NightVeil
+
+func _m3d_combat_build() -> void:
+	combo_dialog = ComboDialog.new()
+	combo_dialog.name = "ComboDialog"
+	m3d_add_dialog(combo_dialog)
+	lanterns.combo_requested.connect(open_combo)
+	night_scene = NightVeil.new()
+	night_scene.name = "NightVeil"
+	_top_area(night_scene)
+	add_child(night_scene)
+	move_child(night_scene, backdrop.get_index() + 1)   # 只蓋背景，不蓋聊天浮層與場景卷軸的字
+	night_mini = NightVeil.new()
+	night_mini.name = "NightVeilMini"
+	night_mini.fog_view = mini_map.view
+	night_mini.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	mini_map.view.add_child(night_mini)
+	night_map = NightVeil.new()
+	night_map.name = "NightVeilMap"
+	night_map.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	map_panel.add_child(night_map)
+	_m3d_night_refresh()
+
+func open_combo() -> void:
+	if _battle_open():
+		return
+	_show_dialog(combo_dialog)
+	combo_dialog.open_panel(sheet, view)
+
+func _m3d_combat_event(key: String, p: Dictionary) -> bool:
+	match key:
+		UiKeys.E_CB_BOND_REQUEST:
+			if _battle_open():
+				return true
+			_show_dialog(combo_dialog)
+			combo_dialog.open_request(p, sheet, view)
+			message_log.add_system("%s想和你建立默契（燈籠「默契」可以回覆）。" % str(p.get("from_name", "")))
+			return true
+		UiKeys.E_CB_BOND_CHANGED:
+			if combo_dialog.visible:
+				var s2 := sheet.duplicate()
+				var c: Dictionary = (s2.get("combo", {}) as Dictionary).duplicate() if s2.get("combo") is Dictionary else {}
+				for k in ["partner_name", "moqi", "peihe", "drain_day"]:
+					if p.has(k):
+						c[k] = p[k]
+				s2["combo"] = c
+				combo_dialog.apply_sheet(s2)
+			return true
+	return false
+
+func _m3d_combat_sheet(s: Dictionary) -> void:
+	lanterns.set_combo_visible(ComboDialog.era_on(s) and not s.is_empty())
+	if combo_dialog != null:
+		combo_dialog.apply_sheet(s)
+	_m3d_night_refresh()
+
+## 夜裡（sheet.clock.night）、沒有夜明珠、設定沒關 → 變暗
+static func night_dim_on(s: Dictionary) -> bool:
+	if UiSettings.get_value(UiKeys.SETTING_NIGHT_DIM, true) == false:
+		return false
+	var clk: Variant = s.get("clock", {})
+	if not (clk is Dictionary) or not bool((clk as Dictionary).get("night", false)):
+		return false
+	return not has_light(s)
+
+## 背包裡有 effects 含 LIGHT 的道具（夜明珠）
+static func has_light(s: Dictionary) -> bool:
+	for it in s.get("inventory", []):
+		if not (it is Dictionary):
+			continue
+		for e in UiClient.row("items", str(it.get("id", ""))).get("effects", []):
+			if e is Dictionary and str(e.get("type", "")) == UiKeys.ITEM_EFFECT_LIGHT:
+				return true
+	return false
+
+func _m3d_night_refresh() -> void:
+	if night_scene == null:
+		return
+	var on := night_dim_on(sheet)
+	for v in [night_scene, night_mini, night_map]:
+		v.set_on(on)
+
+func night_dimmed() -> bool:
+	return night_scene != null and night_scene.on
+
+## 夜晚的深藍半透明層（不吃滑鼠）。fog_view 有給（小地圖）時，目前房間與相鄰房間以外再加深成霧
+class NightVeil extends Control:
+	const FOG := Color(0.02, 0.03, 0.10, 0.62)
+	var on := false
+	var fog_view: Control = null
+
+	func _init() -> void:
+		mouse_filter = Control.MOUSE_FILTER_IGNORE
+		visible = false
+
+	func set_on(v: bool) -> void:
+		on = v
+		visible = v
+		queue_redraw()
+
+	func _process(_d: float) -> void:
+		if on and fog_view != null and is_visible_in_tree():   # 戰鬥中（主畫面藏起來）不重畫
+			queue_redraw()
+
+	## 小地圖亮著的範圍：目前房間與前後左右斜角相鄰、畫得出來的房間的方框聯集（本控制項座標）
+	func lit_rect() -> Rect2:
+		if fog_view == null or not ("model" in fog_view):
+			return Rect2()
+		var model: Dictionary = fog_view.get("model")
+		var pos: Dictionary = model.get("pos", {}) if model is Dictionary else {}
+		var cur := str(fog_view.call("focus_id"))
+		if not pos.has(cur):
+			return Rect2()
+		var r: Rect2 = fog_view.call("screen_rect", cur)
+		var pc: Vector2i = pos[cur]
+		var lit_ids := { cur: true }
+		for id in pos:
+			var d: Vector2i = (pos[id] as Vector2i) - pc
+			if id != cur and absi(d.x) <= 1 and absi(d.y) <= 1 and bool(fog_view.call("is_shown", id)):
+				r = r.merge(fog_view.call("screen_rect", id))
+				lit_ids[id] = true
+		# M3d 審查：目前房間與亮著的相鄰房間的「往XXX」出區箭頭與字也要亮（原本落在霧裡，深藍字疊深藍底看不清）
+		if fog_view.has_method("out_exit_screen_rects"):
+			for er in fog_view.call("out_exit_screen_rects", lit_ids):
+				r = r.merge(er as Rect2)
+		return r.grow(4.0)
+
+	func _draw() -> void:
+		if not on:
+			return
+		var full := Rect2(Vector2.ZERO, size)
+		draw_rect(full, UiKeys.NIGHT_DIM_COLOR)
+		if fog_view == null:
+			return
+		var lit := lit_rect()
+		if lit.size == Vector2.ZERO:
+			return
+		lit = lit.intersection(full)
+		# 亮區以外四塊加深
+		draw_rect(Rect2(0, 0, size.x, lit.position.y), FOG)
+		draw_rect(Rect2(0, lit.end.y, size.x, size.y - lit.end.y), FOG)
+		draw_rect(Rect2(0, lit.position.y, lit.position.x, lit.size.y), FOG)
+		draw_rect(Rect2(lit.end.x, lit.position.y, size.x - lit.end.x, lit.size.y), FOG)
+
+# ==== M3d WP-ARTS ====
+func _m3d_arts_event(_key: String, _p: Dictionary) -> bool:
+	return false
+
+# ==== M3d WP-EVENTS ====
+## M3D_PLAN §5.2、§5.3：tourney_state（ui）→ 比武報名視窗（開著就更新；報名員選單剛按「比武報名」也打開）；
+## 擂臺點名叫到自己時跳一句醒目的提示。ev_jb_*、ev_duel_result 是一般文字事件（回 false 照常顯示）。
+## 劫鏢視窗：m3d_events_open_rob(player) ／ m3d_events_open_rob_list()（M3D_PLAN 缺漏：玩家選單 UiSocial 沒有 WP-EVENTS 的鉤子，
+## 由整合者在玩家選單加「劫鏢」一列：對方 tags 有「押鏢」時顯示，按下呼叫 m3d_events_open_rob(p)）。
+var tourney_dialog: TourneyDialog = null
+var jiebiao_confirm: JiebiaoConfirm = null
+
+func _m3d_events_event(key: String, p: Dictionary) -> bool:
+	match key:
+		UiKeys.E_TOURNEY_STATE:
+			var d := _m3d_events_tourney()
+			d.apply_state(p)
+			if TourneyDialog.pending_open and not d.visible:
+				TourneyDialog.pending_open = false
+				_show_dialog(d)
+				d.visible = true
+			return true
+		UiKeys.E_EV_TOURNEY_CALL:
+			if str(p.get("name", "")) == str(sheet.get("name", "")) and message_log != null:
+				message_log.add_error("輪到你上擂臺了！到西夏比武場（擂臺或休息區）等候，三次點名不到判負。")
+			return false
+	return false
+
+func _m3d_events_tourney() -> TourneyDialog:
+	if tourney_dialog == null:
+		tourney_dialog = TourneyDialog.new()
+		tourney_dialog.name = "TourneyDialog"
+		m3d_add_dialog(tourney_dialog)
+	return tourney_dialog
+
+func _m3d_events_rob() -> JiebiaoConfirm:
+	if jiebiao_confirm == null:
+		jiebiao_confirm = JiebiaoConfirm.new()
+		jiebiao_confirm.name = "JiebiaoConfirm"
+		m3d_add_dialog(jiebiao_confirm)
+	return jiebiao_confirm
+
+## 比武報名視窗（報名員選單、或指令）：npc_id 空＝只看不報名
+func m3d_events_open_tourney(npc_id := "") -> void:
+	if _battle_open():
+		return
+	var d := _m3d_events_tourney()
+	_show_dialog(d)
+	d.open_for(npc_id)
+
+## 劫鏢確認（玩家選單「劫鏢」）
+func m3d_events_open_rob(player: Dictionary) -> void:
+	if _battle_open():
+		return
+	var d := _m3d_events_rob()
+	_show_dialog(d)
+	d.open_for(player, view)
+
+## 同房押鏢的人清單
+func m3d_events_open_rob_list() -> void:
+	if _battle_open():
+		return
+	var d := _m3d_events_rob()
+	_show_dialog(d)
+	d.open_list(view)
+
+# ==== M3d WP-ERRANDS ====
+func _m3d_errands_event(_key: String, _p: Dictionary) -> bool:
+	return false

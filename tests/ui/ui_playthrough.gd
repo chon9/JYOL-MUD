@@ -157,7 +157,7 @@ func _check(cond: bool, msg: String) -> bool:
 
 func _run() -> void:
 	var steps: Array[Callable] = [_enter_world, _char_select, _char_create, _main_ready, _npc_quest, _npc_shop,
-		_inner_and_meditate, _panels, _m2_social, _story_quest, _letter_quest, _m3a_setup, _scout, _go_wild_and_fight, _pelts_one_slot, _villain_prompt_ui, _m3a_sect_screens, _m3b_screens, _m3c_screens, _m3c2_screens]
+		_inner_and_meditate, _panels, _m2_social, _story_quest, _letter_quest, _m3a_setup, _scout, _go_wild_and_fight, _pelts_one_slot, _villain_prompt_ui, _m3a_sect_screens, _m3b_screens, _m3c_screens, _m3d_screens, _m3c2_screens]
 	for s in steps:
 		if _done:
 			return
@@ -804,8 +804,10 @@ func _inventory_feedback() -> bool:
 	if un == null:
 		ui.warn("nothing equipped in the 武器 tab (skipped feedback check)")
 		return true
+	await _equip_cd_wait()
 	if not await ui.click(un):
 		return false
+	_equip_clicked()
 	if not _check(await ui.wait_until(func(): return _feedback_text().contains("卸下"), 3.0),
 			"卸下 gave no visible feedback inside the 裝備 window: 「%s」" % _feedback_text()):
 		return false
@@ -815,8 +817,10 @@ func _inventory_feedback() -> bool:
 		eq = ui.find_button("裝備", "exact", ui.find_by_class("InventoryPanel"), true)
 	if not _check(eq != null, "裝備 button did not appear after 卸下"):
 		return false
+	await _equip_cd_wait()   # M3d：換裝兩秒間隔（2001-10-09，R9 全域）
 	if not await ui.click(eq):
 		return false
+	_equip_clicked()
 	if not _check(await ui.wait_until(func(): return ui.find_button("卸下", "exact", ui.find_by_class("InventoryPanel"), true) != null, 3.0),
 			"weapon not re-equipped"):
 		return false
@@ -3118,16 +3122,20 @@ func _m3c_wield(kind: String) -> bool:
 	if want_id == "":
 		if not await _inv_select(cur_uid):
 			return _check(false, "M3c 換兵器：背包裡找不到手上的兵器 %s" % cur_uid)
+		await _equip_cd_wait()
 		if not await ui.click_text("卸下", "exact", inv):
 			return _check(false, "M3c 換兵器：按不到「卸下」")
+		_equip_clicked()
 		if not _check(await ui.wait_until(func(): return str((UiClient.sheet().get("equipped", {}) as Dictionary).get("WEAPON", "")) == "", 3.0), "卸下 weapon failed"):
 			return false
 	else:
 		var uid := _uid_of(want_id)
 		if not await _inv_select(uid):
 			return _check(false, "M3c 換兵器：背包裡找不到 %s（uid '%s'）" % [want_id, uid])
+		await _equip_cd_wait()
 		if not await ui.click_text("裝備", "exact", inv):
 			return _check(false, "M3c 換兵器：按不到「裝備」")
+		_equip_clicked()
 		if not _check(await ui.wait_until(func(): return str((UiClient.sheet().get("equipped", {}) as Dictionary).get("WEAPON", "")) == uid, 3.0), "equip %s failed" % want_id):
 			return false
 	return await _close_panel()
@@ -3540,3 +3548,327 @@ func _m3c2_title_line() -> bool:
 	print("[UiPlay] M3c2 標題版本列：" + l.text)
 	await ui.shot("m3c2_title")
 	return true
+
+# ==================================================================== M3d（M3D_PLAN §10.4；整合者）
+## 佈告欄名單、官爺（耳聾）、戰鬥圓盤的「閃」「輕」、默契視窗、夜晚變暗與夜明珠、比武報名、跑腿（豬哥義 → 三八紅）
+func _m3d_screens() -> bool:
+	_step(23, "M3d 畫面：佈告欄、官爺、閃與輕、默契、夜晚、比武報名、跑腿")
+	if _battle() != null and not await _fight():
+		return false
+	if not m3a_ready:
+		ui.warn("M3d：沒有 --debug-intents（m3a_ready=false），略過 M3d 畫面")
+		return true
+	for k in [["money", 50000], ["combat_xp", 30000], ["vital:neili", 9999], ["vital:jing", 9999], ["vital:shen", 9999]]:
+		var why: String = await _debug_set(str(k[0]), k[1])
+		if not _check(why == "", "debug_set %s: %s" % [str(k[0]), why]):
+			return false
+	if not await _m3d_board():
+		return false
+	if not await _m3d_battle_cmds():
+		return false
+	if not await _m3d_combo_window():
+		return false
+	if not await _m3d_night():
+		return false
+	if not await _m3d_tourney():
+		return false
+	return await _m3d_errand()
+
+## 送一個 intent 並等結果（"" ＝ 成功）
+func _send_wait(kind: String, args: Dictionary) -> String:
+	var res := { "done": false, "reason": "", "seq": -2 }
+	var got := {}
+	var cb := func(sq: int, ok: bool, reason: String):
+		got[sq] = "" if ok else reason
+		if sq == int(res["seq"]):
+			res["done"] = true
+			res["reason"] = got[sq]
+	ClientState.intent_result.connect(cb)
+	var seq := NetworkManager.send_intent(kind, args)
+	res["seq"] = seq
+	if got.has(seq):
+		res["done"] = true
+		res["reason"] = got[seq]
+	if seq < 0:
+		ClientState.intent_result.disconnect(cb)
+		return "not_connected"
+	await ui.wait_until(func(): return bool(res["done"]), 5.0)
+	ClientState.intent_result.disconnect(cb)
+	return str(res["reason"]) if bool(res["done"]) else "timeout"
+
+## 西夏廣場：佈告欄 →「佈告欄」→「觀看懸賞名單」→ BountyDialog；兩位官爺 →「執照」→「領取賞金獵人執照」（其中一位耳聾）
+func _m3d_board() -> bool:
+	if not await _teleport("xx_square"):
+		return false
+	await ui.frames(3)
+	var dlg := await _talk(_npc_display("n_law_board_xx"))
+	if dlg == null:
+		return false
+	if not await ui.click_text(UiKeys.service_label("BOARD"), "prefix", dlg):
+		return false
+	if not await ui.click_text(UiKeys.BOARD_MENU_BOUNTY, "exact", dlg):
+		return false
+	if not _check(await ui.wait_until(func(): return ui.find_by_class("BountyDialog") != null, 5.0), "觀看懸賞名單 did not open BountyDialog"):
+		return false
+	await ui.frames(3)
+	await ui.shot("m3d_bounty_board")
+	var bd := ui.find_by_class("BountyDialog")
+	var close := ui.find_button("關閉", "prefix", bd)
+	if close != null:
+		await ui.click(close)
+	else:
+		await ui.press_key(KEY_ESCAPE)
+	await ui.wait_until(func(): return ui.find_by_class("BountyDialog") == null, 3.0)
+	if ui.find_by_class("NpcDialog") != null:
+		await _close_dialog(ui.find_by_class("NpcDialog"))
+	# 兩位官爺（同名）：都按一次「領取賞金獵人執照」；耳聾那位一律聽錯
+	var guan := _npc_display("n_law_guanye_xx_a")
+	var deaf_text := str(UiClient.tables().get("text_templates", {}).get("err_license_deaf", {}).get("self", "")).replace("【系統】", "")
+	var heard_deaf := false
+	for i in 2:
+		var btns: Array = ui.find_buttons(guan, "prefix", _npcs_box())
+		if not _check(btns.size() >= 2, "xx_square should list two 官爺 (got %d)" % btns.size()):
+			return false
+		if not await ui.click(btns[i]):
+			return false
+		if not await ui.wait_until(func(): return ui.find_by_class("NpcDialog") != null, 5.0):
+			return _check(false, "官爺 dialog did not open")
+		var d := ui.find_by_class("NpcDialog")
+		if not await ui.click_text(UiKeys.service_label("LICENSE"), "prefix", d):
+			return false
+		await ui.frames(2)
+		var lb := ui.find(func(c): return c is Button and str(c.name) == "LicenseGet" and not (c as Button).disabled, d) as Button
+		if lb == null:   # 已經領過執照（另一位官爺）：改按「觀看懸賞名單」——耳聾的那位什麼都聽錯
+			lb = ui.find(func(c): return c is Button and str(c.name) == "LicenseBoard", d) as Button
+		if not _check(lb != null, "官爺頁沒有「領取賞金獵人執照」或「觀看懸賞名單」"):
+			return false
+		if not await ui.click(lb):
+			return false
+		await ui.seconds(0.4)
+		if deaf_text != "" and (_log_contains(deaf_text.left(8)) or _feedback_contains(d, deaf_text.left(8))):
+			if not heard_deaf:
+				heard_deaf = true
+				await ui.shot("m3d_guanye_deaf")
+		else:
+			await ui.shot("m3d_guanye_license")
+		if ui.find_by_class("BountyDialog") != null:
+			await ui.press_key(KEY_ESCAPE)
+			await ui.wait_until(func(): return ui.find_by_class("BountyDialog") == null, 3.0)
+		if ui.find_by_class("NpcDialog") != null:
+			await _close_dialog(ui.find_by_class("NpcDialog"))
+	if not _check(heard_deaf, "耳聾官爺沒有回「%s」" % deaf_text):
+		return false
+	print("[UiPlay] M3d 佈告欄名單、官爺（耳聾）OK；licensed=%s" % str(UiClient.sheet().get("law", {}).get("licensed", false)))
+	return true
+
+func _feedback_contains(under: Node, t: String) -> bool:
+	return ui.find(func(c): return (c is Label and (c as Label).text.contains(t)) or (c is RichTextLabel and (c as RichTextLabel).get_parsed_text().contains(t)), under) != null
+
+## 大理郊外開一場（debug battle_monster）：「閃」按一次（被接受）、「輕」打開小選單（飛身越敵／輕功脫身）再收起，其餘照一般打法
+func _m3d_battle_cmds() -> bool:
+	if not await _teleport("dlw_road"):
+		return false
+	var why: String = await _debug_set("battle_monster", "m_rabbit")
+	if not _check(why == "", "debug_set battle_monster: %s" % why):
+		return false
+	if not _check(await ui.wait_until(func(): return _battle() != null, 5.0), "M3d：沒有開戰"):
+		return false
+	var battle := _battle()
+	await ui.frames(2)
+	for t in ["閃", "輕"]:
+		if not _check(_cmd_button(battle, t) != null, "command disc has no 「%s」" % t):
+			return false
+	if not _check(await ui.wait_until(func(): return _bar_enabled(battle), TURN_TIMEOUT_S), "M3d：指令列沒有亮"):
+		return false
+	if not _check(_enabled(battle, "閃"), "「閃」不能按（tip: %s）" % _cmd_button(battle, "閃").tooltip_text):
+		return false
+	if not await ui.click(_cmd_button(battle, "閃")):
+		return false
+	await ui.wait_until(func(): return not _bar_enabled(battle), 3.0)
+	await ui.frames(3)
+	await ui.shot("m3d_dodge")
+	print("[UiPlay] M3d 「閃」被接受")
+	if not _check(await ui.wait_until(func(): return _battle() == null or _bar_enabled(battle), TURN_TIMEOUT_S + 4.0), "M3d：閃之後指令列沒有再亮"):
+		return false
+	if _battle() != null and _enabled(battle, "輕"):
+		if not await ui.click(_cmd_button(battle, "輕")):
+			return false
+		var has_menu := await ui.wait_until(func(): return ui.find_button(UiKeys.QING_MODE_LABELS["JUMP"], "prefix", battle) != null, 2.0)
+		if not _check(has_menu, "「輕」沒有小選單（%s）" % str(battle.call("menu_texts"))):
+			return false
+		await ui.shot("m3d_qing_menu")
+		print("[UiPlay] M3d 「輕」小選單：%s" % str(battle.call("menu_texts")))
+		await ui.press_key(KEY_ESCAPE)
+		await ui.frames(3)
+	elif _battle() != null:
+		ui.warn("M3d：「輕」不能按（%s）" % _cmd_button(battle, "輕").tooltip_text)
+	if _battle() != null and not await _fight():
+		return false
+	return true
+
+## 燈籠「默契」→ ComboDialog（1.0B；沒有夥伴時顯示建立默契的說明）
+func _m3d_combo_window() -> bool:
+	var main := ui.current_scene()
+	if main == null or not main.has_method("open_combo"):
+		return _check(false, "main screen has no open_combo")
+	main.call("open_combo")
+	if not _check(await ui.wait_until(func(): return ui.find_by_class("ComboDialog") != null, 3.0), "ComboDialog did not open"):
+		return false
+	await ui.frames(3)
+	await ui.shot("m3d_combo_window")
+	await ui.press_key(KEY_ESCAPE)
+	return _check(await ui.wait_until(func(): return ui.find_by_class("ComboDialog") == null, 3.0), "Esc did not close ComboDialog")
+
+## 撥到戌時：畫面變暗；給夜明珠 → 不變暗；撥回午時
+func _m3d_night() -> bool:
+	var main := ui.current_scene()
+	if not _check(await _debug_set("hour", "戌") == "", "debug_set hour 戌"):
+		return false
+	var dimmed := await ui.wait_until(func(): return bool(main.call("night_dimmed")), 5.0)
+	if not _check(dimmed, "戌時畫面沒有變暗"):
+		return false
+	await ui.frames(5)
+	await ui.shot("m3d_night")
+	if not _check(await _debug_set("give_item", "i_cb_yemingzhu:1") == "", "give 夜明珠"):
+		return false
+	if not _check(await ui.wait_until(func(): return not bool(main.call("night_dimmed")), 5.0), "有夜明珠仍然變暗"):
+		return false
+	await ui.frames(5)
+	await ui.shot("m3d_night_pearl")
+	if not _check(await _debug_set("hour", "午") == "", "debug_set hour 午"):
+		return false
+	print("[UiPlay] M3d 夜晚變暗、夜明珠不暗 OK")
+	return true
+
+## 西夏比武場休息區：主機開辦武林大會 → 報名員「比武報名」→ TourneyDialog「報名」→ 已報名 → 「退出」
+func _m3d_tourney() -> bool:
+	if not await _teleport(TourneyRules.REST_ROOM):
+		return false
+	# M3d 審查：武林大會報名要實戰 1 萬、PK值 0（TourneyRules.WULIN_ENTRY）→ 設定用 debug_set（不是受測物），最後還原
+	var xp0 := UiBuild.num(UiClient.sheet().get("combat_xp", 0))
+	var need_xp := int(TourneyRules.WULIN_ENTRY.xp)
+	if xp0 < need_xp and not _check(await _debug_set("combat_xp", need_xp) == "", "debug_set combat_xp"):
+		return false
+	var why := await _send_wait(UiKeys.I_TOURNEY_HOST, { "kind": "WULIN", "signup_s": 600 })
+	if not _check(why == "" or why == "tourney_running", "tourney_host: %s" % why):
+		return false
+	await ui.frames(3)
+	var dlg := await _talk(_npc_display(TourneyRules.CLERK_NPC))
+	if dlg == null:
+		return false
+	if not await ui.click_text(UiKeys.service_label("TOURNEY"), "prefix", dlg):
+		return false
+	if not _check(await ui.wait_until(func(): return ui.find_by_class("TourneyDialog") != null, 5.0), "比武報名 did not open TourneyDialog"):
+		return false
+	var td := ui.find_by_class("TourneyDialog")
+	var sb_h := { "b": null }
+	await ui.wait_until(func():
+		sb_h["b"] = ui.find(func(c): return c is Button and str(c.name) == "Signup_WULIN" and not (c as Button).disabled, td)
+		return sb_h["b"] != null, 3.0)
+	if not _check(sb_h["b"] != null, "TourneyDialog has no enabled Signup_WULIN"):
+		return false
+	await ui.shot("m3d_tourney_signup")
+	if not await ui.click(sb_h["b"]):
+		return false
+	var wd_h := { "b": null }
+	await ui.wait_until(func():
+		wd_h["b"] = ui.find(func(c): return c is Button and str(c.name) == "Withdraw_WULIN", td)
+		return wd_h["b"] != null, 5.0)
+	if not _check(wd_h["b"] != null, "報名後沒有「退出」"):
+		return false
+	await ui.frames(3)
+	await ui.shot("m3d_tourney_signed")
+	if not await ui.click(wd_h["b"]):
+		return false
+	await ui.seconds(0.3)
+	await ui.press_key(KEY_ESCAPE)
+	await ui.wait_until(func(): return ui.find_by_class("TourneyDialog") == null, 3.0)
+	if ui.find_by_class("NpcDialog") != null:
+		await _close_dialog(ui.find_by_class("NpcDialog"))
+	if xp0 < need_xp:
+		await _debug_set("combat_xp", xp0)
+	print("[UiPlay] M3d 比武報名、退出 OK")
+	return true
+
+## 三八紅的回話裡一定有的字（選項 id → 子字串；q_er_zhugeyi 的 n_rude／n_polite）
+const ERRAND_REPLY := { "c_rude": "柳眉倒豎", "c_polite": "寬衣" }
+
+## 選完之後：等逐字顯示完，確認對話框正文有 want，拍照
+func _story_reply_shot(want: String, shot_name: String) -> bool:
+	var ok := await ui.wait_until(func():
+		var d := _story_dialog()
+		return d != null and not d.call("is_typing") and str((d.get("text_label") as Label).text).contains(want), 5.0)
+	if not _check(ok, "story dialog does not show the reply containing「%s」(node %s)" % [want, _story_node()]):
+		return false
+	await ui.frames(2)
+	await ui.shot(shot_name)
+	return true
+
+## 跑腿：豬哥義 → 三八紅（粗話被拒、再客氣）→ 寬衣帶回去（照 q_er_zhugeyi 的 test_plan；路上用 teleport）
+func _m3d_errand() -> bool:
+	var qid := "q_er_zhugeyi"
+	var plan: Dictionary = {}
+	for p in UiClient.tables().get("quests", {}).get(qid, {}).get("test_plan", []):
+		if p is Dictionary:
+			plan = p
+			break
+	if not _check(not plan.is_empty(), "%s has no test_plan" % qid):
+		return false
+	var f0 := UiBuild.num(UiClient.sheet().get("fame", 0))
+	var shot_n := 0
+	for st in plan.get("path", []):
+		var s := str(st)
+		if s.begins_with("walk@"):
+			if _story_dialog() != null and not await _story_finish():
+				return false
+			if not await _teleport(s.substr(5)):
+				return false
+			await ui.frames(3)
+		elif s.begins_with("accept@"):
+			var dlg := await _talk(_npc_display(s.substr(7)))
+			if dlg == null:
+				return false
+			if not await ui.click_text("任務", "prefix", dlg):
+				return false
+			var tb := { "b": null }
+			await ui.wait_until(func():
+				tb["b"] = ui.find(func(c): return c is Button and str(c.name) == "QuestTalk_" + qid and not (c as Button).disabled, dlg)
+				return tb["b"] != null, 3.0)
+			if not _check(tb["b"] != null, "quest list has no 詳談 for %s" % qid):
+				return false
+			if not await ui.click(tb["b"]):
+				return false
+			if not _check(await ui.wait_until(func(): return _story_dialog() != null, 5.0), "詳談 did not open the story dialog"):
+				return false
+		elif s.begins_with("talk@"):
+			if _story_dialog() != null and not await _story_finish():
+				return false
+			if not await _story_talk(s.substr(5)):
+				return false
+		elif s.begins_with("choose@"):
+			var parts := s.substr(7).split(":")
+			shot_n += 1
+			if not await _story_pick(parts[2], "m3d_errand_%d" % shot_n if shot_n <= 3 else ""):
+				return false
+			# M3d 審查第三輪：三八紅的回話（粗話被拒、客氣收下）要出現在對話框裡，選完後再拍一張
+			var want := str(ERRAND_REPLY.get(parts[2], ""))
+			if want != "" and str(parts[0]) == "n_er_sanbahong":
+				if not await _story_reply_shot(want, "m3d_errand_%s_reply" % parts[2].trim_prefix("c_")):
+					return false
+	if _story_dialog() != null and not await _story_finish():
+		return false
+	if not _check(await ui.wait_until(func(): return not _sheet_has_quest(qid), 3.0), "%s did not finish" % qid):
+		return false
+	var f1 := UiBuild.num(UiClient.sheet().get("fame", 0))
+	print("[UiPlay] M3d 跑腿 豬哥義 → 三八紅：名聲 %d → %d" % [f0, f1])
+	return _check(f1 > f0, "跑腿沒有加名聲")
+
+## M3d（M3D_PLAN R9）：換裝兩秒間隔是全域的（地圖上也算）；連續換裝前等滿 2 秒（真實時間）
+var _last_equip_ms := -100000
+func _equip_cd_wait() -> void:
+	var left := _last_equip_ms + 2150 - Time.get_ticks_msec()
+	if left > 0:
+		await get_tree().create_timer(left / 1000.0, true, false, true).timeout
+
+func _equip_clicked() -> void:
+	_last_equip_ms = Time.get_ticks_msec()

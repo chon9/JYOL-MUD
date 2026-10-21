@@ -231,6 +231,7 @@ func test_quick_menu_items_and_walk() -> void:
 # ---------------------------------------------------------------- 地圖美術（§4.6）
 
 func test_world_map_without_art_is_unchanged() -> void:
+	MapArt.use_textures({})   # 沒有地圖美術時（美術已匯入，所以要強制）
 	var w := WorldMapView.new()
 	_add(w)
 	w.size = Vector2(1000, 470)
@@ -292,4 +293,20 @@ func test_region_map_art_draws_without_errors() -> void:
 	await _frames(2)
 	assert_eq(MapArt.texture("node_room").get_size(), Vector2(384, 192))
 	MapArt.use_textures(null)
-	assert_eq(MapArt.texture("node_room"), null, "back to registry (no art → null)")
+	assert_eq(MapArt.texture("node_room"), ArtRegistry.map_texture("node_room"), "back to the registry")
+
+## 真的匯入的地圖美術（ART_REQUEST §10，2026-10-21）：全圖進入美術模式，每個地點都落在底圖裡；所有地圖鍵都有圖
+func test_imported_map_art_is_used() -> void:
+	for k in ArtRegistry.MAP_KEYS:
+		assert_true(MapArt.texture(k) != null, "map art %s imported" % k)
+	assert_true(MapArt.has_world_art())
+	var model := MapData.world_model(view)
+	for sz in [Vector2(1000, 470), Vector2(1600, 800)]:
+		var w := WorldMapView.new()
+		_add(w)
+		w.size = sz
+		w.setup(model, "xixia")
+		assert_true(w.art_mode, "imported world base → art mode")
+		var rect := MapArt.world_rect(sz)
+		for r in model["regions"]:
+			assert_true(rect.grow(1.0).has_point(w.center_of(r["id"])), "%s inside the painted map" % r["id"])

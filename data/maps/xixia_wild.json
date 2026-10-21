@@ -6,7 +6,7 @@
     { "id": "xw_road", "name": "東門外官道",
       "desc": "出了西夏東門，一條黃土官道筆直向東，東北方另岔出一條往礦區、恆山去的官道。路旁草叢不時有野兔竄過，一位書生打扮的公子在路邊眺望遠方。",
       "exits": [ { "dir": "W", "to": "xx_gate_e" }, { "dir": "E", "to": "xw_grass" }, { "dir": "NE", "to": "xe_road" } ],
-      "npcs": ["n_chenjialuo"], "features": [], "requires": [],
+      "npcs": ["n_chenjialuo", "n_law_tianshi_xx"], "features": [], "requires": [],
       "encounter": { "rate": 0.15, "table": [
         { "monster": "m_rabbit", "w": 100, "count": [1, 1] } ] } },
     {"id": "xw_grass", "name": "荒草坡", "desc": "一大片及膝的枯草隨風起伏，草叢裡窸窸窣窣，看來藏了不少野兔，偶爾還有體型大上一倍的大野兔。北邊是胡楊林，南邊有條小溪，東邊的山丘傳來陣陣狼嚎。", "exits": [{"dir": "W", "to": "xw_road"}, {"dir": "N", "to": "xw_wood"}, {"dir": "S", "to": "xw_creek"}, {"dir": "E", "to": "xw_hill"}], "npcs": [], "features": ["HUNT"], "requires": [], "encounter": {"rate": 0.25, "table": [{"monster": "m_rabbit", "w": 70, "count": [1, 2]}, {"monster": "m_bigrabbit", "w": 30, "count": [1, 1]}]}, "hunt_table": [{"monster": "m_hunt_yetu", "w": 70}, {"monster": "m_hunt_dayetu", "w": 30}]},

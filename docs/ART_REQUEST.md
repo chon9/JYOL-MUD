@@ -686,6 +686,112 @@ online RPGs, glowing but not neon. No character, no text.
 
 ---
 
+## 12. 第六批（2026-10-21 新增，M3d：懸賞與律法、合體技、武功鏈、比武與劫鏢、跑腿、黑龍潭）
+
+M3d 加了**衙門懸賞**（佈告欄、官爺、天師、京城半仙、賞金獵人）、**合體技**與兩件稀有道具（無敵烙跑鞋、夜明珠）、全真／靈鷲／峨嵋／星宿／血刀的**武功鏈**、**門派比武與武林大會**、**危險鏢與劫鏢**，
+以及**跑腿**（柯鎮惡→郭靖、豬哥義→三八紅、武林帖、送便當、酒鬼、阿虎與青青）和 1.0B 的小區域**黑龍潭**。
+新 NPC 裡有一部分借用舊圖（右欄），**沒有右欄的現在用程式畫的暫代人形**；缺圖都不會壞。照優先順序排，做多少算多少。
+
+> 放的位置和前幾批一樣：`assets\art_in\`，檔名照下表。放好跟我說一聲，我把 `data/art.json` 那一條換成正式圖。
+> 每張一樣先貼第 0 節的風格說明；人物、怪物再加第 0 節第二段。
+
+### 12.1 NPC 立繪（對話框左邊；最優先的 12 張）
+
+天天會看到的：佈告欄旁的兩位官爺、天師、半仙、鏢局二掌櫃、比武報名員，還有跑腿的主角。
+
+| 檔名 | 角色 | 描述 | 目前借用 |
+|---|---|---|---|
+| `unit_n_law_guanye_a_idle.png` | 官爺（胖，發執照的那位；西夏、大理、京城共用） | Fat Chinese yamen constable in a black official robe with a red sash and a black gauze cap, big round belly, one hand holding a rolled-up wanted notice, smug self-important expression, standing beside a wooden notice board. | 暫代人形 |
+| `unit_n_law_guanye_b_idle.png` | 官爺（瘦，耳聾的那位；三城共用） | Skinny bamboo-pole thin yamen constable in a slightly too-large black official robe and black gauze cap, picking his ear with his little finger, head tilted, squinting as if he did not hear what you said, comically confused. | 暫代人形 |
+| `unit_n_law_tianshi_idle.png` | 天師（西夏、大理共用） | Taoist exorcist master in a yellow-and-black Taoist robe with eight-trigram patterns, tall Taoist hat, long beard, holding a peach-wood sword in one hand and a yellow paper talisman in the other, standing behind a small incense altar. | 暫代人形 |
+| `unit_n_law_banxian_jc_idle.png` | 京城半仙 | Sly old fortune-teller with a thin goatee and small round dark glasses, sitting behind a fortune-telling table, a white cloth banner on a bamboo pole beside him (banner with NO text), holding a folding fan. | 暫代人形 |
+| `unit_n_ev_jb_idle.png` | 鏢局二掌櫃（三城共用） | Lean middle-aged escort-agency deputy manager in a short dark fighting jacket, an abacus in one hand, a stack of escort contracts under his arm, shrewd calculating eyes, a broad-backed saber at his hip. | `n_xx_wushi` |
+| `unit_n_ev_tourney_clerk_idle.png` | 比武報名員 | Elderly clerk in a grey scholar robe sitting at a desk with an open register, writing brush and ink stone, a blank wooden sign board behind him (NO text), patient tired expression. | `n_xx_innkeeper` |
+| `unit_n_er_kezhene_idle.png` | 柯鎮惡 | Blind old martial artist with clouded white eyes, grizzled beard and scowling face, a heavy black iron staff planted in the snow, patched grey robe, head cocked to listen, standing in a snowfield. | 暫代人形 |
+| `unit_n_er_guojing_idle.png` | 郭靖 | Broad-shouldered honest-looking man about thirty with thick eyebrows and big eyes, simple brown robe, standing on a bridge looking north, calm steady expression. | 暫代人形 |
+| `unit_n_er_sanbahong_idle.png` | 三八紅 | Loud plump middle-aged shop owner woman in bright red and green clothes, a flower in her hair, hands on hips at a weaving loom, mouth open mid-gossip. | 暫代人形 |
+| `unit_n_cb_jc_huolang_idle.png` | 西域貨郎 | Western Regions peddler with a high nose and deep-set eyes, colourful turban, carrying a gilded shoulder pole with two lacquered goods boxes full of exotic trinkets, sly friendly grin. | 暫代人形 |
+| `unit_n_er_yinggu_idle.png` | 瑛姑 | Woman with white-streaked hair but a still youthful face, plain grey robe, sitting cross-legged amid scattered bamboo counting rods on the floor, intent cold expression, in a mud hut. | 暫代人形 |
+| `unit_n_er_cien_idle.png` | 慈恩 | Huge old monk with a powerful build, grey kasaya, sitting in meditation on a dry patch in a swamp, eyes closed, suppressed fierce killing aura around him. | 暫代人形 |
+
+### 12.2 NPC 立繪（武功鏈與跑腿；24 張）
+
+| 檔名 | 角色 | 描述 | 目前借用 |
+|---|---|---|---|
+| `unit_n_ar_qz_shanju_idle.png` | 山居隱士（全真重陽劍法） | White-haired old hermit in coarse cloth squatting on a river beach watching the water, an ancient sword tucked in his belt. | 暫代人形 |
+| `unit_n_ar_qz_shuliu_idle.png` | 漱流隱士 | Lazy hermit lying on a riverside rock with his head on the stream, one eye half-open, plain blue robe. | 暫代人形 |
+| `unit_n_ar_qz_yunyou_idle.png` | 雲遊道士 | Wandering Taoist with a bamboo backpack basket, washing his feet in a small pool by a stone bridge, a horsetail whisk (拂塵) on his shoulder. | 暫代人形 |
+| `unit_n_ar_qz_wangzhijin_idle.png` | 王志謹 | Calm young Quanzhen Taoist in a blue-grey Taoist robe copying a notice with a brush, indifferent detached gaze. | 暫代人形 |
+| `unit_n_ar_lj_wuyazi_idle.png` | 無涯子 | Handsome old man with long white beard, paralysed legs, sitting in a hunter's hut corner, astonishingly clear bright eyes. | 暫代人形 |
+| `unit_n_ar_ym_shouwei_idle.png` | 雁門關守衛 | Weather-beaten old frontier soldier in battered lamellar armour full of sword scars, spear in hand, scowling toward the frontier. | 暫代人形 |
+| `unit_n_ar_guoxiang_idle.png` | 郭襄 | Young woman in a pale yellow robe sitting on a prayer cushion in a ruined temple, drinking from a wine cup, short sword at her waist, wistful lonely look. | 暫代人形 |
+| `unit_n_ar_xd_xuemo_laozu_idle.png` | 血魔老祖 | Gaunt ancient Tibetan-style monk with blood-red skin and a crimson kasaya, sitting in a dark blood pool, terrifying calm smile. | 暫代人形 |
+| `unit_n_ar_xd_baoxiang_idle.png` | 寶象 | Fat big-eared foreign monk in a red kasaya sitting on a hill gnawing a roast lamb leg, greasy grin. | 暫代人形 |
+| `unit_n_ar_xd_inf_idle.png` | 血刀弟子（線人；兩位共用） | Shifty young Blood Blade sect monk in a red robe, saber at his hip, eyes darting around, leering grin. | 暫代人形 |
+| `unit_n_ar_dingbusan_idle.png` | 丁不三 | Tall gaunt fierce old man in a dark grey robe, cruel smile, raising three fingers. | 暫代人形 |
+| `unit_n_ar_dingbusi_idle.png` | 丁不四 | Old man who looks very much like 丁不三 but wears brown, raising four fingers, competitive pouting expression. | 暫代人形 |
+| `unit_n_ar_laokelian_idle.png` | 老可憐 | Ragged old beggar crouching by a doorway holding out a chipped bowl, pitiful face but sly darting eyes. | 暫代人形 |
+| `unit_n_ar_xd_xuechi_idle.png` | 血池弟子頭兒、護法、長老（共用一張） | Bare-chested muscular Blood Blade sect monk standing beside a blood-red pool, saber held with the back of the blade outward, challenging grin. | `n_ludayou`／`n_sl_huizhen` |
+| `unit_n_er_tiefan_idle.png` | 武林帖販子 | Down-and-out scholar behind a small table piled with bright red invitation cards (NO text), waving one card and shouting. | 暫代人形 |
+| `unit_n_er_xx_funv_idle.png` | 送便當的農婦 | Peasant woman with a blue cloth headscarf holding a covered bamboo lunch basket, looking out of a city gate. | 暫代人形 |
+| `unit_n_er_xx_nongfu_idle.png` | 田邊農夫 | Peasant with rolled-up trousers standing in a muddy rice paddy, rice seedlings in hand, rubbing his hungry stomach. | 暫代人形 |
+| `unit_n_er_dl_zuigui_idle.png` | 醉鬼 | Red-nosed drunkard slumped by a doorway hugging an empty wine jar, snoring, dishevelled clothes. | 暫代人形 |
+| `unit_n_er_dl_ahu_idle.png` | 阿虎 | Honest shy young man in plain cloth clothes holding a crumpled letter, sighing. | 暫代人形 |
+| `unit_n_er_dl_qingqing_idle.png` | 青青 | Pretty village girl washing clothes on riverside stone steps, a white narcissus flower tucked behind her ear, singing. | 暫代人形 |
+
+（佈告欄 `n_law_board_*` 是物件，見 12.5。）
+
+### 12.3 選做：新怪物（10 張）
+
+| 檔名 | 名稱 | 描述 | 目前借用 |
+|---|---|---|---|
+| `unit_m_law_hunter_1_idle.png` | 賞金獵人 | Rough bounty hunter in a dark travelling cloak and leather bracers, a thick-backed saber in hand, a rolled wanted poster tucked in his belt, predatory grin. | `m_bandit` |
+| `unit_m_law_hunter_2_idle.png` | 捕頭 | Yamen chief constable in a black uniform with red trim, official saber raised, an iron ruler (鐵尺) at his belt, stern face. | `n_dl_bukuai` |
+| `unit_m_law_hunter_3_idle.png` | 神捕 | Legendary imperial detective in a dark blue robe swinging a chain-spear (鏈子槍) in a wide arc, cool unshakable expression. | `n_dl_bukuai` |
+| `unit_m_ev_jb_bandit_idle.png` | 劫鏢山賊 | Masked highway robber with a black head scarf, blood-stained saber, ragged leather vest, lunging forward. | `m_bandit` |
+| `unit_m_ev_jb_cart_idle.png` | 鏢車（危險鏢） | Heavy escort cart pulled by three mules, wooden crates sealed with paper strips, iron-plated sides, a triangular escort pennant on a pole (pennant with NO text). | `n_xx_station` |
+| `unit_m_ev_jb_client_idle.png` | 客商 | Nervous merchant in a silk gown clutching a small wooden casket to his chest, a cloth bundle on his back, frightened eyes. | `n_xx_caishang` |
+| `unit_m_er_wulin_idle.png` | 應帖的武林人士（四階共用） | Seasoned martial artist in a dark travelling robe with a red invitation card tucked in his belt, sword drawn, confident challenging pose. | `m_bandit`／`m_jcn_huguo`／`m_dl_cuisou`／`m_nanhai` |
+| `unit_m_er_jiuwei_idle.png` | 九尾靈狐 | Small snow-white fox with nine fluffy tails fanned out behind it, glowing amber eyes, leaping mid-air. | `m_lj_xuehu` |
+| `unit_m_er_yang_idle.png` | 羊 | Woolly grey-white mountain sheep with curled horns, chewing grass, bleating. | `m_npc_animal` |
+| `unit_m_er_baiyuan_idle.png` | 白猿（沙漠山洞） | White-furred ape crouching on a rock scratching itself, curious but harmless look. | `m_wd_baiyuan` |
+
+（羅煞劍任務的蠻兵 `m_ar_manbing` 用第 8.4 節的 `unit_m_gb_manbing_idle.png`；血池三階陪練 `m_ar_xd_xuechi_*` 先借血刀弟子 `m_xd_dizi`，有 12.2 的血池弟子圖就一起換。）
+
+### 12.4 新戰鬥背景（2 張）
+
+規格同第 1 節：**1920×1080 PNG**，斜上方約 30 度俯視，**中央約 70% 是平坦空地**，裝飾只放邊緣。
+
+| 檔名 | 地區 | 描述 | 目前借用 |
+|---|---|---|---|
+| `bg_heilongtan.png` | 黑龍潭泥沼（1.0B） | Murky black-water swamp at the foot of a mountain: dark mud flats with scattered dry patches, reeds and dead trees at the edges, stones arranged in an eight-trigram pattern half-sunk in the mud, low mist, gloomy grey-green light. Center ground must stay flat and walkable. | `xixia_east` |
+| `bg_biwu.png` | 西夏比武場擂臺 | Raised square wooden fighting stage (擂臺) in a city plaza, red-lacquered posts at the corners with silk ribbons, weapon racks and wooden benches for spectators at the edges, colourful festival banners (NO text), bright noon light. | （比武場的戰鬥現在用西夏城的背景） |
+
+### 12.5 選做：地圖物件與道具圖示（之後才需要）
+
+物品圖示和地圖物件現在介面還沒有位置，先列著，**現在先不用產**：
+
+- **佈告欄**（`n_law_board_*`，地圖物件／對話框立繪）：a wooden notice board on two posts with a small tiled roof, covered in overlapping paper notices (NO readable text), one larger yellow paper in the center.
+- **無敵烙跑鞋**（`i_cb_laopaoxie`）：light cloud-patterned black cloth boots with tiny wing motifs at the heels.
+- **夜明珠**（`i_cb_yemingzhu`）：pigeon-egg-sized pearl glowing with soft cool light on a small silk cushion.
+- **盟主令牌**（`i_ev_mengzhu_ling`）：pure gold token with a coiled dragon on the back (no readable text).
+- **小木鼎**（`i_ar_xh_muding`）：palm-sized black wooden tripod cauldron with dark poison stains.
+- **血魔刀訣**（`i_ar_xd_daojue`）：rolled sheepskin manuscript with blood stains.
+- **羅煞劍**（`i_ar_luoshajian`）：slender long sword with a faint red sheen and a faded red silk tassel.
+- 其他任務道具（狀元紅、兩封推薦信、黃藥丸、武林挑戰帖、便當、燒刀子酒、水仙、寬衣、包袱、靈狐血）：物品圖示做的時候一起畫。
+
+### 12.6 數量總結
+
+| 項目 | 張數 | 優先 |
+|---|---|---|
+| 12.1 每天看得到的 NPC | 12 | 最優先 |
+| 12.2 武功鏈與跑腿 NPC | 20 | 中 |
+| 12.3 新怪物 | 10 | 選做 |
+| 12.4 戰鬥背景 | 2 | 中（黑龍潭先） |
+| 12.5 物件與道具圖示 | — | 之後 |
+
+---
+
 ## 常見問題
 
 - **背景不是透明的怎麼辦？** 請 ChatGPT 「regenerate with a transparent background」。真的做不到也沒關係，純色背景我可以去背。

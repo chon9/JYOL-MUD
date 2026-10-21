@@ -74,6 +74,7 @@ func _ready() -> void:
 	resized.connect(_relayout)
 
 func setup(p_tables: Dictionary, p_model: Dictionary, p_visited: Dictionary, p_current: String) -> void:
+	_oe_cache_key = ""
 	tables = p_tables
 	model = p_model
 	visited = p_visited
@@ -197,6 +198,25 @@ func set_quest_mark(id: String) -> void:
 func center_of(p: Vector2i) -> Vector2:
 	var q := p - _origin
 	return _offset + PAD + Vector2(q.x * CELL.x, q.y * CELL.y) + CELL / 2.0
+
+## 從這些房間出發的「往XXX」出區箭頭與字框在畫面上的範圍（夜晚小地圖的亮區要包含它們；M3d 審查）。
+## 夜晚的霧每一格都重畫 → 結果依（房間組、縮放、大小、目前房間）快取，setup() 時清掉（out_exit_items 要量字、排位置，不便宜）
+var _oe_cache_key := ""
+var _oe_cache: Array = []
+func out_exit_screen_rects(from_ids: Dictionary) -> Array:
+	var ids: Array = from_ids.keys()
+	ids.sort()
+	var key := "%s|%s|%s|%s|%s|%s" % [str(ids), str(zoom), str(size), current, focus_room, str(_offset)]
+	if key == _oe_cache_key:
+		return _oe_cache
+	var out: Array = []
+	for it in out_exit_items():
+		if from_ids.has(str(it.get("from", ""))):
+			var h: Rect2 = it["hit"]
+			out.append(Rect2(h.position * zoom, h.size * zoom))
+	_oe_cache_key = key
+	_oe_cache = out
+	return out
 
 func is_shown(id: String) -> bool:
 	return _vis.has(id) or _unk.has(id)

@@ -218,6 +218,10 @@ func pending_uids() -> Array:
 func round_wait_s() -> float:
 	return _round_wait_ticks * TICK
 
+## M3D_PLAN §3.3.3：戰鬥時間（秒）＝ tick 數 × TICK（合體技 3 秒窗、換裝兩秒、比武限時都用這個）
+func time_s() -> float:
+	return tick_no * TICK
+
 func make_event(key: String, p: Dictionary, ui := false) -> Dictionary:
 	var pp := p.duplicate()
 	pp["bid"] = id
@@ -238,7 +242,10 @@ func snapshot(tables: Dictionary) -> Dictionary:
 	return { "bid": id, "w": W, "h": H, "tick": tick_no, "wait_mode": wait_mode(),
 		"escape": esc, "units": list, "kind": str(opts.get("kind", "")),
 		"wave": { "n": wave_no, "total": wave_total }, "no_flee": bool(opts.get("no_flee", false)),
-		"later_battle_cmds": BattleCmds.later_cmds(self) }
+		"later_battle_cmds": BattleCmds.later_cmds(self),
+		# M3D_PLAN §7（WP-COMBAT）：規則 dodge_cmd、比武剩餘秒數（沒有限時 → -1）
+		"dodge_cmd": bool(opts.get("dodge_cmd", true)),
+		"duel_left_s": maxf(0.0, float(opts.duel_limit_s) - time_s()) if opts.has("duel_limit_s") else -1.0 }
 
 func unit_snapshot(u: BattleUnit, tables: Dictionary) -> Dictionary:
 	return _unit_snapshot(u, tables)
@@ -247,7 +254,8 @@ func _unit_snapshot(u: BattleUnit, tables: Dictionary) -> Dictionary:
 	var d := { "uid": u.uid, "name": u.unit_name(), "short": str(u.spec.get("short", "")), "side": u.side, "kind": u.kind(), "peer": u.peer,
 		"pos": [u.pos.x, u.pos.y], "qi": u.qi, "qi_max": u.qi_max(),
 		"gauge": u.gauge, "rate": u.rate, "state": u.state,
-		"statuses": BattleStatus.snapshot(u, tables) }   # M3A_PLAN 5.7：每個單位（含敵方）
+		"statuses": BattleStatus.snapshot(u, tables),   # M3A_PLAN 5.7：每個單位（含敵方）
+		"dodging": u.dodging }   # M3D_PLAN §7：「閃」中（純表現）
 	# M3C_PLAN §7.2（WP-FX）純表現：武器類型（玩家＝手上兵器、怪物＝怪物列 weapon_type）與兵器特效（物品列 fx，例 "claw"）
 	d["wtype"] = u.weapon_type()
 	d["wfx"] = Battle.weapon_fx_of(u, tables)
@@ -302,6 +310,8 @@ func _cmd_snapshot(u: BattleUnit, d: Dictionary, tables: Dictionary) -> void:
 	d["shen"] = u.shen
 	d["shen_max"] = u.shen_max()
 	d["cmd_avail"] = BattleCmds.avail(self, u)
+	# M3D_PLAN §3.4（WP-COMBAT）：穿著烙跑鞋而且這場允許 → 任何格子都能逃（客戶端「逃」不必站逃跑格）
+	d["flee_anywhere"] = u.flee_anywhere() and not BattleRules.special_flee_blocked(self, u)
 	var ca := {}
 	for cat in ["POISON", "MEDIC", "HIDDEN", "FORMATION", "INNER", "ACUPOINT"]:
 		var list: Array = []
@@ -356,6 +366,11 @@ func outcome() -> Dictionary:
 			"start_statuses": u.start_statuses.duplicate(),
 			"cured_statuses": u.cured_statuses.duplicate(),   # 戰鬥中被治好的狀態（戰後寫回：只有這些才清掉）
 			"sect": u.sect(),
+			# M3D_PLAN §3.3.3、§5.3.4（WP-COMBAT）：合體一擊次數與夥伴、總傷害與命中次數
+			"combo_hits": u.combo_hits,
+			"combo_with": u.combo_with.duplicate(),
+			"dmg_dealt": u.dmg_dealt,
+			"hits_landed": u.hits_landed,
 		}
 	return { "bid": id, "result": result_name(), "ticks": tick_no, "units": out_units, "winner_side": winner_side(),
 		"wave": { "n": wave_no, "total": wave_total } }
@@ -471,6 +486,7 @@ func _resolve_pending(tables: Dictionary) -> void:
 		_round_wait_ticks = 0
 
 func _check_end(tables: Dictionary = {}) -> bool:
+	if opts.has("duel_limit_s") and has_method("_duel_check") and bool(call("_duel_check")): return true   # M3d WP-EVENTS
 	var allies := units.any(func(u): return u.side == 0 and u.is_active())
 	var enemies := units.any(func(u): return u.side == 1 and u.is_active())
 	if allies and enemies:
@@ -537,3 +553,40 @@ func _flush() -> Array:
 	var out := _events
 	_events = []
 	return out
+
+# ==== M3d WP-EVENTS ====
+## M3D_PLAN §5.3.4：比武（DUEL）的限時判定與強制結束（劫鏢的鏢單位倒下、比武棄權）。
+## 結果記在 opts["ev_end"] = { winner_side, how }（how：JUDGE／FORFEIT／ROBBED）；BattleSystem 結算時讀。
+
+## 限時到了 → TourneyRules.judge：總傷害 → 命中次數 → 目前氣／最大氣 → 先報名者（spec.duel_order 小者）勝；回 true＝已結束
+func _duel_check() -> bool:
+	if state == State.ENDED or state == State.SETUP or not opts.has("duel_limit_s"):
+		return false
+	if time_s() + 0.0001 < float(opts["duel_limit_s"]):
+		return false
+	var stats: Array = [_ev_side_stats(0), _ev_side_stats(1)]
+	var w := TourneyRules.judge(stats[0], stats[1])
+	ev_end(w, "JUDGE")
+	return true
+
+## 一方的判定統計：{ dmg, hits, qi, qi_max, order }（比武是一對一；多人時加總，order 取最小）
+func _ev_side_stats(side: int) -> Dictionary:
+	var st := { "dmg": 0, "hits": 0, "qi": 0, "qi_max": 0, "order": 1 << 30 }
+	for u in units:
+		if u.side != side:
+			continue
+		st["dmg"] = int(st["dmg"]) + int(u.dmg_dealt)
+		st["hits"] = int(st["hits"]) + int(u.hits_landed)
+		if not u.is_fled():
+			st["qi"] = int(st["qi"]) + maxi(0, int(u.qi))
+		st["qi_max"] = int(st["qi_max"]) + maxi(1, int(u.qi_max()))
+		st["order"] = mini(int(st["order"]), int(u.spec.get("duel_order", 1 << 30)))
+	return st
+
+## 強制結束：winner_side 那一方勝（0 → VICTORY、1 → DEFEAT；winner_side() 依 side 1 還有人在場判 1）
+func ev_end(winner_side_: int, how: String) -> void:
+	if state == State.ENDED:
+		return
+	opts["ev_end"] = { "winner_side": winner_side_, "how": how }
+	_pending.clear()
+	_end(Result.VICTORY if winner_side_ == 0 else Result.DEFEAT)

@@ -16,7 +16,8 @@ func _v(kind: String, args: Dictionary) -> String:
 func test_version_and_battle_cmds() -> void:
 	assert_true(Protocol.VERSION >= 4, "M3a（K1）升到 4；故事包（S1）升到 5")
 	assert_eq(Protocol.BATTLE_CMDS, ["MOVE", "ATTACK", "ART", "DEFEND", "REST", "EQUIP", "FLEE",
-		"POISON", "MEDIC", "HIDDEN", "FORMATION", "INNER", "ACUPOINT", "ITEM"])
+		"POISON", "MEDIC", "HIDDEN", "FORMATION", "INNER", "ACUPOINT", "ITEM",
+		"DODGE", "QING"])   # M3d（M3D_PLAN §7）：閃、輕（WP-LAW Day-0）
 	assert_eq(_v("battle_cmd", { "battle_id": 1, "cmd": "INNER", "mode": "HEAL" }), "")
 	for m in ["HEAL", "EXPEL", "UNSEAL", "TRANSFER"]:
 		assert_eq(_v("battle_cmd", { "battle_id": 1, "cmd": "INNER", "mode": m }), "", m)

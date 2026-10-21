@@ -34,6 +34,7 @@ const OPTIONS := [
 	["ui.battle_auto_return", "戰鬥結束自動返回"],
 	["nav.auto_resume", "趕路遇敵獲勝後繼續趕路"],
 	["ui.show_names", "顯示名稱（戰場上其他人的名字牌；只影響自己的畫面）"],
+	["ui.night_dim", "夜晚變暗（戌時到寅時畫面與小地圖變暗；身上有夜明珠就不暗）"],   # M3d 整合（WP-COMBAT §3.5）
 ]
 
 var gate: IntentGate

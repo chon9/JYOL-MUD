@@ -496,6 +496,18 @@ func _draw() -> void:
 		var fa := clampf((aoe_flash_until - now_s()) / AOE_FLASH_S, 0.0, 1.0)
 		for c in aoe_flash:
 			draw_colored_polygon(diamond(grid_to_local(Vector2(c)), 0.86), Color(UiTheme.HIGHLIGHT_AOE, 0.45 * fa))
+	# M3d 審查：「閃」的架勢（到自己下次行動前）——腳下青色菱形＋淡填色，一眼看得出誰在閃
+	if vm != null:
+		var dp := 0.6 + 0.4 * sin(now_s() * 4.0)
+		for uid in sprites:
+			if not vm.is_dodging(int(uid)):
+				continue
+			var ds: UnitSprite = sprites[uid]
+			if not is_instance_valid(ds) or not ds.visible:
+				continue
+			var dc := ds.position
+			draw_colored_polygon(diamond(dc, 0.86), Color(BattleFx.DODGE_COLOR, 0.18 * dp))
+			_outline(diamond(dc, 0.86), Color(BattleFx.DODGE_COLOR, 0.9 * dp), 2.5)
 	# 行動中（輪到我）：腳下白色雙線菱形
 	if my_turn_ring_visible():
 		var mc := my_turn_ring_center()
@@ -708,6 +720,38 @@ func _play_event(e: Dictionary) -> void:
 			var s := _sprite(int(p.get("uid", 0)))
 			if s:
 				s.play_flee(_start_for([s]) - now_s())
+		# ---- M3d（M3D_PLAN §3.1–3.3；WP-COMBAT） ----
+		UiKeys.E_BATTLE_DODGE:
+			var s := _sprite(int(p.get("uid", 0)))
+			if s:
+				fx.popup(s, "閃避", BattleFx.DODGE_COLOR, 1.4, _start_for([s]) - now_s())   # M3d 審查：原本白色小字看不清
+		UiKeys.E_BATTLE_QING_JUMP:
+			# 飛身越敵：直線一躍（越過中間的人），不走 BFS 路徑
+			var s := _sprite(int(p.get("uid", 0)))
+			var fc := BattleViewModel.to_cell(p.get("from", []))
+			var tc := BattleViewModel.to_cell(p.get("to", []))
+			if s and in_grid(fc) and in_grid(tc):
+				var t := _start_for([s])
+				s.play_move([Vector2(fc), Vector2(tc)], t - now_s(), STEP_DUR * 1.5)
+				fx.popup(s, "輕功", BattleFx.REST_COLOR, 0.9, t - now_s())
+		UiKeys.E_BATTLE_QING_ESCAPE:
+			var s := _sprite(int(p.get("uid", 0)))
+			if s:
+				var t := _start_for([s])
+				fx.popup(s, "脫身", BattleFx.REST_COLOR, 0.9, t - now_s())
+				s.play_flee(t - now_s())
+		UiKeys.E_BATTLE_QING_FAIL:
+			var s := _sprite(int(p.get("uid", 0)))
+			if s:
+				fx.popup(s, "走不脫", BattleFx.STATUS_COLOR, 0.85, _start_for([s]) - now_s())
+		UiKeys.E_BATTLE_COMBO:
+			var a := _sprite(int(p.get("a_uid", p.get("atk_uid", 0))))
+			var b := _sprite(int(p.get("b_uid", 0)))
+			var d := _sprite(int(p.get("def_uid", 0)))
+			var t0 := _start_for([a, b, d])
+			fx.combo(a, b, d, UiKeys.COMBO_BANNER_FMT % str(p.get("art_name", "")), t0 - now_s())
+			_anim_strike(int(p.get("atk_uid", 0)), int(p.get("def_uid", 0)), int(p.get("dmg", 0)), true, key,
+				int(p.get("def_qi", -1)), e)
 		UiKeys.E_BATTLE_KILL, UiKeys.E_BATTLE_DEATH:
 			var s := _sprite(int(p.get("uid", 0)))
 			if s:

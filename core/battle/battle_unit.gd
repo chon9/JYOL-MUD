@@ -43,6 +43,15 @@ var overflow: float = 0.0           # 同 tick 滿條排序用
 var start_pos: Vector2i = Vector2i(-1, -1)
 var actions: int = 0                # 已執行的行動數（統計用）
 
+# ---- M3d（M3D_PLAN §3、§9.2；WP-COMBAT） ----
+var dmg_dealt := 0                  # 本場打出的總傷害（resolve_strike 命中時累計，含反擊與合體一擊；WP-EVENTS 判定用）
+var hits_landed := 0                # 本場命中次數（同上）
+var dodging := false                # 「閃」：到自己下次行動前被打中的機率降低（§3.1；execute 開頭與 defending 一起清掉）
+var combo_mark: Dictionary = {}     # 合體技：{ group, t（戰鬥秒）, dmg, def_uid }；空＝沒有（§3.3.3）
+var combo_hits := 0                 # 本場成功的合體一擊次數（戰後 ComboSystem 給配合度）
+var combo_with: Array = []          # 合體成功時的夥伴角色 id（每次一筆）
+var last_equip_t := -999.0          # 上一次戰鬥中換裝的戰鬥時間（秒；§3.6）
+
 func _init(p_uid: int = 0, p_spec: Dictionary = {}) -> void:
 	uid = p_uid
 	spec = p_spec.duplicate(true)
@@ -192,6 +201,25 @@ func stack_left(it: Dictionary) -> int:
 	if it.is_empty():
 		return 0
 	return maxi(0, int(it.get("n", 0)) - int(used_items.get(str(it.get("uid", "")), 0)))
+
+## ---------------------------------------------------------------- M3d 規格欄位（WP-COMBAT；Character.to_combatant 帶入）
+
+## 穿著有 FLEE_ANYWHERE 效果的裝備（無敵烙跑鞋，§3.4）
+func flee_anywhere() -> bool:
+	return bool(spec.get("flee_anywhere", false))
+
+## 合體技規格 { partner_char, moqi }；沒有夥伴回 {}
+func combo_spec() -> Dictionary:
+	var c: Variant = spec.get("combo", {})
+	return c if c is Dictionary else {}
+
+## 角色 id（玩家單位的 spec.ref 就是角色 id；char_id 有給就用它）
+func char_id() -> String:
+	return str(spec.get("char_id", spec.get("ref", ""))) if is_player() else ""
+
+## 換裝冷卻（毫秒；spec.equip_cd_ms 由 to_combatant 依伺服器選項 equip_cooldown_ms 帶入；缺省 -1＝看 Battle.opts）
+func equip_cd_ms() -> int:
+	return int(spec.get("equip_cd_ms", -1))
 
 func status_level(id: String) -> int:
 	if not statuses.has(id):

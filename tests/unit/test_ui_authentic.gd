@@ -209,7 +209,7 @@ func test_command_bar_two_rows_and_locked_discs() -> void:
 	var cb := CommandBar.new()
 	_add(cb)
 	await tree.process_frame
-	assert_eq(cb.discs.size(), 17, "9 + 8 discs")
+	assert_eq(cb.discs.size(), 18, "10 + 8 discs（M3d：第一列加「閃」）")
 	var first: JyButton = cb.discs["防"]
 	var second: JyButton = cb.discs["移"]
 	assert_true(second.position.y > first.position.y and absf(second.position.x - first.position.x - 22.0) < 0.5, "second row shifted half a disc")
@@ -221,8 +221,8 @@ func test_command_bar_two_rows_and_locked_discs() -> void:
 	(cb.discs["屬"] as Button).pressed.emit()
 	(cb.discs["系"] as Button).pressed.emit()
 	assert_eq(got, ["attributes", "system"])
-	assert_eq(cb.buttons.size(), 13, "移攻武防休裝逃 + M3a 毒醫暗陣內穴")
-	assert_eq(UiKeys.CMD_LOCKED_LABELS, ["輕", "特"], "M3a：只剩輕、特鎖住")
+	assert_eq(cb.buttons.size(), 15, "移攻武防休裝逃 + M3a 毒醫暗陣內穴 + M3d 閃輕")
+	assert_eq(UiKeys.CMD_LOCKED_LABELS, ["特"], "M3d：「輕」開放，只剩「特」鎖住")
 
 # ---------------------------------------------------------------- 對話框
 

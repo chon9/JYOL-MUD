@@ -22,7 +22,7 @@ static func _melee_basic(b: Battle, u: BattleUnit, tables: Dictionary, rng: Rand
 		var pc := _poison_cmd(b, u, enemies, tables, rng)
 		if not pc.is_empty():
 			return pc
-	var moves := usable_moves(u, tables)      # 依威力由高到低
+	var moves := usable_moves(u, tables, b)      # 依威力由高到低
 	var max_range := 1
 	for m in moves:
 		max_range = maxi(max_range, int(m.move.get("range", 1)))
@@ -111,7 +111,8 @@ static func _poison_cmd(b: Battle, u: BattleUnit, enemies: Array, tables: Dictio
 	return { "cmd": "POISON", "art": str(arow.id), "target": [t.pos.x, t.pos.y] }
 
 ## [{ art, move }]，依威力高→低（同威力保持資料順序）；只含現在付得起、兵器相符的已解鎖招式（M3a：含範圍招式）
-static func usable_moves(u: BattleUnit, tables: Dictionary) -> Array:
+## b 有給時，合體武功要夥伴同場（ComboRules.usable）
+static func usable_moves(u: BattleUnit, tables: Dictionary, b: Battle = null) -> Array:
 	var art_ids: Array = u.arts()
 	if not u.is_player() and not art_ids.is_empty():
 		art_ids = [art_ids[0]]
@@ -122,6 +123,8 @@ static func usable_moves(u: BattleUnit, tables: Dictionary) -> Array:
 			continue
 		var cat := str(row.get("category", "FIST"))
 		if cat != "FIST" and u.weapon_type() != cat:
+			continue
+		if b != null and not ComboRules.usable(b, u, row):
 			continue
 		var lv := u.skill(str(a))
 		for m in row.get("moves", []):

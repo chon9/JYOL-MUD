@@ -135,9 +135,16 @@ func force_pk(s: Session, target_char: String) -> Dictionary:
 		return GameHost.fail("target_in_party")
 	if newbie_protected(t.character):
 		return GameHost.fail("target_newbie_protected")
+	# M3d WP-LAW（M3D_PLAN §2.3）：持照緝拿名單上的人＝合法（開戰前判定；執照在這裡檢查 PK值 > 0 自動失效）
+	var law = host.get("law") if host is Object else null
+	if law != null and (law as Object).has_method("lawful_hunt") and bool(law.lawful_hunt(s, t.character)):
+		var r := _start_pvp(s, t, MoralityPk.KIND_FORCED, E_FORCE_PK_START, { "lawful": true })
+		if bool(r.get("ok", false)) and (law as Object).has_method("note_lawful"):
+			law.note_lawful(int(r.get("battle_id", 0)), s, t)
+		return r
 	return _start_pvp(s, t, MoralityPk.KIND_FORCED, E_FORCE_PK_START)
 
-func _start_pvp(atk: Session, def: Session, kind: String, start_key: String) -> Dictionary:
+func _start_pvp(atk: Session, def: Session, kind: String, start_key: String, opts: Dictionary = {}) -> Dictionary:
 	if host.battles == null or not host.battles.has_method("start_pvp"):
 		# M2_PLAN 缺漏：WP-PARTY 的 start_pvp 不存在時（H4）沒有指定原因碼；回 bad_cmd，不送開戰事件
 		return GameHost.fail("bad_cmd")
@@ -146,7 +153,7 @@ func _start_pvp(atk: Session, def: Session, kind: String, start_key: String) -> 
 	var room := atk.room_id()
 	var p := { "atk_name": str(atk.character.name), "def_name": str(def.character.name),
 		"atk_peer": atk.peer_id, "def_peer": def.peer_id }
-	var bid := int(host.battles.start_pvp(atk, def, kind))
+	var bid := int(host.battles.start_pvp(atk, def, kind, opts)) if not opts.is_empty() else int(host.battles.start_pvp(atk, def, kind))
 	if bid == 0:
 		return GameHost.fail("target_busy")
 	host.ws.queue_room_event(room, Protocol.CH_SCENE, start_key, p)
@@ -188,6 +195,7 @@ func on_move(s: Session, from_room: String, to_room: String) -> bool:
 	# M3c 審查：新手（實戰 < protect_xp）善惡負不被官兵追殺，PK值 > 3 照舊（MoralityPk.guard_count）；
 	# 第二輪審查：只在規則 newbie_guard_spare 開時（classic_strict 關＝2001 規則，沒有新手例外）
 	var n := MoralityPk.guard_count(ch.pk_value(), int(ch.morality), guard_spares(ch))
+	n = _law_guard_count(ch, n)   # M3d WP-LAW：劫鏢標記期間至少 PK > 3 的人數（M3D_PLAN §5.2.3、A9）
 	if n <= 0:
 		return false
 	host.tell(s, Protocol.CH_BATTLE, E_GUARD_ATTACK, { "n": n })
@@ -271,6 +279,17 @@ func _has_guard(region_id: String) -> bool:
 ## summary = { bid, kind, room, units: [ { char_id, name, peer（離線 0）, side, died, fled, killed_by_char } ] }
 func on_pvp_end(summary: Dictionary) -> void:
 	var kind := str(summary.get("kind", ""))
+	# M3D_PLAN §9.2（WP-LAW Day-0）：先交給 M3d 各系統（懸賞領賞、劫鏢分贓、比武判定）
+	if host is Object and (host as Object).has_method("m3d_pvp_end"):
+		host.m3d_pvp_end(summary)
+	# M3d：比武（DUEL）沒有死亡懲罰——不轉移神兵、不加 PK值、殺氣、善惡、不廣播（在 _loot_pvp_kills 之前）
+	if kind == "DUEL":
+		return
+	# M3d：劫鏢（ROB）照強制 PK 算（PK值 +1、殺氣、善惡、pk_kill；R15）
+	var as_kind := "FORCED" if kind == "ROB" else kind
+	# M3d WP-LAW：持照緝拿（合法）的戰鬥 → 出手者不加 PK值、不扣善惡、殺氣只加 LAWFUL_KILLING_INTENT、不廣播 pk_kill
+	var law = host.get("law") if host is Object else null
+	var lawful := law != null and (law as Object).has_method("is_lawful_bid") and bool(law.is_lawful_bid(int(summary.get("bid", 0))))
 	# M3C_PLAN §6.5、§11.3 Day-0 (6)：任何 PvP（叫戰、強制 PK、捉拿）死於玩家 → 神兵歸殺手（LootSystem 為 null 時略過）
 	_loot_pvp_kills(summary)
 	# M3B_PLAN §5.1.5、§5.1.8：捉拿公敵（SEIZE）＝FORCED 的路徑但不加懲罰：抓的人不加 PK 值、殺氣、善惡，
@@ -310,7 +329,8 @@ func on_pvp_end(summary: Dictionary) -> void:
 		# 誰算「強制 PK」：只有出手的人（side 0；start_pvp 一律把出手者放 side 0，PvP 不能中途加入）。
 		# 原作的 PK值 +1 綁在「按連結鍵強迫開啟戰斗」的惡意 PK【已證實 17173 xinshou/10】；
 		# 被強制 PK 的人反殺出手者是自衛，照叫戰擊殺算（PK值不加、善惡不變、殺氣照加、不廣播全服）【設計提案】（M2 第三輪審查）
-		var eff_kind := effective_kill_kind(kind, int(k.get("side", 0)) if not k.is_empty() else 0)
+		var eff_kind := effective_kill_kind(as_kind, int(k.get("side", 0)) if not k.is_empty() else 0)
+		var lawful_kill := lawful and eff_kind == MoralityPk.KIND_FORCED   # M3d WP-LAW：只有出手的持照者算合法緝拿
 		# 【設計提案】（M2_PLAN 5.2）：原作沒有這種廣播的記載。強制 PK 的擊殺才廣播全服「【江湖傳聞】」；
 		# 叫戰是雙方同意的比武，只告訴兩個當事人（M2 審查）
 		# STORY_PLAN §5.1 #4：強制 PK 的擊殺交給 RumorSystem（kind PK）。
@@ -320,7 +340,12 @@ func on_pvp_end(summary: Dictionary) -> void:
 		#   另把這則記進傳聞紀錄（rumor_list 看得到），不重複廣播。
 		# STORY_PLAN 缺漏：tests/unit/test_world_pk.gd::test_force_pk_kill_effects（非本 WP 檔案）要求旁觀者收到 pk_kill；
 		# 該測試更新後把 PK_RUMOR_LIVE 改成 true 即完全照 §5.1 #4。
-		if eff_kind == MoralityPk.KIND_FORCED and pk_rumor_live and _post_pk_rumor(kill_p, false):
+		if lawful_kill:
+			# M3d WP-LAW：合法緝拿不廣播 pk_kill（傳聞 rmr_law_caught 由 LawSystem.on_pvp_end 發）；兩個當事人照常收 pk_kill
+			for peer_id in [atk_peer, def_peer]:
+				if int(peer_id) != 0:
+					host.ws.queue_event(int(peer_id), Protocol.CH_SYSTEM, E_PK_KILL, kill_p)
+		elif eff_kind == MoralityPk.KIND_FORCED and pk_rumor_live and _post_pk_rumor(kill_p, false):
 			for peer_id in [atk_peer, def_peer]:
 				if int(peer_id) != 0:
 					host.ws.queue_event(int(peer_id), Protocol.CH_SYSTEM, E_PK_KILL, kill_p)
@@ -337,8 +362,10 @@ func on_pvp_end(summary: Dictionary) -> void:
 		# M3A_PLAN 6.3：強制 PK 的發起者殺死同門 → KILL_SAME_SECT（叫戰、被出手者反殺不算）
 		var sects = host.get("sects")
 		if sects != null and killer_s != null and victim_ch != null:
-			sects.on_pvp_kill(killer_s, victim_ch, eff_kind == MoralityPk.KIND_FORCED)
+			sects.on_pvp_kill(killer_s, victim_ch, eff_kind == MoralityPk.KIND_FORCED and not lawful_kill)   # M3d WP-LAW：合法緝拿不算同門相殘
 		var d := MoralityPk.kill_deltas(eff_kind, victim_morality)
+		if lawful_kill:
+			d = _law_lawful_deltas(d)   # M3d WP-LAW
 		var pk_before: int = killer_ch.pk_value()
 		var pk_after := pk_before
 		if int(d["pk"]) != 0:
@@ -360,6 +387,8 @@ func on_pvp_end(summary: Dictionary) -> void:
 			if sects != null and killer_s.battle_id == 0:
 				sects.check_state(killer_s, "PK")   # PK值、善惡、殺氣改變後檢查門規
 		host.save_char(killer_ch)
+	if lawful:
+		law.forget_bid(int(summary.get("bid", 0)))   # M3d WP-LAW
 
 ## 對每個死於玩家的單位：LootSystem.on_pvp_kill(killer_char, victim_char, summary)
 func _loot_pvp_kills(summary: Dictionary) -> void:
@@ -404,7 +433,11 @@ func _char_any(char_id: String):
 	for k in names:
 		var e: Variant = names[k]
 		if e is Dictionary and str(e.get("char_id", "")) == char_id:
-			return host.char_store.load_char(str(e.get("identity", "")), char_id)
+			var c = host.char_store.load_char(str(e.get("identity", "")), char_id)
+			# M3d 審查第三輪：讀檔的角色 pk_decay_on 是預設 true → 照目前規則設（pk_decay 關時不遞減）
+			if c != null and "pk_decay_on" in c:
+				c.pk_decay_on = bool(host.rules.get("pk_decay", true))
+			return c
 	return null
 
 # ======================================================================== 快照與生命週期
@@ -533,3 +566,25 @@ func _world_span(real_s: float) -> float:
 func _time_scale() -> float:
 	var ts: Variant = host.ws.get("time_scale")
 	return maxf(float(ts), 0.001) if ts != null else 1.0
+
+# ==== M3d WP-LAW ====（M3D_PLAN §2.3、§2.5、§5.2.3）
+## 合法緝拿的擊殺者變化：PK值 0、善惡 0、殺氣 BountyRules.LAWFUL_KILLING_INTENT（R3）
+func _law_lawful_deltas(d: Dictionary) -> Dictionary:
+	var out := d.duplicate()
+	out["pk"] = 0
+	out["morality"] = 0
+	out["killing_intent"] = BountyRules.LAWFUL_KILLING_INTENT
+	return out
+
+## 守城官兵人數：劫鏢標記（WP-EVENTS 的 JiebiaoRules.rob_marked）期間至少 MoralityPk.GUARDS_PK（A9）。
+## （JiebiaoRules 是 core 的 class_name，直接呼叫）
+func _law_guard_count(ch, n: int) -> int:
+	if ch == null or n >= MoralityPk.GUARDS_PK:
+		return n
+	# M3d 審查：JiebiaoRules 已合併 → 直接呼叫（原本每走一步都 load() 一次、再建整張方法表找 rob_marked）
+	var ext_v: Variant = ch.get("ext")
+	var ext: Dictionary = ext_v if ext_v is Dictionary else {}
+	var now := float(host.now_s()) if host.has_method("now_s") else 0.0
+	if JiebiaoRules.rob_marked(ext, now):
+		return MoralityPk.GUARDS_PK
+	return n

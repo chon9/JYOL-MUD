@@ -37,8 +37,8 @@ func test_build_line_bottom_right() -> void:
 	assert_true(l != null, "label")
 	assert_eq(str(l.name), "BuildInfoLine")
 	assert_eq(l.text, BuildInfo.line(GameData.content_hash))
-	assert_true(l.text.begins_with("v0.6.1.0　協定 5　資料 "), l.text)
-	assert_eq(l.text.length(), ("v0.6.1.0　協定 5　資料 ").length() + 12, "12-char fingerprint")
+	assert_true(l.text.begins_with("v0.7.0.0　協定 5　資料 "), l.text)
+	assert_eq(l.text.length(), ("v0.7.0.0　協定 5　資料 ").length() + 12, "12-char fingerprint")
 	assert_eq(l.tooltip_text, "跟朋友連線前互相對照：協定與資料指紋都一樣才能連線。")
 	assert_eq(str(l.theme_type_variation), "MutedLabel", "muted")
 	# 右下角：右緣、下緣貼齊畫面（留 12 px 邊）

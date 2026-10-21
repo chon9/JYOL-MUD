@@ -73,8 +73,8 @@ func test_chore_rows_shape() -> void:
 	var per := {}
 	for qid in qs:
 		var c: Variant = qs[qid].get("chore", null)
-		if not (c is Dictionary):
-			continue
+		if not (c is Dictionary) or str(c.get("kind", "SECT")) == "TOWN":
+			continue   # M3d WP-ERRANDS：城鎮任務（chore.kind TOWN，沒有 sect、學點可以 < 10）由 test_m3d_chore_town 檢查
 		per[str(c["sect"])] = int(per.get(str(c["sect"]), 0)) + 1
 		assert_true(int(c["lp"]) >= 10 and int(c["lp"]) <= 100, "%s lp" % qid)
 	for sid in tables()["sects"]:

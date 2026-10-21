@@ -324,6 +324,8 @@ func world_info() -> Dictionary:
 		"allow_foreign_characters": options.get("allow_foreign_characters", false) == true,
 		"foreign_allowed": game.foreign_allowed() if game != null else false,
 		"game_version": BuildInfo.version(),
+		# M3d 審查：換裝間隔（毫秒；1.0B 才有，1.0A-only 世界 0）——客戶端裝備鈕的冷卻跟著主機（IntentsItem.equip_cooldown_ms）
+		"equip_cooldown_ms": clampi(int(options.get("equip_cooldown_ms", 2000)), 0, 5000) if GameData.enabled_eras.has("1.0B") else 0,
 	}
 
 func _birth_cities() -> Array:

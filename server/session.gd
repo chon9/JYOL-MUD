@@ -37,6 +37,8 @@ var last_region := ""
 var dialogue: Dictionary = {}
 ## QuestSystem.on_sheet 的節流（真實毫秒；同一角色每秒最多檢查一次 STATE 目標）
 var quest_state_check_ms := -100000
+## M3D_PLAN §3.6（WP-COMBAT）：上一次在地圖上換裝（equip／unequip 成功）的主機真實毫秒；不存檔
+var last_equip_ms := -100000
 
 func has_dialogue() -> bool:
 	return not dialogue.is_empty()

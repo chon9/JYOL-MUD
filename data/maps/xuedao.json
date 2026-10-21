@@ -20,7 +20,7 @@
       "exits": [{"dir": "E", "to": "xd_hall"}], "npcs": ["n_xd_shengdi", "n_xd_kuji", "n_xd_spar"], "features": [],
       "requires": [] },
     { "id": "xd_pool", "name": "血池", "desc": "本堂後方的山洞裡有一方暗紅色的水池，池水微溫，冒著淡淡的腥氣。血刀弟子在這裡比武，輸的人常被打進池裡。",
-      "exits": [{"dir": "S", "to": "xd_hall"}], "npcs": ["n_xd_xuehai"], "features": [],
+      "exits": [{"dir": "S", "to": "xd_hall"}], "npcs": ["n_xd_xuehai", "n_ar_xd_xuechi", "n_ar_xd_xuechi_2", "n_ar_xd_xuechi_3"], "features": [],
       "requires": [{"type": "sect", "sect": "xuedao"}] },
     { "id": "xd_mishi", "name": "密室", "desc": "本堂東側的一道暗門後是間不透光的石室，堆著酒罈、乾肉和幾把用油布包著的彎刀。只有本門弟子知道怎麼進來。",
       "exits": [{"dir": "W", "to": "xd_hall"}], "npcs": ["n_xd_jingqi", "n_xd_aihui"], "features": [],

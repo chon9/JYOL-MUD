@@ -114,7 +114,21 @@ static func avail(b: Battle, u: BattleUnit) -> Dictionary:
 		"INNER": INNER_MODES.duplicate() if inner_ok else [],
 		"ACUPOINT": (not u.cmd_arts("ACUPOINT").is_empty() or u.skill("basic_stab") >= 10) and later_cmds(b),
 		"ITEM": not u.battle_items().is_empty(),
+		# M3D_PLAN §7（WP-COMBAT）：閃（規則 dodge_cmd）、輕（later_battle_cmds；可用的 mode 清單，內力夠才列）
+		"DODGE": BattleRules.dodge_enabled(b),
+		"QING": qing_modes(b, u),
 	}
+
+## 「輕」現在可用的 mode（M3D_PLAN §3.2）：JUMP 要內力 ≥ 10 + 2 × 移動範圍；ESCAPE 要內力 ≥ 30、這場戰鬥允許脫身
+static func qing_modes(b: Battle, u: BattleUnit) -> Array:
+	if not later_cmds(b):
+		return []
+	var out: Array = []
+	if u.neili >= BattleRules.qing_jump_cost(u):
+		out.append("JUMP")
+	if u.neili >= BattleRules.QING_ESCAPE_COST and not BattleRules.special_flee_blocked(b, u):
+		out.append("ESCAPE")
+	return out
 
 ## ---------------------------------------------------------------- 驗證（5.2）
 

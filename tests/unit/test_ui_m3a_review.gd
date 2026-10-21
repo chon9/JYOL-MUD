@@ -8,10 +8,13 @@ var _nodes: Array = []
 var _old_wi: Dictionary = {}
 
 func before_each() -> void:
+	# 這個檔案量的是程式繪圖的地圖版面：強制不用地圖美術（ART_REQUEST §10 的圖已經匯入，見 test_ui_m3c_nav 的美術版測試）
+	MapArt.use_textures({})
 	UiSettings.reset_for_tests(true)
 	_old_wi = ClientState.world_info
 
 func after_each() -> void:
+	MapArt.use_textures(null)
 	ClientState.world_info = _old_wi
 	for n in _nodes:
 		if is_instance_valid(n):

@@ -24,6 +24,7 @@ var cap_label: Label
 var lp_label: Label
 var footer_label: Label
 var selected_label: Label
+var effect_label: Label    # 選取中武功的說明（SkillEffects：學了加什麼）
 var list: VBoxContainer
 var figure: TextureRect
 var marks_box: VBoxContainer
@@ -91,9 +92,12 @@ func _build() -> void:
 	pages.add_child(spine)
 	var right := UiBuild.vbox(pages, 4)
 	right.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	var sc := UiBuild.scroll(right, 300)
+	var sc := UiBuild.scroll(right, 220)
 	list = UiBuild.vbox(sc, 2)
 	list.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	effect_label = UiBuild.muted(UiBuild.label(right, "", 13, true))
+	effect_label.name = "SkillEffect"
+	effect_label.custom_minimum_size = Vector2(0, 90)
 	# 書籤
 	marks_box = UiBuild.vbox(row, 2)
 	for m in BOOKMARKS:
@@ -178,6 +182,7 @@ func _rebuild() -> void:
 	var sel := _find(selected_id)
 	var can := not sel.is_empty() and str(sel.get("kind", "")) != "LIFE"
 	selected_label.text = ("選取：%s" % str(sel.get("name", ""))) if can else "（點選一門武功）"
+	effect_label.text = SkillEffects.text(selected_id, UiClient.tables()) if not sel.is_empty() else "點選一門武功，這裡會說明它有什麼用。"
 	for b in study_buttons:
 		(b as Button).disabled = not can
 
@@ -202,7 +207,9 @@ func _skill_row(sk: Dictionary) -> void:
 	if active:
 		b.add_theme_color_override("font_color", UiTheme.CINNABAR)
 	var kind := str(sk.get("kind", ""))
-	b.tooltip_text = UiKeys.SKILL_KIND_LABELS.get(kind, kind)
+	var eff := SkillEffects.text(id, UiClient.tables())
+	b.tooltip_text = str(UiKeys.SKILL_KIND_LABELS.get(kind, kind)) + ("
+" + eff if eff != "" else "")
 	var prof := UiBuild.num(sk.get("prof", 0))
 	var next := UiBuild.num(sk.get("next_prof", 0))
 	var h := UiBuild.hbox(v, 6)

@@ -1,7 +1,7 @@
 class_name MoralityPk
 extends RefCounted
 ## PK值、善惡、殺氣、守衛的純規則（M2_PLAN 4.6.4、5.2）。只吃參數，不引用 Autoload 或主機。
-## 數值除「PK值每 30 分鐘 −1【已證實 newton】」「PK > 3 守衛追殺【已證實】」「善惡負被攻擊【已證實】」之外，
+## 數值除「PK值每 30 分鐘 −1【後期版；M3d 研究更正，原標 newton】」「PK > 3 守衛追殺【已證實】」「善惡負被攻擊【已證實】」之外，
 ## 一律是【設計提案】。
 
 const PK_DECAY_ONLINE_S := 1800.0      # 每 1800 秒角色上線時間 −1（只算上線時間：世界凍結時不遞減）
@@ -31,10 +31,14 @@ static func align_of(morality: int) -> String:
 		return ALIGN_EVIL
 	return ALIGN_NEUTRAL
 
-## 惰性遞減：max(0, pk_base − floor((online_s − pk_stamp_s) / 1800))
-static func pk_value(pk_base: int, pk_stamp_s: float, online_s: float) -> int:
+## 惰性遞減：max(0, pk_base − floor((online_s − pk_stamp_s) / 1800))。
+## M3d（M3D_PLAN §2.6、U1）：30 分鐘遞減改標【後期版】（研究只在後期摘要看到）；decay == false（規則 pk_decay 關，
+## classic_strict）→ 2001 沒有被動遞減，回 pk_base（只能靠被守城官兵／賞金獵人／持照玩家殺死、或找半仙降）
+static func pk_value(pk_base: int, pk_stamp_s: float, online_s: float, decay := true) -> int:
 	if pk_base <= 0:
 		return 0
+	if not decay:
+		return pk_base
 	var elapsed := maxf(0.0, online_s - pk_stamp_s)
 	return maxi(0, pk_base - floori(elapsed / PK_DECAY_ONLINE_S))
 

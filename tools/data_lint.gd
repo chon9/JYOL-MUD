@@ -47,6 +47,7 @@ func lint(dir: String, verbose := false) -> int:
 	_check_m3c_options(loader)
 	_check_proc_templates(loader)
 	_check_m3c2_options(loader)   # M3c2 WP-PACE
+	_check_m3d_options(loader)    # M3d（WP-LAW Day-0：五個選項）
 
 	# 每個 era 加上它的 requires 閉包各跑一次 activate()（5.5.2）
 	var era_ids: Array = eras.keys()
@@ -295,7 +296,9 @@ const ROOM_FEATURES := ["FIELD", "WOOD", "WATER", "STOVE", "MINE", "FORGE", "CAS
 const NPC_SERVICES := ["SHOP", "TEACH", "INN", "RESPAWN", "TRAVEL", "JOIN", "QUEST", "MEAL", "FIGHT",
 	"BETRAY", "JAIL", "TRIAL", "GUIDE",
 	# M3B_PLAN §4.8（與 DataSchema.NPC_SERVICES 相同）
-	"BANK", "ESCORT", "ORG", "RANK"]
+	"BANK", "ESCORT", "ORG", "RANK",
+	# M3D_PLAN §8.4（WP-LAW）
+	"BOARD", "LICENSE", "CLEANSE", "TOURNEY"]
 const NPC_KINDS := ["FUNC", "MASTER", "SHOP", "QUEST", "STORY", "GUARD", "EVIL_NPC"]
 const ALIGNMENTS := ["GOOD", "NEUTRAL", "EVIL"]
 const REGION_TYPES := ["CITY", "WILD", "SECT", "DUNGEON"]
@@ -317,7 +320,8 @@ const AOE_POWER_MULT := 0.75
 const BASIC_SINGLE_REF := [[60, 46], [30, 34], [1, 24]]
 const ATTR_IDS := ["str", "guts", "wit", "luck", "cal", "agi", "con"]
 const VITAL_IDS := ["jing", "qi", "shen", "neili", "food", "water"]
-const EFFECT_TYPES := ["restore", "attr", "smoke", "hidden", "cure"]   # hidden、cure：M3A_PLAN 3.9
+const EFFECT_TYPES := ["restore", "attr", "smoke", "hidden", "cure",   # hidden、cure：M3A_PLAN 3.9
+	"FLEE_ANYWHERE", "LIGHT", "LIANDU", "SUMMON"]   # M3D_PLAN §8.4（DataSchema.M3D_EFFECT_TYPES）
 const QUEST_STEP_TYPES := ["KILL", "DELIVER", "TALK", "REACH"]
 const MONSTER_KINDS := ["MONSTER", "ELITE", "BOSS", "EVIL_NPC"]
 const MONSTER_AIS := ["melee_basic", "coward"]
@@ -578,6 +582,12 @@ static func check_content(view: Dictionary) -> PackedStringArray:
 	errs.append_array(_check_m3c_loot(view))   # M3c WP-LOOT
 	errs.append_array(_check_m3c2_pace(view))   # M3c2 WP-PACE
 	errs.append_array(_check_m3c2_econ(view))   # M3c2 WP-ECON
+	# M3D_PLAN §9.2（WP-LAW Day-0）：每個 WP 在檔尾自己的區塊
+	errs.append_array(_check_m3d_law(view))
+	errs.append_array(_check_m3d_combat(view))
+	errs.append_array(_check_m3d_arts(view))
+	errs.append_array(_check_m3d_events(view))
+	errs.append_array(_check_m3d_errands(view))
 	return errs
 
 # 1. 房間圖格式、id 全域唯一、出口目標存在、雙向性、features 合法
@@ -1476,6 +1486,8 @@ static func _c_items(view: Dictionary) -> PackedStringArray:
 						errs.append("%s: attr stat '%s' invalid" % [label, e.get("stat", "")])
 				"smoke":
 					has_use = true
+				"LIANDU":
+					has_use = true   # M3d 整合：小木鼎由背包「使用」觸發煉毒（M3D_PLAN §4.4）
 				"cure":
 					# M3A_PLAN 3.9：解除狀態（status 存在、max_level ≥ 1）；沒有 value
 					has_use = true
@@ -1724,7 +1736,7 @@ static func _c_sects(view: Dictionary) -> PackedStringArray:
 			if not (sid in SECT_PREFIX_LEGACY):
 				for nid in npcs:
 					# M3c2 WP-PACE：雜務 NPC 的前綴是 n_ch_<派前綴>_（M3C2_PLAN Q6）
-					var ch_ok: bool = str(nid).begins_with("n_ch_%s_" % prefix)
+					var ch_ok: bool = str(nid).begins_with("n_ch_%s_" % prefix) or str(nid).begins_with("n_ar_%s_" % prefix)   # M3d 整合：WP-ARTS 武功鏈 NPC n_ar_<派前綴>_
 					if str(npcs[nid].get("region", "")) == gate_region and not nid.begins_with("n_%s_" % prefix) and not ch_ok:
 						errs.append("%s: npc %s lacks prefix 'n_%s_'" % [label, nid, prefix])
 		# 3.2 固定 id
@@ -3133,6 +3145,8 @@ static func _check_m3c2_pace(view: Dictionary) -> PackedStringArray:
 		if not (c is Dictionary):
 			errs.append("%s: must be an object" % L)
 			continue
+		if str(c.get("kind", "SECT")) == "TOWN":
+			continue   # M3d WP-ERRANDS：城鎮任務（chore.kind TOWN）由 _check_m3d_errands 檢查（M3D_PLAN §6.1）
 		var sect := str(c.get("sect", ""))
 		var req_sect := ""
 		for r in q.get("requires", []):
@@ -3242,4 +3256,418 @@ static func _check_m3c2_econ(tables: Dictionary) -> PackedStringArray:
 					errs.append("%s.success_per_level must be a number >= 0 (M3C2 §4.4)" % pair[0])
 	for e in EconCalc.loop_violations(tables):
 		errs.append("life_skills.%s (M3C2 §4.3 econ_loop)" % e)
+	return errs
+
+# ==== M3d WP-COMBAT ====（M3D_PLAN §9.2；WP-COMBAT 在這個區塊填）
+## M3D_PLAN §3：1.0B 視圖（以 i_cb_laopaoxie 或京城在不在判斷）要有烙跑鞋、夜明珠（效果 FLEE_ANYWHERE／LIGHT）、西域貨郎與商品；
+## 合體武功（combo 字典）的 pair 各邊要有 gender（M／F／""）、min ≥ 1；有合體武功的師父列要有 combo_ready；
+## 模板：閃、輕、合體事件與 COMBAT 原因碼（err_*）；1.0A 視圖不可出現 cb 前綴的列與合體武功（T8）
+const CB_TEMPLATES_A := ["battle_dodge", "battle_qing_jump", "battle_qing_escape", "battle_qing_fail",
+	"err_dodge_off", "err_qing_off", "err_equip_cooldown"]
+const CB_TEMPLATES_B := ["battle_combo", "cb_bond_sent", "cb_bond_refused", "cb_bond_formed", "cb_bond_cancelled", "cb_nurtured",
+	"cb_drained", "talk_n_cb_jc_huolang", "err_combo_need_partner", "err_combo_need_party", "err_combo_pair_mismatch",
+	"err_combo_moqi_low", "err_combo_has_partner", "err_combo_peihe_low", "err_combo_no_request", "err_req_combo_ready",
+	"err_combo_partner_absent", "err_combo_request_pending"]
+
+static func _check_m3d_combat(view: Dictionary) -> PackedStringArray:
+	var errs := PackedStringArray()
+	var items: Dictionary = view.get("items", {})
+	var npcs: Dictionary = view.get("npcs", {})
+	var arts: Dictionary = view.get("martial_arts", {})
+	var tpl: Dictionary = view.get("text_templates", {})
+	var b_view: bool = items.has("i_cb_laopaoxie") or (view.get("regions", {}) as Dictionary).has("jingcheng")
+	for t in CB_TEMPLATES_A + (CB_TEMPLATES_B if b_view else []):
+		if not tpl.has(t):
+			errs.append("text_templates.%s missing (M3D §3 WP-COMBAT)" % t)
+	if b_view:
+		for pair in [["i_cb_laopaoxie", "FLEE_ANYWHERE", "BOOTS"], ["i_cb_yemingzhu", "LIGHT", ""]]:
+			var row: Dictionary = items.get(pair[0], {})
+			if row.is_empty():
+				errs.append("items.%s missing (M3D §3.4／§3.5)" % pair[0])
+				continue
+			if not (row.get("effects", []) as Array).any(func(e): return e is Dictionary and str(e.get("type", "")) == pair[1]):
+				errs.append("items.%s: effects needs %s" % [pair[0], pair[1]])
+			if str(row.get("slot", "")) != pair[2]:
+				errs.append("items.%s: slot must be '%s'" % [pair[0], pair[2]])
+		var hl: Dictionary = npcs.get("n_cb_jc_huolang", {})
+		if hl.is_empty():
+			errs.append("npcs.n_cb_jc_huolang missing (M3D §3.4)")
+		else:
+			var sold: Array = (hl.get("shop", {}) as Dictionary).get("items", [])
+			for iid in ["i_cb_laopaoxie", "i_cb_yemingzhu"]:
+				if not sold.has(iid):
+					errs.append("npcs.n_cb_jc_huolang.shop.items: missing %s" % iid)
+	for aid in arts:
+		var cb: Variant = arts[aid].get("combo", null)
+		if not (cb is Dictionary):
+			continue
+		if str(arts[aid].get("era", "")) == "1.0A":
+			errs.append("martial_arts.%s: combo arts are 1.0B (M3D §3.3.5)" % aid)
+		for side in (cb as Dictionary).get("pair", []):
+			if side is Dictionary:
+				if not (str(side.get("gender", "")) in ["", "M", "F"]):
+					errs.append("martial_arts.%s.combo.pair: gender must be M/F/\"\"" % aid)
+				if int(side.get("min", 0)) < 1:
+					errs.append("martial_arts.%s.combo.pair: min must be >= 1" % aid)
+		if int((cb as Dictionary).get("moqi_min", 0)) < 0 or int((cb as Dictionary).get("moqi_min", 0)) > 100:
+			errs.append("martial_arts.%s.combo.moqi_min must be 0–100" % aid)
+		# 教這套合體武功的師父列要有 combo_ready（修練要夥伴、組隊、默契）
+		for mid in view.get("masters", {}):
+			var m: Dictionary = view["masters"][mid]
+			if str(m.get("skill_id", "")) != str(aid):
+				continue
+			var req: Array = m.get("requires", []) if m.get("requires", []) is Array else []
+			if not req.any(func(r): return r is Dictionary and str(r.get("type", "")) == "combo_ready" and str(r.get("art", "")) == str(aid)):
+				errs.append("masters.%s: teaches combo art %s without combo_ready (M3D §3.3.1)" % [mid, aid])
+	if not b_view:
+		for t in ["items", "npcs", "monsters", "quests", "masters"]:
+			for id in view.get(t, {}):
+				if str(id).begins_with("i_cb_") or str(id).begins_with("n_cb_") or str(id).begins_with("ms_cb_"):
+					errs.append("%s.%s: cb rows are 1.0B（1.0A 視圖不可出現）" % [t, id])
+	return errs
+
+# ==== M3d WP-ARTS ====（M3D_PLAN §9.2；WP-ARTS 在這個區塊填）
+## 1.0A 視圖一定要有的（煉毒、恐嚇、血池、殺古墓殺氣）；1.0B 視圖（以山居隱士在不在判斷）再加四條武功鏈與門規
+const ARTS_IDS_A := { "quests": ["q_ar_xh_muding"], "items": ["i_ar_xh_muding", "i_ar_zhuangyuanhong"],
+	"npcs": ["n_ar_xd_xuechi", "n_ar_xd_xuechi_2", "n_ar_xd_xuechi_3"],
+	"monsters": ["m_ar_xd_xuechi_1", "m_ar_xd_xuechi_2", "m_ar_xd_xuechi_3"] }
+const ARTS_IDS_B := { "quests": ["q_ar_qz_chongyang", "q_ar_qz_kongming", "q_ar_lj_bahuang", "q_ar_em_luosha", "q_ar_xd_xuemo"],
+	"masters": ["ms_ar_qz_shanju", "ms_ar_qz_shuliu", "ms_ar_qz_yunyou", "ms_ar_qz_wangzhijin", "ms_ar_lj_lanjian_bahuang",
+		"ms_ar_guoxiang_sixiang", "ms_ar_xd_xuemo"],
+	"npcs": ["n_ar_qz_shanju", "n_ar_qz_shuliu", "n_ar_qz_yunyou", "n_ar_qz_wangzhijin", "n_ar_lj_wuyazi", "n_ar_ym_shouwei",
+		"n_ar_guoxiang", "n_ar_xd_inf_heilong", "n_ar_xd_baoxiang", "n_ar_xd_inf_dali", "n_ar_dingbusan", "n_ar_dingbusi",
+		"n_ar_laokelian", "n_ar_xd_xuemo_laozu"],
+	"monsters": ["m_ar_manbing"],
+	"items": ["i_ar_qz_tuijianxin", "i_ar_ym_tuijianxin", "i_ar_luoshajian", "i_ar_huangyaowan", "i_ar_xd_daojue"],
+	"martial_arts": ["em_sixiang", "xd_xuemo", "qz_chongyang", "qz_kongming", "lj_bahuang"],
+	"sect_rules": ["qz_r_kill_gumu"], "text_templates": ["ar_xuemo_enlightened", "ar_cy_letter", "ar_cy_shuliu"] }
+const ARTS_TEMPLATES := ["ar_intimidated", "ar_liandu", "ar_intimidate_1", "ar_intimidate_2",
+	"ar_intimidate_3", "ar_intimidate_4", "ar_xuechi_won", "ar_xuechi_daily", "ar_qz_gumu_kill", "err_intimidate_not_xd",
+	"err_intimidate_bad_target", "err_intimidate_daily", "err_liandu_no_tool", "err_liandu_not_xh",
+	"err_liandu_daily"]
+## 1.0B 才有的武功：1.0A 視圖不可出現（T8）
+const ARTS_B_ONLY := ["em_sixiang", "xd_xuemo", "qz_chongyang", "qz_kongming", "lj_bahuang"]
+
+static func _check_m3d_arts(view: Dictionary) -> PackedStringArray:
+	var errs := PackedStringArray()
+	var full := (view.get("npcs", {}) as Dictionary).has("n_ar_qz_shanju")
+	var want: Array = [ARTS_IDS_A, ARTS_IDS_B] if full else [ARTS_IDS_A]
+	for ids in want:
+		for t in ids:
+			for id in ids[t]:
+				if not (view.get(t, {}) as Dictionary).has(id):
+					errs.append("m3d arts: %s.%s missing (M3D_PLAN §8.5)" % [t, id])
+	if not full:
+		for aid in ARTS_B_ONLY:
+			if (view.get("martial_arts", {}) as Dictionary).has(aid):
+				errs.append("m3d arts: martial_arts.%s must be 1.0B (M3D_PLAN T8)" % aid)
+	var tt: Dictionary = view.get("text_templates", {})
+	for k in ARTS_TEMPLATES:
+		if not tt.has(k):
+			errs.append("m3d arts: text_templates.%s missing" % k)
+	# 血池三階：NPC 的 fight.monster 對到 ArtsRules.XUECHI 的怪物，怪物 no_rewards
+	var npcs: Dictionary = view.get("npcs", {})
+	var mons: Dictionary = view.get("monsters", {})
+	for tier in ArtsRules.XUECHI:
+		var e: Dictionary = ArtsRules.XUECHI[tier]
+		var nrow: Dictionary = npcs.get(str(e["npc"]), {})
+		var f: Variant = nrow.get("fight", {})
+		if not nrow.is_empty() and (not (f is Dictionary) or str((f as Dictionary).get("monster", "")) != str(e["monster"])):
+			errs.append("m3d arts: npcs.%s fight.monster must be %s (ArtsRules.XUECHI)" % [e["npc"], e["monster"]])
+		var mrow: Dictionary = mons.get(str(e["monster"]), {})
+		if not mrow.is_empty() and not bool(mrow.get("no_rewards", false)):
+			errs.append("m3d arts: monsters.%s must be no_rewards (血池是比武)" % e["monster"])
+	# 小木鼎：LIANDU 效果（ArtsSystem.on_use_item 攔下使用）
+	var md: Dictionary = view.get("items", {}).get(ArtsRules.MUDING, {})
+	if not md.is_empty():
+		var has := false
+		for ef in md.get("effects", []):
+			if ef is Dictionary and str(ef.get("type", "")) == "LIANDU":
+				has = true
+		if not has or not bool(md.get("usable", false)):
+			errs.append("m3d arts: items.%s needs usable + a LIANDU effect (M3D_PLAN §4.4)" % ArtsRules.MUDING)
+	# 殺古墓門規：counter_max 指到 ArtsRules 的計數
+	var rr: Dictionary = view.get("sect_rules", {}).get(ArtsRules.QZ_GUMU_RULE, {})
+	if not rr.is_empty():
+		var ok := false
+		for c in rr.get("ok_if", []):
+			if c is Dictionary and str(c.get("type", "")) == "counter_max" and str(c.get("key", "")) == ArtsRules.COUNTER_QZ_GUMU:
+				ok = true
+		if not ok:
+			errs.append("m3d arts: sect_rules.%s ok_if needs counter_max %s" % [ArtsRules.QZ_GUMU_RULE, ArtsRules.COUNTER_QZ_GUMU])
+	return errs
+
+# ==== M3d WP-EVENTS ====（M3D_PLAN §9.2；WP-EVENTS 在這個區塊填）
+## §5.2：危險鏢（group jiebiao）的 jiebiao { value > 0, kind hu|huo, from, to } 合法、給的人列出它、護送 NPC 與劫鏢戰的鏢單位存在、
+##   ESCORT 目標的 NPC 與 kind 對得上、era 1.0B；劫匪怪物存在。§5.3：報名員有 TOURNEY 服務、盟主令牌不能賣不能丟、
+##   每個門派都有冠軍稱號與比武時辰。兩者的事件與原因碼模板都要在。
+const EV_TEMPLATES := ["ev_jb_started", "ev_jb_done", "ev_jb_failed", "ev_jb_robbed", "ev_jb_rob_repelled", "ev_jb_rob_share",
+	"ev_jb_rob_marked", "ev_jb_rob_start", "ev_jb_ambush", "ev_jb_fail", "err_jb_no_deposit", "err_jb_cooldown", "err_jb_active",
+	"err_rob_no_escort", "err_rob_xp", "err_rob_same_party"]
+const EV_TOURNEY_TEMPLATES := ["ev_tourney_open", "ev_tourney_signed", "ev_tourney_withdrawn", "ev_tourney_start",
+	"ev_tourney_cancelled", "ev_tourney_bye", "ev_tourney_forfeit", "ev_tourney_done", "ev_tourney_reward", "ev_tourney_title_lost",
+	"ev_tourney_call", "ev_duel_result", "ev_duel_line", "ev_duel_line_miss", "rmr_ev_tourney_champion", "rmr_ev_sect_champion",
+	"err_tourney_disabled", "err_tourney_closed", "err_tourney_signed", "err_tourney_not_eligible", "err_tourney_running",
+	"err_tourney_need_xp", "err_tourney_has_pk", "err_tourney_need_morality", "err_tourney_need_sect_skill", "ev_tourney_disqualified"]
+
+static func _check_m3d_events(view: Dictionary) -> PackedStringArray:
+	var errs := PackedStringArray()
+	var quests: Dictionary = view.get("quests", {})
+	var npcs: Dictionary = view.get("npcs", {})
+	var mons: Dictionary = view.get("monsters", {})
+	var tpl: Dictionary = view.get("text_templates", {})
+	var any_jb := false
+	for qid in quests:
+		var q: Dictionary = quests[qid]
+		if str(q.get("group", "")) != JiebiaoRules.QUEST_GROUP:
+			continue
+		any_jb = true
+		var L := "m3d events: quests.%s" % qid
+		var spec := JiebiaoRules.spec_of(q)
+		if spec.is_empty():
+			errs.append("%s: jiebiao { value > 0, kind hu|huo } missing or bad (M3D_PLAN §5.2.1)" % L)
+			continue
+		if str(q.get("era", "")) != "1.0B":
+			errs.append("%s: danger escorts are era 1.0B (T8)" % L)
+		var giver := str(q.get("giver", ""))
+		if not npcs.has(giver) or not (qid in npcs[giver].get("quests", [])):
+			errs.append("%s: giver %s must exist and list the quest" % [L, giver])
+		var esc := str(JiebiaoRules.ESCORT_NPC[str(spec["kind"])])
+		if not npcs.has(esc):
+			errs.append("%s: escort npc %s missing" % [L, esc])
+		var found := false
+		for st in q.get("stages", []):
+			for o in st.get("objectives", []) if st is Dictionary else []:
+				if o is Dictionary and str(o.get("type", "")) == "ESCORT":
+					found = true
+					if str(o.get("npc", "")) != esc:
+						errs.append("%s: ESCORT npc must be %s for kind %s" % [L, esc, str(spec["kind"])])
+		if not found:
+			errs.append("%s: needs an ESCORT objective" % L)
+		var unit := str(JiebiaoRules.ROB_UNIT[str(spec["kind"])])
+		if not mons.has(unit):
+			errs.append("%s: rob unit monster %s missing" % [L, unit])
+	if any_jb:
+		if not mons.has(JiebiaoRules.BANDIT_ID):
+			errs.append("m3d events: monsters.%s (special landmine bandits) missing" % JiebiaoRules.BANDIT_ID)
+		for k in EV_TEMPLATES:
+			if not tpl.has(k):
+				errs.append("m3d events: text_templates.%s missing" % k)
+	if npcs.has(TourneyRules.CLERK_NPC):
+		if not ("TOURNEY" in npcs[TourneyRules.CLERK_NPC].get("services", [])):
+			errs.append("m3d events: npcs.%s needs the TOURNEY service" % TourneyRules.CLERK_NPC)
+		for k in EV_TOURNEY_TEMPLATES:
+			if not tpl.has(k):
+				errs.append("m3d events: text_templates.%s missing" % k)
+		var tok: Dictionary = view.get("items", {}).get(TourneyRules.TOKEN_ITEM, {})
+		if tok.is_empty():
+			errs.append("m3d events: items.%s missing" % TourneyRules.TOKEN_ITEM)
+		elif not bool(tok.get("no_sell", false)) or not bool(tok.get("no_drop", false)) or not bool(tok.get("keep_on_death", false)):
+			errs.append("m3d events: items.%s must be no_sell + no_drop + keep_on_death" % TourneyRules.TOKEN_ITEM)
+		for sid in view.get("sects", {}):
+			if not TourneyRules.SECT_SCHEDULE.has(str(sid)) or not TourneyRules.SECT_TITLES.has(str(sid)):
+				errs.append("m3d events: sect %s has no tourney schedule or champion title (TourneyRules)" % str(sid))
+	return errs
+
+# ==== M3d WP-ERRANDS ====（M3D_PLAN §9.2；WP-ERRANDS 在這個區塊填）
+## M3D_PLAN §6.1：chore.kind（SECT／TOWN）、decay_all；TOWN 的任務 repeat.max == 0、decay_pct 最後一個 ≤ 30、lp 0–100；
+## §6、§8.5：WP-ERRANDS 的 NPC／怪物／道具／模板存在（1.0B 的列只在 1.0B 視圖檢查）；黑龍潭迷宮走得到瑛姑、走錯的出口繞回陣口；
+## §6.5：每個切磋弟子都對得到一個門派（SectSystem.spar_sect 同規則）
+const ER_NPCS_A := ["n_er_sanbahong", "n_er_xx_funv", "n_er_xx_nongfu", "n_er_dl_zuigui", "n_er_dl_ahu", "n_er_dl_qingqing"]
+const ER_NPCS_B := ["n_er_kezhene", "n_er_guojing", "n_er_tiefan", "n_er_yinggu", "n_er_cien"]
+const ER_QUESTS_A := ["q_er_zhugeyi", "q_er_biandang_xx", "q_er_biandang_dl", "q_er_zuigui", "q_er_ahu"]
+const ER_QUESTS_B := ["q_er_kezhene", "q_er_jiuwei"]
+const ER_MONSTERS_A := ["m_er_baiyuan"]
+const ER_MONSTERS_B := ["m_er_wulin_1", "m_er_wulin_2", "m_er_wulin_3", "m_er_wulin_4", "m_er_jiuwei", "m_er_yang"]
+const ER_TEMPLATES := ["er_spar_not_disciple", "er_town_no_lp", "er_zuigui_stolen"]
+const ER_TEMPLATES_B := ["er_wlt_start", "er_wlt_win", "er_wlt_lost", "er_wlt_refund"]
+const ER_MAZE := ["hl_mud1", "hl_mud2", "hl_mud3", "hl_mud4", "hl_mud5"]
+
+static func _check_m3d_errands(view: Dictionary) -> PackedStringArray:
+	var errs := PackedStringArray()
+	var quests: Dictionary = view.get("quests", {})
+	for qid in quests:
+		var q: Dictionary = quests[qid]
+		var c: Variant = q.get("chore", null)
+		if not (c is Dictionary):
+			continue
+		var L := "quests.%s.chore" % qid
+		var kind := str((c as Dictionary).get("kind", "SECT"))
+		if not (kind in DataSchema.CHORE_KINDS):
+			errs.append("%s.kind '%s' not in %s (M3D §6.1)" % [L, kind, str(DataSchema.CHORE_KINDS)])
+			continue
+		if (c as Dictionary).has("decay_all") and typeof(c["decay_all"]) != TYPE_BOOL:
+			errs.append("%s.decay_all must be a bool (M3D §6.1)" % L)
+		if kind != "TOWN":
+			continue
+		var rp: Variant = q.get("repeat", {})
+		if not (rp is Dictionary) or int((rp as Dictionary).get("max", 1)) != 0:
+			errs.append("quests.%s: TOWN chores must be repeatable (repeat.max 0) (M3D §6.1)" % qid)
+		var lp: Variant = c.get("lp", null)
+		if typeof(lp) != TYPE_INT or int(lp) < 0 or int(lp) > 100:
+			errs.append("%s: lp must be an int in [0, 100]" % L)
+		var dp: Variant = c.get("decay_pct", null)
+		if not (dp is Array) or (dp as Array).is_empty():
+			errs.append("%s: decay_pct must be a non-empty array" % L)
+		else:
+			var prev := 101
+			for v in dp:
+				if typeof(v) != TYPE_INT or int(v) < 0 or int(v) > 100 or int(v) > prev:
+					errs.append("%s: decay_pct must be non-increasing ints in [0, 100]" % L)
+					break
+				prev = int(v)
+			if int((dp as Array)[(dp as Array).size() - 1]) > 30:
+				errs.append("%s: TOWN decay_pct must end at <= 30 (M3D §6.1)" % L)
+		var cost: Variant = c.get("cost", {})
+		if not (cost is Dictionary):
+			errs.append("%s: cost must be an object" % L)
+		if typeof(c.get("prof_below", 50)) != TYPE_INT:
+			errs.append("%s: prof_below must be an int" % L)
+		if str(c.get("src_note", "")).strip_edges() == "":
+			errs.append("%s: src_note missing" % L)
+	# 列存在（1.0B 視圖才有 1.0B 的列）
+	var npcs: Dictionary = view.get("npcs", {})
+	var mons: Dictionary = view.get("monsters", {})
+	var items: Dictionary = view.get("items", {})
+	var has_b := npcs.has("n_er_kezhene")
+	for nid in ER_NPCS_A + (ER_NPCS_B if has_b else []):
+		if not npcs.has(nid):
+			errs.append("npcs.%s missing (M3D §8.5)" % nid)
+	for qid in ER_QUESTS_A + (ER_QUESTS_B if has_b else []):
+		if not quests.has(qid):
+			errs.append("quests.%s missing (M3D §8.5)" % qid)
+	for mid in ER_MONSTERS_A + (ER_MONSTERS_B if has_b else []):
+		if not mons.has(mid):
+			errs.append("monsters.%s missing (M3D §8.5)" % mid)
+	if has_b:
+		for mid in ["m_er_wulin_1", "m_er_wulin_2", "m_er_wulin_3", "m_er_wulin_4"]:
+			if mons.has(mid) and not bool(mons[mid].get("no_rewards", false)):
+				errs.append("monsters.%s: 武林帖的對手要 no_rewards（獎勵是名聲歷練，M3D §6.2.3）" % mid)
+		if not items.has("i_er_wulintie"):
+			errs.append("items.i_er_wulintie missing (M3D §6.2.3)")
+	for mid in ["m_er_baiyuan", "m_er_yang"]:
+		if mons.has(mid) and int(mons[mid].get("morality_on_kill", 0)) >= 0:
+			errs.append("monsters.%s: must lower morality (M3D §6.4、E5)" % mid)
+	var tpl: Dictionary = view.get("text_templates", {})
+	if not tpl.is_empty():
+		for k in ER_TEMPLATES + (ER_TEMPLATES_B if has_b else []):
+			if not tpl.has(k):
+				errs.append("text_templates: missing '%s' (M3D §6)" % k)
+		if has_b:
+			for code in Protocol.M3D_REASONS_ERRANDS:
+				if not tpl.has("err_" + str(code)):
+					errs.append("text_templates: missing 'err_%s' (M3D §7)" % code)
+	# 黑龍潭：陣口走得到瑛姑小屋；陣裡走錯（單向）的出口一律繞回 hl_mud1
+	var idx := room_index(view)
+	if idx.has("hl_mud1"):
+		if not reachable_rooms(view, "xe_heilong").has("hl_hut"):
+			errs.append("heilongtan: hl_hut not reachable from xe_heilong (M3D §6.4)")
+		for rid in ER_MAZE:
+			if not idx.has(rid):
+				errs.append("heilongtan: maze room %s missing" % rid)
+				continue
+			for ex in idx[rid]["room"].get("exits", []):
+				if ex is Dictionary and bool(ex.get("oneway", false)) and str(ex.get("to", "")) != "hl_mud1":
+					errs.append("heilongtan: %s wrong turn %s must lead back to hl_mud1" % [rid, str(ex.get("dir", ""))])
+	# 切磋弟子 → 門派（E6）
+	var sects: Dictionary = view.get("sects", {})
+	for mid in mons:
+		var smid := str(mid)
+		if not (smid == "m_hs_trainee" or (smid.begins_with("m_") and smid.ends_with("_dizi") and not smid.begins_with("m_npc_"))):
+			continue
+		if smid == "m_hs_trainee":
+			continue
+		var prefix := smid.substr(2, smid.length() - 7)
+		var hit := str(mons[mid].get("sect", "")) != ""
+		for sid in sects:
+			if str(sects[sid].get("prefix", "")) == prefix:
+				hit = true
+		if not hit:
+			errs.append("monsters.%s: spar monster maps to no sect (M3D §6.5)" % mid)
+	return errs
+
+# ==== M3d WP-LAW ====（M3D_PLAN §2、§8.3、§8.4）
+const M3D_BOOL_OPTIONS := ["bounty_enabled", "bounty_hunters", "jiebiao_enabled", "tourney_enabled"]
+const M3D_INT_OPTIONS := { "equip_cooldown_ms": [0, 5000] }
+
+## 五個 M3d 伺服器選項（缺 key = 預設；有就必須是正確型別與範圍）
+func _check_m3d_options(loader: DataLoader) -> void:
+	var so := loader.server_options_default
+	for k in M3D_BOOL_OPTIONS:
+		if so.has(k) and typeof(so[k]) != TYPE_BOOL:
+			errors.append("server_options.%s must be a bool (M3D §8.3)" % k)
+	for k in M3D_INT_OPTIONS:
+		if so.has(k) and (typeof(so[k]) != TYPE_INT or int(so[k]) < int(M3D_INT_OPTIONS[k][0]) or int(so[k]) > int(M3D_INT_OPTIONS[k][1])):
+			errors.append("server_options.%s must be an int in %s (M3D §8.3)" % [k, str(M3D_INT_OPTIONS[k])])
+
+const LAW_NPC_IDS := ["n_law_board_xx", "n_law_board_dl", "n_law_guanye_xx_a", "n_law_guanye_xx_b",
+	"n_law_guanye_dl_a", "n_law_guanye_dl_b", "n_law_tianshi_xx", "n_law_tianshi_dl"]
+const LAW_NPC_IDS_B := ["n_law_board_jc", "n_law_guanye_jc_a", "n_law_guanye_jc_b", "n_law_banxian_jc"]
+const LAW_MONSTERS := ["m_law_hunter_1", "m_law_hunter_2", "m_law_hunter_3"]
+const LAW_TEMPLATES := ["law_license_ok", "law_license_void", "law_bounty_earned", "law_bounty_paid", "law_cleansed",
+	"law_no_bounty_friend", "law_no_bounty_daily", "law_hunter_beaten", "law_hunter_escaped", "law_listed",
+	"rmr_law_caught", "rmr_law_hunted", "law_deaf_1", "law_deaf_2", "law_deaf_3"]
+
+## 共通 schema（M3D_PLAN §8.4）：CLEANSE 服務必須有 cleanse（KILLING／PK）、deaf 是 bool、martial_arts.combo 是字典時
+## 有 group 與兩列 pair（各有存在的 art）；道具 M3d 效果；chore.kind 列舉。WP-LAW 自己的列：NPC、怪物、模板、err_ 原因碼
+static func _check_m3d_law(view: Dictionary) -> PackedStringArray:
+	var errs := PackedStringArray()
+	var npcs: Dictionary = view.get("npcs", {})
+	for nid in npcs:
+		var n: Dictionary = npcs[nid]
+		var svcs: Array = n.get("services", []) if n.get("services") is Array else []
+		if "CLEANSE" in svcs and not (str(n.get("cleanse", "")) in DataSchema.NPC_CLEANSE_KINDS):
+			errs.append("npcs.%s: CLEANSE needs cleanse in %s (M3D §8.4)" % [nid, str(DataSchema.NPC_CLEANSE_KINDS)])
+		if n.has("cleanse") and not ("CLEANSE" in svcs):
+			errs.append("npcs.%s: cleanse field without CLEANSE service" % nid)
+		if n.has("deaf") and typeof(n["deaf"]) != TYPE_BOOL:
+			errs.append("npcs.%s: deaf must be a bool" % nid)
+	var arts: Dictionary = view.get("martial_arts", {})
+	for aid in arts:
+		var cb: Variant = arts[aid].get("combo", null)
+		if not (cb is Dictionary):
+			continue   # 舊的 combo: true（WP-COMBAT 改成字典前）不檢查
+		for f in DataSchema.ART_COMBO_FIELDS:
+			if not (cb as Dictionary).has(f):
+				errs.append("martial_arts.%s.combo: missing '%s'" % [aid, f])
+		var pair: Variant = (cb as Dictionary).get("pair", [])
+		if not (pair is Array) or (pair as Array).size() != 2:
+			errs.append("martial_arts.%s.combo.pair must have 2 rows" % aid)
+		else:
+			for p in pair:
+				if not (p is Dictionary) or not arts.has(str(p.get("art", ""))):
+					errs.append("martial_arts.%s.combo.pair: art '%s' missing" % [aid, str(p.get("art", "")) if p is Dictionary else "?"])
+	for qid in view.get("quests", {}):
+		var c: Variant = view["quests"][qid].get("chore", null)
+		if c is Dictionary and (c as Dictionary).has("kind") and not (str(c["kind"]) in DataSchema.CHORE_KINDS):
+			errs.append("quests.%s.chore.kind '%s' not in %s" % [qid, str(c["kind"]), str(DataSchema.CHORE_KINDS)])
+	# WP-LAW 自己的列（1.0B 的列在 1.0A 視圖裡不存在 → 不檢查）
+	for nid in LAW_NPC_IDS + (LAW_NPC_IDS_B if npcs.has("n_law_board_jc") else []):
+		if not npcs.has(nid):
+			errs.append("npcs.%s missing (M3D §2.8)" % nid)
+	for nid in npcs:
+		var row: Dictionary = npcs[nid]
+		if not str(nid).begins_with("n_law_"):
+			continue
+		var svcs2: Array = row.get("services", [])
+		if str(nid).begins_with("n_law_guanye_") and not ("LICENSE" in svcs2):
+			errs.append("npcs.%s: 官爺 needs LICENSE" % nid)
+		if str(nid).begins_with("n_law_board_") and not ("BOARD" in svcs2):
+			errs.append("npcs.%s: 佈告欄 needs BOARD" % nid)
+		if str(nid).ends_with("_b") and str(nid).begins_with("n_law_guanye_") and row.get("deaf", false) != true:
+			errs.append("npcs.%s: the _b 官爺 is the deaf one (deaf: true)" % nid)
+	var mons: Dictionary = view.get("monsters", {})
+	for mid in LAW_MONSTERS:
+		if not mons.has(mid):
+			errs.append("monsters.%s missing (M3D §2.5)" % mid)
+		elif not bool(mons[mid].get("no_rewards", false)):
+			errs.append("monsters.%s: hunters must be no_rewards (M3D §2.5)" % mid)
+	var tpl: Dictionary = view.get("text_templates", {})
+	if not tpl.is_empty():
+		for k in LAW_TEMPLATES:
+			if not tpl.has(k):
+				errs.append("text_templates: missing '%s' (M3D §2)" % k)
+		for code in Protocol.M3D_REASONS_LAW:
+			if not tpl.has("err_" + str(code)):
+				errs.append("text_templates: missing 'err_%s' (M3D §7)" % code)
 	return errs

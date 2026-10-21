@@ -378,23 +378,24 @@
           "cost_inner": 28, "cost_jing": 0, "status": "paralysis", "status_chance": 0.2, "flavor": "move_whip_fan",
           "src": "proposal" }
       ] },
-    { "id": "gm_suxin", "name": "玉女素心劍法", "sect_id": "gumu", "category": "SWORD", "base_skill": "basic_sword",
-      "difficulty": 1.3, "tier": "QUEST", "self_study_until": 0, "self_study_cap": 0, "party_size": 2,
+    { "id": "gm_suxin", "name": "玉女素心劍法", "sect_id": "", "category": "SWORD", "base_skill": "basic_sword",
+      "difficulty": 1.3, "tier": "SPECIAL", "self_study_until": 0, "self_study_cap": 0, "party_size": 2,
       "monster_only": false,
-      "requires": [
-        {"type": "sect", "sect": "gumu"},
-        {"type": "quest_flag", "flag": "gm_suxin_unlocked"},
-        {"type": "skill_min", "skill": "gm_yunu_jian", "value": 60}
-      ],
-      "combo": true, "desc": "玉女劍法與全真劍法雙劍合璧，須一男一女心意相通方能施展。", "era": "1.0A", "src": "verified",
-      "src_note": "2001 官方頁：特殊武功，小龍女教；合體技（全真男＋古墓女、默契、3 秒內）；M3a 不開放，旗標鎖住",
+      "requires": [],
+      "combo": { "group": "suxin",
+        "pair": [ { "gender": "M", "art": "qz_jianfa", "min": 60, "sect_skill_min": 30 },
+                  { "gender": "F", "art": "gm_yunu_jian", "min": 60, "sect_skill_min": 30 } ],
+        "moqi_min": 10,
+        "src_note": "官方 jy1-2-6-2 原文：「男性玩家需要先學過全真劍法，女性玩家則需要學過玉女劍法，並且兩人組隊，待到默契值與心性修為都達到一定程度後方可修練」【已證實】；門檻數字（默契 10、本派門技 30、武功 60）【設計提案】。官方只寫合體一擊加配合度 → 還不會合體武功的兩人攢不到默契；本作加「兩人同一邊一起打贏一場配合度 +10、每對每遊戲日最多 60」（ComboSystem）【設計提案・非原作】，約 4 個遊戲日攢到默契 10。使用：兩人都要會素心劍、一男一女、同一場同一邊（官方 jy1-2-6-1「雙方都學合體武功」）" },
+      "desc": "玉女劍法與全真劍法雙劍合璧，須一男一女心意相通方能施展。", "era": "1.0B", "src": "verified",
+      "src_note": "2001 官方頁：特殊武功，小龍女教；合體技（全真男＋古墓女、默契、3 秒內）。M3D_PLAN §3.3.1（R10）：1.0B 合體技系統開放 → sect_id 改空（全真男、古墓女都能學）、requires 拿掉 sect gumu 與 gm_suxin_unlocked（改由師父列 combo_ready 與 combo.pair 把關；沒有任務旗標 → tier QUEST 改 SPECIAL）；修練條件照官方（組隊、默契、心性＝本派門技）、使用只要同一場同一邊 3 秒內【設計提案：放寬】；門檻數字【設計提案】",
       "moves": [
-        { "id": "gm_sx_1", "name": "雙劍合璧", "unlock_level": 1, "power": 50, "range": 1, "aoe": "SINGLE",
+        { "id": "gm_sx_1", "name": "雙劍合璧", "unlock_level": 1, "power": 42, "range": 1, "aoe": "SINGLE",
           "cost_inner": 20, "cost_jing": 0, "status": "", "status_chance": 0.0, "flavor": "move_sword_basic",
-          "src": "proposal" },
-        { "id": "gm_sx_2", "name": "素心照影", "unlock_level": 50, "power": 70, "range": 1, "aoe": "SINGLE",
-          "cost_inner": 30, "cost_jing": 0, "status": "", "status_chance": 0.0, "flavor": "move_sword_basic",
-          "src": "proposal" }
+          "src": "proposal", "src_note": "M3d 審查（第 3 輪）：50 → 42（balance_sim arts_suxin_power：60 級對本派基礎劍法 1.52 倍超出 1.1–1.5 帶；合體一擊另外 +10–25%）" },
+        { "id": "gm_sx_2", "name": "素心照影", "unlock_level": 50, "power": 56, "range": 1, "aoe": "SINGLE",
+          "cost_inner": 28, "cost_jing": 0, "status": "", "status_chance": 0.0, "flavor": "move_sword_basic",
+          "src": "proposal", "src_note": "M3d 審查（第 3 輪）：70 → 56（同上）；耗內 30 → 28（內力 ≤ 威力一半）" }
       ] },
     { "id": "gm_jiuyin", "name": "九陰真經", "sect_id": "gumu", "category": "INNER", "base_skill": "basic_inner",
       "difficulty": 1.5, "tier": "QUEST", "self_study_until": 10, "self_study_cap": 0, "party_size": 0,
@@ -597,18 +598,7 @@
           "cost_inner": 25, "cost_jing": 0, "status": "inner_wound", "status_chance": 0.15,
           "flavor": "move_lj_liuyang", "src": "proposal" }
       ] },
-    { "id": "lj_bahuang", "name": "八荒六合唯我獨尊功", "sect_id": "lingjiu", "category": "INNER", "base_skill": "basic_inner",
-      "difficulty": 1.5, "tier": "QUEST", "self_study_until": 0, "self_study_cap": 0, "party_size": 0,
-      "monster_only": false,
-      "requires": [
-        {"type": "sect", "sect": "lingjiu"},
-        {"type": "quest_flag", "flag": "lj_bahuang_learned"},
-        {"type": "skill_min", "skill": "lj_xiaoyao", "value": 80},
-        {"type": "skill_min", "skill": "dingxing", "value": 50}
-      ],
-      "inner": {"heal_mult": 1.3, "expel_mult": 1.2}, "desc": "童姥的獨門神功，每三十年返老還童一次，功力深不可測。須完成童姥交代的事件才能修習。",
-      "era": "1.0A", "src": "later",
-      "src_note": "研究 靈鷲宮：官方進階武功（1.0 由事件取得）；逍遙 80／門技 50 與任務鏈為免費版【後期版】；M3a 以 quest_flag 鎖住", "moves": [] },
+    {"id": "lj_bahuang", "name": "八荒六合唯我獨尊功", "sect_id": "lingjiu", "category": "INNER", "base_skill": "basic_inner", "difficulty": 1.5, "tier": "QUEST", "self_study_until": 40, "self_study_cap": 0, "party_size": 0, "monster_only": false, "requires": [{"type": "sect", "sect": "lingjiu"}, {"type": "quest_flag", "flag": "lj_bahuang_learned"}, {"type": "skill_min", "skill": "lj_xiaoyao", "value": 80}, {"type": "skill_min", "skill": "dingxing", "value": 50}], "inner": {"heal_mult": 1.3, "expel_mult": 1.2}, "desc": "童姥的獨門神功，每三十年返老還童一次，功力深不可測。須完成童姥交代的事件才能修習。", "era": "1.0B", "src": "later", "src_note": "研究 靈鷲（m3d_sect_art_chains）：2001-08-20「現在還都是沒影的事」；c837（2002-08-18）逍遙心法 80、定性 50、自修；2012 鏈：服侍童姥 → 無涯子 → 西夏虛竹 → 回童姥 1 級 → 自修 1–40 → 蘭劍消點 40–70。M3d：era 1.0A→1.0B、self_study_until 40（任務 q_ar_lj_bahuang 給旗標與 1 級；蘭劍 ms_ar_lj_lanjian_bahuang 教 41–70）【後期版】", "moves": []},
     { "id": "qz_xinfa", "name": "全真心法", "sect_id": "quanzhen", "category": "INNER", "base_skill": "basic_inner",
       "difficulty": 0.8, "tier": "BASIC", "self_study_until": 0, "self_study_cap": 0, "party_size": 0,
       "monster_only": false, "requires": [{"type": "sect", "sect": "quanzhen"}],
@@ -733,56 +723,8 @@
           "cost_jing": 0, "status": "inner_wound", "status_chance": 0.1, "flavor": "move_qz_palm_fan",
           "src": "proposal" }
       ] },
-    { "id": "qz_chongyang", "name": "重陽劍法", "sect_id": "quanzhen", "category": "SWORD", "base_skill": "basic_sword",
-      "difficulty": 2.25, "tier": "QUEST", "self_study_until": 0, "self_study_cap": 0, "party_size": 0,
-      "monster_only": false,
-      "requires": [
-        {"type": "sect", "sect": "quanzhen"},
-        {"type": "quest_flag", "flag": "qz_chongyang_jian"},
-        {"type": "skill_min", "skill": "qz_xinfa", "value": 70},
-        {"type": "skill_min", "skill": "basic_sword", "value": 60},
-        {"type": "skill_min", "skill": "basic_inner", "value": 60},
-        {"type": "skill_min", "skill": "yangsheng", "value": 80}
-      ],
-      "desc": "祖師王重陽所傳的七星七絕劍，要循著百花谷、漱流隱士、雲遊道士一路求得劍譜才能修習（M3b 任務）。", "era": "1.0A", "src": "later",
-      "src_note": "研究 全真教：官方特殊武功；任務鏈與門檻（2002，係數 2.25）【後期版】；射程形狀【待考證】",
-      "moves": [
-        { "id": "qz_cy_1", "name": "七星聚首", "unlock_level": 1, "power": 40, "range": 2, "aoe": "SINGLE",
-          "cost_inner": 10, "cost_jing": 0, "status": "", "status_chance": 0.0, "flavor": "move_sword_basic",
-          "src": "proposal" },
-        { "id": "qz_cy_2", "name": "北斗回旋", "unlock_level": 30, "power": 55, "range": 2, "aoe": "SINGLE",
-          "cost_inner": 18, "cost_jing": 0, "status": "", "status_chance": 0.0, "flavor": "move_sword_basic",
-          "src": "proposal" },
-        { "id": "qz_cy_3", "name": "重陽歸真", "unlock_level": 60, "power": 70, "range": 2, "aoe": "SINGLE",
-          "cost_inner": 28, "cost_jing": 0, "status": "", "status_chance": 0.0, "flavor": "move_sword_basic",
-          "src": "proposal" }
-      ] },
-    { "id": "qz_kongming", "name": "空明拳", "sect_id": "quanzhen", "category": "FIST", "base_skill": "basic_fist",
-      "difficulty": 2.0, "tier": "QUEST", "self_study_until": 0, "self_study_cap": 0, "party_size": 0,
-      "monster_only": false,
-      "requires": [
-        {"type": "sect", "sect": "quanzhen"},
-        {"type": "quest_flag", "flag": "qz_kongming"},
-        {"type": "skill_min", "skill": "qz_haotian", "value": 70},
-        {"type": "skill_min", "skill": "basic_fist", "value": 80},
-        {"type": "skill_min", "skill": "qz_xinfa", "value": 80},
-        {"type": "skill_min", "skill": "yangsheng", "value": 90},
-        {"type": "attr_min", "attr": "luck", "value": 32},
-        {"type": "morality_min", "value": 1000}
-      ],
-      "desc": "以柔克剛、以空擊實的拳法，傳授者是誰江湖上說法不一（M3b 任務）。", "era": "1.0A", "src": "later",
-      "src_note": "研究 全真教：官方 自宮 列表有空明拳；門檻 2002（福 32、善 1000、係數 2）；教者 周伯通／王志謹 衝突【待考證】",
-      "moves": [
-        { "id": "qz_km_1", "name": "空碗盛飯", "unlock_level": 1, "power": 38, "range": 1, "aoe": "SINGLE",
-          "cost_inner": 8, "cost_jing": 0, "status": "", "status_chance": 0.0, "flavor": "move_fist_basic",
-          "src": "proposal" },
-        { "id": "qz_km_2", "name": "空屋住人", "unlock_level": 30, "power": 52, "range": 1, "aoe": "SINGLE",
-          "cost_inner": 16, "cost_jing": 0, "status": "", "status_chance": 0.0, "flavor": "move_fist_basic",
-          "src": "proposal" },
-        { "id": "qz_km_3", "name": "虛懷若谷", "unlock_level": 60, "power": 66, "range": 1, "aoe": "SINGLE",
-          "cost_inner": 26, "cost_jing": 0, "status": "", "status_chance": 0.0, "flavor": "move_fist_basic",
-          "src": "proposal" }
-      ] },
+    {"id": "qz_chongyang", "name": "重陽劍法", "sect_id": "quanzhen", "category": "SWORD", "base_skill": "basic_sword", "difficulty": 2.25, "tier": "QUEST", "self_study_until": 0, "self_study_cap": 100, "party_size": 0, "monster_only": false, "requires": [{"type": "sect", "sect": "quanzhen"}, {"type": "quest_flag", "flag": "qz_chongyang_jian"}, {"type": "skill_min", "skill": "qz_xinfa", "value": 70}, {"type": "skill_min", "skill": "basic_sword", "value": 60}, {"type": "skill_min", "skill": "basic_inner", "value": 60}, {"type": "skill_min", "skill": "yangsheng", "value": 80}, {"type": "any_of", "options": [[{"type": "skill_max", "skill": "qz_chongyang", "value": 29}], [{"type": "quest_flag", "flag": "qz_cy_shuliu"}, {"type": "skill_max", "skill": "qz_chongyang", "value": 39}], [{"type": "quest_flag", "flag": "qz_cy_yunyou"}]]}], "desc": "王重陽傳下的劍法，劍招連綿、七星相扣。要循山居隱士、漱流隱士、雲遊道士一路尋訪才學得全。", "era": "1.0B", "src": "later", "src_note": "研究 全真（m3d_sect_art_chains）：門檻 全心 70、基劍 60、基內 60、養生 80、三階、係數 2.25【2002-05-07】；鏈：百花谷「老頭」教到 20 → 自修到 30 → 三瓶狀元紅＋推薦信 → 漱流隱士 30→40 → 雲遊道士（拂塵）40→60（2002）；後期才叫山居隱士。最早 1.0B【待考證】。M3d WP-ARTS：era 1.0A→1.0B；self_study_until 照 M3D_PLAN §4.1 應為 30，但 Learning.check_master 在等級 < self_study_until 時師父一律不教（need_self_study），山居隱士就教不了 1–20 → 改 0，改用 requires 的 any_of 分段（30 級起要漱流隱士收下推薦信 qz_cy_shuliu、40 級起要雲遊道士收下拂塵 qz_cy_yunyou）【設計提案】；self_study_cap 100【設計提案；2002 作者自修到 76】；招式威力依 balance_sim arts_chongyang_power 調低（2002「威力不大」）", "moves": [{"id": "qz_cy_1", "name": "七星聚首", "unlock_level": 1, "power": 26, "range": 2, "aoe": "SINGLE", "cost_inner": 8, "cost_jing": 0, "status": "", "status_chance": 0.0, "flavor": "move_sword_basic", "src": "proposal"}, {"id": "qz_cy_2", "name": "北斗回旋", "unlock_level": 30, "power": 34, "range": 2, "aoe": "SINGLE", "cost_inner": 14, "cost_jing": 0, "status": "", "status_chance": 0.0, "flavor": "move_sword_basic", "src": "proposal"}, {"id": "qz_cy_3", "name": "重陽歸真", "unlock_level": 60, "power": 50, "range": 2, "aoe": "SINGLE", "cost_inner": 20, "cost_jing": 0, "status": "", "status_chance": 0.0, "flavor": "move_sword_basic", "src": "proposal"}]},
+    {"id": "qz_kongming", "name": "空明拳", "sect_id": "quanzhen", "category": "FIST", "base_skill": "basic_fist", "difficulty": 2.0, "tier": "QUEST", "self_study_until": 40, "self_study_cap": 0, "party_size": 0, "monster_only": false, "requires": [{"type": "sect", "sect": "quanzhen"}, {"type": "quest_flag", "flag": "qz_kongming"}, {"type": "skill_min", "skill": "qz_haotian", "value": 70}, {"type": "skill_min", "skill": "basic_fist", "value": 80}, {"type": "skill_min", "skill": "qz_xinfa", "value": 80}, {"type": "skill_min", "skill": "yangsheng", "value": 90}, {"type": "attr_min", "attr": "luck", "value": 32}, {"type": "morality_min", "value": 1000}], "desc": "以柔克剛、以空擊實的拳法，傳授者是誰江湖上說法不一（M3b 任務）。", "era": "1.0B", "src": "later", "src_note": "研究 全真（m3d_sect_art_chains）：所有有步驟的攻略都寫王志謹（全真布告欄旁）給 1 級、自修 1–40、王志謹消點到 70；門檻 昊天 70、搏擊 80、全心 80、養生 90、福 32、善 1000、三階、係數 2【2002-05-07】；早期 17173 與晚期官方全真頁都沒有 → M3d：era 1.0A→1.0B、self_study_until 40（任務 q_ar_qz_kongming 給 1 級，王志謹 ms_ar_qz_wangzhijin 教 41–70）【後期版】；M3d 審查：招式威力依 balance_sim arts_kongming_power（÷ 昊天掌 60 ∈ 1.1–1.5）調低 38／52／66 → 34／46／58【設計提案】", "moves": [{"id": "qz_km_1", "name": "空碗盛飯", "unlock_level": 1, "power": 34, "range": 1, "aoe": "SINGLE", "cost_inner": 8, "cost_jing": 0, "status": "", "status_chance": 0.0, "flavor": "move_fist_basic", "src": "proposal"}, {"id": "qz_km_2", "name": "空屋住人", "unlock_level": 30, "power": 46, "range": 1, "aoe": "SINGLE", "cost_inner": 16, "cost_jing": 0, "status": "", "status_chance": 0.0, "flavor": "move_fist_basic", "src": "proposal"}, {"id": "qz_km_3", "name": "虛懷若谷", "unlock_level": 60, "power": 58, "range": 1, "aoe": "SINGLE", "cost_inner": 26, "cost_jing": 0, "status": "", "status_chance": 0.0, "flavor": "move_fist_basic", "src": "proposal"}]},
     {"id": "sl_riyuebian", "name": "日月鞭法", "sect_id": "shaolin", "category": "WHIP", "base_skill": "basic_whip", "difficulty": 0.9, "tier": "ADVANCED", "self_study_until": 0, "self_study_cap": 0, "party_size": 0, "monster_only": false, "requires": [{"type": "sect", "sect": "shaolin"}, {"type": "skill_min", "skill": "foxa", "value": 30}, {"type": "skill_min", "skill": "sl_xinfa", "value": 35}, {"type": "quest_flag", "flag": "sl_riyuebian_ok"}], "desc": "少林二階鞭法，長鞭舞開如日月輪轉，也是金剛伏魔圈的根基。", "era": "1.0A", "src": "verified", "src_note": "研究：玄淨 日月鞭法；金剛伏魔圈要日月鞭法 50（2017 轉述）", "moves": [{"id": "sl_ryb_1", "name": "日月同輝", "unlock_level": 1, "power": 32, "range": 2, "aoe": "SINGLE", "cost_inner": 4, "cost_jing": 0, "status": "", "status_chance": 0.0, "flavor": "move_whip_basic", "src": "proposal"}, {"id": "sl_ryb_2", "name": "橫掃千軍", "unlock_level": 40, "power": 36, "range": 2, "aoe": "FAN", "cost_inner": 10, "cost_jing": 0, "status": "", "status_chance": 0.0, "flavor": "move_whip_fan", "src": "proposal"}, {"id": "sl_ryb_3", "name": "日月無光", "unlock_level": 80, "power": 60, "range": 2, "aoe": "SINGLE", "cost_inner": 15, "cost_jing": 0, "status": "", "status_chance": 0.0, "flavor": "move_whip_basic", "src": "proposal"}]},
     { "id": "sl_jgfmq", "name": "金剛伏魔圈", "sect_id": "shaolin", "category": "FORMATION",
       "base_skill": "basic_formation", "difficulty": 1.0, "tier": "SPECIAL", "self_study_until": 0,
@@ -1225,6 +1167,9 @@
     {"id": "jq_mon_eyu", "name": "鱷吻", "sect_id": "", "category": "FIST", "base_skill": "basic_fist", "difficulty": 0.9, "tier": "BASIC", "self_study_until": 0, "self_study_cap": 0, "party_size": 0, "monster_only": true, "requires": [], "desc": "寒潭鱷魚的巨吻與粗尾。（僅限怪物）", "era": "1.0B", "src": "proposal", "moves": [{"id": "jq_mon_eyu_1", "name": "巨吻撕咬", "unlock_level": 1, "power": 30, "range": 1, "aoe": "SINGLE", "cost_inner": 0, "cost_jing": 0, "status": "", "status_chance": 0.0, "flavor": "move_bite", "src": "proposal"}, {"id": "jq_mon_eyu_2", "name": "鱷尾橫掃", "unlock_level": 40, "power": 26, "range": 1, "aoe": "FAN", "cost_inner": 0, "cost_jing": 0, "status": "", "status_chance": 0.0, "flavor": "move_jq_eyuwei", "src": "proposal"}]},
     {"id": "jq_mon_kuangquan", "name": "瘋囚亂拳", "sect_id": "", "category": "FIST", "base_skill": "basic_fist", "difficulty": 0.9, "tier": "BASIC", "self_study_until": 0, "self_study_cap": 0, "party_size": 0, "monster_only": true, "requires": [], "desc": "關得太久、早已瘋癲的囚徒毫無章法的亂拳，力道卻大得出奇。（僅限怪物）", "era": "1.0B", "src": "proposal", "moves": [{"id": "jq_mon_kuangquan_1", "name": "亂拳打瘋狗", "unlock_level": 1, "power": 28, "range": 1, "aoe": "SINGLE", "cost_inner": 0, "cost_jing": 0, "status": "", "status_chance": 0.0, "flavor": "move_fist_basic", "src": "proposal"}]},
     {"id": "mon_mw_mawang", "name": "馬王刀法", "sect_id": "", "category": "BLADE", "base_skill": "basic_blade", "difficulty": 0.9, "tier": "BASIC", "self_study_until": 0, "self_study_cap": 0, "party_size": 0, "monster_only": true, "requires": [], "desc": "關外馬賊馬背上練出來的刀法，大開大闔。", "era": "1.0A", "src": "proposal", "src_note": "怪物專用；招名【設計提案】；威力比照 mon_kaishan", "moves": [{"id": "mon_mw_mawang_1", "name": "回馬刀", "unlock_level": 1, "power": 20, "range": 1, "aoe": "SINGLE", "cost_inner": 0, "cost_jing": 0, "status": "", "status_chance": 0.0, "flavor": "move_blade_basic", "src": "proposal"}, {"id": "mon_mw_mawang_2", "name": "踏蹄斬", "unlock_level": 50, "power": 28, "range": 1, "aoe": "SINGLE", "cost_inner": 0, "cost_jing": 0, "status": "", "status_chance": 0.0, "flavor": "move_blade_basic", "src": "proposal"}]},
-    {"id": "mon_gc_jiguan", "name": "機關鐵臂", "sect_id": "", "category": "FIST", "base_skill": "basic_fist", "difficulty": 0.9, "tier": "BASIC", "self_study_until": 0, "self_study_cap": 0, "party_size": 0, "monster_only": true, "requires": [], "desc": "高昌機關人的銅臂鐵拳，一下一下沉重無比，擋也擋不住。", "era": "1.0A", "src": "proposal", "src_note": "研究：鐵心網 FAQ「高昌機關人防禦還打 200+」【已證實】→ 用高威力招式與高臂力表達，不改戰鬥公式；數值【設計提案】，由 balance_sim 驗證", "moves": [{"id": "mon_gc_jiguan_1", "name": "鐵臂橫掃", "unlock_level": 1, "power": 34, "range": 1, "aoe": "SINGLE", "cost_inner": 0, "cost_jing": 0, "status": "", "status_chance": 0.0, "flavor": "move_ram", "src": "proposal"}, {"id": "mon_gc_jiguan_2", "name": "連環鐵拳", "unlock_level": 100, "power": 44, "range": 1, "aoe": "SINGLE", "cost_inner": 0, "cost_jing": 0, "status": "", "status_chance": 0.0, "flavor": "move_ram", "src": "proposal"}]}
+    {"id": "mon_gc_jiguan", "name": "機關鐵臂", "sect_id": "", "category": "FIST", "base_skill": "basic_fist", "difficulty": 0.9, "tier": "BASIC", "self_study_until": 0, "self_study_cap": 0, "party_size": 0, "monster_only": true, "requires": [], "desc": "高昌機關人的銅臂鐵拳，一下一下沉重無比，擋也擋不住。", "era": "1.0A", "src": "proposal", "src_note": "研究：鐵心網 FAQ「高昌機關人防禦還打 200+」【已證實】→ 用高威力招式與高臂力表達，不改戰鬥公式；數值【設計提案】，由 balance_sim 驗證", "moves": [{"id": "mon_gc_jiguan_1", "name": "鐵臂橫掃", "unlock_level": 1, "power": 34, "range": 1, "aoe": "SINGLE", "cost_inner": 0, "cost_jing": 0, "status": "", "status_chance": 0.0, "flavor": "move_ram", "src": "proposal"}, {"id": "mon_gc_jiguan_2", "name": "連環鐵拳", "unlock_level": 100, "power": 44, "range": 1, "aoe": "SINGLE", "cost_inner": 0, "cost_jing": 0, "status": "", "status_chance": 0.0, "flavor": "move_ram", "src": "proposal"}]},
+    {"id": "mon_law_lianqiang", "name": "鏈子槍法", "sect_id": "", "category": "WHIP", "base_skill": "basic_whip", "difficulty": 0.9, "tier": "BASIC", "self_study_until": 0, "self_study_cap": 0, "party_size": 0, "monster_only": true, "requires": [], "desc": "六扇門神捕的獨門兵器，槍頭連著鐵鏈，收放自如，遠近皆能傷人（僅限怪物）。", "era": "1.0A", "src": "proposal", "src_note": "M3d WP-LAW：神捕 m_law_hunter_3 用（M3D_PLAN §2.5「鏈子槍」）；本作沒有槍類武學，照軟兵器（鞭）算【設計提案】", "moves": [{"id": "mon_law_lianqiang_1", "name": "鐵鏈纏身", "unlock_level": 1, "power": 30, "range": 2, "aoe": "SINGLE", "cost_inner": 0, "cost_jing": 0, "status": "", "status_chance": 0.0, "flavor": "move_whip_basic", "src": "proposal"}, {"id": "mon_law_lianqiang_2", "name": "毒龍出洞", "unlock_level": 100, "power": 42, "range": 2, "aoe": "SINGLE", "cost_inner": 0, "cost_jing": 0, "status": "", "status_chance": 0.0, "flavor": "move_whip_basic", "src": "proposal"}]},
+    {"id": "em_sixiang", "name": "四象掌", "sect_id": "emei", "category": "FIST", "base_skill": "basic_fist", "difficulty": 1.2, "tier": "QUEST", "self_study_until": 0, "self_study_cap": 70, "party_size": 0, "monster_only": false, "requires": [{"type": "sect", "sect": "emei"}, {"type": "quest_flag", "flag": "em_sixiang_ok"}, {"type": "skill_min", "skill": "em_foguang", "value": 50}, {"type": "skill_min", "skill": "duane", "value": 60}, {"type": "attr_min", "attr": "luck", "value": 20}], "desc": "郭襄所創的掌法，太陽、少陰、少陽、太陰四象流轉，一掌拍出、掌風往前半邊散開。", "era": "1.0B", "src": "later", "src_note": "研究 峨嵋（m3d_sect_art_chains）：KFLEARN 2001-09-10 已有四象掌（福緣 20）；官方 index_jy19-1 羅煞劍任務；網金：佛光 50、斷惡 60、福緣 20–25、郭襄教到 10、自修 11–35、萬年寺靜象 35–70、半米字、係數 2.21＋5000。M3d：郭襄 2001-12-07 才登場 → 1.0B；difficulty 1.2【設計提案】；半米字＝既有範圍型 FAN；M3D_PLAN §4.6 寫 self_study_until 10，但那會讓郭襄教不了 2–10（Learning.check_master）→ 0，郭襄教到 10 之後自修到 70（萬年寺不在本作 → 35–70 也自修）【設計提案】；威力見 balance_sim arts_sixiang_power", "moves": [{"id": "em_sx_1", "name": "四象初分", "unlock_level": 1, "power": 30, "range": 1, "aoe": "SINGLE", "cost_inner": 6, "cost_jing": 0, "status": "", "status_chance": 0.0, "flavor": "move_em_palm", "src": "proposal"}, {"id": "em_sx_2", "name": "兩儀生象", "unlock_level": 10, "power": 26, "range": 2, "aoe": "FAN", "cost_inner": 12, "cost_jing": 0, "status": "", "status_chance": 0.0, "flavor": "move_em_palm", "src": "proposal"}, {"id": "em_sx_3", "name": "四象歸元", "unlock_level": 50, "power": 42, "range": 2, "aoe": "FAN", "cost_inner": 16, "cost_jing": 0, "status": "inner_wound", "status_chance": 0.15, "flavor": "move_em_palm", "src": "proposal"}]},
+    {"id": "xd_xuemo", "name": "血魔刀法", "sect_id": "xuedao", "category": "BLADE", "base_skill": "basic_blade", "difficulty": 1.8, "tier": "QUEST", "self_study_until": 10, "self_study_cap": 0, "party_size": 0, "monster_only": false, "requires": [{"type": "sect", "sect": "xuedao"}, {"type": "quest_flag", "flag": "xd_xuemo_ok"}, {"type": "skill_min", "skill": "weihe", "value": 90}, {"type": "skill_min", "skill": "basic_inner", "value": 100}, {"type": "skill_min", "skill": "basic_blade", "value": 100}, {"type": "skill_min", "skill": "xd_xuehai", "value": 30}, {"type": "morality_max", "value": -900}], "desc": "血魔老祖的刀法，刀刀見血。傳說練到七十級，一刀下去滿場皆是血光。", "era": "1.0B", "src": "later", "src_note": "研究 血刀（m3d_sect_art_chains）：官方第七話 2001-11-22「血魔刀法出現在江湖上了」、第九話「血魔老祖的心事」、官方血刀頁傳功師父「血魔老祖─血魔刀法」；刀、四階、係數 2.23＋5000、流血（2012 狀態表）；2002-08-19 門檻 威嚇 90、基內 100、基刀 100、血海 30、善惡 −900～−1000、自修到 10【最早版本】；「練到 70 據說是全屏」→ 最後一招用最大的既有範圍型 CROSS_L；剛開時比血刀刀法弱（balance_sim arts_xuemo_power 0.9–1.3）；difficulty 1.8【設計提案】", "moves": [{"id": "xd_xm_1", "name": "血魔初現", "unlock_level": 1, "power": 30, "range": 1, "aoe": "SINGLE", "cost_inner": 8, "cost_jing": 0, "status": "bleed", "status_chance": 0.15, "flavor": "move_blade_basic", "src": "proposal"}, {"id": "xd_xm_2", "name": "血雨腥風", "unlock_level": 30, "power": 28, "range": 2, "aoe": "LINE", "cost_inner": 14, "cost_jing": 0, "status": "bleed", "status_chance": 0.15, "flavor": "move_blade_line", "src": "proposal"}, {"id": "xd_xm_3", "name": "血魔滔天", "unlock_level": 70, "power": 36, "range": 3, "aoe": "CROSS_L", "cost_inner": 15, "cost_jing": 0, "status": "bleed", "status_chance": 0.2, "flavor": "move_blade_line", "src": "proposal"}]}
   ]
 }

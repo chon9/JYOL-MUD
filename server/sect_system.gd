@@ -136,7 +136,13 @@ func req_ctx(s: Session) -> Dictionary:
 	var ctx := { Requirements.CTX_SHICHEN: str(host.clock()["shichen_name"]) }
 	if s != null and s.character != null:
 		ctx[Requirements.CTX_PARTY_SIZE] = idle_party_here(s).size()
+	ctx.merge(_m3d_ctx(host.m2_call(host.get("law"), "req_ctx", [s], {})), true)   # M3d WP-LAW
+	ctx.merge(_m3d_ctx(host.m2_call(host.get("combo"), "req_ctx", [s], {})), true)   # M3d WP-COMBAT
 	return ctx
+
+## M3D_PLAN §9.2：其他系統的 req_ctx 回傳不是字典時當空
+static func _m3d_ctx(v: Variant) -> Dictionary:
+	return v if v is Dictionary else {}
 
 ## 同隊、同房間、不在戰鬥中的隊員（含自己，自己排第一）
 func idle_party_here(s: Session) -> Array:
@@ -714,6 +720,7 @@ func on_battle_settled(s: Session, ch, summary: Dictionary) -> void:
 
 ## sect_skill_gain KILL_ALIGNMENT：每殺一隻 alignment 相符的怪，門派技能熟練 +prof
 func _kill_gain(s: Session, ch, kills: Variant) -> void:
+	_m3d_arts_kills(s, ch, kills)   # M3d WP-ARTS
 	if not (kills is Array) or (kills as Array).is_empty():
 		return
 	var row := sect_row(str(ch.sect))
@@ -783,6 +790,7 @@ func unit_monster(ref: String) -> String:
 
 ## PkSystem 呼叫：強制 PK 的發起者殺死同門玩家 → KILL_SAME_SECT（叫戰、被出手者反殺不算）
 func on_pvp_kill(killer: Session, victim_char, initiator: bool) -> void:
+	_m3d_arts_pvp_kill(killer, victim_char)   # M3d WP-ARTS
 	if killer == null or killer.character == null or victim_char == null or not initiator:
 		return
 	var sid := str(killer.character.sect)
@@ -822,6 +830,7 @@ func on_npc_attack(s: Session, npc_id: String, attack: Dictionary) -> void:
 func on_npc_killed(s: Session, ch, npc_id: String, attack: Dictionary, alignment: String) -> void:
 	if ch == null or str(ch.sect) == "":
 		return
+	_m3d_arts_npc_killed(s, ch, npc_id, attack)   # M3d WP-ARTS
 	var row := sect_row(str(ch.sect))
 	var ss := str(row.get("sect_skill", ""))
 	for p in row.get("sect_skill_penalties", []):
@@ -1568,9 +1577,13 @@ func spar_day(ch) -> Dictionary:
 		ch.counters[SPAR_DAY_KEY] = sd
 	return sd
 
-## 這場切磋的處理結果：{ "xp": bool（實戰保留）, "lp": bool（學點保留）, "why": ""|"rule"|"capped"|"novice" }；
-## count = true 時記一場（只有真的給了獎勵才記）
-func spar_decide(ch, count: bool) -> Dictionary:
+## 這場切磋的處理結果：{ "xp": bool（實戰保留）, "lp": bool（學點保留）, "why": ""|"rule"|"capped"|"novice"|"not_disciple" }；
+## count = true 時記一場（只有真的給了獎勵才記）。
+## M3D_PLAN §6.5（M3d WP-ERRANDS，E6 BUG）：mid 是切磋弟子的怪物列；mid 屬於的門派（spar_sect）≠ 角色門派
+## → 不給實戰與學點（why "not_disciple"），也**不計**每日場數。mid 空字串 ＝ 舊呼叫法（不檢查）
+func spar_decide(ch, count: bool, mid := "") -> Dictionary:
+	if mid != "" and spar_sect(mid) != str(ch.sect):
+		return { "xp": false, "lp": false, "why": "not_disciple" }
 	if host.rules.get("spar_rewards", false) != true:
 		return { "xp": false, "lp": false, "why": "rule" }
 	var sd := spar_day(ch)
@@ -1596,7 +1609,8 @@ func _spar_rows(kills: Variant) -> Array:
 
 ## 發放前鉤子（M3c2 整合：BattleSystem._settle_player 在 apply_rewards 之前呼叫）：就地改 r 的 combat_xp／learn_points。
 ## dead_refs：這場被打倒的全部怪物 ref（BattleRewards 對每位存活玩家都算全部死掉的怪）；share：1/√存活玩家數。
-## 沒傳 dead_refs → 退回用 r.kills、share 1（舊呼叫法）
+## 沒傳 dead_refs → 退回用 r.kills、share 1（舊呼叫法）。
+## M3d WP-ERRANDS（E6）：不是本派的切磋弟子（沒門派、他派）給的實戰與學點全部收回（送 er_spar_not_disciple，不計場數）
 func spar_adjust(s: Session, ch, r: Dictionary, kind: String, dead_refs: Array = [], share := 1.0) -> void:
 	if ch == null or kind != "FIGHT":
 		return
@@ -1605,10 +1619,23 @@ func spar_adjust(s: Session, ch, r: Dictionary, kind: String, dead_refs: Array =
 		return
 	_spar_pre[str(ch.id)] = true
 	var x0 := int(ch.combat_xp)
-	var d := spar_decide(ch, true)
+	var split := _spar_split(rows, ch)
+	if not (split["other"] as Array).is_empty():
+		var fx := 0
+		var fl := 0
+		for row in split["other"]:
+			fx += BattleRewards.xp_for(row, x0, share)
+			fl += BattleRewards.lp_for(row, x0, share)
+		r["combat_xp"] = maxi(0, int(r.get("combat_xp", 0)) - fx)
+		r["learn_points"] = maxi(0, int(r.get("learn_points", 0)) - fl)
+		_spar_tell(s, "not_disciple")
+	var own: Array = split["own"]
+	if own.is_empty():
+		return
+	var d := spar_decide(ch, true, str(own[0].get("id", "")))
 	var xp := 0
 	var lp := 0
-	for row in rows:
+	for row in own:
 		xp += BattleRewards.xp_for(row, x0, share)
 		lp += BattleRewards.lp_for(row, x0, share)
 	if not bool(d["xp"]):
@@ -1656,24 +1683,42 @@ func _spar_settle(s: Session, ch, summary: Dictionary) -> void:
 	var rows := _spar_rows(summary.get("kills", []))
 	if rows.is_empty():
 		return
-	var d := spar_decide(ch, true)
-	if bool(d["xp"]) and bool(d["lp"]):
+	var split := _spar_split(rows, ch)
+	var own: Array = split["own"]
+	var other: Array = split["other"]
+	var d := spar_decide(ch, true, str(own[0].get("id", ""))) if not own.is_empty() else { "xp": false, "lp": false, "why": "" }
+	if other.is_empty() and bool(d["xp"]) and bool(d["lp"]):
 		return
 	var g := spar_given(rows, int(ch.combat_xp), _party_here(s))
 	if not bool(g.get("ok", false)):
 		push_warning("[SectSystem] spar reward rollback: no consistent split for %s" % cid)
 		return
-	if not bool(d["xp"]):
-		ch.combat_xp = maxi(0, int(ch.combat_xp) - int(g["xp"]))
-	if not bool(d["lp"]):
-		ch.learn_points = maxi(0, int(ch.learn_points) - int(g["lp"]))
-	else:
-		var keep := mini(Learning.spar_lp(int(g["lp"])), Learning.novice_lp_left(ch, host.rules))
-		ch.learn_points = maxi(0, int(ch.learn_points) - (int(g["lp"]) - keep))
-		Learning.note_novice_lp(ch, keep)
+	# M3d WP-ERRANDS（E6）：他派／沒門派的切磋弟子那一份全部收回
+	var share := 1.0 / sqrt(float(maxi(1, int(g.get("n", 1)))))
+	var fx := 0
+	var fl := 0
+	for row in other:
+		fx += BattleRewards.xp_for(row, int(g["x0"]), share)
+		fl += BattleRewards.lp_for(row, int(g["x0"]), share)
+	var ox := maxi(0, int(g["xp"]) - fx)
+	var ol := maxi(0, int(g["lp"]) - fl)
+	ch.combat_xp = maxi(0, int(ch.combat_xp) - fx)
+	ch.learn_points = maxi(0, int(ch.learn_points) - fl)
+	if not own.is_empty():
+		if not bool(d["xp"]):
+			ch.combat_xp = maxi(0, int(ch.combat_xp) - ox)
+		if not bool(d["lp"]):
+			ch.learn_points = maxi(0, int(ch.learn_points) - ol)
+		else:
+			var keep := mini(Learning.spar_lp(ol), Learning.novice_lp_left(ch, host.rules))
+			ch.learn_points = maxi(0, int(ch.learn_points) - (ol - keep))
+			Learning.note_novice_lp(ch, keep)
 	if s != null:
 		s.sheet_dirty = true
-	_spar_tell(s, str(d["why"]))
+	if not other.is_empty():
+		_spar_tell(s, "not_disciple")
+	if not own.is_empty():
+		_spar_tell(s, str(d["why"]))
 
 ## 同房間的隊友數＋自己（切磋會把同房間的隊友拉進來；獎勵分成 1/√人數）
 func _party_here(s: Session) -> int:
@@ -1692,6 +1737,8 @@ func _spar_tell(s: Session, why: String) -> void:
 	if s == null:
 		return
 	match why:
+		"not_disciple":
+			host.tell(s, Protocol.CH_SYSTEM, ER_SPAR_NOT_DISCIPLE, {})   # M3d WP-ERRANDS
 		"capped":
 			host.tell(s, Protocol.CH_SYSTEM, Protocol.E_CH_SPAR_CAPPED, {})
 		"rule":
@@ -1700,3 +1747,68 @@ func _spar_tell(s: Session, why: String) -> void:
 			var t: Variant = host.tables.get("text_templates", {}).get("ch_no_lp_novice", {})
 			host.tell(s, Protocol.CH_SYSTEM, Protocol.E_CH_NO_LP, { "quest_name": "", "why": "novice",
 				"text": str((t as Dictionary).get("self", "")) if t is Dictionary else "" })
+
+## M3D_PLAN §6.5（M3d WP-ERRANDS，E6）：切磋弟子的怪物列 → 它代表的門派。
+## m_hs_trainee → huashan（Learning.SPAR_EXTRA 在凍結的 learning.gd，對照表放這裡）；m_<前綴>_dizi → sects.json 的 prefix；
+## 對不上時看怪物列的 sect 欄位；都沒有 → ""（沒有任何門派的弟子能拿到它的切磋獎勵）
+const ER_SPAR_NOT_DISCIPLE := Protocol.E_ER_SPAR_NOT_DISCIPLE
+const SPAR_SECT_EXTRA := { "m_hs_trainee": "huashan" }
+
+func spar_sect(mid: String) -> String:
+	if SPAR_SECT_EXTRA.has(mid):
+		return str(SPAR_SECT_EXTRA[mid])
+	if mid.begins_with("m_") and mid.ends_with("_dizi"):
+		var prefix := mid.substr(2, mid.length() - 2 - "_dizi".length())
+		var sects: Dictionary = host.tables.get("sects", {})
+		for sid in sects:
+			if sects[sid] is Dictionary and str(sects[sid].get("prefix", "")) == prefix:
+				return str(sid)
+	return str(host.tables.get("monsters", {}).get(mid, {}).get("sect", ""))
+
+## 這場打倒的切磋弟子分成「本派」與「不是本派」兩堆（怪物列）
+func _spar_split(rows: Array, ch) -> Dictionary:
+	var own: Array = []
+	var other: Array = []
+	for row in rows:
+		if row is Dictionary and spar_sect(str(row.get("id", ""))) == str(ch.sect) and str(ch.sect) != "":
+			own.append(row)
+		else:
+			other.append(row)
+	return { "own": own, "other": other }
+
+
+# ==== M3d WP-ARTS ====（M3D_PLAN §4.9：全真弟子殺古墓弟子 → 殺氣加倍、計數 counters.qz_gumu_kills；門規 qz_r_kill_gumu）
+## 野外／定點戰殺的怪：怪物列 sect == "gumu"（攻擊 NPC 戰的主單位 n_* 由 on_npc_killed 算，這裡略過以免重複）
+func _m3d_arts_kills(s: Session, ch, kills: Variant) -> void:
+	var arts = host.get("arts")
+	if arts == null or ch == null or str(ch.sect) != ArtsRules.QZ_SECT or not (kills is Array):
+		return
+	var mons: Dictionary = host.tables.get("monsters", {})
+	for ref in kills:
+		var r := str(ref)
+		if r.begins_with("n_"):
+			continue
+		var row: Dictionary = mons.get(r, {})
+		if str(row.get("sect", "")) == ArtsRules.GUMU_SECT:
+			host.m2_call(arts, "gumu_kill", [s, ch, int(row.get("killing_intent_on_kill", 0)), 1])
+
+## 攻擊 NPC（M3c）殺死古墓 NPC 弟子：attack.sect 或 NPC 所屬門派是古墓
+func _m3d_arts_npc_killed(s: Session, ch, npc_id: String, attack: Dictionary) -> void:
+	var arts = host.get("arts")
+	if arts == null or str(ch.sect) != ArtsRules.QZ_SECT:
+		return
+	var vs := str(attack.get("sect", ""))
+	if vs == "":
+		vs = npc_sect(npc_id)
+	if vs != ArtsRules.GUMU_SECT:
+		return
+	var row: Dictionary = host.tables.get("monsters", {}).get(str(attack.get("monster", "")), {})
+	host.m2_call(arts, "gumu_kill", [s, ch, int(row.get("killing_intent_on_kill", 0)), 1])
+
+## PvP 擊殺古墓玩家（任何 PvP 種類；比武 DUEL 在 PkSystem 就 return，不會到這裡）
+func _m3d_arts_pvp_kill(killer: Session, victim_char) -> void:
+	var arts = host.get("arts")
+	if arts == null or killer == null or killer.character == null or victim_char == null:
+		return
+	if ArtsRules.counts_gumu_kill(str(killer.character.sect), str(victim_char.sect)):
+		host.m2_call(arts, "gumu_kill", [killer, killer.character, MoralityPk.KILL_KILLING_INTENT, 1])

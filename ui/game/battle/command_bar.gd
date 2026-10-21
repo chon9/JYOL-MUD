@@ -6,7 +6,9 @@ extends Control
 ## M3a（M3A_PLAN §7.1）：毒 醫 暗 陣 內 穴（快捷鍵 8 9 0、Shift+1 2 3）依快照 cmd_avail 啟用；
 ## 伺服器規則 later_battle_cmds 關掉時「內」「穴」維持不能用樣式，提示「原作 2002 年才有（伺服器規則關閉）」。
 ## 身上的狀態封鎖某個指令（例：封穴不能移、逃）時該指令灰掉，提示寫是哪個狀態。
-## 屬／系 開屬性窗（唯讀）與系統窗（panel_requested）；輕、特 用「不能用」樣式，提示「尚未開放」。
+## 屬／系 開屬性窗（唯讀）與系統窗（panel_requested）；特 用「不能用」樣式，提示「尚未開放」。
+## M3d（M3D_PLAN §3.1、§3.2）：第一列「防」後面加「閃」（Shift+4；規則 dodge_cmd 關時不能用，提示「原作 2002 年拿掉了」）；
+## 「輕」開放（Shift+5；跟著 later_battle_cmds，關時提示「原作 2002 年才有」）。穿烙跑鞋時「逃」任何格子都能按。
 ## 整組可以用滑鼠右鍵拖到任何位置（moved(pos) → 戰鬥畫面記在 settings.json 的 ui.battle_cmd_pos）。
 
 signal command_chosen(cmd: String)
@@ -16,7 +18,7 @@ signal moved(pos: Vector2)
 const DISC := 40.0
 const GAP := 4.0
 
-var buttons: Dictionary = {}     # cmd -> JyButton（已實作的 13 個）
+var buttons: Dictionary = {}     # cmd -> JyButton（已實作的 15 個：M1 7、M3a 6、M3d 閃與輕）
 var discs: Dictionary = {}       # 圓盤字 -> JyButton（全部）
 var _drag_from := Vector2(-1, -1)
 var _built := false
@@ -58,6 +60,8 @@ func _build() -> void:
 static func unavailable_reason(vm: BattleViewModel, cmd: String) -> String:
 	if vm == null:
 		return ""
+	if cmd == UiKeys.CMD_DODGE and not vm.dodge_cmd:
+		return UiKeys.DODGE_OFF_TIP
 	if cmd in UiKeys.LATER_CMDS and not vm.later_cmds:
 		return UiKeys.LATER_CMDS_TIP
 	var blocked := vm.status_blocks(cmd)
@@ -65,14 +69,14 @@ static func unavailable_reason(vm: BattleViewModel, cmd: String) -> String:
 		return "%s中，不能使用" % blocked
 	match cmd:
 		UiKeys.CMD_FLEE:
-			return "" if vm.on_escape() else "要先站上「逃」格"
+			return "" if vm.on_escape() or vm.flee_anywhere() else "要先站上「逃」格"
 		UiKeys.CMD_ATTACK:
 			return "" if not vm.enemy_cells_within(1).is_empty() else "身旁沒有敵人"
 		UiKeys.CMD_ART:
 			return "" if not vm.my_arts().is_empty() else "沒有可施展的武功"
 		UiKeys.CMD_MOVE:
 			return "" if not vm.move_targets().is_empty() else "無路可走"
-	if cmd in UiKeys.M3A_CMDS and not vm.cmd_open(cmd):
+	if (cmd in UiKeys.M3A_CMDS or cmd in UiKeys.M3D_CMDS) and not vm.cmd_open(cmd):
 		return UiKeys.CMD_UNAVAIL_TIPS.get(cmd, "目前不能用")
 	# 醫：射程內沒有要治的人（氣滿、沒有中毒流血）→ 跟「運功療傷」的「氣血已滿」一樣灰掉（M3a UI 審查 #4）
 	if cmd == UiKeys.CMD_MEDIC and vm.ally_cells_within(medic_range(vm), true, true).is_empty():

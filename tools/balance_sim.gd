@@ -606,6 +606,18 @@ func _initialize() -> void:
 		ran += 1
 		if r6 == 0:
 			failed += 1
+	# M3d（M3D_PLAN §9.2、§10.2；WP-LAW Day-0）：五個 WP 的案例清單在檔尾各自的區塊；回 -1＝略過（資料還沒合併）
+	for lst in [law_m3d_cases(), combat_m3d_cases(), arts_m3d_cases(), ev_m3d_cases(), er_m3d_cases()]:
+		for c in lst:
+			if only != "" and c[0] != only:
+				continue
+			var r7: int = c[1].call(runs, seed0)
+			if r7 < 0:
+				skipped += 1
+				continue
+			ran += 1
+			if r7 == 0:
+				failed += 1
 	if skipped > 0:
 		print("BALANCE note: %d 個 M3a／故事包案例因資料尚未合併而略過（SKIP）" % skipped)
 	print("BALANCE %s (%d cases, %d failed, runs=%d)" % ["OK" if failed == 0 and ran > 0 else "FAIL", ran, failed, runs])
@@ -1250,7 +1262,7 @@ func run_generic(name: String, chk: Dictionary, runs: int, seed0: int, sim: Call
 ## 多人、多波次。policy 無效 → 玩家全由 BattleAI（非等待模式）；有效 → 玩家是真人單位（等待模式），由 policy 下令。
 ## place_formation：開戰後把前 3 位玩家放到金剛伏魔圈的站位（(2,3)、(1,4)、(3,4)）
 func simulate_multi(pspecs: Array, first: Array, waves: Array, s: int, policy: Callable = Callable(),
-		place_formation: bool = false, counts: Dictionary = {}) -> Dictionary:
+		place_formation: bool = false, counts: Dictionary = {}, mon_mod: Callable = Callable()) -> Dictionary:
 	var human := policy.is_valid()
 	var b := Battle.new(1, s, { "wait_mode": human, "escape_tiles": 2 })
 	var n := 0
@@ -1262,6 +1274,8 @@ func simulate_multi(pspecs: Array, first: Array, waves: Array, s: int, policy: C
 			ps.peer = n
 		b.add_unit(ps)
 	for m in Encounter.monster_specs(first, tables):
+		if mon_mod.is_valid():
+			mon_mod.call(m)   # M3d 審查：賞金獵人依目標實戰縮放（BountyRules.scale_hunter_spec）
 		b.add_unit(m)
 	var later: Array = []
 	for w in waves:
@@ -1758,6 +1772,7 @@ const PACE_QI_BACK := 0.3           # 氣 < 30% 就回（§2.6 (d)）
 const PACE_WAIT_S := 30.0
 const PACE_MAX_H := 12.0
 const PACE_RUNS_MAX := 100
+const PACE_TOWN_RUNS := 20           # pace_town_<派> 每派輪數（上限）
 const PACE_BAND := { "shaolin": [2.5, 3.5], "xuedao": [2.0, 5.0] }
 const PACE_BAND_DEFAULT := [2.0, 4.5]
 const PACE_CHORE_SHARE_MIN := 0.30  # 少林：雜務佔學點收入 ≥ 30%
@@ -1767,6 +1782,8 @@ const WEIHE_HITS := 20000           # §3.3 寫 5000 次出手；用 20000 次�
 const WEIHE_RATIO := [0.70, 0.80]
 
 var pace_trace := false             # --pace-trace：印每 30 分鐘的進度（第一輪）
+var pace_town := false              # pace_town_<派>：每個遊戲日一開始白拿 TOWN 學點上限（_town_day_totals）
+var _town_lp_cache := -1
 var pace_rule_over := {}
 var pace_spar_over: Array = []
 var _pace_winrate := {}             # "<怪>|<數量>|<角色強度>" -> 勝率（各輪共用；兩把兵器取較好的）
@@ -1783,6 +1800,12 @@ func pace_cases() -> Array:
 			if sect_id == "gaibang":
 				return _with_1_0b(func() -> int: return case_pace(sect_id, runs, s0))
 			return case_pace(sect_id, runs, s0)])
+	# M3d 審查：TOWN 城鎮跑腿的學點不受新手期限制 → 每派再跑一次「每個遊戲日白拿 TOWN 學點上限」（1.0B 視圖），
+	# 要留在同一個 M3c2 帶內（比真的去跑還快：不算走路與時間，是上限）
+	for sid in PACE_SECTS:
+		var sect_id2 := str(sid)
+		out.append(["pace_town_" + sect_id2, func(runs: int, s0: int) -> int:
+			return _with_1_0b(func() -> int: return case_pace(sect_id2, mini(runs, PACE_TOWN_RUNS), s0, true))])
 	out.append(["chore_bot_cap", case_chore_bot_cap])
 	out.append(["xd_weihe_uplift", case_xd_weihe_uplift])
 	return out
@@ -2455,7 +2478,7 @@ func pace_run(su: Dictionary, sd: int) -> Dictionary:
 	var ch := _pace_new_char(su, rng, opts)
 	var t0 := rng.randf_range(0.0, 7200.0)   # 起始時辰均勻隨機
 	var st := { "ch": ch, "su": su, "rng": rng, "opts": opts, "rules": rules, "T": t0, "t0": t0, "room": su.gate_room,
-		"lp_src": { "start": int(ch.learn_points), "chore": 0, "spar": 0, "wild": 0, "quest": 0 },
+		"lp_src": { "start": int(ch.learn_points), "chore": 0, "spar": 0, "wild": 0, "quest": 0, "town": 0 }, "town_day": -999,
 		"xp_src": { "spar": 0, "wild": 0 }, "chore_cd": {}, "chore_day": { "day": -1, "n": {} }, "spar": { "day": -1, "n": 0 },
 		"n_fights": 0, "n_learn": 0, "n_chores": 0, "n_inn": 0, "deaths": 0, "wait_s": 0.0,
 		"t_skill": -1.0, "bonus": 0, "n_meditate": 0 }
@@ -2467,6 +2490,11 @@ func pace_run(su: Dictionary, sd: int) -> Dictionary:
 			hs.append("%s@%s(d%d p%.2f %d-%d)" % [h.monster, h.room, _pace_steps(str(su.gate_room), str(h.room)), float(h.p), int(h.lo), int(h.hi)])
 		print("  hunt: " + ", ".join(hs))
 	while not _pace_done(st) and float(st.T) < limit:
+		if pace_town and _pace_day(float(st.T)) != int(st.town_day):
+			st.town_day = _pace_day(float(st.T))
+			var tl := _town_day_lp()
+			ch.add_learn_points(tl, rules)
+			st.lp_src.town = int(st.lp_src.town) + tl
 		if pace_trace and float(st.T) >= next_trace:
 			next_trace += 1800.0
 			var lv: PackedStringArray = []
@@ -2498,8 +2526,20 @@ static func _pct(a: Array, q: float) -> float:
 	s.sort()
 	return float(s[clampi(int(floor(q * (s.size() - 1) + 0.5)), 0, s.size() - 1)])
 
-func case_pace(sid: String, runs: int, seed0: int) -> int:
-	var name := "pace_" + sid
+func case_pace(sid: String, runs: int, seed0: int, town := false) -> int:
+	var name := ("pace_town_" if town else "pace_") + sid
+	pace_town = town
+	var r := _case_pace(sid, name, runs, seed0)
+	pace_town = false
+	return r
+
+## 一個遊戲日把所有 TOWN 任務做到遞減到底的學點（_town_day_totals 的 lp；快取）
+func _town_day_lp() -> int:
+	if _town_lp_cache < 0:
+		_town_lp_cache = int(_town_day_totals()["tot"]["lp"])
+	return _town_lp_cache
+
+func _case_pace(sid: String, name: String, runs: int, seed0: int) -> int:
 	if not tables.get("sects", {}).has(sid) or not PACE_GATE.has(sid):
 		return _skip(name, "門派 " + sid)
 	if pace_spar_over.size() == 3:
@@ -2516,7 +2556,7 @@ func case_pace(sid: String, runs: int, seed0: int) -> int:
 	var human_hours: Array = []
 	var meds := 0
 	var bonus := 0
-	var lp := { "start": 0, "chore": 0, "spar": 0, "wild": 0, "quest": 0 }
+	var lp := { "start": 0, "chore": 0, "spar": 0, "wild": 0, "quest": 0, "town": 0 }
 	var xp := { "spar": 0, "wild": 0 }
 	var timeouts := 0
 	var fights := 0
@@ -2551,8 +2591,9 @@ func case_pace(sid: String, runs: int, seed0: int) -> int:
 			finals.append(st)
 	var med := _pct(hours, 0.5)
 	var band: Array = PACE_BAND.get(sid, PACE_BAND_DEFAULT)
-	var earned := maxi(1, int(lp.chore) + int(lp.spar) + int(lp.wild) + int(lp.quest))
-	var chore_share := int(lp.chore) / float(earned)
+	var earned := maxi(1, int(lp.chore) + int(lp.spar) + int(lp.wild) + int(lp.quest) + int(lp.town))
+	# 少林雜務佔比（M3c2）只比本派的來源（雜務／切磋／野外／任務）；pace_town 白拿的城鎮學點不算進分母（M3d 審查）
+	var chore_share := int(lp.chore) / float(maxi(1, earned - int(lp.town)))
 	var why: PackedStringArray = []
 	if med < float(band[0]) or med > float(band[1]):
 		why.append("中位數 %.2f 小時不在 %.1f–%.1f" % [med, float(band[0]), float(band[1])])
@@ -2578,10 +2619,10 @@ func case_pace(sid: String, runs: int, seed0: int) -> int:
 		if gwin < PACE_GHOST_WIN or gqi < PACE_GHOST_QI:
 			why.append("門檻角色 vs 鬼 勝 %.0f%%／剩氣 %.0f%%（要 ≥ %.0f%%／≥ %.0f%%）" % [gwin * 100.0, gqi * 100.0, PACE_GHOST_WIN * 100.0, PACE_GHOST_QI * 100.0])
 	var ok := why.is_empty()
-	print("%-24s %s  median=%.2fh  P10=%.2fh  P90=%.2fh  含真人操作 median=%.2fh P90=%.2fh  runs=%d  timeout=%d  技能門檻 %.2fh  實際操作 %.2fh（等待 %.0f 分／輪）  學點來源 雜務 %.0f%%／切磋 %.0f%%／野外 %.0f%%（合計 %d／輪）  實戰 切磋 %.0f%%／野外 %.0f%%  戰鬥 %.0f／輪  雜務 %.0f／輪  學藝 %.0f 次／輪  打坐 %.0f／輪  加碼 %.1f  客棧 %.1f／輪  戰敗 %d  門檻 vs 鬼 勝 %.0f%% 剩氣 %.0f%%%s" % [
+	print("%-24s %s  median=%.2fh  P10=%.2fh  P90=%.2fh  含真人操作 median=%.2fh P90=%.2fh  runs=%d  timeout=%d  技能門檻 %.2fh  實際操作 %.2fh（等待 %.0f 分／輪）  學點來源 雜務 %.0f%%／切磋 %.0f%%／野外 %.0f%%／城鎮 %.0f%%（合計 %d／輪）  實戰 切磋 %.0f%%／野外 %.0f%%  戰鬥 %.0f／輪  雜務 %.0f／輪  學藝 %.0f 次／輪  打坐 %.0f／輪  加碼 %.1f  客棧 %.1f／輪  戰敗 %d  門檻 vs 鬼 勝 %.0f%% 剩氣 %.0f%%%s" % [
 		name, "ok  " if ok else "FAIL", med, _pct(hours, 0.1), _pct(hours, 0.9), _pct(human_hours, 0.5), _pct(human_hours, 0.9), n, timeouts,
 		_pct(skill_hours, 0.5), _pct(active_hours, 0.5), waits / 60.0 / n,
-		int(lp.chore) * 100.0 / earned, int(lp.spar) * 100.0 / earned, int(lp.wild) * 100.0 / earned, earned / n,
+		int(lp.chore) * 100.0 / earned, int(lp.spar) * 100.0 / earned, int(lp.wild) * 100.0 / earned, int(lp.town) * 100.0 / earned, earned / n,
 		int(xp.spar) * 100.0 / maxi(1, int(xp.spar) + int(xp.wild)), int(xp.wild) * 100.0 / maxi(1, int(xp.spar) + int(xp.wild)),
 		fights / float(n), chores / float(n), learns / float(n), meds / float(n), bonus / float(n), inns / float(n), deaths,
 		gwin * 100.0, gqi * 100.0,
@@ -2910,3 +2951,824 @@ func case_econ_loop(_runs: int, _seed0: int) -> int:
 	print("%-12s %s  商店材料循環 %d 條（最低買價 %d%%；閉包內配方 1.0A %d 條、1.0A＋1.0B %d 條）%s" % ["econ_loop",
 		"ok  " if errs.is_empty() else "FAIL", errs.size(), pct, n_a, n_b, "" if errs.is_empty() else "：" + "；".join(errs)])
 	return 1 if errs.is_empty() else 0
+
+# ==== M3d WP-COMBAT ====（M3D_PLAN §10.2：combat_dodge、combat_qing_escape、combo_suxin）
+## - combat_dodge：參考角色被怪打，「閃」時命中率下降 15–30 個百分點（P1 野狼、P2 山賊頭目、P3 鬼王）
+## - combat_qing_escape：輕功脫身的實測成功率在 20–80% 帶內、與公式差 ≤ 4 個百分點（P0–P3 與輕功 200 的高手）
+## - combo_suxin：兩位 P2 級（全真男、古墓女，素心劍 35 級）一起打山賊頭目：
+##   每次出手的平均傷害，有合體一擊比「同一對夥伴、合體一擊不發生」多 10–25%（1.0B 視圖）。
+##   M3d 審查：默契 50 與默契 100（上限）都要在帶內；合體武功要夥伴同場，基準改用 ComboRules.chance_override = 0
+func combat_m3d_cases() -> Array:
+	return [
+		["combat_dodge", func(r: int, s0: int) -> int: return case_combat_dodge(r, s0)],
+		["combat_qing_escape", func(r: int, s0: int) -> int: return case_combat_qing_escape(r, s0)],
+		["combo_suxin", func(r: int, s0: int) -> int: return _with_1_0b(func() -> int: return case_combo_suxin(r, s0))],
+	]
+
+const COMBAT_DODGE_PAIRS := [["P1", "m_wolf"], ["P2", "m_bandit_chief"], ["P3", "m_guiwang"]]
+
+func case_combat_dodge(runs: int, seed0: int) -> int:
+	var all_ok := 1
+	for pair in COMBAT_DODGE_PAIRS:
+		var mid: String = pair[1]
+		if not tables.get("monsters", {}).has(mid):
+			return _skip("combat_dodge", mid)
+		var rates := []
+		for dodging in [false, true]:
+			var b := Battle.new(1, seed0, { "wait_mode": false, "escape_tiles": 2 })
+			var ps := player_spec(pair[0])
+			ps["qi"] = 1 << 28
+			ps["qi_max"] = 1 << 28
+			b.add_unit(ps)
+			var ms: Dictionary = Encounter.monster_spec(mid, tables)
+			ms["side"] = 1
+			b.add_unit(ms)
+			b.start(tables)
+			b.unit(1).pos = Vector2i(4, 3)
+			b.unit(2).pos = Vector2i(5, 3)
+			var rng := RandomNumberGenerator.new()
+			rng.seed = seed0
+			var hits := 0
+			var n := maxi(400, runs * 8)
+			for i in n:
+				b.unit(1).dodging = dodging
+				b.unit(1).qi = b.unit(1).qi_max()
+				var ev := BattleRules.resolve_strike(b, b.unit(2), b.unit(1), {}, {}, 0, tables, rng, false, true)
+				if not ev.any(func(e): return e.key == "battle_miss"):
+					hits += 1
+			rates.append(hits / float(n))
+		var drop: float = (rates[0] - rates[1]) * 100.0
+		var ok := drop >= 15.0 - 2.0 and drop <= 30.0 + 2.0   # 抽樣誤差 ±2 個百分點
+		if not ok:
+			all_ok = 0
+		print("%-24s %s  %s vs %s：命中率 %.1f%% → %.1f%%（下降 %.1f 個百分點；帶 15–30）" % ["combat_dodge",
+			"ok  " if ok else "FAIL", pair[0], mid, rates[0] * 100.0, rates[1] * 100.0, drop])
+	return all_ok
+
+func case_combat_qing_escape(runs: int, seed0: int) -> int:
+	var all_ok := 1
+	var probes := [["P0", 0, 0], ["P1", -1, -1], ["P2", -1, -1], ["P3", -1, -1], ["高手", 200, 150]]
+	for pr in probes:
+		var code: String = pr[0] if str(pr[0]).begins_with("P") else "P3"
+		var ok_n := 0
+		var n := maxi(200, runs)
+		var want := 0.0
+		var qrng := RandomNumberGenerator.new()   # 一條亂數流（連續種子的第一個亂數有偏差）
+		qrng.seed = seed0 * 7919 + 17
+		for i in n:
+			var ps := player_spec(code)
+			ps["neili"] = 100
+			ps["neili_max"] = 100
+			if int(pr[1]) >= 0:
+				ps["lightness"] = int(pr[1])
+				ps["skills"]["basic_body"] = int(pr[2])
+			var b := Battle.new(1, seed0 + i, { "wait_mode": false, "escape_tiles": 2, "later_battle_cmds": true })
+			b.add_unit(ps)
+			var ms: Dictionary = Encounter.monster_spec("m_dummy" if tables.get("monsters", {}).has("m_dummy") else "m_wolf", tables)
+			ms["side"] = 1
+			b.add_unit(ms)
+			b.start(tables)
+			var u := b.unit(1)
+			want = BattleRules.qing_escape_chance(u)
+			u.state = BattleUnit.READY
+			var c := { "cmd": "QING", "mode": "ESCAPE" }
+			if BattleRules.validate_cmd(b, u, c, tables) != "":
+				continue
+			BattleRules.execute(b, u, c, tables, qrng)
+			if u.is_fled():
+				ok_n += 1
+		var rate := ok_n / float(n)
+		var ok := rate >= 0.20 - 0.04 and rate <= 0.80 + 0.04 and absf(rate - want) <= 0.04
+		if not ok:
+			all_ok = 0
+		print("%-24s %s  %s（輕功 %s）：脫身率 %.1f%%（公式 %.1f%%；帶 20–80%%）" % ["combat_qing_escape", "ok  " if ok else "FAIL",
+			str(pr[0]), "預設" if int(pr[1]) < 0 else str(pr[1]), rate * 100.0, want * 100.0])
+	return all_ok
+
+## 兩位 P2 級素心劍傳人（男全真、女古墓）。partner＝true 時互為合體夥伴（默契 moqi）
+func _combo_pair_specs(level: int, moqi: int, partner: bool) -> Array:
+	var out: Array = []
+	for k in 2:
+		var s := sect_spec("P2", "quanzhen" if k == 0 else "gumu", "gm_suxin", level)
+		s["ref"] = "sim_combo_%d" % k
+		s["char_id"] = s["ref"]
+		s["name"] = "合璧%d" % (k + 1)
+		s["gender"] = "M" if k == 0 else "F"
+		s["neili"] = 600
+		s["neili_max"] = 600
+		s["combo"] = { "partner_char": "sim_combo_%d" % (1 - k), "moqi": moqi } if partner else {}
+		out.append(s)
+	return out
+
+func case_combo_suxin(runs: int, seed0: int) -> int:
+	if not _has_art("gm_suxin") or not (tables["martial_arts"]["gm_suxin"].get("combo", null) is Dictionary):
+		return _skip("combo_suxin", "gm_suxin（combo 字典）")
+	var mid := "m_bandit_chief"
+	if not tables.get("monsters", {}).has(mid):
+		return _skip("combo_suxin", mid)
+	var ok_all := 1
+	for moqi in [50, 100]:
+		if _combo_suxin_at(moqi, mid, runs, seed0) != 1:
+			ok_all = 0
+	return ok_all
+
+func _combo_suxin_at(moqi: int, mid: String, runs: int, seed0: int) -> int:
+	var per_act := []
+	var combos := 0
+	var wins := [0, 0]
+	var n := mini(runs, 300)
+	for mode in 2:
+		var dmg := 0
+		var acts := 0
+		ComboRules.chance_override = 0.0 if mode == 0 else -1.0
+		for i in n:
+			var b := Battle.new(1, seed0 + i, { "wait_mode": false, "escape_tiles": 2 })
+			for sp in _combo_pair_specs(35, moqi, true):
+				b.add_unit(sp)
+			for m in Encounter.monster_specs([mid], tables):
+				b.add_unit(m)
+			b.start(tables)
+			# 兩人一開始就站在頭目兩側（隊伍圍攻；不測走位，只測合體一擊的出力）
+			b.unit(3).pos = Vector2i(6, 3)
+			b.unit(1).pos = Vector2i(5, 3)
+			b.unit(2).pos = Vector2i(6, 4)
+			while not b.is_over():
+				b.step(Battle.TICK, tables)
+			for uid in [1, 2]:
+				dmg += b.unit(uid).dmg_dealt
+				acts += b.unit(uid).actions
+				if mode == 1:
+					combos += b.unit(uid).combo_hits
+			if b.result_name() == "VICTORY":
+				wins[mode] += 1
+		per_act.append(dmg / float(maxi(1, acts)))
+	ComboRules.chance_override = -1.0
+	var gain: float = (per_act[1] / maxf(0.001, per_act[0]) - 1.0) * 100.0
+	var ok := gain >= 10.0 and gain <= 25.0
+	print("%-24s %s  默契 %d（成功率 %.0f%%）：每次出手傷害 %.1f → %.1f（+%.1f%%；帶 +10–25%%）  合體一擊 %.2f 次／場  勝率 %.0f%% → %.0f%%" % ["combo_suxin",
+		"ok  " if ok else "FAIL", moqi, ComboRules.chance(moqi) * 100.0, per_act[0], per_act[1], gain, combos / 2.0 / float(n),
+		100.0 * wins[0] / n, 100.0 * wins[1] / n])
+	return 1 if ok else 0
+
+# ==== M3d WP-ARTS ====（M3D_PLAN §10.2：arts_chongyang_power、arts_xuemo_power、arts_sixiang_power）
+## 同一位參考角色（P3 底、基本武學 80、基本內功 100）、同等級，對同一個靶（山賊頭目，氣無限）各出 ARTS_POWER_TRIES 次
+## 「最高一招、十成」，比較平均每次出手打在靶上的傷害（含沒打中＝0；範圍招式只算打在這個靶上的那一下、不算流血的後續）。
+## - arts_chongyang_power：重陽劍法 60 ÷ 全真劍法 60 ∈ [1.1, 1.5]（M3D_PLAN §10.2）
+## - arts_xuemo_power：血魔刀法 70 ÷ 血刀刀法 70 ∈ [0.9, 1.3]（研究：剛開時比血刀刀法弱，後來加強）
+## - arts_sixiang_power：四象掌 50 ÷ 佛光普照掌 50 ∈ [0.8, 1.2]【設計提案：同一派的進階掌法，單靶相當、勝在半米字範圍】
+const ARTS_POWER_TRIES := 4000
+const ARTS_POWER_CASES := [
+	["arts_chongyang_power", "quanzhen", "qz_chongyang", "qz_jianfa", 60, [1.1, 1.5]],
+	["arts_xuemo_power", "xuedao", "xd_xuemo", "xd_daofa", 70, [0.9, 1.3]],
+	["arts_sixiang_power", "emei", "em_sixiang", "em_foguang", 50, [0.8, 1.2]],
+	# M3d 審查：空明拳 60 ÷ 昊天掌 60 ∈ [1.1, 1.5]（同重陽劍法：任務進階武功，單靶勝過本派基礎拳掌、不壓過太多）
+	["arts_kongming_power", "quanzhen", "qz_kongming", "qz_haotian", 60, [1.1, 1.5]],
+	# M3d 審查（第 3 輪）：玉女素心劍法 60（夥伴同場、合體一擊不算）÷ 全真劍法 60、÷ 玉女劍法 60 ∈ [1.1, 1.5]——
+	# 要兩人都學、一男一女同場才能用，單招只比本派基礎劍法強一些；合體一擊另外 +10–25%（combo_suxin）【設計提案】
+	["arts_suxin_power", "quanzhen", "gm_suxin", "qz_jianfa", 60, [1.1, 1.5]],
+	["arts_suxin_power_gm", "gumu", "gm_suxin", "gm_yunu_jian", 60, [1.1, 1.5]],
+]
+
+func arts_m3d_cases() -> Array:
+	var out: Array = []
+	for c in ARTS_POWER_CASES:
+		out.append([c[0], func(runs: int, seed0: int) -> int: return _arts_power_case(c, runs, seed0)])
+	return out
+
+func _arts_power_case(c: Array, runs: int, seed0: int) -> int:
+	return _with_1_0b(func() -> int:
+		if not _has_art(str(c[2])) or not _has_art(str(c[3])):
+			return _skip(str(c[0]), "武功 %s／%s" % [c[2], c[3]])
+		var tries := maxi(200, ARTS_POWER_TRIES * runs / 500)
+		var a := _arts_out(str(c[1]), str(c[2]), int(c[4]), tries, seed0)
+		var b := _arts_out(str(c[1]), str(c[3]), int(c[4]), tries, seed0 + 7)
+		var ratio := float(a.mean) / maxf(0.001, float(b.mean))
+		var band: Array = c[5]
+		var ok := ratio >= float(band[0]) and ratio <= float(band[1])
+		print("%-24s %s  %s %d「%s」每次 %.1f（命中 %.0f%%）÷ %s %d「%s」每次 %.1f（命中 %.0f%%）＝ %.2f（帶 %.2f–%.2f）" % [c[0],
+			"ok  " if ok else "FAIL", c[2], c[4], a.move, a.mean, a.hit * 100.0, c[3], c[4], b.move, b.mean, b.hit * 100.0, ratio,
+			band[0], band[1]])
+		return 1 if ok else 0)
+
+## 一門武功（等級 level）最高一招的平均出手傷害：{ mean, hit, move }
+func _arts_out(sect_id: String, art_id: String, level: int, tries: int, sd: int) -> Dictionary:
+	var ps := sect_spec("P3", sect_id, art_id, level)
+	var arow: Dictionary = tables.get("martial_arts", {}).get(art_id, {})
+	var basic := str(arow.get("base_skill", "basic_fist"))
+	ps.skills[basic] = 80
+	ps.skills["basic_inner"] = 100
+	ps.neili_max = 500
+	ps.neili = 500
+	var best: Dictionary = {}
+	for m in arow.get("moves", []):
+		if m is Dictionary and int(m.get("unlock_level", 1)) <= level:
+			best = m
+	if best.is_empty():
+		return { "mean": 0.0, "hit": 0.0, "move": "" }
+	var foe := Encounter.monster_spec("m_bandit_chief", tables)
+	foe.qi = 1 << 28
+	foe.qi_max = 1 << 28
+	var b := Battle.new(1, sd, { "wait_mode": false, "escape_tiles": 2 })
+	# 合體武功（素心劍）要會這門武功的異性夥伴同場才能出招：放一位站在角落、不出手的夥伴（不測合體一擊）
+	var cb: Variant = arow.get("combo", null)
+	var mate := {}
+	if cb is Dictionary:
+		ps["ref"] = "sim_arts_me"
+		ps["char_id"] = "sim_arts_me"
+		ps["gender"] = "M" if sect_id != "gumu" else "F"
+		ps["combo"] = { "partner_char": "sim_arts_mate", "moqi": 0 }
+		mate = sect_spec("P3", "gumu" if sect_id != "gumu" else "quanzhen", art_id, level)
+		mate["ref"] = "sim_arts_mate"
+		mate["char_id"] = "sim_arts_mate"
+		mate["gender"] = "F" if sect_id != "gumu" else "M"
+		mate["combo"] = { "partner_char": "sim_arts_me", "moqi": 0 }
+		mate["peer"] = 2
+	b.add_unit(ps)
+	b.add_unit(foe)
+	if not mate.is_empty():
+		b.add_unit(mate)
+	b.start(tables)
+	var me := b.unit(1)
+	var fu := b.unit(2)
+	if not mate.is_empty():
+		b.unit(3).pos = Vector2i(0, 0)
+		b.unit(3).state = BattleUnit.CHARGING
+	me.pos = Vector2i(4, 3)
+	fu.pos = Vector2i(5, 3)
+	var sum := 0.0
+	var hits := 0
+	var done := 0
+	var guard := 0
+	while done < tries and guard < tries * 4:
+		guard += 1
+		me.jing = 9000
+		me.neili = 9000
+		me.qi = me.qi_max()
+		fu.qi = 1 << 28
+		me.state = BattleUnit.READY
+		me.pos = Vector2i(4, 3)
+		fu.pos = Vector2i(5, 3)
+		var cmd := { "cmd": "ART", "art": art_id, "move": str(best.id), "target": [fu.pos.x, fu.pos.y], "power_tenths": 10 }
+		if BattleRules.validate_cmd(b, me, cmd, tables) != "":
+			me.state = BattleUnit.CHARGING
+			continue
+		done += 1
+		var dmg := 0
+		for e in BattleRules.execute(b, me, cmd, tables, b.rng):
+			var p: Dictionary = e.p
+			if int(p.get("atk_uid", 0)) == 1 and int(p.get("def_uid", 2)) == 2 and p.has("dmg") and not p.get("counter", false):
+				dmg += int(p.dmg)
+		if dmg > 0:
+			hits += 1
+		sum += dmg
+	return { "mean": sum / maxf(1.0, float(done)), "hit": float(hits) / maxf(1.0, float(done)), "move": str(best.name) }
+
+# ==== M3d WP-EVENTS ====（M3D_PLAN §10.2：ev_jb_zero_sum、ev_jb_income、ev_duel_judge）
+## - ev_jb_zero_sum：押鏢的 A 與劫鏢的 B 是朋友，互劫 1000 次（各路線、1–4 個劫鏢者）：兩人（夥）合計銀兩只減不增
+##   （A 付押金 V、劫鏢者合計拿 ≤ 0.8V）；另確認送達的 +V 有冷卻（同一位二掌櫃 30／60／120 分）。
+## - ev_jb_income：實戰 10 萬的參考角色只跑危險鏢（三城六條送貨鏢、二掌櫃冷卻、走路每步 PACE_STEP_S、路上特殊地雷
+##   ＝劫匪 2–4 個實打、輸了押金沒收）8 小時的每小時淨收入 ∈ 同階段戰鬥收入（實戰 10 萬刷幾種怪的最好每小時銀兩）的 0.6–1.5 倍。
+## - ev_duel_judge：同屬性的兩人比武（DUEL，氣加厚、限時 60 秒好讓判定真的發生）500 場，side 0 勝率 45–55%（判定公平、沒有先手偏差）。
+const EV_JB_ROUTES := [["xx_biaoju", "dl_biaoju", 3200, "xx"], ["dl_biaoju", "xx_biaoju", 3200, "dl"],
+	["xx_biaoju", "jc_biaoju", 8000, "xx"], ["jc_biaoju", "xx_biaoju", 8000, "jc"],
+	["dl_biaoju", "jc_biaoju", 8000, "dl"], ["jc_biaoju", "dl_biaoju", 8000, "jc"]]
+const EV_JB_XP := 100000
+const EV_JB_HOURS := 8.0
+const EV_JB_OVERHEAD_S := 30.0           # 接鏢、交談、出城的額外秒數【設計提案】
+const EV_JB_BAND := [0.6, 1.5]
+const EV_JB_REF_MONSTERS := ["m_bandit_chief", "m_nanhai", "m_gm_hongningbo", "m_dl_limochou", "m_jq_dilao_qiutu"]
+const EV_DUEL_N := 500
+const EV_DUEL_LIMIT_S := 60.0
+const EV_DUEL_QI := 20000
+
+func ev_m3d_cases() -> Array:
+	return [
+		["ev_jb_zero_sum", case_ev_jb_zero_sum],
+		["ev_jb_income", case_ev_jb_income],
+		["ev_duel_judge", case_ev_duel_judge],
+		["ev_tourney_farm", case_ev_tourney_farm],
+	]
+
+## M3d 審查（T9）：四個同派朋友每一屆都報名、互相放水（名次輪流），把武林大會與本派門派比武的獎勵刷到底。
+## 主機一天開 EV_FARM_HOURS 小時（遊戲日 2 小時），連續 EV_FARM_DAYS 個現實日。每人平均每現實日從比武得到的名聲
+## ≤ 同一個人一樣的時數正常跑腿（柯鎮惡每遊戲日 20、武林帖每 3 遊戲日 60）的名聲 × EV_FARM_MAX_RATIO。
+## 另印舊規則（只有 30 遊戲日冷卻、八強往上取）的數字作對照。
+const EV_FARM_HOURS := [4.0, 24.0]      # 主機一天開 4 小時（一般）與 24 小時（最壞）
+const EV_FARM_DAYS := 120
+const EV_FARM_MAX_RATIO := 1.0
+const EV_FARM_KE_FAME_PER_DAY := 20      # 柯鎮惡（每遊戲日）
+func case_ev_tourney_farm(_runs: int, _seed0: int) -> int:
+	var all_ok := 1
+	for hours in EV_FARM_HOURS:
+		var game_days_per_real := float(hours) * 3600.0 / 7200.0
+		var normal := (EV_FARM_KE_FAME_PER_DAY + ErrandsRules.WLT_FAME / float(ErrandsRules.WLT_COOLDOWN_DAYS)) * game_days_per_real
+		var res := []
+		for mode in ["new", "old"]:
+			var fame := 0.0
+			var last_day := { "WULIN": -1, "SECT": -1 }
+			var last_unix := { "WULIN": -1.0, "SECT": -1.0 }
+			var bracket: Array = TourneyRules.WULIN_FAME if mode == "new" else [3000, 2000, 1500, 1500, 1000, 1000, 1000, 1000]
+			var wulin_total := 0
+			for i in 4:
+				wulin_total += int(bracket[i])   # 四人：冠、亞、兩個四強（輪流）
+			var total_game_days := int(EV_FARM_DAYS * game_days_per_real)
+			for gd in range(1, total_game_days + 1):
+				var unix: float = (gd - 1) / game_days_per_real * TourneyRules.REAL_DAY_S
+				var dom := TourneyRules.day_of_month(gd)
+				for kind in ["WULIN", "SECT"]:
+					var held: bool = (kind == "WULIN" and dom == TourneyRules.WULIN_DAY) or (kind == "SECT" and dom == 1)
+					if not held:
+						continue
+					var ok_r: bool
+					if mode == "new":
+						ok_r = TourneyRules.rewarded(4, gd, int(last_day[kind]), unix, float(last_unix[kind]))
+					else:
+						ok_r = int(last_day[kind]) < 0 or gd - int(last_day[kind]) >= TourneyRules.REWARD_COOLDOWN_DAYS
+					if not ok_r:
+						continue
+					last_day[kind] = gd
+					last_unix[kind] = unix
+					fame += float(wulin_total) if kind == "WULIN" else float(TourneyRules.SECT_CHAMPION_FAME)
+			res.append(fame / 4.0 / float(EV_FARM_DAYS))
+		var ok: bool = float(res[0]) <= normal * EV_FARM_MAX_RATIO
+		if not ok:
+			all_ok = 0
+		print("%-24s %s  四個同派朋友放水刷比武（主機每天開 %.0f 小時、%d 個現實日）：每人每現實日名聲 %.1f（舊規則 %.1f）；同時數正常跑腿 %.1f（上限 ×%.1f）" % [
+			"ev_tourney_farm", "ok  " if ok else "FAIL", float(hours), EV_FARM_DAYS, float(res[0]), float(res[1]), normal, EV_FARM_MAX_RATIO])
+	return all_ok
+
+func case_ev_jb_zero_sum(_runs: int, seed0: int) -> int:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = seed0
+	var total := 0
+	var worst := -INF
+	for i in 1000:
+		var v: int = [2400, 3200, 6000, 8000][rng.randi_range(0, 3)]
+		var robbers := rng.randi_range(1, 4)
+		var a_delta := -v                                         # A 的押金沒收
+		var b_delta := JiebiaoRules.rob_share(v, robbers) * robbers   # 劫鏢者合計
+		var net := a_delta + b_delta
+		worst = maxf(worst, float(net))
+		total += net
+	var cd_ok := JiebiaoRules.cooldown_s(0.0) >= 1800.0 and JiebiaoRules.cooldown_s(0.999) <= 7200.0
+	var ok := total < 0 and worst < 0.0 and cd_ok
+	print("%-24s %s  朋友互劫 1000 次：合計 %+d 兩（每次最多 %+.0f 兩；劫鏢者 80%% 平分）；送達冷卻 %.0f–%.0f 秒%s" % ["ev_jb_zero_sum",
+		"ok  " if ok else "FAIL", total, worst, JiebiaoRules.cooldown_s(0.0), JiebiaoRules.cooldown_s(0.999),
+		"" if ok else "  (互劫生錢或沒有冷卻)"])
+	return 1 if ok else 0
+
+## 實戰 10 萬打一種怪的每小時銀兩（勝場 × 每場銀兩與掉落期望；場時 = 行動數 × 2 ＋ 60 秒，同 econ_hourly）
+func _ev_combat_h(mid: String, runs: int, seed0: int) -> float:
+	if not tables.get("monsters", {}).has(mid):
+		return -1.0
+	var party := _p_party(EV_JB_XP, 1)
+	var n := mini(runs, 80)
+	var acts := 0
+	var kills := 0
+	for i in n:
+		var r := simulate_multi(party, [mid], [], seed0 + i)
+		acts += int(r.actions)
+		if r.result == "VICTORY" and bool(r.get("killed", true)):
+			kills += 1
+	var per_fight_s := acts / float(maxi(1, n)) * 2.0 + 60.0
+	return (_base_ev(mid) + _loot_ev(mid)) * 3600.0 / per_fight_s * kills / float(maxi(1, n))
+
+## 一次特殊地雷：{ won, secs }（劫匪 2–4 個；打輸＝鏢失）
+func _ev_mine(rng: RandomNumberGenerator, seed_v: int) -> Dictionary:
+	var ids: Array = []
+	for k in JiebiaoRules.bandit_count(rng.randf()):
+		ids.append(JiebiaoRules.BANDIT_ID)
+	var r := simulate_multi(_p_party(EV_JB_XP, 1), ids, [], seed_v)
+	return { "won": r.result == "VICTORY", "secs": int(r.actions) * 2.0 + PACE_BATTLE_END_S }
+
+## 路線上的 WILD 房間數（特殊地雷只在野外）
+func _ev_wild_rooms(a: String, b: String) -> int:
+	if _pace_graph.is_empty():
+		_pace_graph = DataLint.room_graph(tables)
+	var prev := { a: "" }
+	var q: Array = [a]
+	while not q.is_empty():
+		var c: String = q.pop_front()
+		if c == b:
+			break
+		for n in _pace_graph.get(c, []):
+			if not prev.has(n):
+				prev[n] = c
+				q.append(n)
+	var n_wild := 0
+	var cur := b
+	var idx := WorldIndex.new(tables)
+	while cur != "" and cur != a and prev.has(cur):
+		var reg := str(idx.region_of(cur))
+		if str(tables.get("regions", {}).get(reg, {}).get("type", "")) == "WILD":
+			n_wild += 1
+		cur = str(prev[cur])
+	return n_wild
+
+func case_ev_jb_income(runs: int, seed0: int) -> int:
+	return _with_1_0b(func() -> int:
+		if not tables.get("monsters", {}).has(JiebiaoRules.BANDIT_ID) or not tables.get("quests", {}).has("q_ev_jb_xx_dl_huo"):
+			return _skip("ev_jb_income", "危險鏢資料")
+		# 同階段戰鬥收入：實戰 10 萬刷得到的最好每小時銀兩
+		var ref_h := 0.0
+		var ref_mid := ""
+		for mid in EV_JB_REF_MONSTERS:
+			var h := _ev_combat_h(mid, runs, seed0)
+			if h > ref_h:
+				ref_h = h
+				ref_mid = mid
+		if ref_h <= 0.0:
+			return _skip("ev_jb_income", "參考怪")
+		# 特殊地雷的勝率（劫匪 2／3／4 個）：給校準用
+		var mine_txt: PackedStringArray = []
+		for cnt in [2, 3, 4]:
+			var ids: Array = []
+			for k0 in cnt:
+				ids.append(JiebiaoRules.BANDIT_ID)
+			var wn := 0
+			var acts0 := 0
+			var nn := mini(runs, 100)
+			for i0 in nn:
+				var r0 := simulate_multi(_p_party(EV_JB_XP, 1), ids, [], seed0 + 300 + i0)
+				acts0 += int(r0.actions)
+				if r0.result == "VICTORY":
+					wn += 1
+			mine_txt.append("%d 個 %.0f%%（%.1f 行動）" % [cnt, 100.0 * wn / nn, acts0 / float(nn)])
+		print("%-24s REPORT  特殊地雷勝率（實戰 10 萬參考角色）：%s" % ["ev_jb_income", "；".join(mine_txt)])
+		var steps := {}
+		var wild := {}
+		for r in EV_JB_ROUTES:
+			var k := "%s>%s" % [r[0], r[1]]
+			steps[k] = _pace_steps(str(r[0]), str(r[1]))
+			wild[k] = _ev_wild_rooms(str(r[0]), str(r[1]))
+		# 8 小時的貪心排程：在目前城市挑「沒在冷卻、每秒淨期望最高」的路線；都在冷卻就走去別城或等
+		var sims := maxi(20, mini(runs, 60))
+		var tot_net := 0.0
+		var tot_runs := 0
+		var tot_fail := 0
+		var tot_mines := 0
+		var rng := RandomNumberGenerator.new()
+		for sidx in sims:
+			rng.seed = seed0 + 7919 * sidx
+			var t := 0.0
+			var room := "xx_biaoju"
+			var cd := {}   # giver -> until
+			var net := 0.0
+			var guard := 0
+			while t < EV_JB_HOURS * 3600.0 and guard < 400:
+				guard += 1
+				var best: Array = []
+				var best_rate := -INF
+				for r in EV_JB_ROUTES:
+					var k := "%s>%s" % [r[0], r[1]]
+					var walk_to := _pace_steps(room, str(r[0])) * PACE_STEP_S
+					var start_t := maxf(t + walk_to, float(cd.get(str(r[3]), 0.0)))
+					var dur := float(steps[k]) * PACE_STEP_S + EV_JB_OVERHEAD_S + float(wild[k]) * 0.15 * 40.0
+					var rate := float(r[2]) / (start_t - t + dur)
+					if rate > best_rate:
+						best_rate = rate
+						best = r
+				var k2 := "%s>%s" % [best[0], best[1]]
+				t += _pace_steps(room, str(best[0])) * PACE_STEP_S
+				t = maxf(t, float(cd.get(str(best[3]), 0.0)))
+				var v := int(best[2])
+				net -= v                               # 押金
+				t += EV_JB_OVERHEAD_S
+				var lost := false
+				var since := JiebiaoRules.MINE_GAP_ROOMS
+				for w in int(wild[k2]):
+					since += 1
+					if JiebiaoRules.mine_hits(since, rng.randi_range(0, 99)):
+						since = 0
+						tot_mines += 1
+						var m := _ev_mine(rng, seed0 + guard * 31 + sidx)
+						t += float(m.secs)
+						if not bool(m.won):
+							lost = true
+							break
+				t += float(steps[k2]) * PACE_STEP_S
+				tot_runs += 1
+				if lost:
+					tot_fail += 1
+					room = str(best[0])
+					continue
+				net += JiebiaoRules.payout(v)
+				cd[str(best[3])] = t + JiebiaoRules.cooldown_s(rng.randf())
+				room = str(best[1])
+			tot_net += net / (t / 3600.0)
+		var per_h := tot_net / sims
+		var ratio := per_h / ref_h
+		var ok: bool = ratio >= float(EV_JB_BAND[0]) and ratio <= float(EV_JB_BAND[1])
+		var steps_txt: PackedStringArray = []
+		for r in EV_JB_ROUTES:
+			var k3 := "%s>%s" % [r[0], r[1]]
+			steps_txt.append("%s→%s %d 步（野外 %d）" % [str(r[0]).substr(0, 2), str(r[1]).substr(0, 2), int(steps[k3]), int(wild[k3])])
+		print("%-24s REPORT  路線：%s" % ["ev_jb_income", "；".join(steps_txt)])
+		print("%-24s %s  危險鏢 %.0f 兩／小時（%d 趟、失敗 %d、地雷 %d）÷ 同階段戰鬥 %s %.0f 兩／小時 ＝ %.2f（帶 %.1f–%.1f）%s" % [
+			"ev_jb_income", "ok  " if ok else "FAIL", per_h, tot_runs, tot_fail, tot_mines, ref_mid, ref_h, ratio,
+			EV_JB_BAND[0], EV_JB_BAND[1], "" if ok else "  ← 不在帶內"])
+		return 1 if ok else 0)
+
+## 同屬性兩人比武：一樣的規格、一樣的武功；限時判定與擊倒都算
+func case_ev_duel_judge(runs: int, seed0: int) -> int:
+	var art := "hs_jianfa"
+	if not _has_art(art):
+		return _skip("ev_duel_judge", art)
+	var n := maxi(100, mini(runs, EV_DUEL_N))
+	var wins := 0
+	var judged := 0
+	for i in n:
+		var b := Battle.new(1, seed0 + i, { "wait_mode": false, "escape_tiles": 2, "kind": "DUEL", "duel_limit_s": EV_DUEL_LIMIT_S })
+		for side in 2:
+			var ps := _p_at(30000, 40)
+			var sk: Dictionary = {}
+			for k in ["basic_sword", "basic_inner", "basic_parry", "basic_dodge", "basic_body"]:
+				sk[k] = 40
+			sk[art] = 40
+			ps.skills = sk
+			ps.arts = [art]
+			ps.sect_skill = {}
+			ps.cmd_arts = cmd_arts_of(sk)
+			ps.weapon = weapon_of("w_tiejian", "it_ev%d" % side)
+			ps.weapon_options = [ps.weapon]
+			ps.side = side
+			ps.peer = 0
+			ps.ref = "sim_ev_duel_%d" % side
+			ps.name = "比武%d" % side
+			ps.kind = "PLAYER"
+			ps.ai = "melee_basic"
+			ps.duel_order = 1 if side == (i % 2) else 2   # 誰先報名與站哪一邊無關（對戰表亂數）
+			ps.qi_max = EV_DUEL_QI   # 氣夠厚，十分鐘的比武大多走到判定（判定本身要公平）
+			ps.qi = EV_DUEL_QI
+			b.add_unit(ps)
+		b.start(tables)
+		var guard := 0
+		while not b.is_over() and guard < 100000:
+			b.step(Battle.TICK, tables)
+			if not b.is_over():
+				b._duel_check()
+			guard += 1
+		var ev: Variant = b.opts.get("ev_end", {})
+		var w := -1
+		if ev is Dictionary and not (ev as Dictionary).is_empty():
+			w = int(ev.get("winner_side", -1))
+			judged += 1
+		else:
+			w = b.winner_side()
+		if w == 0:
+			wins += 1
+	var wr := wins / float(n)
+	var ok := wr >= 0.45 and wr <= 0.55
+	print("%-24s %s  同屬性兩人比武 %d 場：side 0 勝 %.1f%%（限時 %.0f 秒判定 %d 場）%s" % ["ev_duel_judge", "ok  " if ok else "FAIL",
+		n, wr * 100.0, EV_DUEL_LIMIT_S, judged, "" if ok else "  (不在 45–55%)"])
+	return 1 if ok else 0
+
+# ==== M3d WP-ERRANDS ====（M3D_PLAN §10.2：er_town_lp_cap、（選做）er_trade_band）
+func er_m3d_cases() -> Array:
+	return [
+		["er_town_lp_cap", func(r: int, s0: int) -> int: return case_er_town_lp_cap(r, s0)],
+		["er_repeat_cap", func(r: int, s0: int) -> int: return case_er_repeat_cap(r, s0)],
+	]
+
+const ER_TOWN_LP_CAP := 600
+const ER_TOWN_FAME_CAP := 60
+const ER_TOWN_LILIAN_CAP := 200
+const ER_MIN_RUN_S := 60.0   # 一趟最快 60 世界秒（理論上限：不算走路）
+
+## 一個遊戲日把所有 TOWN 任務做到遞減到底（時辰窗內、照冷卻、每趟至少 ER_MIN_RUN_S，不算走路）：{ tot: { lp, fame, lilian, money }, lines, n_town }
+## （目前的 tables；呼叫端負責 1.0B 視圖）
+func _town_day_totals() -> Dictionary:
+	var quests: Dictionary = tables.get("quests", {})
+	var lines: PackedStringArray = []
+	var tot := { "lp": 0, "fame": 0, "lilian": 0, "money": 0 }
+	var n_town := 0
+	var ids: Array = quests.keys()
+	ids.sort()
+	for qid in ids:
+		var q: Dictionary = quests[qid]
+		var c: Variant = q.get("chore", null)
+		if not (c is Dictionary) or not ErrandsRules.is_town(c):
+			continue
+		n_town += 1
+		var hours: Array = []
+		for r in q.get("requires", []):
+			if r is Dictionary and str(r.get("type", "")) == "hour_in":
+				hours = r.get("hours", [])
+		var cd := maxf(ER_MIN_RUN_S, float(q.get("repeat", {}).get("cooldown_days", 0.0)) * 7200.0)
+		var oc: Dictionary = {}
+		for k in q.get("outcomes", {}):
+			var o: Dictionary = q["outcomes"][k]
+			if not bool(o.get("no_chore", false)):
+				oc = QuestDef.norm_rewards(o.get("rewards", {}))
+				break
+		var mid := {}
+		for a in QuestDef._all_actions(q):
+			if str(a.get("do", "")) == "reward" and a.get("rewards") is Dictionary:
+				for k2 in a["rewards"]:
+					mid[k2] = int(mid.get(k2, 0)) + int(a["rewards"][k2])
+		var got := { "lp": 0, "fame": 0, "lilian": 0, "money": 0 }
+		var count := 0
+		var t := 0.0
+		while t < 7200.0:
+			var sc := str(WorldClock.clock(t, 7200.0)["shichen_name"])
+			if hours.is_empty() or sc in hours:
+				var pct := ErrandsRules.chore_pct(c, count)
+				var rw: Dictionary = ErrandsRules.scale_decay_all(oc, pct) if bool(c.get("decay_all", false)) else oc
+				var mw: Dictionary = ErrandsRules.scale_decay_all(mid, pct) if bool(c.get("decay_all", false)) else mid
+				got.lp += int(ErrandsRules.town_lp(c, count).lp) + maxi(0, int(rw.get("learn_points", 0)))
+				got.fame += maxi(0, int(rw.get("fame", 0))) + maxi(0, int(mw.get("fame", 0)))
+				got.lilian += maxi(0, int(rw.get("lilian", 0))) + maxi(0, int(mw.get("lilian", 0)))
+				got.money += maxi(0, int(rw.get("money", 0))) + maxi(0, int(mw.get("money", 0)))
+				count += 1
+				t += cd
+			else:
+				t += 60.0
+		for k3 in tot:
+			tot[k3] = int(tot[k3]) + int(got[k3])
+		lines.append("%s×%d 學點%d 名聲%d 歷練%d 銀%d" % [str(q.get("name", qid)), count, int(got.lp), int(got.fame), int(got.lilian), int(got.money)])
+	return { "tot": tot, "lines": lines, "n_town": n_town }
+
+## §6.1：一個角色一個遊戲日把所有 TOWN 任務做到遞減到底（時辰窗內、照冷卻、每趟至少 ER_MIN_RUN_S，不算走路）
+## → 學點合計 ≤ 600、名聲 ≤ 60、歷練 ≤ 200（M3D_PLAN §6.1、§10.2）。另報不是 TOWN 的跑腿（武林帖、九尾靈狐、阿虎）平均每日上限。
+func case_er_town_lp_cap(_runs: int, _seed0: int) -> int:
+	return _with_1_0b(func() -> int:
+		var quests: Dictionary = tables.get("quests", {})
+		var tt := _town_day_totals()
+		var tot: Dictionary = tt["tot"]
+		var lines: PackedStringArray = tt["lines"]
+		var n_town := int(tt["n_town"])
+		var ok: bool = int(tot.lp) <= ER_TOWN_LP_CAP and int(tot.fame) <= ER_TOWN_FAME_CAP and int(tot.lilian) <= ER_TOWN_LILIAN_CAP and n_town > 0
+		print("%-24s %s  一個遊戲日 TOWN 任務做到遞減到底：學點 %d（≤%d）、名聲 %d（≤%d）、歷練 %d（≤%d）、銀兩 %d；%d 條：%s" % [
+			"er_town_lp_cap", "ok  " if ok else "FAIL", int(tot.lp), ER_TOWN_LP_CAP, int(tot.fame), ER_TOWN_FAME_CAP,
+			int(tot.lilian), ER_TOWN_LILIAN_CAP, int(tot.money), n_town, "；".join(lines)])
+		# 不是 TOWN 的跑腿：武林帖（3 遊戲日一次）、九尾靈狐（冷卻 3 遊戲日）、阿虎（一次）→ 平均每遊戲日
+		var jw: Dictionary = quests.get("q_er_jiuwei", {}).get("outcomes", {}).get("default", {}).get("rewards", {})
+		print("%-24s REPORT  平均每遊戲日：武林帖 名聲 %.1f、歷練 %.1f（%d 日一次）；九尾靈狐 學點 %.1f、名聲 %.1f（冷卻 %s 日）；阿虎 一次 學點 %d、銀 %d" % [
+			"er_town_lp_cap", ErrandsRules.WLT_FAME / float(ErrandsRules.WLT_COOLDOWN_DAYS),
+			ErrandsRules.WLT_LILIAN / float(ErrandsRules.WLT_COOLDOWN_DAYS), ErrandsRules.WLT_COOLDOWN_DAYS,
+			int(jw.get("learn_points", 0)) / 3.0, int(jw.get("fame", 0)) / 3.0,
+			str(quests.get("q_er_jiuwei", {}).get("repeat", {}).get("cooldown_days", "?")),
+			int(quests.get("q_er_ahu", {}).get("outcomes", {}).get("default", {}).get("rewards", {}).get("learn_points", 0)),
+			int(quests.get("q_er_ahu", {}).get("outcomes", {}).get("default", {}).get("rewards", {}).get("money", 0))])
+		return 1 if ok else 0)
+
+## M3d 審查（第 3 輪，T9）：可以無限重複的跑腿全部加起來（TOWN 任務做到遞減到底＋九尾靈狐（冷卻 3 遊戲日、
+## 不遞減、5% 夜明珠）＋武林帖（3 遊戲日一次、每次名聲 60 歷練 200））平均每遊戲日：
+## 學點 ≤ ER_TOWN_LP_CAP（600，同 TOWN 上限：九尾靈狐的學點算進去）、名聲 ≤ ER_REPEAT_FAME_CAP、歷練 ≤ ER_REPEAT_LILIAN_CAP、
+## 九尾靈狐夜明珠的賣店期望 ≤ ER_REPEAT_PEARL_MONEY_CAP 兩【設計提案】。冷卻、獎勵、機率都從資料讀（改了資料就會重量）。
+const ER_REPEAT_FAME_CAP := 80
+const ER_REPEAT_LILIAN_CAP := 400
+const ER_REPEAT_PEARL_MONEY_CAP := 500
+func case_er_repeat_cap(_runs: int, _seed0: int) -> int:
+	return _with_1_0b(func() -> int:
+		var quests: Dictionary = tables.get("quests", {})
+		if not quests.has("q_er_jiuwei"):
+			return _skip("er_repeat_cap", "q_er_jiuwei")
+		var tot: Dictionary = _town_day_totals()["tot"]
+		var jq: Dictionary = quests["q_er_jiuwei"]
+		var jcd := maxf(1.0, float(jq.get("repeat", {}).get("cooldown_days", 0.0)))
+		var jmax := int(jq.get("repeat", {}).get("max", 0))
+		var oc: Dictionary = jq.get("outcomes", {})
+		var jrw: Dictionary = QuestDef.norm_rewards(oc.get("default", {}).get("rewards", {}))
+		# 夜明珠：luck 1–20 擲到 1 → pearl（任務 var luck 的 random 長度）
+		var luck_n := 20
+		for st in jq.get("stages", []):
+			for a in st.get("on_enter", []):
+				if a is Dictionary and str(a.get("name", "")) == "luck" and a.get("random") is Array:
+					luck_n = maxi(1, (a["random"] as Array).size())
+		var pearl_p := 1.0 / luck_n if oc.has("pearl") else 0.0
+		var pearl_sell := 0.0
+		for it in oc.get("pearl", {}).get("rewards", {}).get("items", []):
+			if it is Dictionary:
+				pearl_sell += _sell(str(it.get("id", ""))) * int(it.get("n", 1))
+		var j_lp := int(jrw.get("learn_points", 0)) / jcd
+		var j_fame := int(jrw.get("fame", 0)) / jcd
+		var j_lil := int(jrw.get("lilian", 0)) / jcd
+		var w_fame := 0.0
+		var w_lil := 0.0
+		if tables.get("items", {}).has(ErrandsRules.WULINTIE):
+			w_fame = ErrandsRules.WLT_FAME / float(ErrandsRules.WLT_COOLDOWN_DAYS)
+			w_lil = ErrandsRules.WLT_LILIAN / float(ErrandsRules.WLT_COOLDOWN_DAYS)
+		var lp := float(tot.lp) + j_lp
+		var fame := float(tot.fame) + j_fame + w_fame
+		var lil := float(tot.lilian) + j_lil + w_lil
+		var pearl_money := pearl_p * pearl_sell / jcd
+		var ok := lp <= ER_TOWN_LP_CAP and fame <= ER_REPEAT_FAME_CAP and lil <= ER_REPEAT_LILIAN_CAP 			and pearl_money <= ER_REPEAT_PEARL_MONEY_CAP and (jmax != 0 or jcd >= 1.0)
+		print("%-24s %s  平均每遊戲日（TOWN 做到底＋九尾靈狐每 %.0f 日＋武林帖每 %d 日）：學點 %.1f（≤%d；九尾 %.1f）、名聲 %.1f（≤%d；九尾 %.1f、武林帖 %.1f）、歷練 %.1f（≤%d）、夜明珠 %.0f%%×%.0f 兩 → %.1f 兩（≤%d）" % [
+			"er_repeat_cap", "ok  " if ok else "FAIL", jcd, ErrandsRules.WLT_COOLDOWN_DAYS, lp, ER_TOWN_LP_CAP, j_lp, fame, ER_REPEAT_FAME_CAP,
+			j_fame, w_fame, lil, ER_REPEAT_LILIAN_CAP, pearl_p * 100.0, pearl_sell, pearl_money, ER_REPEAT_PEARL_MONEY_CAP])
+		return 1 if ok else 0)
+
+# ==== M3d WP-LAW ====（M3D_PLAN §10.2：law_hunter_tiers、law_bounty_zero_sum）
+func law_m3d_cases() -> Array:
+	return [
+		["law_hunter_tiers", func(r: int, s0: int) -> int: return case_law_hunter_tiers(r, s0)],
+		["law_bounty_zero_sum", func(r: int, s0: int) -> int: return case_law_bounty_zero_sum(r, s0)],
+	]
+
+## M3D_PLAN §2.5：三階 NPC 賞金獵人 vs 參考角色（目標方勝率）。階照 BountyRules.hunter_tier（< 2 萬 1 階、< 10 萬 2 階、其他 3 階），
+## 獵人依目標實戰縮放（BountyRules.scale_hunter_spec；主機 LawSystem.start_hunt 同一個函式）。
+## 各階頂端照原本的帶：1 階 vs 2 萬 40–70%、2 階 vs 10 萬 30–60%、3 階 vs 20 萬 25–55%。
+## M3d 審查（第 3 輪）：只量頂端 → 各階底端（剛過新手保護 500、2 萬出頭、10 萬出頭）勝率 0%（不能逃的追擊戰），
+## 50 萬以上勝率 100%（研究：獵人「遙不可及」）→ 補量底端、中段與 50 萬、100 萬：目標方勝率都要在 20–70%【設計提案】
+const LAW_HUNTER_BANDS := [
+	["law_hunter_t1", 19999, 0.40, 0.70],
+	["law_hunter_t2", 100000, 0.30, 0.60],
+	["law_hunter_t3", 200000, 0.25, 0.55],
+	["law_hunter_t1_low", 500, 0.20, 0.70],
+	["law_hunter_t1_mid", 5000, 0.20, 0.70],
+	["law_hunter_t2_low", 20001, 0.20, 0.70],
+	["law_hunter_t2_mid", 50000, 0.20, 0.70],
+	["law_hunter_t3_low", 100001, 0.20, 0.70],
+	["law_hunter_t3_50w", 500000, 0.20, 0.70],
+	["law_hunter_t3_100w", 1000000, 0.20, 0.70],
+]
+
+func case_law_hunter_tiers(runs: int, seed0: int) -> int:
+	var all_ok := 1
+	for band in LAW_HUNTER_BANDS:
+		var xp := int(band[1])
+		var mid := BountyRules.hunter_monster(BountyRules.hunter_tier(xp))
+		if not tables.get("monsters", {}).has(mid):
+			return _skip("law_hunter_tiers", mid)
+		var party := _p_party(xp, 1)
+		var mod := func(m: Dictionary) -> void: BountyRules.apply_hunter_xp(m, xp, tables)
+		var r := run_generic("%s(%s)" % [band[0], mid.right(1)], { "win_min": float(band[2]), "win_max": float(band[3]) }, runs, seed0,
+			func(sd: int) -> Dictionary: return simulate_multi(party, [mid], [], sd, Callable(), false, {}, mod))
+		if r != 1:
+			all_ok = 0
+	print("%-24s %s" % ["law_hunter_tiers", "ok" if all_ok == 1 else "FAIL"])
+	return all_ok
+
+## M3D_PLAN §2.4、A4、T9：兩個朋友（加一個出錢加碼的朋友）互相上榜、互相持照緝殺、互相加碼，重複 runs×2 次；
+## 每一步之後三人的銀兩（身上＋錢莊）合計不得增加（罰金是被懸賞者自己的錢、加碼是加碼者自己的錢，系統只搬錢；
+## 執照費 100 兩是唯一的流出）。照 LawSystem 的順序用 BountyRules 算（collect → 加碼池 → 領賞，money_cap 照舊）。
+func case_law_bounty_zero_sum(runs: int, seed0: int) -> int:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = seed0
+	var ppl: Array = []
+	for i in 3:
+		ppl.append({ "money": rng.randi_range(0, 50000), "bank": rng.randi_range(0, 200000), "pk": 0, "morality": 0,
+			"license": false, "claims": 0 })
+	var pools := { 0: 0, 1: 0, 2: 0 }
+	var start := _law_total(ppl, pools)
+	var prev := start
+	var worst := 0
+	var steps := maxi(1000, runs * 2)
+	var kills := 0
+	for i in steps:
+		var h := rng.randi_range(0, 1)
+		var t := 1 - h
+		var hunter: Dictionary = ppl[h]
+		var target: Dictionary = ppl[t]
+		# 目標去強制 PK 路人（PK 上升）；獵人保持 PK 0、領執照
+		target["pk"] = int(target["pk"]) + rng.randi_range(1, 4)
+		if rng.randf() < 0.3:
+			target["morality"] = -rng.randi_range(101, 500)
+		if not bool(hunter["license"]):
+			var why := BountyRules.license_reason(int(hunter["pk"]), false, int(hunter["money"]))
+			if why == "":
+				hunter["money"] = int(hunter["money"]) - BountyRules.LICENSE_FEE
+				hunter["license"] = true
+		# 第三位朋友（或獵人自己）加碼
+		var c := 2 if rng.randf() < 0.5 else h
+		var add := rng.randi_range(BountyRules.POOL_ADD_MIN, 20000)
+		if int(ppl[c]["money"]) >= add and int(pools[t]) + add <= BountyRules.POOL_CAP:
+			ppl[c]["money"] = int(ppl[c]["money"]) - add
+			pools[t] = int(pools[t]) + add
+		# 緝殺（名單上、持照、獵人 PK 0）
+		if BountyRules.listed(int(target["pk"]), int(target["morality"]), 5000, 500) 				and BountyRules.lawful(bool(hunter["license"]), int(hunter["pk"]), true):
+			var f := BountyRules.fine(int(target["pk"]), int(target["morality"]))
+			var got := BountyRules.collect(f, int(target["money"]), int(target["bank"]))
+			target["money"] = int(target["money"]) - int(got["from_money"])
+			target["bank"] = int(target["bank"]) - int(got["from_bank"])
+			target["pk"] = maxi(0, int(target["pk"]) - 1)
+			hunter["claims"] = int(hunter["claims"]) + int(got["total"]) + int(pools[t])
+			pools[t] = 0
+			kills += 1
+			# 領賞（身上放不下的留著）
+			var room := maxi(0, Character.MONEY_CAP - int(hunter["money"]))
+			var pay := mini(room, int(hunter["claims"]))
+			hunter["money"] = int(hunter["money"]) + pay
+			hunter["claims"] = int(hunter["claims"]) - pay
+		# 朋友讓 PK 歸零重來（半仙要錢 → 也是流出；這裡直接歸零＝最有利的情況）
+		if rng.randf() < 0.2:
+			target["pk"] = 0
+			target["morality"] = 0
+		var now := _law_total(ppl, pools)
+		worst = maxi(worst, now - prev)
+		prev = now
+	var net := prev - start
+	var ok := worst <= 0 and net <= 0
+	print("%-24s %s  steps=%d  kills=%d  net=%d  worst_step=%d%s" % ["law_bounty_zero_sum", "ok  " if ok else "FAIL",
+		steps, kills, net, worst, "" if ok else "  (朋友互殺互加碼生出了錢)"])
+	return 1 if ok else 0
+
+## 三人合計（身上＋錢莊＋待領賞金＋還在池子裡的加碼）
+func _law_total(ppl: Array, pools: Dictionary) -> int:
+	var t := 0
+	for p in ppl:
+		t += int(p["money"]) + int(p["bank"]) + int(p["claims"])
+	for k in pools:
+		t += int(pools[k])
+	return t

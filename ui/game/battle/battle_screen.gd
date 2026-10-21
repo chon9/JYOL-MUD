@@ -19,6 +19,8 @@ extends Control
 ##   「裝」先選「換兵器／用藥」。
 ## - 快捷鍵 8 毒、9 醫、0 暗，Shift+1 陣、Shift+2 內、Shift+3 穴。
 ## - 波次（十八銅人）：輪到誰的牌子後面加「第 n／N 波」。
+## M3d（M3D_PLAN §3.1–3.4；WP-COMBAT）：「閃」（Shift+4）直接送出；「輕」（Shift+5）小選單「飛身越敵」（綠格＝移動範圍 +1 的空格，
+## 可以越過人）／「輕功脫身」；穿烙跑鞋時「逃」任何格子都能按；合體一擊（battle_combo）金色大字＋兩人之間的光帶。
 
 signal finished
 signal panel_requested(pid: String)
@@ -72,6 +74,7 @@ var _anchor_ms := 0
 var _gauge_rows: Dictionary = {}   # uid -> { bar, label }
 var _built := false
 var _was_my_turn := false
+var last_state: Dictionary = {}    # M3d：setup 收到的戰鬥快照（3.9.3；WP-EVENTS 的擂臺倒數讀 duel_left_s）
 
 func _ready() -> void:
 	if not _built:
@@ -285,6 +288,7 @@ func setup(state: Dictionary) -> void:
 	vm = BattleViewModel.from_state(state)
 	if not state.has("later_battle_cmds"):
 		vm.later_cmds = BattleScreen.later_cmds_enabled()
+	last_state = state   # M3d：快照（WP-EVENTS 擂臺倒數用）
 	_anchor_ms = Time.get_ticks_msec()
 	grid_view.set_region(str(UiClient.region_view().get("region", "")))
 	grid_view.set_vm(vm)
@@ -403,6 +407,7 @@ func _refresh() -> void:
 	_update_preview()
 	if mode == UiKeys.CMD_FORMATION:
 		_refresh_stations()
+	if has_method("_m3d_events_duel_hud"): call("_m3d_events_duel_hud", last_state)   # M3d WP-EVENTS（M3D_PLAN §9.2）
 
 ## 快捷鍵 1–7 對應 移 攻 武 防 休 裝 逃（只在可按時有效；帶 Ctrl／Alt／Shift／Meta 的不算，
 ## 例如 Ctrl+1 是主畫面的燈籠快捷鍵，不能變成「移」）。結果小條出來後任意鍵立刻返回。
@@ -437,9 +442,14 @@ static func hotkey_cmd(k: InputEventKey) -> String:
 		for code in [k.keycode, k.physical_keycode]:
 			if UiKeys.M3A_SHIFT_HOTKEYS.has(code):
 				return UiKeys.M3A_SHIFT_HOTKEYS[code]
+			if UiKeys.M3D_SHIFT_HOTKEYS.has(code):
+				return UiKeys.M3D_SHIFT_HOTKEYS[code]   # M3d：Shift+4 閃、Shift+5 輕
 		var sym := { KEY_EXCLAM: KEY_1, KEY_AT: KEY_2, KEY_NUMBERSIGN: KEY_3 }
 		if sym.has(k.keycode):
 			return UiKeys.M3A_SHIFT_HOTKEYS[sym[k.keycode]]
+		var sym4 := { KEY_DOLLAR: KEY_4, KEY_PERCENT: KEY_5 }
+		if sym4.has(k.keycode):
+			return UiKeys.M3D_SHIFT_HOTKEYS[sym4[k.keycode]]
 		return ""
 	if UiKeys.M3A_HOTKEYS.has(k.keycode):
 		return UiKeys.M3A_HOTKEYS[k.keycode]
@@ -453,6 +463,7 @@ func _on_command(cmd: String) -> void:
 	if vm == null or not vm.is_my_turn(now_tick()):
 		return
 	cancel_mode()
+	menu_anchor_cmd = cmd   # M3d 審查第三輪：小選單開在按下的那顆指令鈕附近
 	match cmd:
 		UiKeys.CMD_MOVE:
 			mode = cmd
@@ -487,6 +498,10 @@ func _on_command(cmd: String) -> void:
 		UiKeys.CMD_ACUPOINT:
 			var aarts := vm.cmd_arts(UiKeys.CMD_ACUPOINT)
 			_target_acupoint(aarts[0] if not aarts.is_empty() else {})
+		UiKeys.CMD_DODGE:
+			submit({ "cmd": UiKeys.CMD_DODGE })
+		UiKeys.CMD_QING:
+			_open_qing_menu()
 
 func _on_art_picked(art_id: String, move_id: String, tenths: int, rng: int) -> void:
 	var shape := BattleScreen.move_aoe(vm.find_art(art_id), art_id, move_id)
@@ -559,6 +574,20 @@ func _open_menu(title: String, entries: Array) -> void:
 	_place_cmd_menu()
 
 const MENU_MARGIN := 8.0
+## 小選單蓋到戰鬥訊息框的扣分（比蓋到格子重、比蓋到自己輕）；離指令鈕每 1 px 的扣分（同分時挑近的）
+const MENU_LOG_PENALTY := 300.0
+const MENU_DIST_PENALTY := 0.02
+## 最後按下的指令（小選單靠著它的按鈕放；沒有＝只看圓盤）
+var menu_anchor_cmd := ""
+
+## 指令鈕在本畫面座標的矩形（找不到 → 空 Rect2）
+func cmd_button_rect(cmd: String) -> Rect2:
+	if command_bar == null or cmd == "" or not command_bar.buttons.has(cmd):
+		return Rect2()
+	var b := command_bar.buttons[cmd] as Control
+	if b == null or not b.is_visible_in_tree():
+		return Rect2()
+	return Rect2(b.global_position - global_position, b.size)
 
 ## 小選單的位置：圓盤左邊、圓盤下方（提示列之下）、圓盤右邊、左上角、左下角裡，蓋到自己格子最少（其次蓋到最少格）的那個
 func _place_cmd_menu() -> void:
@@ -571,12 +600,24 @@ func _place_cmd_menu() -> void:
 	var cands := [Vector2(bar.position.x - sz.x - MENU_MARGIN, bar.position.y), Vector2(bar.end.x - sz.x, below),
 		Vector2(bar.end.x + MENU_MARGIN, bar.position.y), Vector2(MENU_MARGIN, MENU_MARGIN),
 		Vector2(MENU_MARGIN, size.y - sz.y - MENU_MARGIN)]
+	# M3d 審查第三輪：按下的指令鈕旁邊（左邊同高、正下方靠右對齊）也是候選；蓋到戰鬥訊息框扣分；同分挑離按鈕近的
+	var anchor := cmd_button_rect(menu_anchor_cmd)
+	var anchor_c := (anchor.get_center() if anchor.has_area() else bar.get_center())
+	if anchor.has_area():
+		cands.push_front(Vector2(bar.position.x - sz.x - MENU_MARGIN, anchor.position.y))
+		cands.push_front(Vector2(anchor.end.x - sz.x, maxf(bar.end.y, below) if below > bar.end.y else bar.end.y + MENU_MARGIN))
+	var log_r := Rect2()
+	if log_text != null and log_text.is_visible_in_tree():
+		log_r = Rect2(log_text.global_position - global_position, log_text.size)
 	var best := Vector2(MENU_MARGIN, MENU_MARGIN)
 	var best_score := INF
 	for c0 in cands:
 		var c := Vector2(clampf(c0.x, 0.0, maxf(0.0, size.x - sz.x)), clampf(c0.y, 0.0, maxf(0.0, size.y - sz.y)))
 		var r := Rect2(c, sz)
 		var sc := result_cover_score(r) + (1000.0 if covers_my_unit(r) else 0.0) + (500.0 if r.intersects(bar) else 0.0)
+		if log_r.has_area() and r.intersects(log_r):
+			sc += MENU_LOG_PENALTY
+		sc += r.get_center().distance_to(anchor_c) * MENU_DIST_PENALTY
 		if sc < best_score - 0.01:
 			best_score = sc
 			best = c
@@ -748,6 +789,55 @@ func _inner_chosen(m: String) -> void:
 		return
 	submit({ "cmd": UiKeys.CMD_INNER, "mode": m })
 
+## ---------- M3d：輕（M3D_PLAN §3.2） ----------
+## 輕：飛身越敵／輕功脫身；不可用的灰掉附原因
+func _open_qing_menu() -> void:
+	var entries: Array = []
+	for m in UiKeys.QING_MODES:
+		var why := qing_block(m)
+		var text: String = UiKeys.QING_MODE_LABELS[m]
+		if why != "":
+			text += "（%s）" % why
+		else:
+			# M3d 審查第三輪：可用時也寫出耗多少內力（飛身越敵 10 + 2 × 移動範圍、輕功脫身 30）
+			text += "（耗內力 %d）" % qing_cost(m)
+		entries.append({ "text": text, "ok": why == "", "tip": why if why != "" else str(UiKeys.QING_MODE_TIPS.get(m, "")),
+			"cb": _qing_chosen.bind(m) })
+	_open_menu("輕功", entries)
+
+## 這種輕功要耗的內力（JUMP：10 + 2 × 移動範圍（快照 move_range，同 BattleRules.qing_jump_cost）；ESCAPE：30）
+func qing_cost(m: String) -> int:
+	if m == "ESCAPE":
+		return UiKeys.QING_ESCAPE_COST
+	return BattleRules.QING_JUMP_BASE + BattleRules.QING_JUMP_PER_RANGE * vm.move_range()
+
+## 這種輕功現在不能用的原因（"" = 可以）
+func qing_block(m: String) -> String:
+	if not vm.later_cmds:
+		return UiKeys.LATER_CMDS_TIP
+	var blocked := vm.status_blocks(UiKeys.CMD_MOVE if m == "JUMP" else UiKeys.CMD_FLEE)
+	if blocked != "":
+		return "%s中" % blocked
+	if m == "JUMP" and vm.jump_targets().is_empty():
+		return "無處落腳"
+	if not vm.qing_modes().has(m):
+		if m == "ESCAPE" and int(vm.me().get("neili", 0)) >= UiKeys.QING_ESCAPE_COST:
+			return UiKeys.QING_NO_ESCAPE_TIP
+		# M3d 審查：寫出要多少（新角色最大內力 20，永遠湊不到 30 卻不知道為什麼）
+		return "內力不足，需 %d" % qing_cost(m)
+	return ""
+
+func _qing_chosen(m: String) -> void:
+	if m == "ESCAPE":
+		submit({ "cmd": UiKeys.CMD_QING, "mode": "ESCAPE" })
+		return
+	cmd_menu.visible = false
+	mode = UiKeys.CMD_QING
+	pending = { "mode": "JUMP" }
+	grid_view.set_range([])
+	grid_view.set_highlight(vm.jump_targets(), UiTheme.HIGHLIGHT_MOVE)
+	hint_label.text = "點選綠色格子：施展輕功飛身過去（可以越過人）。"
+
 ## 裝：換兵器／用藥
 func _open_equip_menu() -> void:
 	var items := vm.battle_items()
@@ -804,6 +894,8 @@ func _on_cell(c: Vector2i) -> void:
 				"power_tenths": int(pending_art["power_tenths"]), "target": target })
 		UiKeys.CMD_FORMATION:
 			submit_formation()
+		UiKeys.CMD_QING:
+			submit({ "cmd": UiKeys.CMD_QING, "mode": "JUMP", "target": target })
 		UiKeys.CMD_POISON, UiKeys.CMD_MEDIC, UiKeys.CMD_HIDDEN, UiKeys.CMD_ACUPOINT, UiKeys.CMD_ITEM, UiKeys.CMD_INNER:
 			var cmd := { "cmd": mode, "target": target }
 			for k in ["art", "item_uid", "mode"]:
@@ -1130,3 +1222,53 @@ func _loot_flair(items: Array) -> void:
 	result_panel.self_modulate = Color(1.0 + c.r * 0.6, 1.0 + c.g * 0.6, 1.0 + c.b * 0.6)
 	var tw := create_tween()
 	tw.tween_property(result_panel, "self_modulate", Color.WHITE, 0.6)
+
+# ==== M3d WP-EVENTS ====（M3D_PLAN §5.3.4、§9.2：比武（DUEL）的擂臺倒數）
+## 戰鬥畫面上方正中的名牌「擂臺 9:58」：只在 DUEL（快照 kind == "DUEL" 或帶 duel_left_s ≥ 0）時出現。
+## 主機的限時用戰鬥時間（tick × 0.1 秒；等待下令時 tick 照走）；客戶端在等待下令時時間棒暫停、tick 不再前進，
+## 所以倒數取「快照之後的 tick 差」與「快照之後的真實秒數」兩者較大的一個（time_scale 1 時兩者一致）。
+## 最後 60 秒字轉紅。時間到由主機判定（總傷害 → 命中 → 氣比例 → 先報名者）。
+var duel_hud: Label = null
+var _duel_key := ""
+var _duel_ms0 := 0
+
+static func duel_left(state: Dictionary, tick_now: float, real_elapsed_s: float = 0.0) -> float:
+	if state.is_empty():
+		return -1.0
+	var left0 := float(state.get("duel_left_s", -1.0))
+	if left0 < 0.0 and str(state.get("kind", "")) != "DUEL":
+		return -1.0
+	if left0 < 0.0:
+		left0 = float(state.get("duel_limit_s", TourneyRules.DUEL_LIMIT_S))
+	var t0 := float(state.get("tick", 0))
+	var by_tick := maxf(0.0, tick_now - t0) / float(UiKeys.TICKS_PER_SEC)
+	return maxf(0.0, left0 - maxf(by_tick, maxf(0.0, real_elapsed_s)))
+
+static func duel_text(left: float) -> String:
+	var s := int(ceil(left))
+	return "擂臺　%d:%02d" % [s / 60, s % 60]
+
+func _m3d_events_duel_hud(state: Dictionary) -> void:
+	var key := "%s|%s|%s" % [str(state.get("bid", "")), str(state.get("tick", "")), str(state.get("duel_left_s", ""))]
+	if key != _duel_key:
+		_duel_key = key
+		_duel_ms0 = Time.get_ticks_msec()
+	var real_s := float(Time.get_ticks_msec() - _duel_ms0) / 1000.0
+	var left := BattleScreen.duel_left(state, now_tick(), real_s) if vm != null else -1.0
+	if left < 0.0:
+		if duel_hud != null:
+			duel_hud.get_parent().visible = false
+		return
+	if duel_hud == null:
+		duel_hud = UiBuild.plate(self, "", 20, 150.0)
+		duel_hud.name = "DuelHud"
+		var plate := duel_hud.get_parent() as Control
+		plate.name = "DuelHudPlate"
+		plate.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		plate.position = Vector2(0.0, 8.0)
+		plate.tooltip_text = "比武限時十分鐘（戰鬥時間）：時間到依總傷害、命中次數、剩餘氣的比例判定勝負"
+	var plate2 := duel_hud.get_parent() as Control
+	plate2.visible = true
+	plate2.position.x = (size.x - plate2.size.x) * 0.5
+	duel_hud.text = BattleScreen.duel_text(left)
+	duel_hud.add_theme_color_override("font_color", UiTheme.JY_RED if left <= 60.0 else UiTheme.JY_TEXT)

@@ -10,7 +10,8 @@
                  "later_loot": false, "newbie_guard_spare": false,
                  "novice_learn_pct": 100, "novice_jing_pct": 100, "novice_learn_below": 40,
                  "novice_xp_below": 30000, "novice_lp_cap": 4000,
-                 "chore_xuedian": false, "spar_rewards": false },
+                 "chore_xuedian": false, "spar_rewards": false,
+                 "pk_decay": false, "dodge_cmd": true, "trade_sell_bonus": false, "later_events": false },
       "default_eras": ["1.0A"],
       "src_note": "2001-08 規則：違規即開除（news 141 叛派名單）。門派監獄與捉拿公敵 2001-10-05（神鵰大俠 1.0B）才有、刑期用 2001-11-15 的時間表（研究 門規機制），所以這個 2001 規則關掉思過處（M3a 審查 #5）；GDD 決定 1.0-A 有坐牢只適用預設規則" },
     { "id": "classic_standard", "name": "懷舊標準（預設）", "era": "1.0A",
@@ -22,7 +23,8 @@
                  "later_loot": true, "newbie_guard_spare": true,
                  "novice_learn_pct": 3000, "novice_jing_pct": 10, "novice_learn_below": 40,
                  "novice_xp_below": 30000, "novice_lp_cap": 4000,
-                 "chore_xuedian": true, "spar_rewards": true } },
+                 "chore_xuedian": true, "spar_rewards": true,
+                 "pk_decay": true, "dodge_cmd": true, "trade_sell_bonus": false, "later_events": true } },
     { "id": "later_official",   "name": "後期官方規則", "era": "1.0A",
       "rules": { "death_rule": "STANDARD", "corpse_window": "LATER_10",
                  "betrayal_halves_basics": true, "xuedian_cap": 65200, "jail_enabled": true,
@@ -32,7 +34,8 @@
                  "later_loot": true, "newbie_guard_spare": true,
                  "novice_learn_pct": 3000, "novice_jing_pct": 10, "novice_learn_below": 40,
                  "novice_xp_below": 30000, "novice_lp_cap": 4000,
-                 "chore_xuedian": true, "spar_rewards": true },
+                 "chore_xuedian": true, "spar_rewards": true,
+                 "pk_decay": true, "dodge_cmd": false, "trade_sell_bonus": false, "later_events": true },
       "src_note": "「後期官方」指死亡、屍體 10 分鐘、叛派基本武功減半、不掉神兵這些後期官方規則（研究）。新手學藝加速（novice_learn_pct 3000、novice_jing_pct 10）、雜務學點（chore_xuedian）、切磋獎勵（spar_rewards）不是官方規則，是和預設規則共用的【設計提案】加速（M3C2_PLAN §8.2）；要忠實的節奏請用「懷舊嚴苛（2001）」" },
     { "id": "friends_casual",   "name": "好友休閒", "era": "1.0A",
       "rules": { "death_rule": "CASUAL", "corpse_window": "CLASSIC_30",
@@ -43,6 +46,7 @@
                  "later_loot": true, "newbie_guard_spare": true,
                  "novice_learn_pct": 3000, "novice_jing_pct": 10, "novice_learn_below": 40,
                  "novice_xp_below": 30000, "novice_lp_cap": 4000,
-                 "chore_xuedian": true, "spar_rewards": true } }
+                 "chore_xuedian": true, "spar_rewards": true,
+                 "pk_decay": true, "dodge_cmd": true, "trade_sell_bonus": false, "later_events": true } }
   ]
 }

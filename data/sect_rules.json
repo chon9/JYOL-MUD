@@ -91,6 +91,7 @@
     {"id": "xd_r_attack_npc", "sect": "xuedao", "tier": "BREACH", "kind": "EVENT", "event": "ATTACK_SECT_NPC", "text": "rule_xd_attack_npc", "era": "1.0A", "src": "proposal", "src_note": "M3C_PLAN §5.6 O9：比照同門相殘【設計提案】（出處只有武當 index_jy2-22、峨嵋 mengpai/3）"},
     {"id": "gb_r_attack_npc", "sect": "gaibang", "tier": "BREACH", "kind": "EVENT", "event": "ATTACK_SECT_NPC", "text": "rule_gb_attack_npc", "era": "1.0B", "src": "proposal", "src_note": "M3C_PLAN §5.6 O9：比照同門相殘【設計提案】（出處只有武當 index_jy2-22、峨嵋 mengpai/3）"},
     {"id": "hs_r_kill_good_npc", "sect": "huashan", "tier": "BREACH", "kind": "EVENT", "event": "KILL_GOOD_NPC", "text": "rule_hs_kill_good_npc", "era": "1.0A", "src": "verified", "src_note": "mengpai/9 華山「不可殺善良NPC」【已證實】"},
-    {"id": "hg_r_kill_good_npc", "sect": "hengshan", "tier": "BREACH", "kind": "EVENT", "event": "KILL_GOOD_NPC", "text": "rule_hg_kill_good_npc", "era": "1.0A", "src": "verified", "src_note": "mengpai/7 恆山「不可殺善良NPC」【已證實】（恆山違規＝犯戒 LOCKOUT，既有 breach_outcome）"}
+    {"id": "hg_r_kill_good_npc", "sect": "hengshan", "tier": "BREACH", "kind": "EVENT", "event": "KILL_GOOD_NPC", "text": "rule_hg_kill_good_npc", "era": "1.0A", "src": "verified", "src_note": "mengpai/7 恆山「不可殺善良NPC」【已證實】（恆山違規＝犯戒 LOCKOUT，既有 breach_outcome）"},
+    {"id": "qz_r_kill_gumu", "sect": "quanzhen", "tier": "BREACH", "kind": "STATE", "ok_if": [{"type": "counter_max", "key": "qz_gumu_kills", "value": 10}], "text": "rule_qz_kill_gumu", "era": "1.0B", "src": "later", "src_note": "M3d 審查：只見於晚期官方清單與 jy2-22，2001-08-07 清單沒有 → src later、日期【待考證】。官方 index_jy2-22 晚期清單：殺死古墓弟子超過10人；2001-08-07 news 141 沒有這條 → 加入日期【待考證】，放 1.0B；M3d：坐牢後計數不歸零，再殺一個再觸發（ArtsSystem.gumu_kill 清掉 breached 記號）【設計提案】"}
   ]
 }

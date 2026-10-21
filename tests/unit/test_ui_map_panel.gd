@@ -10,6 +10,8 @@ var _seq := 100
 var _dir := ""
 
 func before_each() -> void:
+	# 這個檔案量的是程式繪圖的地圖版面：強制不用地圖美術（ART_REQUEST §10 的圖已經匯入，見 test_ui_m3c_nav 的美術版測試）
+	MapArt.use_textures({})
 	if loader == null:
 		loader = DataLoader.new()
 		loader.load_all("res://data")
@@ -18,6 +20,7 @@ func before_each() -> void:
 	_dir = temp_dir("mappanel")
 
 func after_each() -> void:
+	MapArt.use_textures(null)
 	for n in _nodes:
 		if is_instance_valid(n):
 			n.queue_free()

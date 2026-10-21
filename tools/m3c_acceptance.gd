@@ -737,6 +737,13 @@ func _sc_manual() -> Dictionary:
 
 # ------------------------------------------------------------------------ equip8
 func _sc_equip8() -> Dictionary:
+	# M3d 整合：換裝兩秒（M3D_PLAN R9，全域）會擋連續換裝；本劇本驗八格，不驗冷卻（冷卻由 m3d_acceptance equip_cd 驗）
+	opts()["equip_cooldown_ms"] = 0
+	var r := _sc_equip8_body()
+	opts().erase("equip_cooldown_ms")
+	return r
+
+func _sc_equip8_body() -> Dictionary:
 	var b = _new_bot("八格")
 	if b.err != "":
 		return _bad(b)

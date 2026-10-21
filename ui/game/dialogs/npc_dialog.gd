@@ -223,6 +223,7 @@ func _build_services(p: Dictionary) -> void:
 		ab.pressed.connect(_on_service.bind(ATTACK_CHOICE, ab))
 		service_buttons[ATTACK_CHOICE] = ab
 		choice_order.append(ATTACK_CHOICE)
+	n = _m3d_add_arts_choices(n, is_closed)   # M3d WP-LAW Day-0：WP-ARTS 的選單項（_m3d_arts_menu）
 	if (p.get("services", []) as Array).is_empty() and not service_buttons.has(UiKeys.BEG_CHOICE) 			and not service_buttons.has(ATTACK_CHOICE):
 		UiBuild.muted(UiBuild.label(services_box, "（閒聊而已）", 15))
 
@@ -303,6 +304,17 @@ func _on_service(svc: String, b: Button) -> void:
 			send(UiKeys.I_BEG, { "npc": npc }, [b], _after_beg)
 		ATTACK_CHOICE:
 			show_attack()
+		# M3d WP-LAW（M3D_PLAN §2）
+		"BOARD":
+			show_board()
+		"LICENSE":
+			show_license()
+		"CLEANSE":
+			open_cleanse()
+		_:
+			# M3d WP-LAW Day-0：WP-EVENTS 的服務（TOURNEY）與 WP-ARTS 的選單項
+			if not _m3d_events_service(svc, npc):
+				_m3d_arts_pressed(svc, b)
 
 ## 乞討成功：主機沒有重送選單時，本地先把「乞討」灰掉（同一位 NPC 有冷卻；§5.1.2 per_npc_cd_s）
 func _after_beg() -> void:
@@ -542,3 +554,166 @@ func _mark_quest(qid: String, state: String) -> void:
 			else:
 				q["state"] = state
 	show_quests()
+
+# ==== M3d WP-LAW ====（M3D_PLAN §2：佈告欄、官爺、天師與半仙；§9.2 其他 WP 的預留呼叫行）
+var cleanse_dialog: CleanseDialog = null
+## WP-ARTS 的選單項（choice -> { label, intent, args }），由 _m3d_add_arts_choices 填
+var m3d_arts_items: Dictionary = {}
+
+## 佈告欄：觀看懸賞名單；其他排名（十大惡人等）本包「尚未開放」（M3D_PLAN §1.2）
+func show_board() -> void:
+	UiBuild.clear(detail_box)
+	var b := UiBuild.button(detail_box, UiKeys.BOARD_MENU_BOUNTY)
+	b.name = "BoardBounty"
+	b.pressed.connect(func(): send(UiKeys.I_BOUNTY_BOARD, { "npc": npc_id() }, [b]))
+	for t in ["十大惡人", "十大善人", "十大富豪"]:
+		var row := UiBuild.hbox(detail_box, 6)
+		var d := UiBuild.button(row, t)
+		d.disabled = true
+		UiBuild.muted(UiBuild.label(row, "（%s）" % UiKeys.BOARD_RANKS_LOCKED, 14))
+
+## 官爺：領執照（100 兩）、領賞、觀看懸賞名單；耳聾的那位主機一律回 license_deaf
+func show_license() -> void:
+	UiBuild.clear(detail_box)
+	var law: Variant = UiClient.sheet().get("law", {})
+	var lw: Dictionary = law if law is Dictionary else {}
+	var licensed: bool = lw.get("licensed", false) == true
+	var claims := UiBuild.num(lw.get("claims", 0))
+	var st := UiBuild.label(detail_box, "你%s賞金獵人執照。%s" % ["持有" if licensed else "沒有",
+		"待領賞金 %s 兩。" % BountyDialog.money_text(claims) if claims > 0 else ""], 15, true)
+	st.name = "LicenseState"
+	var b1 := UiBuild.button(detail_box, "領取賞金獵人執照（%d 兩）" % BountyRules.LICENSE_FEE)
+	b1.name = "LicenseGet"
+	# M3d 審查：領不到時直接灰掉並寫原因（原本只有「已經有執照」會灰，PK值、在名單上、錢不夠都要按了才知道）
+	var why := NpcDialog.license_block(UiClient.sheet(), licensed)
+	if why != "":
+		b1.disabled = true
+		b1.tooltip_text = why
+		var wl := UiBuild.muted(UiBuild.label(detail_box, why, 13, true))
+		wl.name = "LicenseWhy"
+	b1.pressed.connect(func(): send(UiKeys.I_BOUNTY_LICENSE, { "npc": npc_id() }, [b1], show_license))
+	var b2 := UiBuild.button(detail_box, "領賞（%s 兩）" % BountyDialog.money_text(claims))
+	b2.name = "LicenseClaim"
+	if claims <= 0:
+		b2.disabled = true
+		b2.tooltip_text = BountyDialog.NO_CLAIM_TIP
+		# M3d 審查第三輪：灰掉的原因直接寫在按鈕下面（原本只有滑鼠提示）
+		var cw := UiBuild.muted(UiBuild.label(detail_box, BountyDialog.NO_CLAIM_TIP, 13, true))
+		cw.name = "LicenseClaimWhy"
+	b2.pressed.connect(func(): send(UiKeys.I_BOUNTY_CLAIM, { "npc": npc_id() }, [b2], show_license))
+	var b3 := UiBuild.button(detail_box, UiKeys.BOARD_MENU_BOUNTY)
+	b3.name = "LicenseBoard"
+	b3.pressed.connect(func(): send(UiKeys.I_BOUNTY_BOARD, { "npc": npc_id() }, [b3]))
+	UiBuild.muted(UiBuild.label(detail_box, "只有身上沒有 PK值、自己不在名單上的人能領執照；領照後只要身上有了 PK值，執照就自動失效。持照緝拿名單上的人不算惡意 PK。", 13, true))
+
+## 領執照灰掉的原因（"" ＝可以領）：已有執照／PK值 > 0／自己在名單上／錢不夠（BountyRules.license_reason 的順序）
+static func license_block(sh: Dictionary, licensed: bool) -> String:
+	if licensed:
+		return "你已經有執照了"
+	var law: Variant = sh.get("law", {})
+	var listed: bool = law is Dictionary and (law as Dictionary).get("listed", false) == true
+	match BountyRules.license_reason(UiBuild.num(sh.get("pk", 0)), listed, UiBuild.num(sh.get("money", 0))):
+		"license_pk":
+			return "你身上有 PK值，官爺不發執照（PK值要先消到 0）"
+		"license_listed":
+			return "你自己就在懸賞名單上，領不到執照"
+		"not_enough_money":
+			return "身上的銀兩不夠 %d 兩" % BountyRules.LICENSE_FEE
+	return ""
+
+## 往上找有 m3d_add_dialog 的主畫面（單獨測 NPC 視窗時沒有 → null）
+func _main_screen() -> Node:
+	var n: Node = get_parent()
+	while n != null:
+		if n.has_method("m3d_add_dialog"):
+			return n
+		n = n.get_parent()
+	return null
+
+## 天師／半仙：開消災視窗（NPC 列的 cleanse 由 npc_menu 不帶 → 看名字判斷：半仙＝PK、其餘＝殺氣）
+func open_cleanse() -> void:
+	if cleanse_dialog == null:
+		cleanse_dialog = CleanseDialog.new()
+		cleanse_dialog.name = "CleanseDialog"
+		cleanse_dialog.gate = gate
+		cleanse_dialog.visible = false
+		var host_node: Node = get_parent() if get_parent() != null else self
+		host_node.add_child(cleanse_dialog)
+		# M3d 審查：加入主畫面的視窗清單（Esc 關、與其他視窗互斥）
+		var ms := _main_screen()
+		if ms != null:
+			ms.call("m3d_add_dialog", cleanse_dialog)
+	var kind := "PK" if str(menu.get("cleanse", "")) == "PK" or npc_id().begins_with("n_law_banxian") else "KILLING"
+	visible = false
+	cleanse_dialog.open_for(menu, kind)
+
+# ---- 預留給其他 WP（§9.2）：WP-LAW Day-0 只寫呼叫行與空函式，函式本體由該 WP 改 ----
+## WP-ARTS 的選單項：回 Array of { "choice": String（唯一，建議 "ARTS_*"）, "label": String, "intent": String,
+## "args": Dictionary（送出時自動補 npc）, "why": String（非空＝灰掉並顯示原因） }
+func _m3d_add_arts_choices(n: int, is_closed: bool) -> int:
+	m3d_arts_items.clear()
+	for it in _m3d_arts_menu(npc_id()):
+		if not (it is Dictionary) or str(it.get("choice", "")) == "":
+			continue
+		var c := str(it["choice"])
+		n += 1
+		var row := UiBuild.hbox(services_box, 2)
+		var num := UiBuild.accent(UiBuild.label(row, "%d." % n, 18))
+		num.custom_minimum_size = Vector2(24, 0)
+		var b := UiBuild.button(row, str(it.get("label", c)))
+		b.name = "Arts_" + c
+		b.theme_type_variation = "ChoiceButton"
+		b.alignment = HORIZONTAL_ALIGNMENT_LEFT
+		var why := str(it.get("why", ""))
+		b.disabled = is_closed or why != ""
+		if why != "":
+			UiBuild.muted(UiBuild.label(row, "（%s）" % why, 14))
+			b.tooltip_text = why
+		b.pressed.connect(_on_service.bind(c, b))
+		service_buttons[c] = b
+		choice_order.append(c)
+		m3d_arts_items[c] = it
+	return n
+
+func _m3d_arts_pressed(svc: String, b: Button) -> void:
+	var it: Variant = m3d_arts_items.get(svc)
+	if not (it is Dictionary) or str(it.get("intent", "")) == "":
+		return
+	var args: Dictionary = (it.get("args", {}) as Dictionary).duplicate() if it.get("args") is Dictionary else {}
+	if not args.has("npc"):
+		args["npc"] = npc_id()
+	send(str(it["intent"]), args, [b])
+
+# ==== M3d WP-ARTS ====（M3D_PLAN §9.2：血刀弟子的「恐嚇」選單項；格式見 _m3d_add_arts_choices）
+## 只對血刀弟子、只對合格的對象（ArtsRules.intimidate_target_ok：故事／功能／商店／任務 NPC，不是本派、衙門、佈告欄……）顯示；
+## 今天恐嚇過、精神不足、任務對象等由主機判斷（回原因碼，照一般錯誤顯示）。
+const ARTS_INTIMIDATE := "ARTS_INTIMIDATE"
+
+func _m3d_arts_menu(npc: String) -> Array:
+	if SectUi.my_sect(UiClient.sheet()) != ArtsRules.INTIMIDATE_SECT:
+		return []
+	var row := UiClient.row("npcs", npc)
+	if not ArtsRules.intimidate_target_ok(row, NpcDialog.arts_npc_sect(row), ArtsRules.INTIMIDATE_SECT, false):
+		return []
+	return [{ "choice": ARTS_INTIMIDATE, "label": "恐嚇", "intent": "intimidate", "args": {}, "why": "" }]
+
+## NPC 的門派（客戶端版的 SectSystem.npc_sect：join_sect，否則看 NPC 所在地區是不是某派的 gate_region）
+static func arts_npc_sect(row: Dictionary) -> String:
+	var js := str(row.get("join_sect", ""))
+	if js != "":
+		return js
+	var region := str(row.get("region", ""))
+	var sects := UiClient.table("sects")
+	for sid in sects:
+		if region != "" and str((sects[sid] as Dictionary).get("gate_region", "")) == region:
+			return str(sid)
+	return ""
+
+# ==== M3d WP-EVENTS ====（M3D_PLAN §9.2：服務 TOURNEY 的按鈕處理；npc＝NPC id；回 true＝已處理）
+## 「比武報名」：記下報名員並要一份 tourney_state；主畫面收到後打開 TourneyDialog（main_screen 的 WP-EVENTS 區塊）
+func _m3d_events_service(svc: String, npc: String) -> bool:
+	if svc != "TOURNEY":
+		return false
+	TourneyDialog.request(npc if npc != "" else npc_id())
+	send(UiKeys.I_TOURNEY_INFO, {})
+	return true

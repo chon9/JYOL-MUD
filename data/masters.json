@@ -199,8 +199,8 @@
       "tool": "", "requires": [{"type": "sect", "sect": "gumu"}], "era": "1.0A", "src": "proposal",
       "src_note": "教者見研究（各派師父名單）；1.0 上限不明【待考證】，cap 100＝【設計提案】（M3a 審查 A5）" },
     { "id": "ms_gm_xiaolongnu_suxin", "npc_id": "n_gm_xiaolongnu", "skill_id": "gm_suxin", "cap": 100, "price": 0,
-      "tool": "", "requires": [{"type": "sect", "sect": "gumu"}], "era": "1.0A", "src": "proposal",
-      "src_note": "教者見研究（各派師父名單）；1.0 上限不明【待考證】，cap 100＝【設計提案】（M3a 審查 A5）" },
+      "tool": "", "requires": [{"type": "combo_ready", "art": "gm_suxin"}], "era": "1.0B", "src": "proposal",
+      "src_note": "教者見研究（各派師父名單）；1.0 上限不明【待考證】，cap 100＝【設計提案】（M3a 審查 A5）。M3D_PLAN §3.3.1：requires 改 combo_ready（有合體夥伴、同房同隊、兩人分別符合 pair、默契 ≥ 10（martial_arts.json combo.moqi_min）；官方 jy1-2-6-2「組隊、默契值與心性修為」）；全真男弟子也找小龍女學；era 1.0B" },
     { "id": "ms_gm_xiaolongnu_xinfa", "npc_id": "n_gm_xiaolongnu", "skill_id": "gm_xinfa", "cap": 100, "price": 0,
       "tool": "", "requires": [{"type": "sect", "sect": "gumu"}], "era": "1.0A", "src": "proposal",
       "src_note": "教者見研究（古墓 2001 官方頁 index_jy2-4e：古墓心法、玉女劍法、全真劍法、美女拳法、天羅地網勢身法由掌門／小龍女都能教）；1.0 上限不明【待考證】，cap 100＝【設計提案】（M3a 審查 小龍女基本武功）" },
@@ -289,9 +289,7 @@
       "src_note": "如意刀法上限 100（免費版部落格）" },
     { "id": "ms_lj_tonglao_liuyang", "npc_id": "n_lj_tonglao", "skill_id": "lj_liuyang", "cap": 100, "price": 0,
       "tool": "", "requires": [{"type": "sect", "sect": "lingjiu"}], "era": "1.0A", "src": "proposal" },
-    { "id": "ms_lj_tonglao_bahuang", "npc_id": "n_lj_tonglao", "skill_id": "lj_bahuang", "cap": 80, "price": 0,
-      "tool": "", "requires": [{"type": "sect", "sect": "lingjiu"}], "era": "1.0A", "src": "proposal",
-      "src_note": "1.0 八荒由事件取得；任務鏈（服侍童姥→無涯子→虛竹→童姥）M3b；教者與上限【待考證】" },
+    {"id": "ms_lj_tonglao_bahuang", "npc_id": "n_lj_tonglao", "skill_id": "lj_bahuang", "cap": 1, "price": 0, "tool": "", "requires": [{"type": "sect", "sect": "lingjiu"}], "era": "1.0B", "src": "later", "src_note": "M3d（M3D_PLAN §4.3）：1 級由任務 q_ar_lj_bahuang 給；之後自修到 40、蘭劍（ms_ar_lj_lanjian_bahuang）教到 70；cap 80 → 1、era 跟著武功列 1.0B（1.0A 視圖不留懸空參照）。原 src_note：1.0 八荒由事件取得；教者與上限【待考證】"},
     { "id": "ms_lj_tonglao_inner", "npc_id": "n_lj_tonglao", "skill_id": "basic_inner", "cap": 140, "price": 0,
       "tool": "", "requires": [{"type": "sect", "sect": "lingjiu"}], "src_note": "各派都由弟子教基本武學（研究 華山：梁發教基本武學）；上限 140 取自後期版資料（研究 武功系統：基本武學上限通常 140）【後期版】", "era": "1.0A", "src": "later" },
     { "id": "ms_lj_tonglao_parry", "npc_id": "n_lj_tonglao", "skill_id": "basic_parry", "cap": 140, "price": 0,
@@ -699,6 +697,13 @@
     {"id": "ms_ls_mujiang_carpentry", "npc_id": "n_ls_jc_mujiang", "skill_id": "life_carpentry", "cap": 30, "price": 50, "tool": "t_juzi", "requires": [], "era": "1.0B", "src": "proposal", "src_note": "教學 NPC 官方沒寫（研究 開放問題）；教到 30 級之後自練【設計提案】"},
     {"id": "ms_ls_fangzhi_weaving", "npc_id": "n_ls_xx_fangzhi", "skill_id": "life_weaving", "cap": 30, "price": 50, "tool": "", "requires": [], "era": "1.0A", "src": "proposal", "src_note": "教學 NPC 官方沒寫（研究 開放問題）；教到 30 級之後自練【設計提案】"},
     {"id": "ms_ls_licaifeng_tailoring", "npc_id": "n_dl_licaifeng", "skill_id": "life_tailoring", "cap": 30, "price": 50, "tool": "t_zhenxian", "requires": [], "era": "1.0A", "src": "proposal", "src_note": "教學 NPC 官方沒寫（研究 開放問題）；教到 30 級之後自練【設計提案】；李裁縫 2001-09-01 n959_875542【已證實名】，教裁縫【待考證】"},
-    {"id": "ms_ls_hunter_hunting", "npc_id": "n_lj_hunter", "skill_id": "life_hunting", "cap": 30, "price": 50, "tool": "", "requires": [], "era": "1.0A", "src": "proposal", "src_note": "教學 NPC 官方沒寫（研究 開放問題）；教到 30 級之後自練【設計提案】；既有老獵戶（天山腳下，旁邊就是雪谷獵場）"}
+    {"id": "ms_ls_hunter_hunting", "npc_id": "n_lj_hunter", "skill_id": "life_hunting", "cap": 30, "price": 50, "tool": "", "requires": [], "era": "1.0A", "src": "proposal", "src_note": "教學 NPC 官方沒寫（研究 開放問題）；教到 30 級之後自練【設計提案】；既有老獵戶（天山腳下，旁邊就是雪谷獵場）"},
+    {"id": "ms_ar_qz_shanju", "npc_id": "n_ar_qz_shanju", "skill_id": "qz_chongyang", "cap": 20, "price": 0, "tool": "", "requires": [{"type": "sect", "sect": "quanzhen"}], "era": "1.0B", "src": "later", "src_note": "研究：2002「老頭」教到 20（百花谷）；後期稱山居隱士"},
+    {"id": "ms_ar_qz_shuliu", "npc_id": "n_ar_qz_shuliu", "skill_id": "qz_chongyang", "cap": 40, "price": 0, "tool": "", "requires": [{"type": "sect", "sect": "quanzhen"}, {"type": "skill_min", "skill": "qz_chongyang", "value": 30}, {"type": "quest_flag", "flag": "qz_cy_shuliu"}], "era": "1.0B", "src": "later", "src_note": "研究：2002「教你七星到40級」；要先收下推薦信（qz_cy_shuliu）"},
+    {"id": "ms_ar_qz_yunyou", "npc_id": "n_ar_qz_yunyou", "skill_id": "qz_chongyang", "cap": 60, "price": 0, "tool": "", "requires": [{"type": "sect", "sect": "quanzhen"}, {"type": "skill_min", "skill": "qz_chongyang", "value": 40}, {"type": "quest_flag", "flag": "qz_cy_yunyou"}], "era": "1.0B", "src": "later", "src_note": "研究：2002 雲遊道士教 40→60、要一把拂塵（qz_cy_yunyou）"},
+    {"id": "ms_ar_qz_wangzhijin", "npc_id": "n_ar_qz_wangzhijin", "skill_id": "qz_kongming", "cap": 70, "price": 0, "tool": "", "requires": [{"type": "sect", "sect": "quanzhen"}], "era": "1.0B", "src": "later", "src_note": "研究：王志謹消點到 70（自修 1–40 由武功列 self_study_until 40 控制）"},
+    {"id": "ms_ar_lj_lanjian_bahuang", "npc_id": "n_lj_lanjian", "skill_id": "lj_bahuang", "cap": 70, "price": 0, "tool": "", "requires": [{"type": "sect", "sect": "lingjiu"}], "era": "1.0B", "src": "later", "src_note": "研究：2012 蘭劍消點 40–70（自修 1–40 由武功列 self_study_until 40 控制）"},
+    {"id": "ms_ar_guoxiang_sixiang", "npc_id": "n_ar_guoxiang", "skill_id": "em_sixiang", "cap": 10, "price": 0, "tool": "", "requires": [{"type": "sect", "sect": "emei"}, {"type": "quest_flag", "flag": "em_sixiang_ok"}], "era": "1.0B", "src": "later", "src_note": "研究：網金 郭襄教到 10"},
+    {"id": "ms_ar_xd_xuemo", "npc_id": "n_ar_xd_xuemo_laozu", "skill_id": "xd_xuemo", "cap": 70, "price": 0, "tool": "", "requires": [{"type": "sect", "sect": "xuedao"}], "era": "1.0B", "src": "later", "src_note": "研究：2002-08-19 自修到 10 → 血魔老祖消點；上限 70【設計提案；50→70 的紗紗鏈只在現代私服，不做】"}
   ]
 }

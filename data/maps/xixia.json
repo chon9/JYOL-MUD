@@ -3,7 +3,7 @@
   "desc": "西夏城位於大漠邊緣，城牆黃土夯成，往來商旅絡繹不絕。",
   "escape_tiles_hint": 2,
   "rooms": [
-    {"id": "xx_square", "name": "西夏廣場", "desc": "西夏城中心的廣場，黃土地面被往來的駱駝商隊踩得結實。東邊是城門，北邊是客棧，南邊是驛站，西邊通往熱鬧的西大街，西北是衙門；西南有錢莊，東北是鏢局。", "exits": [{"dir": "E", "to": "xx_gate_e"}, {"dir": "N", "to": "xx_inn"}, {"dir": "S", "to": "xx_station"}, {"dir": "W", "to": "xx_street"}, {"dir": "NW", "to": "xx_yamen"}, {"dir": "SW", "to": "xx_bank"}, {"dir": "NE", "to": "xx_biaoju"}], "npcs": ["n_wujieshan", "n_xx_zhugeyi", "n_xx_zhuzhu", "n_xx_caishang"], "features": [], "requires": []},
+    {"id": "xx_square", "name": "西夏廣場", "desc": "西夏城中心的廣場，黃土地面被往來的駱駝商隊踩得結實。東邊是城門，北邊是客棧，南邊是驛站，西邊通往熱鬧的西大街，西北是衙門；西南有錢莊，東北是鏢局。", "exits": [{"dir": "E", "to": "xx_gate_e"}, {"dir": "N", "to": "xx_inn"}, {"dir": "S", "to": "xx_station"}, {"dir": "W", "to": "xx_street"}, {"dir": "NW", "to": "xx_yamen"}, {"dir": "SW", "to": "xx_bank"}, {"dir": "NE", "to": "xx_biaoju"}], "npcs": ["n_wujieshan", "n_xx_zhugeyi", "n_xx_zhuzhu", "n_xx_caishang", "n_law_board_xx", "n_law_guanye_xx_a", "n_law_guanye_xx_b"], "features": [], "requires": []},
     {"id": "xx_gate_e", "name": "西夏東門", "desc": "厚重的城門下站著守衛，城門邊的老先生正提筆記帳。城門南邊是一排民房；出了城門往東是郊外：往東北的官道通往恆山、華山、少林等地，順著南邊的小溪往南可以走到大理。", "exits": [{"dir": "W", "to": "xx_square"}, {"dir": "E", "to": "xw_road"}, {"dir": "S", "to": "xx_minfang"}], "npcs": ["n_xx_cha", "n_xx_guard"], "features": [], "requires": []},
     {"id": "xx_inn", "name": "西夏客棧", "desc": "客棧裡飄著羊肉湯的香味，店小二在桌椅間來回穿梭。後頭的灶房火正旺，一道木梯通往二樓。", "exits": [{"dir": "S", "to": "xx_square"}, {"dir": "U", "to": "xx_inn_2f"}], "npcs": ["n_xx_innkeeper", "n_xx_cook", "n_xx_laodenuo", "n_xx_qiaofeng", "n_xx_azi"], "features": ["STOVE"], "requires": []},
     { "id": "xx_inn_2f", "name": "客棧二樓",
@@ -14,7 +14,7 @@
       "desc": "驛站裡堆著一捆捆待送的信件，管事拿著名冊點收。牆上貼著告示：「代送書信，酬銀從優。」",
       "exits": [ { "dir": "N", "to": "xx_square" } ],
       "npcs": ["n_xx_station"], "features": [], "requires": [] },
-    {"id": "xx_street", "name": "西大街", "desc": "西大街兩旁店鋪林立，北邊是藥鋪，南邊是兵器鋪，西邊傳來武館弟子操練的吆喝聲，西北通往皇宮門口。東南巷口的打鐵舖爐火通紅，西南的布莊裡織機軋軋作響。路邊站著兩個神色古怪的人。", "exits": [{"dir": "E", "to": "xx_square"}, {"dir": "N", "to": "xx_pharmacy"}, {"dir": "S", "to": "xx_smithy"}, {"dir": "W", "to": "xx_wuguan"}, {"dir": "NW", "to": "xx_palace"}, {"dir": "SE", "to": "xx_tiepu"}, {"dir": "SW", "to": "xx_buzhuang"}], "npcs": ["n_yeerniang", "n_nanhai", "n_xx_buzhuang", "n_na_xx_eba"], "features": [], "requires": []},
+    {"id": "xx_street", "name": "西大街", "desc": "西大街兩旁店鋪林立，北邊是藥鋪，南邊是兵器鋪，西邊傳來武館弟子操練的吆喝聲，西北通往皇宮門口。東南巷口的打鐵舖爐火通紅，西南的布莊裡織機軋軋作響，東北是比武場。路邊站著兩個神色古怪的人。", "exits": [{"dir": "E", "to": "xx_square"}, {"dir": "N", "to": "xx_pharmacy"}, {"dir": "S", "to": "xx_smithy"}, {"dir": "W", "to": "xx_wuguan"}, {"dir": "NW", "to": "xx_palace"}, {"dir": "SE", "to": "xx_tiepu"}, {"dir": "SW", "to": "xx_buzhuang"}, {"dir": "NE", "to": "xx_biwu"}], "npcs": ["n_yeerniang", "n_nanhai", "n_xx_buzhuang", "n_na_xx_eba"], "features": [], "requires": []},
     {"id": "xx_pharmacy", "name": "回春藥鋪", "desc": "滿牆的藥櫃散發著苦澀的藥香，掌櫃正低頭稱著藥材。", "exits": [{"dir": "S", "to": "xx_street"}], "npcs": ["n_xx_pharmacist", "n_xx_litaian"], "features": [], "requires": []},
     { "id": "xx_smithy", "name": "兵器鋪",
       "desc": "鋪子裡叮叮噹噹響個不停，牆上掛滿刀劍，爐火映得老闆滿臉通紅。",
@@ -24,13 +24,15 @@
       "desc": "寬敞的練武廳裡擺著木人樁與石鎖，教頭正指點學徒紮馬步。初入江湖的人多半在這裡學些基本功夫。",
       "exits": [ { "dir": "E", "to": "xx_street" } ],
       "npcs": ["n_xx_wushi"], "features": [], "requires": [] },
-    {"id": "xx_minfang", "name": "民房", "desc": "東門邊的一排民房，土牆木門，院裡晾著衣裳。往北回東門。", "exits": [{"dir": "N", "to": "xx_gate_e"}], "npcs": ["n_xx_yuner", "n_na_xx_jumin"], "features": [], "requires": []},
+    {"id": "xx_minfang", "name": "民房", "desc": "東門邊的一排民房，土牆木門，院裡晾著衣裳。往北回東門。", "exits": [{"dir": "N", "to": "xx_gate_e"}], "npcs": ["n_xx_yuner", "n_na_xx_jumin", "n_er_xx_funv"], "features": [], "requires": []},
     {"id": "xx_yamen", "name": "西夏衙門", "desc": "衙門口兩尊石獅，門邊立著一塊公告欄，差役進進出出。往東南回廣場。", "exits": [{"dir": "SE", "to": "xx_square"}], "npcs": ["n_xx_zhangbao", "n_xx_xuzhu", "n_og_xx_shuli"], "features": [], "requires": []},
     {"id": "xx_palace", "name": "皇宮門口", "desc": "西夏皇宮的朱紅宮門緊閉，左右兩名侍衛按刀而立，閒人不得靠近。往東南回西大街。", "exits": [{"dir": "SE", "to": "xx_street"}, {"dir": "N", "to": "xx_palace_mishi"}], "npcs": ["n_xx_palace_guard_l", "n_xx_palace_guard_r", "n_xx_ada"], "features": [], "requires": []},
     {"id": "xx_palace_mishi", "name": "皇宮密道", "desc": "宮牆下一條陰暗的密道，石壁上的油燈忽明忽暗。往南出密道回宮門口。", "exits": [{"dir": "S", "to": "xx_palace"}], "npcs": ["n_qz_yangkang"], "features": [], "requires": [{"type": "quest_active", "quest": "q_yangkang"}]},
     {"id": "xx_bank", "name": "西夏錢莊", "desc": "櫃檯後的掌櫃撥著算盤，牆上掛著「童叟無欺」的匾額。存在這裡的銀兩與物品，到大理的錢莊也領得到。", "exits": [{"dir": "NE", "to": "xx_square"}], "npcs": ["n_ec_xx_banker", "n_sm_wanglao"], "features": [], "requires": [], "era": "1.0A", "src": "proposal", "src_note": "M3B_PLAN §3.2；官方鏢局／錢莊頁只寫三城都有（研究 經濟），房間位置與描述【設計提案】；M3b 審查 4：描述只提大理（1.0A 沒有京城；desc_1_0b 只給有 1.0B 出口的房間用，1.0B 的京城分號由錢莊掌櫃的對白 p1b_xx_banker_talk 說）"},
     {"id": "xx_biaoju", "name": "西夏鏢局", "desc": "院子裡停著幾輛插著鏢旗的鏢車，趟子手正在餵馬。托鏢、取貨、押鏢的生意都在這裡談。", "exits": [{"dir": "SW", "to": "xx_square"}], "npcs": ["n_ec_xx_biaotou"], "features": [], "requires": [], "era": "1.0A", "src": "proposal", "src_note": "M3B_PLAN §3.2；官方鏢局／錢莊頁只寫三城都有（研究 經濟），房間位置與描述【設計提案】"},
     {"id": "xx_tiepu", "name": "西夏打鐵舖", "desc": "巷底一間煙燻火燎的打鐵舖，爐膛裡炭火燒得通紅，鐵砧旁堆著礦石與鐵塊。後頭砌了座燒炭的土窯，冶鐵商人張鐵正吆喝著夥計拉風箱。", "exits": [{"dir": "NW", "to": "xx_street"}], "npcs": ["n_xx_zhangtie"], "features": ["FORGE", "CAST", "KILN"], "requires": [], "era": "1.0A", "src": "proposal", "src_note": "§3.2 #58；張鐵「西夏城內，武器店邊上」（運鐵 2001-07-23 攻略，未重抓）；官方標準城內設施有打鐵舖（index_jy1-1-2）；房間【設計提案】"},
-    {"id": "xx_buzhuang", "name": "西夏布莊", "desc": "布莊裡擺著幾架紡車與織機，梭子來回穿梭，軋軋作響；後院支著烘皮的爐子，飄來一股硝皮的氣味。", "exits": [{"dir": "NE", "to": "xx_street"}], "npcs": ["n_ls_xx_fangzhi"], "features": ["LOOM", "TANNERY"], "requires": [], "era": "1.0A", "src": "proposal", "src_note": "§3.2 #59；2001-09-07「到西夏布莊」（孫不二新任務，n881_797753）；官方場景表另有布莊；房間【設計提案】"}
+    {"id": "xx_buzhuang", "name": "西夏布莊", "desc": "布莊裡擺著幾架紡車與織機，梭子來回穿梭，軋軋作響；後院支著烘皮的爐子，飄來一股硝皮的氣味。", "exits": [{"dir": "NE", "to": "xx_street"}], "npcs": ["n_ls_xx_fangzhi"], "features": ["LOOM", "TANNERY"], "requires": [], "era": "1.0A", "src": "proposal", "src_note": "§3.2 #59；2001-09-07「到西夏布莊」（孫不二新任務，n881_797753）；官方場景表另有布莊；房間【設計提案】"},
+    {"id": "xx_biwu", "name": "西夏比武場", "desc": "西大街東北角圍出一片黃土場子，正中搭著一座三尺高的木擂臺，四角插著鏢旗。擂臺下常有人圍著看熱鬧，比武時禁止私鬥。往西南回西大街，往北是比武場休息區。", "exits": [{"dir": "SW", "to": "xx_street"}, {"dir": "N", "to": "xx_biwu_rest"}], "npcs": [], "features": [], "requires": [], "safe": true, "era": "1.0A", "src": "proposal", "src_note": "M3D_PLAN §5.3.1、§9.5：2001 西夏已有比武場（研究 事件）；位置與描述【設計提案】；safe（禁止叫戰與強制 PK，比武由系統開打）"},
+    {"id": "xx_biwu_rest", "name": "比武場休息區", "desc": "擂臺後頭搭著涼棚，擺了幾條長凳和一缸涼茶，報名的武林人物在這裡等著點名上臺。往南回擂臺。", "exits": [{"dir": "S", "to": "xx_biwu"}], "npcs": ["n_ev_tourney_clerk"], "features": [], "requires": [], "safe": true, "era": "1.0A", "src": "proposal", "src_note": "M3D_PLAN §5.3.1、§9.5：報名與點名的地方【設計提案】"}
   ]
 }

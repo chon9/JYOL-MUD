@@ -21,7 +21,8 @@ func _poisoner(over: Dictionary = {}) -> Dictionary:
 
 func test_cmds_constant_matches_plan() -> void:
 	assert_eq(BattleRules.CMDS, ["MOVE", "ATTACK", "ART", "DEFEND", "REST", "EQUIP", "FLEE",
-		"POISON", "MEDIC", "HIDDEN", "FORMATION", "INNER", "ACUPOINT", "ITEM"])
+		"POISON", "MEDIC", "HIDDEN", "FORMATION", "INNER", "ACUPOINT", "ITEM",
+		"DODGE", "QING"])   # M3d（M3D_PLAN §3.1、§3.2）
 	var n := BattleRules.normalize_cmd({ "cmd": "INNER", "mode": "HEAL" })
 	assert_eq(n.mode, "HEAL")
 

@@ -75,6 +75,20 @@ const M3C_INTENTS := ["res://server/intents/intents_npcpk.gd", "res://server/int
 var npcpk = null        # NpcAttackSystem 或 null
 var loot = null         # LootSystem 或 null
 
+# ---------- M3d（M3D_PLAN §9.2；WP-LAW Day-0） ----------
+## 五個 WP 的系統與 intent 檔：以路徑 load()（ResourceLoader.exists 才載入），失敗時為 null；呼叫點一律 m2_call
+const M3D_SYSTEMS := { "law": "res://server/law_system.gd", "combo": "res://server/combo_system.gd",
+	"arts": "res://server/arts_system.gd", "jiebiao": "res://server/jiebiao_system.gd",
+	"tourney": "res://server/tourney_system.gd", "errands": "res://server/errands_system.gd" }
+const M3D_INTENTS := ["res://server/intents/intents_law.gd", "res://server/intents/intents_combo.gd",
+	"res://server/intents/intents_arts.gd", "res://server/intents/intents_events.gd"]
+var law = null          # LawSystem 或 null（WP-LAW）
+var combo = null        # ComboSystem 或 null（WP-COMBAT）
+var arts = null         # ArtsSystem 或 null（WP-ARTS）
+var jiebiao = null      # JiebiaoSystem 或 null（WP-EVENTS）
+var tourney = null      # TourneySystem 或 null（WP-EVENTS）
+var errands = null      # ErrandsSystem 或 null（WP-ERRANDS）
+
 ## 生效資料視圖與規則一律即時讀 GameData（測試會以 GameData.activate 切換 rule_profile）
 var tables: Dictionary:
 	get:
@@ -129,6 +143,7 @@ func _init(p_ws: Node) -> void:
 	_register_intent_files(M3B_INTENTS)
 	_load_systems(M3C_SYSTEMS)
 	_register_intent_files(M3C_INTENTS)
+	_load_m3d()   # M3d WP-LAW
 	_last_shichen = int(clock()["shichen_idx"])
 	if sects != null:
 		m2_call(sects, "init_assembly", [now_s()])   # 新世界／舊世界第一次：從下一次聚會算起
@@ -307,6 +322,7 @@ func tick(dt: float) -> void:
 	m2_call(rumor, "tick", [dt])
 	m2_call(wander, "tick", [dt])
 	m2_call(ambient, "tick", [dt])
+	m3d_tick(dt)   # M3d WP-LAW
 	check_clock()
 	_minute_acc += dt
 	if _minute_acc >= MINUTE_S:
@@ -407,6 +423,7 @@ func _sheet_m2(s: Session, sheet: Dictionary) -> void:
 	sheet["my_corpses"] = mine if mine is Array else []
 	sheet["is_admin"] = is_admin(s)
 	_sheet_m3b(s, sheet)
+	m3d_sheet(s, sheet)   # M3d WP-LAW
 
 ## M3B_PLAN §6 角色表：org（OrgSystem）、societies（會籍旗標）；系統為 null 時給同形狀的預設值
 func _sheet_m3b(s: Session, sheet: Dictionary) -> void:
@@ -664,6 +681,7 @@ func enter_character(s: Session, ch) -> void:
 	m2_call(escort, "on_login", [s])
 	if sects != null:
 		m2_call(sects, "on_login", [s])
+	m3d_login(s)   # M3d WP-LAW
 
 ## 房間已不存在時要搬去哪裡：ROOM_FALLBACK → 記錄點 → 出生城
 func relocation_room(ch, old_room: String) -> String:
@@ -694,6 +712,7 @@ func leave_character(s: Session, announce := true, from_room := "") -> void:
 	if quests != null:
 		quests.drop_dialogue(s)   # 對話游標不存（§4.7）
 	m2_call(wander, "on_leave", [s])   # 惡人警告倒數取消
+	m3d_logout(s)   # M3d WP-LAW
 	if scout != null:
 		scout.invalidate(s, ScoutSystem.WHY_LOGOUT)
 	save_char(s.character)
@@ -899,9 +918,15 @@ func switch_identity(s: Session, identity: String) -> String:
 ## 由 WorldServer.stop() 在最後一次存檔之後呼叫；之後這個 GameHost 不能再用。
 func dispose() -> void:
 	for sys in [char_store, regions, npcs, battles, quests, life, corpses, scout, party, pk, social, mail, admin, sects, conditions,
-			rumor, wander, ambient, bank, escort, orgs, npcpk, loot]:
+			rumor, wander, ambient, bank, escort, orgs, npcpk, loot, law, combo, arts, jiebiao, tourney, errands]:
 		if sys != null and "host" in sys:
 			sys.host = null
+	law = null
+	combo = null
+	arts = null
+	jiebiao = null
+	tourney = null
+	errands = null
 	rumor = null
 	wander = null
 	ambient = null
@@ -927,3 +952,85 @@ func dispose() -> void:
 	scout = null
 	index = null
 	ws = null
+
+# ==== M3d WP-LAW ====（M3D_PLAN §9.2：系統載入、intent 註冊、分派函式；其他 WP 不改這個檔）
+## 載入六個 M3d 系統與四個 intent 檔（檔案不存在 → 該系統 null、intent 不註冊；5 個 WP 可各自先過測試）
+func _load_m3d() -> void:
+	_load_systems(M3D_SYSTEMS)
+	_register_intent_files(M3D_INTENTS)
+	_m3d_apply_rules()
+
+func _m3d_systems() -> Array:
+	return [law, combo, arts, jiebiao, tourney, errands]
+
+## 規則 pk_decay（M3D_PLAN §2.6）→ 在線角色的執行期欄位 pk_decay_on（不存檔）
+func _m3d_apply_rules() -> void:
+	var on := bool(rules.get("pk_decay", true)) if rules is Dictionary else true
+	for s in sessions():
+		if s.character != null and "pk_decay_on" in s.character:
+			s.character.pk_decay_on = on
+
+## 角色走進房間（走路與瞬移；RegionSystem 的兩行鉤子）
+func m3d_enter_room(s: Session, from: String, to: String) -> void:
+	for sys in _m3d_systems():
+		m2_call(sys, "on_enter_room", [s, from, to])
+
+## BattleSystem._settle_player 結尾（WP-EVENTS 的一行鉤子）
+func m3d_battle_settled(s: Session, ch, summary: Dictionary) -> void:
+	for sys in _m3d_systems():
+		m2_call(sys, "on_battle_settled", [s, ch, summary])
+
+## PkSystem.on_pvp_end 開頭
+func m3d_pvp_end(summary: Dictionary) -> void:
+	for sys in _m3d_systems():
+		m2_call(sys, "on_pvp_end", [summary])
+
+func m3d_tick(dt: float) -> void:
+	_m3d_apply_rules()   # 規則可能被主機改（server_opts_set）；在線角色每 tick 同步，便宜
+	for sys in _m3d_systems():
+		m2_call(sys, "tick", [dt])
+
+func m3d_login(s: Session) -> void:
+	if s != null and s.character != null and "pk_decay_on" in s.character:
+		s.character.pk_decay_on = bool(rules.get("pk_decay", true))
+	for sys in _m3d_systems():
+		m2_call(sys, "on_login", [s])
+
+func m3d_logout(s: Session) -> void:
+	for sys in _m3d_systems():
+		m2_call(sys, "on_logout", [s])
+
+## 房間玩家列的 M3d 欄位：合併各系統 player_tags(viewer, o) 回傳的字典；"tags"（字串陣列）串接而不是覆蓋
+func m3d_player_tags(viewer: Session, o: Session) -> Dictionary:
+	var out := { "tags": [] }
+	for sys in _m3d_systems():
+		var d: Variant = m2_call(sys, "player_tags", [viewer, o], {})
+		if not (d is Dictionary):
+			continue
+		for k in d:
+			if str(k) == "tags":
+				if d[k] is Array:
+					for t in d[k]:
+						if not (str(t) in out["tags"]):
+							(out["tags"] as Array).append(str(t))
+			else:
+				out[k] = d[k]
+	return out
+
+## 角色刪除。M3D_PLAN 缺漏：§9.2 沒有把 intents_char.char_delete 的呼叫行派給任何 WP（不在表上的修改禁止），
+## 所以目前沒有呼叫點；各系統自己在讀到不存在的角色時惰性清掉（LawSystem.refresh_board）。整合者可在
+## intents_char.gd 的 on_char_deleted 列後加一行 host.m3d_char_deleted(char_id)。
+func m3d_char_deleted(char_id: String) -> void:
+	for sys in _m3d_systems():
+		m2_call(sys, "on_char_deleted", [char_id])
+
+## 角色表的 M3d 欄位（M3D_PLAN §7 快照增量：law、combo、titles）。M3D_PLAN 缺漏：§9.2 沒寫角色表怎麼合併，
+## 照 m3d_player_tags 的作法：各系統 sheet_fields(s) 回傳字典，合併進角色表；系統為 null 時給同形狀的預設值
+func m3d_sheet(s: Session, sheet: Dictionary) -> void:
+	sheet["law"] = { "licensed": false, "listed": false, "claims": 0 }
+	sheet["combo"] = { "partner_name": "", "moqi": 0, "peihe": 0 }
+	sheet["titles"] = []
+	for sys in _m3d_systems():
+		var d: Variant = m2_call(sys, "sheet_fields", [s], {})
+		if d is Dictionary:
+			sheet.merge(d, true)

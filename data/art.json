@@ -4,6 +4,41 @@
   "note": "Presentation only (not game data; not part of content_hash). Files: assets/art/{units,bg,fx,map,icons}/ from tools/import_art.py, else assets/art/placeholder/. 'placeholder': true = no owner art imported yet (import_art.py keeps this flag up to date). scale is relative to a 1.0 human; y_offset is in sprite pixels at scale 1 (negative = up). 'alias' reuses another entry; 'flip': true mirrors a source that faces lower-right on import. M3c: 'map', 'map_icons', 'weapon_fx', 'weapon_icons' have no placeholder art: while 'placeholder' is true ArtRegistry returns null and the caller draws its procedural fallback.",
   "unit_canvas_h": 256,
   "units": {
+    "m_er_wulin_1": {
+      "alias": "m_bandit",
+      "required": false,
+      "placeholder": false
+    },
+    "m_er_wulin_2": {
+      "alias": "m_jcn_huguo",
+      "required": false,
+      "placeholder": false
+    },
+    "m_er_wulin_3": {
+      "alias": "m_dl_cuisou",
+      "required": false,
+      "placeholder": false
+    },
+    "m_er_wulin_4": {
+      "alias": "m_nanhai",
+      "required": false,
+      "placeholder": false
+    },
+    "m_er_jiuwei": {
+      "alias": "m_lj_xuehu",
+      "required": false,
+      "placeholder": false
+    },
+    "m_er_yang": {
+      "alias": "m_npc_animal",
+      "required": false,
+      "placeholder": false
+    },
+    "m_er_baiyuan": {
+      "alias": "m_wd_baiyuan",
+      "required": false,
+      "placeholder": false
+    },
     "player_m": {
       "sprite": "player_m",
       "scale": 1.0,
@@ -216,6 +251,15 @@
     },
     "m_city_guard": {
       "alias": "n_xx_guard"
+    },
+    "m_law_hunter_1": {
+      "alias": "m_bandit"
+    },
+    "m_law_hunter_2": {
+      "alias": "n_dl_bukuai"
+    },
+    "m_law_hunter_3": {
+      "alias": "n_dl_bukuai"
     },
     "n_bandit_chief": {
       "alias": "m_bandit_chief"
@@ -1970,6 +2014,51 @@
       "required": false,
       "placeholder": false
     },
+    "m_ev_jb_bandit": {
+      "alias": "m_bandit",
+      "required": false,
+      "placeholder": false
+    },
+    "m_ev_jb_cart": {
+      "alias": "n_xx_station",
+      "required": false,
+      "placeholder": false
+    },
+    "m_ev_jb_client": {
+      "alias": "n_xx_caishang",
+      "required": false,
+      "placeholder": false
+    },
+    "n_ev_jb_xx": {
+      "alias": "n_xx_wushi",
+      "required": false,
+      "placeholder": false
+    },
+    "n_ev_jb_dl": {
+      "alias": "n_xx_wushi",
+      "required": false,
+      "placeholder": false
+    },
+    "n_ev_jb_jc": {
+      "alias": "n_xx_wushi",
+      "required": false,
+      "placeholder": false
+    },
+    "n_ev_jb_client": {
+      "alias": "n_xx_caishang",
+      "required": false,
+      "placeholder": false
+    },
+    "n_ev_jb_cart": {
+      "alias": "n_xx_station",
+      "required": false,
+      "placeholder": false
+    },
+    "n_ev_tourney_clerk": {
+      "alias": "n_xx_innkeeper",
+      "required": false,
+      "placeholder": false
+    },
     "gaibang_m": {
       "sprite": "gaibang_m",
       "scale": 1.0,
@@ -2056,6 +2145,41 @@
     },
     "m_gb_manbing": {
       "alias": "m_bandit_chief",
+      "required": false,
+      "placeholder": false
+    },
+    "m_ar_manbing": {
+      "alias": "m_bandit_chief",
+      "required": false,
+      "placeholder": false
+    },
+    "m_ar_xd_xuechi_1": {
+      "alias": "m_xd_dizi",
+      "required": false,
+      "placeholder": false
+    },
+    "m_ar_xd_xuechi_2": {
+      "alias": "m_xd_dizi",
+      "required": false,
+      "placeholder": false
+    },
+    "m_ar_xd_xuechi_3": {
+      "alias": "m_xd_dizi",
+      "required": false,
+      "placeholder": false
+    },
+    "n_ar_xd_xuechi": {
+      "alias": "n_ludayou",
+      "required": false,
+      "placeholder": false
+    },
+    "n_ar_xd_xuechi_2": {
+      "alias": "n_sl_huizhen",
+      "required": false,
+      "placeholder": false
+    },
+    "n_ar_xd_xuechi_3": {
+      "alias": "n_sl_huizhen",
       "required": false,
       "placeholder": false
     },
@@ -2580,6 +2704,11 @@
     "f": "player_f"
   },
   "backgrounds": {
+    "heilongtan": {
+      "alias": "xixia_east",
+      "required": false,
+      "placeholder": false
+    },
     "xixia_wild": {
       "bg": "xixia_wild",
       "required": true,
@@ -2800,146 +2929,146 @@
     "hit": {
       "file": "fx_hit",
       "required": false,
-      "placeholder": true
+      "placeholder": false
     },
     "slash": {
       "file": "fx_slash",
       "required": false,
-      "placeholder": true
+      "placeholder": false
     },
     "palm": {
       "file": "fx_palm",
       "required": false,
-      "placeholder": true
+      "placeholder": false
     },
     "tile_escape": {
       "file": "tile_escape",
       "required": false,
-      "placeholder": true
+      "placeholder": false
     }
   },
   "map": {
     "world_base": {
       "file": "map_world_base",
       "required": false,
-      "placeholder": true
+      "placeholder": false
     },
     "region_bg": {
       "file": "map_region_bg",
       "required": false,
-      "placeholder": true
+      "placeholder": false
     },
     "node_room": {
       "file": "map_node_room",
       "required": false,
-      "placeholder": true
+      "placeholder": false
     },
     "node_current": {
       "file": "map_node_current",
       "required": false,
-      "placeholder": true
+      "placeholder": false
     },
     "node_fog": {
       "file": "map_node_fog",
       "required": false,
-      "placeholder": true
+      "placeholder": false
     },
     "marker_here": {
       "file": "map_marker_here",
       "required": false,
-      "placeholder": true
+      "placeholder": false
     },
     "compass": {
       "file": "map_compass",
       "required": false,
-      "placeholder": true
+      "placeholder": false
     },
     "frame_title": {
       "file": "map_frame_title",
       "required": false,
-      "placeholder": true
+      "placeholder": false
     }
   },
   "map_icons": {
     "city": {
       "file": "map_icon_city",
       "required": false,
-      "placeholder": true
+      "placeholder": false
     },
     "sect": {
       "file": "map_icon_sect",
       "required": false,
-      "placeholder": true
+      "placeholder": false
     },
     "cave": {
       "file": "map_icon_cave",
       "required": false,
-      "placeholder": true
+      "placeholder": false
     },
     "wild": {
       "file": "map_icon_wild",
       "required": false,
-      "placeholder": true
+      "placeholder": false
     },
     "station": {
       "file": "map_icon_station",
       "required": false,
-      "placeholder": true
+      "placeholder": false
     },
     "inn": {
       "file": "map_icon_inn",
       "required": false,
-      "placeholder": true
+      "placeholder": false
     },
     "shop": {
       "file": "map_icon_shop",
       "required": false,
-      "placeholder": true
+      "placeholder": false
     },
     "master": {
       "file": "map_icon_master",
       "required": false,
-      "placeholder": true
+      "placeholder": false
     },
     "record": {
       "file": "map_icon_record",
       "required": false,
-      "placeholder": true
+      "placeholder": false
     },
     "field": {
       "file": "map_icon_field",
       "required": false,
-      "placeholder": true
+      "placeholder": false
     },
     "wood": {
       "file": "map_icon_wood",
       "required": false,
-      "placeholder": true
+      "placeholder": false
     },
     "water": {
       "file": "map_icon_water",
       "required": false,
-      "placeholder": true
+      "placeholder": false
     },
     "stove": {
       "file": "map_icon_stove",
       "required": false,
-      "placeholder": true
+      "placeholder": false
     },
     "danger": {
       "file": "map_icon_danger",
       "required": false,
-      "placeholder": true
+      "placeholder": false
     },
     "quest": {
       "file": "map_icon_quest",
       "required": false,
-      "placeholder": true
+      "placeholder": false
     },
     "exit": {
       "file": "map_icon_exit",
       "required": false,
-      "placeholder": true
+      "placeholder": false
     }
   },
   "weapon_fx": {

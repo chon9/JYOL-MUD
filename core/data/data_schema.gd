@@ -92,7 +92,9 @@ const INT_FIELDS := {
 		# M3C_PLAN §9.3
 		"npc_respawn_pct", "loot_drop_pct",
 		# M3C2_PLAN §8.3（WP-PACE）
-		"spar_daily_cap"],
+		"spar_daily_cap",
+		# M3D_PLAN §8.3（WP-COMBAT）
+		"equip_cooldown_ms"],
 }
 
 ## table -> [[path, target_table], ...]；空字串與 null 不檢查。
@@ -165,6 +167,12 @@ const RULE_DEFAULTS := {
 	"novice_lp_cap": 4000,
 	"chore_xuedian": false,
 	"spar_rewards": false,
+	# M3D_PLAN §8.2：PK值 被動遞減（classic_strict 關＝2001 沒有）、2001 的「閃」指令、交易之道影響賣價（選做 F）
+	"pk_decay": true,
+	"dodge_cmd": true,
+	"trade_sell_bonus": false,
+	# M3d 審查（第三輪）：後期活動——門派比武與武林大會（2002）、血刀血池比武（2003）。classic_strict 關（2001 只有劫鏢與比武場）
+	"later_events": true,
 }
 
 const RULE_ENUMS := {
@@ -192,7 +200,9 @@ const REQUIRE_TYPES := ["morality_min", "morality_max", "sect", "no_sect", "not_
 	# M3B_PLAN §4.3
 	"sect_not", "sect_rank_min", "org_member", "no_org", "life_min",
 	# M3C2_PLAN §2.3.1（WP-PACE）
-	"money_max"]
+	"money_max",
+	# M3D_PLAN §8.4：combo_ready（COMBAT）、counter_max（ARTS）、bounty_listed／has_license（LAW）、jb_active（EVENTS）
+	"combo_ready", "counter_max", "bounty_listed", "has_license", "jb_active"]
 
 ## 各條件 type 必備的欄位（M1_PLAN 3.11.1；data_lint 檢查）
 const REQUIRE_FIELDS_BY_TYPE := {
@@ -214,6 +224,8 @@ const REQUIRE_FIELDS_BY_TYPE := {
 	"sect_not": ["sect"], "sect_rank_min": ["sect", "value"], "org_member": [], "no_org": [], "life_min": ["skill", "value"],
 	# M3C2_PLAN §2.3.1
 	"money_max": ["value"],
+	# M3D_PLAN §8.4
+	"combo_ready": ["art"], "counter_max": ["key", "value"], "bounty_listed": [], "has_license": [], "jb_active": [],
 }
 
 ## 十二時辰名（masters.hours、hour_in 條件；與 WorldClock 相同順序）
@@ -245,7 +257,18 @@ const RANK_PROMOTES := ["JOIN", "QUEST", "AUTO"]
 const RANK_COST_KEYS := ["fame", "lilian", "money"]
 ## NPC 服務（同 Protocol.NPC_SERVICES；lint 從這裡讀，免得 core/data 依賴 protocol 的順序）
 const NPC_SERVICES := ["SHOP", "TEACH", "JOIN", "INN", "RESPAWN", "TRAVEL", "MEAL", "FIGHT", "QUEST", "GUARD",
-	"BETRAY", "JAIL", "TRIAL", "GUIDE", "BANK", "ESCORT", "ORG", "RANK"]
+	"BETRAY", "JAIL", "TRIAL", "GUIDE", "BANK", "ESCORT", "ORG", "RANK",
+	# M3D_PLAN §8.4
+	"BOARD", "LICENSE", "CLEANSE", "TOURNEY"]
+# ---------------------------------------------------------------- M3d（M3D_PLAN §8.4；WP-LAW Day-0）
+## NPC 選填欄位 cleanse 的值（服務 CLEANSE 必須有）；deaf: bool（LICENSE 的耳聾官爺）
+const NPC_CLEANSE_KINDS := ["KILLING", "PK"]
+## 道具 effects[].type 的 M3d 新值（data_lint EFFECT_TYPES 同步）
+const M3D_EFFECT_TYPES := ["FLEE_ANYWHERE", "LIGHT", "LIANDU", "SUMMON"]
+## quests.chore.kind（WP-ERRANDS；缺＝SECT）；chore.decay_all: bool
+const CHORE_KINDS := ["SECT", "TOWN"]
+## martial_arts.combo（Dictionary，取代舊的 bool）必備欄位；pair 一定 2 列，每列必有 art
+const ART_COMBO_FIELDS := ["group", "pair"]
 ## 新表必備欄位（WP-MERGE 的 lint 用）
 const REQUIRED_FIELDS := {
 	"sect_ranks": ["id", "sect", "rank", "name", "requires", "promote", "cost", "era", "src"],

@@ -405,6 +405,79 @@ const REJECT_WITH_BUILD := ["protocol_mismatch", "version_mismatch", "content_mi
 ## M3c2 中 "ui": true 的事件
 const M3C2_UI_EVENTS := [E_FOREIGN_IMPORTED]
 
+# ---- M3d（M3D_PLAN §7；T1：純新增，RPC 簽名不變 → VERSION 維持 5） ----
+# WP-LAW
+const I_BOUNTY_BOARD := "bounty_board"        # { npc }
+const I_BOUNTY_LICENSE := "bounty_license"    # { npc }
+const I_BOUNTY_ADD := "bounty_add"            # { npc, target_name, money:int }
+const I_BOUNTY_CLAIM := "bounty_claim"        # { npc }
+const I_CLEANSE := "cleanse"                  # { npc, what:"KILLING"|"PK", times:int? }
+const CLEANSE_WHATS := ["KILLING", "PK"]
+# WP-COMBAT
+const I_COMBO_BOND := "combo_bond"            # { target_char }
+const I_COMBO_REPLY := "combo_reply"          # { from_char, accept:bool }
+const I_COMBO_CANCEL := "combo_cancel"        # {}
+const I_COMBO_NURTURE := "combo_nurture"      # {}
+# battle_cmd：BATTLE_CMDS 加 "DODGE"、"QING"；參數 "mode" 依 cmd 檢查（INNER → INNER_MODES、QING → QING_MODES）
+const QING_MODES := ["JUMP", "ESCAPE"]
+# WP-ARTS
+const I_INTIMIDATE := "intimidate"            # { npc }
+const I_LIANDU := "liandu"                    # {}
+# WP-EVENTS
+const I_ROB_ESCORT := "rob_escort"            # { target_char }
+const I_TOURNEY_INFO := "tourney_info"        # {}
+const I_TOURNEY_SIGNUP := "tourney_signup"    # { npc, kind }
+const I_TOURNEY_WITHDRAW := "tourney_withdraw"  # {}
+const I_TOURNEY_HOST := "tourney_host"        # { kind, signup_s:int? }（HOST）
+## M3d 事件（M3D_PLAN §7；模板 id＝事件 key；ui 的列在 M3D_UI_EVENTS）
+# WP-LAW
+const E_BOUNTY_BOARD := "bounty_board"                    # ui：{ rows, refreshed_s, claims_total, licensed, enabled }
+const E_LAW_LICENSE_OK := "law_license_ok"
+const E_LAW_LICENSE_VOID := "law_license_void"
+const E_LAW_BOUNTY_EARNED := "law_bounty_earned"          # { target_name, amount }
+const E_LAW_BOUNTY_PAID := "law_bounty_paid"              # { amount }
+const E_LAW_HUNTER_WARN := "law_hunter_warn"              # ui：{ wid: "law_hunter", npc_name, warn_s }
+const E_LAW_CLEANSED := "law_cleansed"                    # { what, times, cost, killing_intent, pk }
+# WP-COMBAT
+const E_CB_BOND_REQUEST := "cb_bond_request"              # ui：{ from_char, from_name }
+const E_CB_BOND_CHANGED := "cb_bond_changed"              # ui：{ partner_name, moqi, peihe, drain_day }
+const E_BATTLE_DODGE := "battle_dodge"
+const E_BATTLE_QING_JUMP := "battle_qing_jump"
+const E_BATTLE_QING_ESCAPE := "battle_qing_escape"
+const E_BATTLE_QING_FAIL := "battle_qing_fail"
+const E_BATTLE_COMBO := "battle_combo"
+# WP-ARTS
+const E_AR_INTIMIDATED := "ar_intimidated"                # { npc_name, gain }
+const E_AR_LIANDU := "ar_liandu"                          # { gain, mult }
+const E_AR_XUEMO_ENLIGHTENED := "ar_xuemo_enlightened"    # {}
+# WP-EVENTS
+const E_EV_JB_STARTED := "ev_jb_started"                  # { value, why }
+const E_EV_JB_DONE := "ev_jb_done"
+const E_EV_JB_FAILED := "ev_jb_failed"
+const E_EV_JB_ROBBED := "ev_jb_robbed"                    # { robbers:[name], share }
+const E_TOURNEY_STATE := "tourney_state"                  # ui：{ kind, phase, entrants, bracket, next_match }
+const E_EV_TOURNEY_CALL := "ev_tourney_call"              # { name, n }
+const E_EV_DUEL_RESULT := "ev_duel_result"                # { a, b, winner, how }
+# WP-ERRANDS
+const E_ER_SPAR_NOT_DISCIPLE := "er_spar_not_disciple"    # {}
+## M3d 中 "ui": true 的事件
+const M3D_UI_EVENTS := [E_BOUNTY_BOARD, E_LAW_HUNTER_WARN, E_CB_BOND_REQUEST, E_CB_BOND_CHANGED, E_TOURNEY_STATE]
+## M3d 原因碼（M3D_PLAN §7；模板 err_<code>，由擁有的 WP 寫）
+const M3D_REASONS_LAW := ["bounty_off", "not_board_npc", "license_pk", "license_listed", "license_deaf", "license_none",
+	"bounty_not_listed", "bounty_pool_min", "bounty_pool_cap", "bounty_no_claims", "cleanse_nothing", "cleanse_daily",
+	"not_cleanse_npc"]
+const M3D_REASONS_COMBAT := ["dodge_off", "qing_off", "equip_cooldown", "combo_need_partner", "combo_need_party",
+	"combo_pair_mismatch", "combo_moqi_low", "combo_has_partner", "combo_peihe_low", "combo_no_request", "combo_partner_absent",
+	"combo_request_pending"]
+const M3D_REASONS_ARTS := ["intimidate_not_xd", "intimidate_bad_target", "intimidate_daily", "liandu_no_tool", "liandu_not_xh",
+	"liandu_daily"]
+const M3D_REASONS_EVENTS := ["jb_no_deposit", "jb_cooldown", "jb_active", "rob_no_escort", "rob_xp", "rob_same_party",
+	"tourney_disabled", "tourney_closed", "tourney_signed", "tourney_not_eligible", "tourney_running",
+	"tourney_need_xp", "tourney_has_pk", "tourney_need_morality", "tourney_need_sect_skill"]   # 後四個：M3d 審查（報名條件）
+const M3D_REASONS_ERRANDS := ["wlt_cooldown", "wlt_place"]
+## M3d 服務的中文標籤（UiKeys.SERVICE_LABELS 由 WP-COMBAT 同步）
+const M3D_SERVICE_LABELS := { "BOARD": "佈告欄", "LICENSE": "執照", "CLEANSE": "消災", "TOURNEY": "比武報名" }
+
 const CHAT_MAX_LEN := 200
 const MAIL_MAX_LEN := 200
 const PASSPORT_MAX_BYTES := 65536          # passport 參數 var_to_bytes 後的上限
@@ -415,13 +488,16 @@ const RATE_PER_SEC := 20.0
 
 const DIRS := ["N", "S", "E", "W", "NE", "NW", "SE", "SW", "U", "D", "IN", "OUT"]
 const BATTLE_CMDS := ["MOVE", "ATTACK", "ART", "DEFEND", "REST", "EQUIP", "FLEE",
-	"POISON", "MEDIC", "HIDDEN", "FORMATION", "INNER", "ACUPOINT", "ITEM"]
+	"POISON", "MEDIC", "HIDDEN", "FORMATION", "INNER", "ACUPOINT", "ITEM",
+	"DODGE", "QING"]   # M3d（M3D_PLAN §3.1、§3.2）
 const INNER_MODES := ["HEAL", "EXPEL", "UNSEAL", "TRANSFER"]   # battle_cmd INNER 的 mode（M3A_PLAN §5.1）
 ## NPC 服務（lint 與 UI）；M3a 加 BETRAY JAIL TRIAL GUIDE（§6.12）
 const NPC_SERVICES := ["SHOP", "TEACH", "JOIN", "INN", "RESPAWN", "TRAVEL", "MEAL", "FIGHT", "QUEST", "GUARD",
 	"BETRAY", "JAIL", "TRIAL", "GUIDE",
 	# M3b（M3B_PLAN §4.8）：錢莊、鏢局（WP-ECON）、組織（WP-ORG）、袋位（WP-SECT）
-	"BANK", "ESCORT", "ORG", "RANK"]
+	"BANK", "ESCORT", "ORG", "RANK",
+	# M3d（M3D_PLAN §7）：佈告欄、執照、消災（WP-LAW）、比武報名（WP-EVENTS）
+	"BOARD", "LICENSE", "CLEANSE", "TOURNEY"]
 ## M3b 服務的中文標籤（UiKeys.SERVICE_LABELS 由 WP-UI 同步）
 const M3B_SERVICE_LABELS := { "BANK": "錢莊", "ESCORT": "鏢局", "ORG": "組織", "RANK": "袋位" }
 ## M3b 原因碼（M3B_PLAN §6；err_<reason> 模板由 _sect／_econ／_org 碎片提供）
@@ -632,6 +708,23 @@ const INTENT_SCHEMA := {
 	I_SET_LOOK: { "look": [TYPE_INT, true] },
 	I_NPC_ATTACK: { "npc": [TYPE_STRING, true], "mode": [TYPE_STRING, false] },
 	I_MANUAL_READ: { "item_uid": [TYPE_STRING, true], "times": [TYPE_INT, false] },
+	# ---- M3d（M3D_PLAN §7） ----
+	I_BOUNTY_BOARD: { "npc": [TYPE_STRING, true] },
+	I_BOUNTY_LICENSE: { "npc": [TYPE_STRING, true] },
+	I_BOUNTY_ADD: { "npc": [TYPE_STRING, true], "target_name": [TYPE_STRING, true], "money": [TYPE_INT, true] },
+	I_BOUNTY_CLAIM: { "npc": [TYPE_STRING, true] },
+	I_CLEANSE: { "npc": [TYPE_STRING, true], "what": [TYPE_STRING, true], "times": [TYPE_INT, false] },
+	I_COMBO_BOND: { "target_char": [TYPE_STRING, true] },
+	I_COMBO_REPLY: { "from_char": [TYPE_STRING, true], "accept": [TYPE_BOOL, true] },
+	I_COMBO_CANCEL: {},
+	I_COMBO_NURTURE: {},
+	I_INTIMIDATE: { "npc": [TYPE_STRING, true] },
+	I_LIANDU: {},
+	I_ROB_ESCORT: { "target_char": [TYPE_STRING, true] },
+	I_TOURNEY_INFO: {},
+	I_TOURNEY_SIGNUP: { "npc": [TYPE_STRING, true], "kind": [TYPE_STRING, true] },
+	I_TOURNEY_WITHDRAW: {},
+	I_TOURNEY_HOST: { "kind": [TYPE_STRING, true], "signup_s": [TYPE_INT, false] },
 }
 
 ## M3b：consign_send.items 最多幾列（M3B_PLAN §5.2.2「items 最多 10 個 uid」）、org_rank_names 一定 5 個
@@ -657,6 +750,10 @@ const INT_RANGES := {
 	# M3c
 	I_SET_LOOK: { "look": [0, LOOK_MAX] },
 	I_MANUAL_READ: { "times": [1, 10] },
+	# M3d
+	I_BOUNTY_ADD: { "money": [1, 6000000] },
+	I_CLEANSE: { "times": [1, 100] },
+	I_TOURNEY_HOST: { "signup_s": [30, 1800] },
 }
 
 ## 字串參數的列舉（3.6「範圍驗證」欄）：kind -> { arg: [允許值] }
@@ -666,11 +763,15 @@ const ENUMS := {
 	I_UNEQUIP: { "slot": SLOTS },
 	I_EXERT: { "stat": EXERT_STATS },
 	I_WORK: { "skill": LIFE_SKILLS },
-	I_BATTLE_CMD: { "cmd": BATTLE_CMDS, "mode": INNER_MODES },
+	I_BATTLE_CMD: { "cmd": BATTLE_CMDS },   # mode 依 cmd 檢查（BATTLE_CMD_MODES；M3D_PLAN §7）
 	I_SET_PREF: { "key": PREF_KEYS },
 	I_VILLAIN_REPLY: { "choice": VILLAIN_CHOICES },
 	I_NPC_ATTACK: { "mode": NPC_ATTACK_MODES },
+	I_CLEANSE: { "what": CLEANSE_WHATS },
 }
+
+## battle_cmd 的 mode 依 cmd 檢查（M3D_PLAN §7）；表上沒有的 cmd 照 M3a 用 INNER_MODES（舊行為不變）
+const BATTLE_CMD_MODES := { "INNER": INNER_MODES, "QING": QING_MODES }
 
 const CHAT_CHANNELS := [CH_CHAT_WORLD, CH_CHAT_WHISPER, CH_CHAT_SAY, CH_CHAT_SECT, CH_CHAT_GUILD,
 	CH_CHAT_PARTY, CH_CHAT_RUMOR, CH_GM]
@@ -752,6 +853,10 @@ static func validate_args(kind: String, args: Dictionary) -> String:
 	for key in enums:
 		if args.has(key) and not (args[key] in enums[key]):
 			return "bad_value:" + str(key)
+	if kind == I_BATTLE_CMD and args.has("mode"):
+		var modes: Array = BATTLE_CMD_MODES.get(str(args["cmd"]), INNER_MODES)
+		if not (args["mode"] in modes):
+			return "bad_value:mode"
 	if kind == I_CHAR_CREATE:
 		# alloc 的內容（鍵、值、總和）由 CharacterFactory.validate_alloc 判定（bad_alloc），這裡只擋明顯的濫用
 		if (args["alloc"] as Dictionary).size() > 16:

@@ -168,7 +168,27 @@ static func _ok(t: String, c: Dictionary, ch: Character, tables: Dictionary, opt
 		# ---- M3C2_PLAN §2.3.1（WP-PACE）：化緣「身上銀兩 ≤ value」 ----
 		"money_max":
 			return ch.money <= CharData.to_int(value)
+	# ---- M3D_PLAN §9.2：各 WP 的 requirement 型別（各回 "?" 表示不認得） ----
+	for r in [_m3d_law(c, ch, tables, options, rules, ctx), _m3d_combat(c, ch, tables, options, rules, ctx),
+			_m3d_arts(c, ch, tables, options, rules, ctx), _m3d_events(c, ch, tables, options, rules, ctx)]:
+		var v: Variant = _m3d_result(r)
+		if v != null:
+			return bool(v)
 	return false
+
+## 各 WP 函式的回傳：bool＝成立與否；String "?"＝不認得（往下一個）；
+## 為了容忍寫法差異，String "" 視為成立、其他字串（原因碼）視為不成立。
+static func _m3d_result(r: Variant) -> Variant:
+	match typeof(r):
+		TYPE_BOOL:
+			return r
+		TYPE_STRING, TYPE_STRING_NAME:
+			if String(r) == "?":
+				return null
+			return String(r) == ""
+		TYPE_INT:
+			return int(r) != 0
+	return null
 
 ## 中文說明，例：「佛法 10 級以上」
 static func describe(cond: Dictionary, tables: Dictionary) -> String:
@@ -210,7 +230,8 @@ static func describe(cond: Dictionary, tables: Dictionary) -> String:
 		"sect_enabled":
 			return "需要開放%s" % CharData.sect_name(tables, String(cond.get("sect", "")))
 		"rule":
-			return "需要特定伺服器規則"
+			var rd := String(cond.get("desc", ""))
+			return rd if rd != "" else "需要特定伺服器規則"
 		"unmarried":
 			return "未婚"
 		"has_item":
@@ -279,6 +300,17 @@ static func describe(cond: Dictionary, tables: Dictionary) -> String:
 		# ---- M3C2_PLAN §2.3.1 ----
 		"money_max":
 			return "身上沒有銀兩" if CharData.to_int(value) <= 0 else "身上銀兩 %d 兩以下" % CharData.to_int(value)
+		# ---- M3D_PLAN §8.4 ----
+		"counter_max":
+			return "%s不超過 %d" % [COUNTER_NAMES.get(String(cond.get("key", "")), "特定紀錄"), CharData.to_int(value)]
+		"bounty_listed":
+			return "在衙門懸賞名單上"
+		"has_license":
+			return "持有賞金獵人執照"
+		"combo_ready":
+			return "與默契夥伴一同修練"
+		"jb_active":
+			return "沒有進行中的危險鏢" if cond.get("value", true) == false else "正在押鏢"   # M3d 整合
 	return "特殊條件"
 
 ## sect_ranks 列的名稱（找不到回 ""）；生效視圖裡同一派同一 rank 只會有一列
@@ -294,3 +326,68 @@ static func rank_name(tables: Dictionary, sect_id: String, rank: int) -> String:
 
 static func _quest_name(tables: Dictionary, qid: String) -> String:
 	return String(CharData.row(tables, "quests", qid).get("name", qid))
+
+## counter_max 的中文名（M3D_PLAN §4.9）
+const COUNTER_NAMES := { "qz_gumu_kills": "殺死古墓弟子的人數" }
+
+# ==== M3d WP-LAW ====
+## bounty_listed、has_license（M3D_PLAN §8.4）；只讀 ctx（core 不碰主機）。不認得回 "?"
+static func _m3d_law(c: Dictionary, ch: Character, tables: Dictionary, options: Dictionary, rules: Dictionary,
+		ctx: Dictionary) -> Variant:
+	match String(c.get("type", "")):
+		"bounty_listed":
+			return ctx.get("bounty_listed", false) == true   # LawSystem.req_ctx；沒有這個鍵 → 不成立
+		"has_license":
+			return ctx.get("has_license", false) == true
+	return "?"
+
+# ==== M3d WP-COMBAT ====
+## combo_ready { art }（M3D_PLAN §3.3.1、§8.4）：學的人有合體夥伴、夥伴同房同隊、兩人分別符合 pair 的兩邊、默契 ≥ moqi_min。
+## 只讀 ctx 的 combo 鍵（SectSystem.req_ctx 合併 ComboSystem.req_ctx）；ctx 沒有 → 讀 ComboRules.live_ctx（同一主機程序內
+## ComboSystem 每 tick 更新；師父列由凍結的 Learning.check_master 判定、不帶 ctx，見 battle_combo.gd 的 M3D_PLAN 缺漏）。
+## 不認得回 "?"
+static func _m3d_combat(c: Dictionary, ch: Character, tables: Dictionary, options: Dictionary, rules: Dictionary,
+		ctx: Dictionary) -> Variant:
+	if String(c.get("type", "")) != "combo_ready":
+		return "?"
+	return combo_ready_reason(c, ch, tables, ctx) == ""
+
+## combo_ready 不成立的原因碼（"" = 成立）；介面與主機的提示用
+static func combo_ready_reason(c: Dictionary, ch: Character, tables: Dictionary, ctx: Dictionary) -> String:
+	var art_row := CharData.row(tables, "martial_arts", String(c.get("art", "")))
+	var cc: Variant = ctx.get("combo", null)
+	if not (cc is Dictionary):
+		cc = ComboRules.live_ctx.get(ch.id, {})
+	var ss := String(CharData.row(tables, "sects", ch.sect).get("sect_skill", "")) if ch.sect != "" else ""
+	var mine_sk := {}
+	for side in (ComboRules.combo_of(art_row).get("pair", []) as Array):
+		if side is Dictionary:
+			var a := String(side.get("art", ""))
+			mine_sk[a] = ch.skills.level(a)
+	var me := { "gender": ch.gender, "skills": mine_sk, "sect_skill": ch.skills.level(ss) if ss != "" else 0 }
+	return ComboRules.ready_reason(art_row, me, cc as Dictionary)
+
+# ==== M3d WP-ARTS ====
+## counter_max { key, value }：角色 counters[key]（int）≤ value 才成立（M3D_PLAN §4.9）
+static func _m3d_arts(c: Dictionary, ch: Character, tables: Dictionary, options: Dictionary, rules: Dictionary,
+		ctx: Dictionary) -> Variant:
+	match String(c.get("type", "")):
+		"counter_max":
+			var key := String(c.get("key", ""))
+			var cur: Variant = ch.counters.get(key, 0)
+			var n := CharData.to_int(cur) if typeof(cur) in [TYPE_INT, TYPE_FLOAT, TYPE_STRING] else 0
+			return n <= CharData.to_int(c.get("value", 0))
+	return "?"
+
+# ==== M3d WP-EVENTS ====
+## jb_active（M3D_PLAN §8.4）。不認得回 "?"
+## jb_active { value?: bool }：身上有進行中的危險鏢（ext.jiebiao.active）；value 給 false ＝沒有（接鏢條件「沒有進行中的危險鏢」）
+static func _m3d_events(c: Dictionary, ch: Character, tables: Dictionary, options: Dictionary, rules: Dictionary,
+		ctx: Dictionary) -> Variant:
+	match String(c.get("type", "")):
+		"jb_active":
+			var e: Variant = ch.ext.get("jiebiao", null)
+			var a: Variant = (e as Dictionary).get("active", null) if e is Dictionary else null
+			var has := a is Dictionary and String((a as Dictionary).get("quest", "")) != ""
+			return has == (c.get("value", true) != false)
+	return "?"

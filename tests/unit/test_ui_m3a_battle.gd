@@ -134,7 +134,9 @@ func test_hotkeys_8_9_0_and_shift() -> void:
 	k.keycode = KEY_3
 	assert_eq(BattleScreen.hotkey_cmd(k), UiKeys.CMD_ACUPOINT)
 	k.keycode = KEY_5
-	assert_eq(BattleScreen.hotkey_cmd(k), "", "Shift+5 is nothing")
+	assert_eq(BattleScreen.hotkey_cmd(k), UiKeys.CMD_QING, "M3d：Shift+5 是「輕」")
+	k.keycode = KEY_6
+	assert_eq(BattleScreen.hotkey_cmd(k), "", "Shift+6 is nothing")
 	for c in UiKeys.M3A_CMDS:
 		if c != UiKeys.CMD_ITEM:
 			assert_true(str(UiKeys.CMD_TOOLTIPS.get(c, "")).contains("快捷鍵"), "%s tooltip shows its hotkey" % c)
@@ -404,6 +406,6 @@ func test_keys_match_protocol_when_available() -> void:
 			["I_SECT_TRIAL", UiKeys.I_SECT_TRIAL], ["I_NPC_GUIDE", UiKeys.I_NPC_GUIDE]]:
 		if cm.has(pair[0]):
 			assert_eq(cm[pair[0]], pair[1], pair[0])
-	assert_eq(UiKeys.BATTLE_CMDS_ALL.size(), 14)
+	assert_eq(UiKeys.BATTLE_CMDS_ALL.size(), 16, "M3a 14 + M3d 閃、輕")
 	for s in ["BETRAY", "JAIL", "TRIAL", "GUIDE"]:
 		assert_has(UiKeys.SERVICES, s)

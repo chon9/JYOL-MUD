@@ -149,6 +149,7 @@ static func char_delete(host: GameHost, s: Session, a: Dictionary) -> Dictionary
 	host.m2_call(host.get("orgs"), "on_char_deleted", [char_id])     # M3b 審查：移出組織、連署名單、邀請；幫主 → 移交或解散
 	host.m2_call(host.get("escort"), "on_char_deleted", [char_id])
 	host.m2_call(host.get("loot"), "on_char_deleted", [char_id])     # M3c 審查：釋放他持有的神兵登記   # M3b：寄給他的托鏢退回寄件人（WP-ECON）   # 寄給他的信一併刪除；屍體照常到期（M2_PLAN 4.6.1）
+	host.m3d_char_deleted(char_id)   # M3d 整合：懸賞名單、默契、比武報名、押鏢等各系統清掉這個角色
 	host.tell(s, Protocol.CH_SYSTEM, Protocol.E_CHAR_DELETED, { "name": str(ch.name) })
 	host.push_char_list(s)
 	host.ws.save_now()

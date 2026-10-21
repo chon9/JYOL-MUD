@@ -8,6 +8,7 @@ const DMG_COLOR := Color("ffd23a")        # 敵方受傷（金）
 const DMG_TAKEN_COLOR := Color("ff4632")  # 我方受傷（紅）
 const CRIT_COLOR := Color("ff7a12")
 const MISS_COLOR := Color("ffffff")
+const DODGE_COLOR := Color("6fe3ff")   # M3d 審查：「閃」的架勢（彈出字與腳下菱形）
 const REST_COLOR := Color("8affd6")
 const HEAL_COLOR := Color("7dff6e")
 const WOUND_COLOR := Color("e2a8ff")
@@ -126,6 +127,88 @@ func drop_words(s: UnitSprite = null, pending_too := false) -> void:
 ## 數字飄字（-12、+5、-30!）；其他是字（閃、調息、狀態名），底下墊深色牌子
 static func is_number(text: String) -> bool:
 	return text.begins_with("-") or text.begins_with("+")
+
+## ---------------------------------------------------------------- M3d：合體技（M3D_PLAN §3.3.4；WP-COMBAT）
+const COMBO_DUR := 1.8
+const COMBO_GOLD := Color("ffd860")
+
+## 合體一擊：兩人之間一條金色光帶（程式畫；沒有美術）＋戰場上方金色大字「合體技・{武功}！」
+## a = 出手的人、b = 夥伴、d = 目標（光帶從兩人匯向目標）
+func combo(a: UnitSprite, b: UnitSprite, d: UnitSprite, text: String, delay: float) -> void:
+	if a == null or closed:
+		return
+	items.append({ "type": "combo", "sprite": a, "partner": b, "target": d, "text": text,
+		"start": _now() + maxf(0.0, delay), "dur": COMBO_DUR })
+
+## 目前（已開始、還沒結束）的合體字（測試用）
+func combo_banners() -> Array:
+	var now := _now()
+	var out: Array = []
+	for it in items:
+		if str(it.get("type", "")) == "combo" and float(it["start"]) <= now and now <= float(it["start"]) + float(it["dur"]):
+			out.append(str(it["text"]))
+	return out
+
+func _draw_combo(it: Dictionary, t: float, font: Font) -> void:
+	var a: UnitSprite = it["sprite"]
+	var b: UnitSprite = it.get("partner", null) if is_instance_valid(it.get("partner", null)) else null
+	var d: UnitSprite = it.get("target", null) if is_instance_valid(it.get("target", null)) else null
+	var alpha := (t / 0.15 if t < 0.15 else (1.0 if t < 0.7 else 1.0 - (t - 0.7) / 0.3))
+	var pa := a.position + a.anim_offset + Vector2(0, -a.figure_height() * 0.55)
+	var pts: Array = [pa]
+	if b != null:
+		pts.append(b.position + b.anim_offset + Vector2(0, -b.figure_height() * 0.55))
+	var tgt := Vector2.ZERO
+	if d != null:
+		tgt = d.position + d.anim_offset + Vector2(0, -d.body_top() * 0.5)
+	# 光帶：兩人之間（外圈淡金、內圈亮白），再各拉一條到目標
+	var segs: Array = []
+	if pts.size() == 2:
+		segs.append([pts[0], pts[1]])
+	if d != null:
+		for p0 in pts:
+			segs.append([p0, tgt])
+	var pulse := 1.0 + 0.25 * sin(t * TAU * 3.0)
+	for sg in segs:
+		draw_line(sg[0], sg[1], Color(COMBO_GOLD, 0.28 * alpha), 14.0 * pulse, true)
+		draw_line(sg[0], sg[1], Color(COMBO_GOLD, 0.65 * alpha), 6.0 * pulse, true)
+		draw_line(sg[0], sg[1], Color(1, 1, 0.92, 0.9 * alpha), 2.0, true)
+	if d != null:
+		draw_circle(tgt, view.tile_w * (0.18 + 0.25 * t) if view != null else 16.0, Color(COMBO_GOLD, 0.35 * alpha))
+	# 金色大字：戰場上方置中
+	if font == null or view == null:
+		return
+	var txt := str(it["text"])
+	var fs := int(clampf(view.tile_w * 0.42, 26.0, 40.0) * (1.0 + 0.15 * maxf(0.0, 1.0 - t * 6.0)))
+	var w := font.get_string_size(txt, HORIZONTAL_ALIGNMENT_LEFT, -1, fs).x
+	var p := Vector2((view.size.x - w) / 2.0, BattleFx.combo_text_y(view, fs))
+	var ow := maxi(6, fs / 4)
+	draw_string_outline(font, p + Vector2(2, 3), txt, HORIZONTAL_ALIGNMENT_LEFT, -1, fs, ow, Color(0, 0, 0, 0.5 * alpha))
+	draw_string_outline(font, p, txt, HORIZONTAL_ALIGNMENT_LEFT, -1, fs, ow, Color(0.35, 0.18, 0.0, alpha))
+	draw_string(font, p, txt, HORIZONTAL_ALIGNMENT_LEFT, -1, fs, Color(COMBO_GOLD, alpha))
+
+## 合體技金字的基線 y（M3d 審查：原本固定在 72% 高度，會壓到站在那裡的單位與氣條）：
+## 所有單位的頭頂名牌（figure_height ＋ 名牌 COMBO_PLATE_H）以上放得下 → 放上面；否則放所有單位腳下；都放不下 → 上緣
+const COMBO_PLATE_H := 44.0
+static func combo_text_y(v: Control, fs: int) -> float:
+	var top := INF
+	var bottom := -INF
+	var spr: Variant = v.get("sprites") if v != null else null
+	if spr is Dictionary:
+		for s in (spr as Dictionary).values():
+			if not is_instance_valid(s) or not (s as Node2D).visible:
+				continue
+			var us := s as UnitSprite
+			var pos: Vector2 = us.position + us.anim_offset
+			top = minf(top, pos.y - us.figure_height() - COMBO_PLATE_H)
+			bottom = maxf(bottom, pos.y + 12.0)
+	if top == INF:
+		return v.size.y * 0.2 if v != null else 40.0
+	if top - 8.0 - fs >= 8.0:
+		return top - 8.0
+	if bottom + 8.0 + fs <= v.size.y - 8.0:
+		return bottom + 8.0 + fs
+	return float(fs) + 8.0
 
 func shield(s: UnitSprite, delay: float) -> void:
 	items.append({ "type": "shield", "sprite": s, "start": _now() + maxf(0.0, delay), "dur": 0.9 })
@@ -350,6 +433,8 @@ func _draw() -> void:
 					draw_texture_rect(tex, Rect2(center - Vector2(sz, sz) / 2.0, Vector2(sz, sz)), false, Color(1, 1, 1, a2))
 				else:
 					_draw_spark(center, tw * (0.15 + 0.4 * t), a2, str(it["kind"]))
+			"combo":
+				_draw_combo(it, t, font)
 
 ## 有人站著（或躺著）的逃跑格：格子被人擋住，在格子右角補一個小「逃」牌（畫在人物上面）
 func _draw_escape_badges(font: Font) -> void:

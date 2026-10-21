@@ -34,6 +34,8 @@ var wave := 0                       # 波次（十八銅人，battle_wave）；0
 var wave_total := 0
 var last_aoe: Dictionary = {}       # 最近一次 battle_aoe：{ uid, cells: Array[Vector2i] }（畫面標格子）
 var _status_tick_at: Dictionary = {}   # uid -> 上次扣狀態次數時的 anchor_tick（範圍招式一次行動多個事件，只扣一次）
+var dodge_cmd := true               # M3d：規則 dodge_cmd（快照 dodge_cmd；舊主機沒有 → 開）
+var last_combo: Dictionary = {}     # M3d：最近一次 battle_combo 的 payload（畫面金字與光帶）
 
 ## 8 方向（§5.3 LINE／FAN）：由東開始順時針（畫面座標 y 往下）
 const DIRS8 := [Vector2i(1, 0), Vector2i(1, 1), Vector2i(0, 1), Vector2i(-1, 1),
@@ -83,6 +85,7 @@ func load_state(state: Dictionary) -> void:
 		wave_total = int(wv.get("total", 0))
 	if state.has("later_battle_cmds"):
 		later_cmds = state["later_battle_cmds"] != false
+	dodge_cmd = state.get("dodge_cmd", true) != false   # M3d
 	escape.clear()
 	for e in state.get("escape", []):
 		escape.append(to_local_cell(to_cell(e)))
@@ -345,7 +348,39 @@ func cmd_open(cmd: String) -> bool:
 			return a.get(cmd, false) == true and not hidden_items().is_empty()
 		UiKeys.CMD_ITEM:
 			return a.get(cmd, false) == true and not battle_items().is_empty()
+		UiKeys.CMD_DODGE:
+			return dodge_cmd and a.get(cmd, dodge_cmd) == true
+		UiKeys.CMD_QING:
+			return later_cmds and not qing_modes().is_empty()
 	return a.get(cmd, false) == true
+
+# ---------- M3d：閃、輕、烙跑鞋（M3D_PLAN §3.1–3.4；WP-COMBAT） ----------
+## 「輕」現在可用的 mode（快照 cmd_avail.QING：["JUMP", "ESCAPE"] 的子集）
+func qing_modes() -> Array:
+	var v: Variant = cmd_avail().get(UiKeys.CMD_QING, [])
+	return v if v is Array else []
+
+## 飛身越敵的落點：曼哈頓距離 ≤ 移動範圍 + 1 的空格（可以越過有人的格子）
+func jump_targets() -> Array:
+	var u := me()
+	if u.is_empty():
+		return []
+	var start: Vector2i = u["pos"]
+	var steps := move_range() + 1
+	var out: Array = []
+	for y in h:
+		for x in w:
+			var c := Vector2i(x, y)
+			if c != start and manhattan(c, start) <= steps and unit_at(c) == 0:
+				out.append(c)
+	return out
+
+## 穿著烙跑鞋、這場允許 → 任何格子都能逃（快照 flee_anywhere）
+func flee_anywhere() -> bool:
+	return bool(me().get("flee_anywhere", false))
+
+func is_dodging(uid: int) -> bool:
+	return bool(unit(uid).get("dodging", false))
 
 func hidden_items() -> Array:
 	var v: Variant = me().get("hidden_items", [])
@@ -566,6 +601,30 @@ func apply_event(e: Dictionary) -> bool:
 			_acted(int(p.get("uid", 0)))
 		UiKeys.E_BATTLE_FLEE:
 			_set_state(int(p.get("uid", 0)), "FLED")
+		# ---- M3d（M3D_PLAN §3.1–3.3；WP-COMBAT） ----
+		UiKeys.E_BATTLE_DODGE:
+			var du := int(p.get("uid", 0))
+			_acted(du)
+			if units.has(du):
+				units[du]["dodging"] = true
+		UiKeys.E_BATTLE_QING_JUMP:
+			var ju := int(p.get("uid", 0))
+			if units.has(ju):
+				units[ju]["pos"] = to_cell(p.get("to", cell_arr(units[ju]["pos"])))
+			_set_num(ju, "neili", p, "neili")
+			_acted(ju)
+		UiKeys.E_BATTLE_QING_ESCAPE:
+			var eu := int(p.get("uid", 0))
+			_set_num(eu, "neili", p, "neili")
+			_set_state(eu, "FLED")
+		UiKeys.E_BATTLE_QING_FAIL:
+			var fu := int(p.get("uid", 0))
+			_set_num(fu, "neili", p, "neili")
+			_acted(fu)
+		UiKeys.E_BATTLE_COMBO:
+			last_combo = p.duplicate()
+			_set_num(int(p.get("def_uid", 0)), "qi", p, "def_qi")
+			_acted(int(p.get("atk_uid", 0)))
 		UiKeys.E_BATTLE_KILL, UiKeys.E_BATTLE_DEATH:
 			_set_state(int(p.get("uid", 0)), "DEAD")
 		UiKeys.E_BATTLE_WOUND_TICK:
@@ -720,6 +779,8 @@ func weapon_kind(uid: int, humanoid: bool) -> String:
 func _acted(uid: int) -> void:
 	if uid == 0:
 		return
+	if units.has(uid):
+		units[uid]["dodging"] = false   # M3d：「閃」只到自己下次行動前
 	_timeouts.erase(uid)
 	afk.erase(uid)
 	_tick_statuses(uid)

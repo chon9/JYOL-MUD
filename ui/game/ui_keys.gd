@@ -349,7 +349,8 @@ const E_CORPSE_PUBLIC := "corpse_public"
 ## UI-only 事件（3.8：頂層帶 "ui": true，沒有模板）
 const UI_ONLY_KEYS := [E_NPC_MENU, E_SHOP_LIST, E_TEACH_LIST, E_BATTLE_GAUGES, E_BATTLE_AWAIT, E_BATTLE_END,
 	E_BATTLE_UNIT_JOIN, E_MAIL_LIST, E_SERVER_OPTIONS, E_WORLD_INFO_CHANGED, E_PASSPORT, E_SCOUT_OFFER, E_SCOUT_CLOSED,
-	E_BATTLE_AOE, E_BANK_VIEW, E_CONSIGN_LIST, E_ORG_INFO, E_ORG_INVITE]
+	E_BATTLE_AOE, E_BANK_VIEW, E_CONSIGN_LIST, E_ORG_INFO, E_ORG_INVITE,
+	"bounty_board", "law_hunter_warn", "cb_bond_request", "cb_bond_changed", "tourney_state"]   # M3d（= M3D_UI_KEYS）
 
 # ---------- 善惡與名字顏色（M2_PLAN 4.10、5.2：惡藍、中立黃、善白【已證實：顏色】） ----------
 const ALIGN_GOOD := "GOOD"
@@ -362,6 +363,7 @@ const ALIGN_LABELS := { ALIGN_EVIL: "惡", ALIGN_NEUTRAL: "中立", ALIGN_GOOD: 
 ## FIGHT 是玩家找 NPC 開打（例：山賊頭目），不是玩家之間的「切磋」（那是後期的結構化 PvP，verified_research：post-launch）
 const BATTLE_KIND_LABELS := {
 	"ENCOUNTER": "遇敵", "FIGHT": "打鬥", "GUARD": "守城官兵", "CHALLENGE": "叫戰", "FORCED": "強制 PK",
+	"ROB": "劫鏢", "DUEL": "比武",   # M3d（M3D_PLAN §5.2、§5.3）
 }
 const PVP_KINDS := ["CHALLENGE", "FORCED"]
 
@@ -388,8 +390,12 @@ const CMD_INNER := "INNER"
 const CMD_ACUPOINT := "ACUPOINT"
 const CMD_ITEM := "ITEM"
 const M3A_CMDS := [CMD_POISON, CMD_MEDIC, CMD_HIDDEN, CMD_FORMATION, CMD_INNER, CMD_ACUPOINT, CMD_ITEM]
+# M3d 指令（M3D_PLAN §3.1、§3.2；值與 Protocol.BATTLE_CMDS 相同）
+const CMD_DODGE := "DODGE"
+const CMD_QING := "QING"
+const M3D_CMDS := [CMD_DODGE, CMD_QING]
 const BATTLE_CMDS_ALL := [CMD_MOVE, CMD_ATTACK, CMD_ART, CMD_DEFEND, CMD_REST, CMD_EQUIP, CMD_FLEE,
-	CMD_POISON, CMD_MEDIC, CMD_HIDDEN, CMD_FORMATION, CMD_INNER, CMD_ACUPOINT, CMD_ITEM]
+	CMD_POISON, CMD_MEDIC, CMD_HIDDEN, CMD_FORMATION, CMD_INNER, CMD_ACUPOINT, CMD_ITEM, CMD_DODGE, CMD_QING]
 ## 「內」的四種運功（battle_cmd 的 mode）與選單文字
 const INNER_MODES := ["HEAL", "EXPEL", "UNSEAL", "TRANSFER"]
 const INNER_MODE_LABELS := { "HEAL": "運功療傷", "EXPEL": "逼毒", "UNSEAL": "衝穴", "TRANSFER": "傳力" }
@@ -397,7 +403,7 @@ const INNER_MODE_LABELS := { "HEAL": "運功療傷", "EXPEL": "逼毒", "UNSEAL"
 const M3A_HOTKEYS := { KEY_8: CMD_POISON, KEY_9: CMD_MEDIC, KEY_0: CMD_HIDDEN }
 const M3A_SHIFT_HOTKEYS := { KEY_1: CMD_FORMATION, KEY_2: CMD_INNER, KEY_3: CMD_ACUPOINT }
 ## 「內」「穴」屬於 2002-01-25（決戰光明頂）；伺服器規則 later_battle_cmds 關掉時的提示（§7.1、D9）
-const LATER_CMDS := [CMD_INNER, CMD_ACUPOINT]
+const LATER_CMDS := [CMD_INNER, CMD_ACUPOINT, CMD_QING]
 const LATER_CMDS_TIP := "原作 2002 年才有（伺服器規則關閉）"
 ## 範圍招式形狀（§5.3）
 const AOE_SHAPES := ["SINGLE", "CROSS", "CROSS_L", "LINE", "FAN", "AROUND"]
@@ -406,22 +412,25 @@ const AOE_LABELS := { "SINGLE": "單體", "CROSS": "小十字", "CROSS_L": "大�
 const CMD_LABELS := {
 	CMD_MOVE: "移", CMD_ATTACK: "攻", CMD_ART: "武", CMD_DEFEND: "防",
 	CMD_REST: "休", CMD_EQUIP: "裝", CMD_FLEE: "逃",
+	CMD_DODGE: "閃", CMD_QING: "輕",   # M3d
 }
 ## 原作完整順序（說明用）：移 攻 武 特 防 休 裝 逃 系 毒 醫 暗 陣 屬 內 輕 穴 絕 馴
 const CMD_ALL_GLYPHS := ["移", "攻", "武", "特", "防", "休", "裝", "逃", "系", "毒", "醫", "暗", "陣", "屬", "內", "輕", "穴", "絕", "馴"]
 ## 兩列蜂巢排列（第二列右移半顆）；「絕」「馴」本作不放
 const CMD_DISC_ROWS := [
-	["防", "內", "休", "逃", "輕", "裝", "武", "屬", "系"],
+	["防", "閃", "內", "休", "逃", "輕", "裝", "武", "屬", "系"],   # M3d：「閃」在「防」後面（M3D_PLAN §3.1）
 	["移", "攻", "特", "毒", "醫", "陣", "暗", "穴"],
 ]
 ## 圓盤字 → 指令（已實作）；「屬」「系」開視窗
 const CMD_BY_GLYPH := {
 	"移": CMD_MOVE, "攻": CMD_ATTACK, "武": CMD_ART, "防": CMD_DEFEND, "休": CMD_REST, "裝": CMD_EQUIP, "逃": CMD_FLEE,
 	"毒": CMD_POISON, "醫": CMD_MEDIC, "暗": CMD_HIDDEN, "陣": CMD_FORMATION, "內": CMD_INNER, "穴": CMD_ACUPOINT,
+	"閃": CMD_DODGE, "輕": CMD_QING,   # M3d
 }
 const CMD_PANEL_GLYPHS := { "屬": "attributes", "系": "system" }
 ## 尚未開放的指令（不能用樣式）：輕功「輕」、特攻「特」（M3a 仍鎖住；§1.2）
-const CMD_LOCKED_LABELS := ["輕", "特"]
+## M3d：「輕」開放（跟著 later_battle_cmds），只剩「特」鎖住
+const CMD_LOCKED_LABELS := ["特"]
 const CMD_LOCKED_TIP := "尚未開放"
 const CMD_TOOLTIPS := {
 	CMD_MOVE: "移動到綠色格（快捷鍵 1）", CMD_ATTACK: "普通攻擊：藍色是攻擊範圍、紅色是可打的敵人（快捷鍵 2）",
@@ -434,11 +443,14 @@ const CMD_TOOLTIPS := {
 	CMD_FORMATION: "結陣：隊友站上金框站位後施展陣法（快捷鍵 Shift+1）",
 	CMD_INNER: "內功：運功療傷、逼毒、衝穴、傳力（快捷鍵 Shift+2）",
 	CMD_ACUPOINT: "點穴：封住相鄰敵人的穴道（快捷鍵 Shift+3）",
+	CMD_DODGE: "閃：到下次行動前比較不容易被打中，但不反擊（快捷鍵 Shift+4）",
+	CMD_QING: "輕功：越過敵人跳得更遠，或原地施展輕功脫身（耗內力，快捷鍵 Shift+5）",
 }
 ## 不能按時的說明（快照 cmd_avail 為 false 時附在提示後面）
 const CMD_UNAVAIL_TIPS := {
 	CMD_POISON: "還沒學會毒術", CMD_MEDIC: "還沒學會醫術", CMD_HIDDEN: "需要暗器功夫與身上的暗器",
 	CMD_FORMATION: "還沒學會陣法", CMD_INNER: "還沒學會內功", CMD_ACUPOINT: "需要點穴武功或基本刺術 10 級",
+	CMD_DODGE: "目前不能閃", CMD_QING: "內力不足，施展不了輕功",
 }
 const CMD_PANEL_TIPS := { "屬": "查看屬性（唯讀）", "系": "系統選單" }
 const BATTLE_IDLE_HINT := "白框「逃」字格＝逃跑格；站上去後按「逃」即可脫離戰鬥。"
@@ -459,7 +471,8 @@ const DIR_LABELS := {
 
 # ---------- NPC 服務（3.12） ----------
 const SERVICES := ["SHOP", "TEACH", "INN", "RESPAWN", "TRAVEL", "JOIN", "QUEST", "MEAL", "FIGHT",
-	"BETRAY", "JAIL", "TRIAL", "GUIDE", "BANK", "ESCORT", "ORG", "RANK"]
+	"BETRAY", "JAIL", "TRIAL", "GUIDE", "BANK", "ESCORT", "ORG", "RANK",
+	"BOARD", "LICENSE", "CLEANSE", "TOURNEY"]   # M3d（M3D_PLAN §7）
 const SERVICE_LABELS := {
 	"SHOP": "交易", "TEACH": "請教", "INN": "住宿", "RESPAWN": "記錄", "TRAVEL": "驛站",
 	"JOIN": "拜師", "QUEST": "任務", "MEAL": "用齋", "FIGHT": "切磋",
@@ -467,6 +480,8 @@ const SERVICE_LABELS := {
 	"BETRAY": "叛教", "JAIL": "思過處", "TRIAL": "試煉", "GUIDE": "引路",
 	# M3b（§4.8、§6）
 	"BANK": "錢莊", "ESCORT": "鏢局", "ORG": "組織", "RANK": "袋位",
+	# M3d（M3D_PLAN §7；與 Protocol.M3D_SERVICE_LABELS 相同）
+	"BOARD": "佈告欄", "LICENSE": "執照", "CLEANSE": "消災", "TOURNEY": "比武報名",
 }
 ## npc_menu.beg（M3b §5.1.2）：選單裡的「乞討」選項（不是服務；只有本派有 practice 的人看得到）
 const BEG_CHOICE := "BEG"
@@ -562,3 +577,102 @@ static func is_hit_event(e: Dictionary) -> bool:
 ## 內力消耗 = ceil(招式內力 × 成數 / 5)（4.7、3.12 art_picker）
 static func inner_cost(cost_inner: int, tenths: int) -> int:
 	return int(ceil(float(cost_inner) * float(tenths) / 5.0))
+
+# ==== M3d（M3D_PLAN §7；WP-COMBAT Day-0 一次寫好所有 WP 的介面常數；值與 Protocol 相同，VERSION 維持 5） ====
+# ---- intents ----
+const I_BOUNTY_BOARD := "bounty_board"           # { npc }（WP-LAW）
+const I_BOUNTY_LICENSE := "bounty_license"       # { npc }
+const I_BOUNTY_ADD := "bounty_add"               # { npc, target_name, money }
+const I_BOUNTY_CLAIM := "bounty_claim"           # { npc }
+const I_CLEANSE := "cleanse"                     # { npc, what: KILLING|PK, times? }
+const CLEANSE_WHATS := ["KILLING", "PK"]
+const I_COMBO_BOND := "combo_bond"               # { target_char }（WP-COMBAT）
+const I_COMBO_REPLY := "combo_reply"             # { from_char, accept }
+const I_COMBO_CANCEL := "combo_cancel"           # {}
+const I_COMBO_NURTURE := "combo_nurture"         # {}
+const I_INTIMIDATE := "intimidate"               # { npc }（WP-ARTS）
+const I_LIANDU := "liandu"                       # {}
+const I_ROB_ESCORT := "rob_escort"               # { target_char }（WP-EVENTS）
+const I_TOURNEY_INFO := "tourney_info"           # {}
+const I_TOURNEY_SIGNUP := "tourney_signup"       # { npc, kind }
+const I_TOURNEY_WITHDRAW := "tourney_withdraw"   # {}
+const I_TOURNEY_HOST := "tourney_host"           # { kind, signup_s? }
+const M3D_INTENTS := [I_BOUNTY_BOARD, I_BOUNTY_LICENSE, I_BOUNTY_ADD, I_BOUNTY_CLAIM, I_CLEANSE,
+	I_COMBO_BOND, I_COMBO_REPLY, I_COMBO_CANCEL, I_COMBO_NURTURE, I_INTIMIDATE, I_LIANDU,
+	I_ROB_ESCORT, I_TOURNEY_INFO, I_TOURNEY_SIGNUP, I_TOURNEY_WITHDRAW, I_TOURNEY_HOST]
+# ---- 事件 ----
+const E_BOUNTY_BOARD := "bounty_board"           # ui
+const E_LAW_LICENSE_OK := "law_license_ok"
+const E_LAW_LICENSE_VOID := "law_license_void"
+const E_LAW_BOUNTY_EARNED := "law_bounty_earned"
+const E_LAW_BOUNTY_PAID := "law_bounty_paid"
+const E_LAW_HUNTER_WARN := "law_hunter_warn"     # ui（同 villain_warn 格式）
+const E_LAW_HUNTER_ESCAPED := "law_hunter_escaped"   # 文字；M3d 審查：收起警告橫幅
+const E_LAW_HUNTER_ATTACK := "law_hunter_attack"     # 文字；M3d 審查：收起警告橫幅
+const E_LAW_CLEANSED := "law_cleansed"
+const E_CB_BOND_REQUEST := "cb_bond_request"     # ui：{ from_char, from_name }
+const E_CB_BOND_CHANGED := "cb_bond_changed"     # ui：{ partner_name, moqi, peihe, drain_day }
+const E_BATTLE_DODGE := "battle_dodge"
+const E_BATTLE_QING_JUMP := "battle_qing_jump"
+const E_BATTLE_QING_ESCAPE := "battle_qing_escape"
+const E_BATTLE_QING_FAIL := "battle_qing_fail"
+const E_BATTLE_COMBO := "battle_combo"
+const E_AR_INTIMIDATED := "ar_intimidated"
+const E_AR_LIANDU := "ar_liandu"
+const E_AR_XUEMO_ENLIGHTENED := "ar_xuemo_enlightened"
+const E_EV_JB_STARTED := "ev_jb_started"
+const E_EV_JB_DONE := "ev_jb_done"
+const E_EV_JB_FAILED := "ev_jb_failed"
+const E_EV_JB_ROBBED := "ev_jb_robbed"
+const E_TOURNEY_STATE := "tourney_state"         # ui
+const E_EV_TOURNEY_CALL := "ev_tourney_call"
+const E_EV_DUEL_RESULT := "ev_duel_result"
+const E_ER_SPAR_NOT_DISCIPLE := "er_spar_not_disciple"
+const M3D_UI_KEYS := [E_BOUNTY_BOARD, E_LAW_HUNTER_WARN, E_CB_BOND_REQUEST, E_CB_BOND_CHANGED, E_TOURNEY_STATE]
+## main_screen 依事件 key 分派給各 WP 的處理函式（M3D_PLAN §9.2）
+const M3D_LAW_EVENTS := [E_BOUNTY_BOARD, E_LAW_LICENSE_OK, E_LAW_LICENSE_VOID, E_LAW_BOUNTY_EARNED, E_LAW_BOUNTY_PAID,
+	E_LAW_HUNTER_WARN, E_LAW_CLEANSED, E_LAW_HUNTER_ESCAPED, E_LAW_HUNTER_ATTACK]
+const M3D_COMBAT_EVENTS := [E_CB_BOND_REQUEST, E_CB_BOND_CHANGED]
+const M3D_ARTS_EVENTS := [E_AR_INTIMIDATED, E_AR_LIANDU, E_AR_XUEMO_ENLIGHTENED]
+const M3D_EVENTS_EVENTS := [E_EV_JB_STARTED, E_EV_JB_DONE, E_EV_JB_FAILED, E_EV_JB_ROBBED, E_TOURNEY_STATE,
+	E_EV_TOURNEY_CALL, E_EV_DUEL_RESULT]
+const M3D_ERRANDS_EVENTS := [E_ER_SPAR_NOT_DISCIPLE]
+# ---- 原因碼 ----
+const M3D_REASONS_COMBAT := ["dodge_off", "qing_off", "equip_cooldown", "combo_need_partner", "combo_need_party",
+	"combo_pair_mismatch", "combo_moqi_low", "combo_has_partner", "combo_peihe_low", "combo_no_request", "combo_partner_absent",
+	"combo_request_pending"]
+const R_EQUIP_COOLDOWN := "equip_cooldown"
+# ---- 戰鬥：閃、輕（WP-COMBAT） ----
+## 閃 Shift+4、輕 Shift+5（M3a 的 Shift+1–3 之後）
+const M3D_SHIFT_HOTKEYS := { KEY_4: CMD_DODGE, KEY_5: CMD_QING }
+## 規則 dodge_cmd 關（later_official：2002-01-25 拿掉「閃」）時的提示
+const DODGE_OFF_TIP := "原作 2002 年拿掉了（伺服器規則關閉）"
+const QING_MODES := ["JUMP", "ESCAPE"]
+const QING_MODE_LABELS := { "JUMP": "飛身越敵", "ESCAPE": "輕功脫身" }
+const QING_MODE_TIPS := { "JUMP": "跳到移動範圍再多一格的空格，可以越過敵人（耗內力）",
+	"ESCAPE": "原地施展輕功逃離戰鬥，不必站上逃跑格；有機率失敗（耗內力 30）" }
+const QING_ESCAPE_COST := 30
+## 這些戰鬥不能用輕功脫身（任務戰、試煉；追擊戰可以）
+const QING_NO_ESCAPE_TIP := "這場戰鬥不能脫身"
+## 合體技（battle_combo）的金色大字
+const COMBO_BANNER_FMT := "合體技・%s！"
+const COMBO_GOLD := Color("ffd860")
+# ---- 合體默契（燈籠「武功」分頁；1.0B） ----
+const COMBO_BTN_BOND := "建立默契"
+const COMBO_BTN_CANCEL := "取消默契"
+const COMBO_BTN_NURTURE := "培養感情"
+const COMBO_TITLE := "合體默契"
+const COMBO_ERA := "1.0B"
+# ---- 換裝兩秒（M3D_PLAN §3.6） ----
+const EQUIP_COOLDOWN_S := 2.0
+const EQUIP_COOLDOWN_TEXT := "換裝要間隔兩秒"
+# ---- 夜晚變暗與夜明珠（M3D_PLAN §3.5；設定 ui.night_dim 純客戶端） ----
+const SETTING_NIGHT_DIM := "ui.night_dim"
+const NIGHT_DIM_COLOR := Color(0.03, 0.05, 0.20, 0.35)
+const NIGHT_DIM_LABEL := "夜晚畫面變暗"
+const ITEM_EFFECT_LIGHT := "LIGHT"
+const ITEM_EFFECT_FLEE_ANYWHERE := "FLEE_ANYWHERE"
+# ---- 佈告欄與比武（WP-LAW、WP-EVENTS 用；文字由各 WP 的對話框決定） ----
+const BOARD_MENU_BOUNTY := "觀看懸賞名單"
+const BOARD_RANKS_LOCKED := "尚未開放"
+const PLAYER_TAGS_M3D := ["押鏢", "劫鏢", "懸賞", "盟主"]

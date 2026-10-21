@@ -406,11 +406,16 @@ func add_learn_points(n: int, rules: Dictionary) -> int:
 
 # ---------------------------------------------------------------- PK、善惡、殺氣（M2_PLAN 4.6.5）
 
-## 目前的 PK值（已扣除依上線時間的遞減）
-func pk_value() -> int:
-	return MoralityPk.pk_value(pk, pk_stamp_s, online_s)
+## M3d WP-LAW（M3D_PLAN §2.6）：規則 pk_decay（執行期欄位，**不存檔**；GameHost 在載入與規則變更時設定，
+## balance_sim 與測試直接設）。false＝2001 沒有被動遞減（classic_strict）
+var pk_decay_on: bool = true
 
-## 先把基準正規化成目前值（pk_stamp_s = online_s），再加 n；回傳新的目前值
+## 目前的 PK值（pk_decay_on 時扣除依上線時間的遞減）
+func pk_value() -> int:
+	return MoralityPk.pk_value(pk, pk_stamp_s, online_s, pk_decay_on)
+
+## 先把基準正規化成目前值（pk_stamp_s = online_s），再加 n（可為負：緝殺、賞金獵人、守城官兵、半仙）；
+## 結果最低 0；回傳新的目前值（M3D_PLAN §2.6）
 func add_pk(n: int) -> int:
 	pk = maxi(0, pk_value() + n)
 	pk_stamp_s = online_s
@@ -652,7 +657,31 @@ func to_combatant(tables: Dictionary, options: Dictionary, side: int, peer_id: i
 		# M3c2 整合：BattleRewards 的實戰／學點比例要玩家實戰（M1_PLAN 4.8；battle_rewards.gd 檔頭「to_combatant 會帶上」）。
 		# 以前漏帶 → 主機上每一場都當成實戰 0（實戰 ×2、學點 ×3 的上限），和 balance_sim 的模型不一致
 		"combat_xp": combat_xp,
+		# ---- M3d WP-COMBAT（M3D_PLAN §3.3.3、§3.4、§3.6） ----
+		"char_id": id,                                  # 合體技找夥伴用（ref 也是角色 id）
+		"combo": _combo_spec(),                         # { partner_char, moqi }；沒有夥伴 {}
+		"flee_anywhere": _equipped_effect(tables, "FLEE_ANYWHERE"),   # 無敵烙跑鞋
+		"equip_cd_ms": clampi(CharData.to_int(options.get("equip_cooldown_ms", 2000), 2000), 0, 5000),   # 換裝兩秒（戰鬥時間）
 	}
+
+## M3d WP-COMBAT：合體夥伴（ext.combo = { partner, moqi }；moqi 是 ComboSystem 寫的鏡像，權威在 world.combo_pairs）
+func _combo_spec() -> Dictionary:
+	var c: Variant = ext.get("combo", {})
+	if not (c is Dictionary) or String((c as Dictionary).get("partner", "")) == "":
+		return {}
+	return { "partner_char": String(c["partner"]), "moqi": CharData.to_int(c.get("moqi", 0)) }
+
+## M3d WP-COMBAT：身上裝備中有沒有某種 effects[].type（FLEE_ANYWHERE…）
+func _equipped_effect(tables: Dictionary, effect_type: String) -> bool:
+	for slot in inventory.equipped:
+		var uid := String(inventory.equipped[slot])
+		if uid == "":
+			continue
+		var row := CharData.row(tables, "items", String(inventory.find(uid).get("id", "")))
+		for e in row.get("effects", []):
+			if typeof(e) == TYPE_DICTIONARY and String(e.get("type", "")) == effect_type:
+				return true
+	return false
 
 ## 戰鬥指令可用的武功（M3A_PLAN 3.11、5.1）：{ POISON, MEDIC, HIDDEN, FORMATION, INNER, ACUPOINT }。
 ## 等級 ≥ 1、非 monster_only；INNER 依等級高到低（同級依 id）；ACUPOINT = acupoint: true 的武功（任何類別）。
