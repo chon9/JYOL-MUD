@@ -95,6 +95,7 @@
       "requires": [{"type": "sect", "sect": "huashan"}], "era": "1.0A", "src": "proposal" },
     { "id": "ms_yuebuqun_rufeng", "npc_id": "n_yuebuqun", "skill_id": "rufeng", "cap": 50, "price": 0, "tool": "",
       "requires": [{"type": "sect", "sect": "huashan"}], "era": "1.0A", "src": "proposal" },
+    {"id": "ms_liangfa_pishiquan", "npc_id": "n_liangfa", "skill_id": "hs_pishiquan", "cap": 100, "price": 0, "tool": "", "requires": [{"type": "sect", "sect": "huashan"}, {"type": "skill_min", "skill": "hs_xinfa", "value": 30}, {"type": "skill_min", "skill": "rufeng", "value": 10}], "era": "1.0A", "src": "later", "src_note": "0.7.0.1 研究：17173 2003-10-21「劈石破玉拳 條件：華山心法30級,儒風10級；學法：找梁發可消到100級」、jyfreeonline 2012 華山表同【後期版】；早期是桃谷六仙 → 岳不群 → 高根明的進階路線【待考證】，本作沒有混元掌／伏虎掌 → 用梁發這條；1–10 自修（武功列 self_study_until 10）"},
     { "id": "ms_liangfa_inner", "npc_id": "n_liangfa", "skill_id": "basic_inner", "cap": 140, "price": 0, "tool": "",
       "requires": [{"type": "sect", "sect": "huashan"}], "src_note": "各派都由弟子教基本武學（研究 華山：梁發教基本武學）；上限 140 取自後期版資料（研究 武功系統：基本武學上限通常 140）【後期版】", "era": "1.0A", "src": "later" },
     { "id": "ms_liangfa_fist", "npc_id": "n_liangfa", "skill_id": "basic_fist", "cap": 150, "price": 0, "tool": "",
@@ -615,7 +616,7 @@
         {"type": "skill_min", "skill": "chanmei", "value": 40},
         {"type": "skill_min", "skill": "basic_poison", "value": 50}
       ],
-      "era": "1.0A", "src": "later", "src_note": "免費版表：心法50 門技40 基毒50；善惡 −1000 是免費版自己的門檻（已寫在武功列 requires），叛徒任務不採用；1.0 是否存在【待考證】（2004 名單由天狼子教；1.0「此門派功夫由丁春秋一人傳授」）" },
+      "era": "1.0B", "src": "later", "src_note": "免費版表：心法50 門技40 基毒50；善惡 −1000 是免費版自己的門檻（已寫在武功列 requires）；0.7.0.1：叛徒任務 q_xh_feixing 給 1 級，之後丁春秋教到 100；era 跟著武功列改 1.0B（2004 名單由天狼子教；1.0「此門派功夫由丁春秋一人傳授」）" },
     { "id": "ms_xh_dcq_bpoison", "npc_id": "n_xh_dingchunqiu", "skill_id": "basic_poison", "cap": 140, "price": 0,
       "tool": "", "requires": [{"type": "sect", "sect": "xingxiu"}], "era": "1.0A", "src": "later",
       "src_note": "基本武學 140 為後期數字【後期版】" },

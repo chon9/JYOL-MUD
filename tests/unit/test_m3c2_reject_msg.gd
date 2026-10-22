@@ -25,9 +25,9 @@ func test_client_text_shows_both_sides() -> void:
 	assert_true(t.begins_with(UiSocial.REJECT_TEXT["content_mismatch"]), t)
 	assert_true(t.contains("主機：v0.6.0.0　協定 5　資料 1a2b3c4d5e6f"), t)
 	assert_true(t.contains("你：" + mine), t)
-	var t2 := UiSocial.reject_text("protocol_mismatch|0.7.0.0|6|abcdefabcdef")
+	var t2 := UiSocial.reject_text("protocol_mismatch|0.7.0.1|6|abcdefabcdef")
 	assert_true(t2.begins_with(UiSocial.REJECT_TEXT["protocol_mismatch"]), t2)
-	assert_true(t2.contains("主機：v0.7.0.0　協定 6　資料 abcdefabcdef／你："), t2)
+	assert_true(t2.contains("主機：v0.7.0.1　協定 6　資料 abcdefabcdef／你："), t2)
 	# 舊主機（沒有 |）：原文字＋自己的值
 	var t3 := UiSocial.reject_text("version_mismatch")
 	assert_eq(t3, UiSocial.REJECT_TEXT["version_mismatch"] + "\n你：" + mine)

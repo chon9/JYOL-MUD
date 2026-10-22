@@ -2,7 +2,8 @@ extends SceneTree
 ## M3d 驗收（M3D_PLAN §10.3）。
 ##   godot --headless --path . --script res://tools/m3d_acceptance.gd -- --no-steam [--only=bounty[,combo]] [--workers=4] [--timeout=2400]
 ## 劇本：bounty bounty_friends hunters cleanse pk_decay dodge_qing combo equip_cd night arts_chains intimidate qz_gumu
-##       jiebiao rob tourney sect_tourney errands town_lp heilongtan spar_bug strict_events（§10.3 表＋審查第三輪，一個劇本一個 worker）。
+##       jiebiao rob tourney sect_tourney errands town_lp heilongtan spar_bug strict_events（§10.3 表＋審查第三輪，一個劇本一個 worker）
+##       lost_arts（0.7.0.1：峨嵋弟子從靜玄接「滅絕師太的絕學」一路打到佛光普照掌，自修到 50，再走羅煞劍學四象掌、練過 10 級）。
 ##
 ## 作法照 tools/m3c2_acceptance.gd：協調器（本檔，不帶 --m3d-worker）每個劇本開一個 worker 子行程（同一個檔案帶
 ## --m3d-worker）；worker 在自己的行程裡用整合測試的世界夾具（tools/m3d_accept_scenarios.gd：真的 WorldServer＋GameHost、
@@ -14,9 +15,9 @@ extends SceneTree
 const SCEN := "res://tools/m3d_accept_scenarios.gd"
 const SCENARIOS := ["bounty", "bounty_friends", "hunters", "cleanse", "pk_decay", "dodge_qing", "combo", "equip_cd", "night",
 	"arts_chains", "intimidate", "qz_gumu", "jiebiao", "rob", "tourney", "sect_tourney", "errands", "town_lp", "heilongtan",
-	"spar_bug", "strict_events"]
+	"spar_bug", "strict_events", "lost_arts"]
 const ARTS_CHAINS := ["q_ar_qz_chongyang", "q_ar_qz_kongming", "q_ar_lj_bahuang", "q_ar_xh_muding", "q_ar_em_luosha",
-	"q_ar_xd_xuemo"]
+	"q_ar_xd_xuemo", "q_em_tiezhihuan", "q_gm_jiuyin", "q_xh_feixing", "q_ar_em_sixiang_hui"]   # 後四條 0.7.0.1
 
 var _finished := false
 var _timeout_s := 2400.0

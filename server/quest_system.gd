@@ -1176,6 +1176,9 @@ func _start_fight(s: Session, qid: String, a: Dictionary) -> void:
 		tag["act"] = _cur_act
 		tag["retry_days"] = float(a.get("retry_days", 0.0))
 	var opts := { "no_flee": bool(a.get("no_flee", false)), "pull_party": not solo, "waves": waves, "quest_tag": tag }
+	# 0.7.0.1 二審：party_only＝真正的單打（不拉隊友，也不准隊友中途加入，例如周芷若）；只寫 solo 的戰鬥仍可中途加入、只是不計 FIGHT（§4.11）
+	if bool(a.get("party_only", false)):
+		opts["party_only"] = true
 	var npc := str(a.get("npc", ""))
 	if npc != "":
 		host.tell(s, Protocol.CH_BATTLE, Protocol.E_FIGHT_START, { "npc_name": host.npc_name(npc) })

@@ -546,6 +546,11 @@
       "required": false,
       "placeholder": false
     },
+    "n_gm_shibi": {
+      "alias": "n_gm_xiaomei",
+      "required": false,
+      "placeholder": false
+    },
     "n_em_zhouzhiruo": {
       "alias": "huashan_f",
       "required": false,
@@ -2145,6 +2150,16 @@
     },
     "m_gb_manbing": {
       "alias": "m_bandit_chief",
+      "required": false,
+      "placeholder": false
+    },
+    "m_em_zhouzhiruo": {
+      "alias": "huashan_f",
+      "required": false,
+      "placeholder": false
+    },
+    "m_xh_pantu": {
+      "alias": "m_xh_dizi",
       "required": false,
       "placeholder": false
     },

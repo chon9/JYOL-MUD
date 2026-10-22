@@ -283,6 +283,7 @@
     {"id": "err_req_attr_min", "era": "1.0A", "self": "【系統】你的屬性不夠。", "src": "proposal"},
     {"id": "err_req_skill_min", "era": "1.0A", "self": "【系統】你的功夫還不到火候。", "src": "proposal"},
     {"id": "err_req_skill_max", "era": "1.0A", "self": "【系統】你在這方面的功夫已經太深，用不著了。", "src": "proposal"},
+    {"id": "err_req_attr_max", "era": "1.0A", "self": "【系統】你在這方面的資質已經太好，用不著了。", "src": "proposal"},
     {"id": "err_req_combat_xp_min", "era": "1.0A", "self": "【系統】你的實戰經驗不夠。", "src": "proposal"},
     {"id": "err_req_pk_max", "era": "1.0A", "self": "【系統】你殺孽太重（PK 值過高）。", "src": "proposal"},
     {"id": "err_req_quest_flag", "era": "1.0A", "self": "【系統】你還沒有完成必要的任務。", "src": "proposal"},
@@ -1872,6 +1873,13 @@
     {"id": "talk_n_ar_xd_inf_dali@NIGHT", "era": "1.0B", "self": "{npc_name}醉醺醺地晃過來：「師兄，大理的夜可比雪山暖和多了，嘿嘿。」", "src": "proposal", "src_note": "M3d 整合：夜間對白【設計提案】"},
     {"id": "talk_n_ar_dingbusan@NIGHT", "era": "1.0B", "self": "{npc_name}在月下擦刀：「天都黑了，今天的數還沒湊滿……」", "src": "proposal", "src_note": "M3d 整合：夜間對白【設計提案】"},
     {"id": "talk_n_ar_dingbusi@NIGHT", "era": "1.0B", "self": "{npc_name}在夜色裡嚷嚷：「哥哥睡了沒有？今天我可比他多殺了一個！」", "src": "proposal", "src_note": "M3d 整合：夜間對白【設計提案】"},
-    {"id": "talk_n_ar_laokelian@NIGHT", "era": "1.0B", "self": "{npc_name}縮在牆角發抖：「夜裡冷啊……好心的大爺，賞口熱湯吧……」", "src": "proposal", "src_note": "M3d 整合：夜間對白【設計提案】"}
+    {"id": "talk_n_ar_laokelian@NIGHT", "era": "1.0B", "self": "{npc_name}縮在牆角發抖：「夜裡冷啊……好心的大爺，賞口熱湯吧……」", "src": "proposal", "src_note": "M3d 整合：夜間對白【設計提案】"},
+    {"id": "talk_n_xh_hongyinv", "era": "1.0B", "self": "{npc_name}斜倚在簷下，懶洋洋地說：「看什麼看？沒見過美人呀？」", "src": "proposal"},
+    {"id": "talk_n_xh_hongyinv@NIGHT", "era": "1.0B", "self": "{npc_name}提著一盞紅燈籠：「夜裡的西夏，可比白天熱鬧多了。」", "src": "proposal"},
+    {"id": "talk_n_gm_shibi", "era": "1.0A", "self": "{npc_name}上刻滿了密密麻麻的小字，筆劃深淺不一，看久了眼睛發酸。", "src": "proposal"},
+    {"id": "talk_n_gm_shibi@NIGHT", "era": "1.0A", "self": "燭火搖曳，{npc_name}上的刻字忽明忽暗，像是在你眼前慢慢游動。", "src": "proposal"},
+    {"id": "rmr_q_em_tiezhihuan_first", "era": "1.0A", "self": "峨嵋山上傳說，周芷若把鐵指環交給了{name}，滅絕師太竟破例傳了佛光普照掌。", "src": "proposal"},
+    {"id": "rmr_q_gm_jiuyin_first", "era": "1.0A", "self": "古墓裡有人說，{name}對著小梅房裡的石壁坐了一整夜，出來時眼神都不一樣了。", "src": "proposal"},
+    {"id": "rmr_q_xh_feixing_first", "era": "1.0B", "self": "大理北門外接連倒了幾個趕路的客人。有人說，是星宿派的{name}替丁春秋清理門戶。", "src": "proposal"}
   ]
 }

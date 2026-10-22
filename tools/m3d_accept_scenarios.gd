@@ -82,6 +82,18 @@ func _run_path(qid: String, path: Array) -> bool:
 			var act: Dictionary = ch().quests["active"].get(kv[0], {})
 			var vars: Dictionary = act.get_or_add("vars", {})
 			vars[nv[0]] = int(nv[1])
+		elif step.begins_with("expect_locked@"):
+			# 同 tests/bots/story_bot.gd：最後一次送來的對話停在 <npc>:<node>，其中 <choice> 上鎖（或上鎖且隱藏 → 沒送出來）
+			var lp := step.substr(14).split(":")
+			var dlg: Dictionary = lastp("dialogue")
+			if lp.size() != 3:
+				fail("bad step " + step)
+			elif str(dlg.get("npc", "")) != lp[0] or str(dlg.get("node", "")) != lp[1]:
+				fail("expect_locked: dialogue is at %s:%s" % [str(dlg.get("npc", "")), str(dlg.get("node", ""))])
+			else:
+				for c in dlg.get("choices", []):
+					if c is Dictionary and str(c.get("id", "")) == lp[2] and not bool(c.get("locked", false)):
+						fail("expect_locked: %s is not locked" % lp[2])
 		else:
 			fail("unknown path step " + step)
 		if failures.size() > before:
@@ -1056,3 +1068,65 @@ func sc_spar_bug() -> void:
 	_kill_now(1, true)
 	assert_true(int(ch().combat_xp) > xp0, "入華山後有獎勵")
 	note("無門派 0；考驗完成、入華山；再打實戰 +%d" % (int(ch().combat_xp) - xp0))
+
+# ======================================================================== 0.7.0.1 學不到的武功
+## 峨嵋弟子（金頂 60、九陽 60、斷惡 60）從靜玄接「滅絕師太的絕學」：周芷若的信 → 西夏客棧張無忌 → 回答問題（先答錯一次）
+## → 打贏周芷若 → 鐵指環 → 滅絕傳佛光普照掌 1 級；自修到 50（不直接設等級）→ 羅煞劍 → 郭襄傳四象掌 → 郭襄教到 10 → 自修過 10
+func _study_to(skill: String, target: int, master := "") -> bool:
+	for i in 600:
+		if ch().skills.level(skill) >= target:
+			return true
+		Survival.rest_full(ch(), tables(), ws.options)
+		ch().learn_points = 100000
+		var r: Dictionary = Learning.learn(ch(), master, skill, 500, tables(), ws.options, host().rules) if master != "" \
+			else Learning.self_study(ch(), skill, 500, tables(), ws.options, host().rules)
+		if not bool(r.get("ok", false)):
+			fail("%s %s stuck at %d: %s" % ["learn" if master != "" else "self_study", skill, ch().skills.level(skill), str(r.get("reason", ""))])
+			return false
+	return ch().skills.level(skill) >= target
+
+func sc_lost_arts() -> void:
+	if not _local("峨嵋傳人", "xixia", "F"):
+		return
+	ws.options["sect_hostile_entry"] = false
+	ch().sect = "emei"
+	host().sects.on_join(s(), "emei", str(tables()["sects"]["emei"].get("head_npc", "")))
+	make_strong()
+	ch().combat_xp = 300000
+	for k in ["em_jinding", "em_jiuyang", "duane", "basic_inner"]:
+		ch().skills.set_level(k, 60, tables())
+	for a in ["str", "wit", "con", "luck"]:
+		ch().attrs[a] = maxi(20, int(ch().attrs.get(a, 0)))
+	var Q := "q_em_tiezhihuan"
+	if not _run_path(Q, ["walk@em_dadian", "accept@n_em_jingxuan", "choose@n_em_jingxuan:n0:c_yes",
+			"walk@em_zhou", "talk@n_em_zhouzhiruo", "choose@n_em_zhouzhiruo:n0:c_ok",
+			"walk@xx_inn_2f", "talk@n_zhangwuji", "choose@n_zhangwuji:n0:c_give",
+			"walk@em_zhou", "talk@n_em_zhouzhiruo", "choose@n_em_zhouzhiruo:n0:c_q1c",
+			"talk@n_em_zhouzhiruo", "choose@n_em_zhouzhiruo:n0:c_q1a", "choose@n_em_zhouzhiruo:n1:c_q2a",
+			"choose@n_em_zhouzhiruo:n2:c_q3a", "talk@n_em_zhouzhiruo", "choose@n_em_zhouzhiruo:n0:c_fight", "fight:WIN",
+			"walk@em_miejue", "talk@n_em_miejue", "choose@n_em_miejue:n0:c_give"]):
+		return
+	assert_eq(str(ch().quests["done"].get(Q, {}).get("outcome", "")), "default", "滅絕師太的絕學 完成")
+	assert_true(bool(ch().flags.get("em_foguang_ok", false)), "em_foguang_ok")
+	assert_eq(ch().skills.level("em_foguang"), 1, "佛光 1 級")
+	ch().attrs["wit"] = 40
+	if not _study_to("em_foguang", 50):
+		return
+	# 羅煞劍：三波蠻兵要一波一波打完（_kill_now 一次只結束一波）
+	var lp: Array = _plan("q_ar_em_luosha", "sixiang")
+	var fi := lp.find("fight:WIN")
+	if not _run_path("q_ar_em_luosha", lp.slice(0, fi)):
+		return
+	for i in 10:
+		if s().battle_id == 0:
+			break
+		_kill_now(1, true)
+	assert_eq(s().battle_id, 0, "三波蠻兵打完")
+	if not _run_path("q_ar_em_luosha", lp.slice(fi + 1)):
+		return
+	assert_eq(ch().skills.level("em_sixiang"), 1, "郭襄傳四象掌 1 級")
+	if not _study_to("em_sixiang", 10, "n_ar_guoxiang"):
+		return
+	if not _study_to("em_sixiang", 12):
+		return
+	note("佛光 1（任務）→ 自修 %d；四象掌 郭襄 1→10、自修到 %d" % [ch().skills.level("em_foguang"), ch().skills.level("em_sixiang")])

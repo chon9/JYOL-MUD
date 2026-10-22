@@ -74,6 +74,8 @@ func test_every_row_has_era_and_valid_src() -> void:
 		"n_law_banxian_jc", "n_ar_qz_shanju", "n_ar_qz_shuliu", "n_ar_qz_yunyou", "n_ar_qz_wangzhijin", "n_ar_lj_wuyazi",
 		"n_ar_ym_shouwei", "n_ar_guoxiang", "n_ar_xd_inf_heilong", "n_ar_xd_baoxiang", "n_ar_xd_inf_dali", "n_ar_dingbusan",
 		"n_ar_dingbusi", "n_ar_laokelian", "n_ar_xd_xuemo_laozu"])
+	# 0.7.0.1：飛星術改 1.0B（2001 官方星宿任務表沒有）：武功、師父列、捉拿叛徒的任務、紅衣女子、星宿叛徒；再訪郭襄走 q_ar_em_ 前綴
+	m3b_1b_ids.append_array(["xh_feixing", "ms_xh_dcq_feixing", "q_xh_feixing", "n_xh_hongyinv", "m_xh_pantu"])
 	var text_tables := ["text_templates", "rumors", "ambient"]   # 文字列的 era 由 lint 的參照檢查把關（1.0A NPC 不能用 1.0B 模板）
 	for t in loader.all_tables:
 		if t in DataLoader.NO_ERA_TABLES:
@@ -379,7 +381,7 @@ func test_all_m1_npcs_exist_with_services() -> void:
 		"n_bandit_chief": ["xw_hill", ["FIGHT"]],   # M2_PLAN 4.9（WP-PARTY Day-0）
 	}
 	# M3a：42 個 M1/M2 NPC + 少林補充 4 + 8 派 119；故事包 39（_world 1、_ambient 3、ev_* 24、sect_stories 11）
-	assert_eq(view["npcs"].size(), 264 + 18, "npc count（M3d 1.0A +18：律法 8、跑腿 6、血池 3、比武報名員；M3c2 審查：少林務農僧、火工頭陀 +2；M3c2：雜務 NPC n_ch_* +10、少林切磋弟子 n_sl_spar +1；審查修正 +12：王大富人、李裁縫、楊康、賣藝商人、婦人、清為、崔叟、豬哥義、朱珠、布莊老闆、菜商、江清睿；M3b 1.0A +32；M3c WP-NPCPK n_na_* +6；M3c 第二輪審查：黃狗改 1.0B −1；第三輪：羊、採礦師改 1.0B −2）")
+	assert_eq(view["npcs"].size(), 264 + 18 + 1, "npc count（0.7.0.1 1.0A +1：小梅房裡的石壁；M3d 1.0A +18：律法 8、跑腿 6、血池 3、比武報名員；M3c2 審查：少林務農僧、火工頭陀 +2；M3c2：雜務 NPC n_ch_* +10、少林切磋弟子 n_sl_spar +1；審查修正 +12：王大富人、李裁縫、楊康、賣藝商人、婦人、清為、崔叟、豬哥義、朱珠、布莊老闆、菜商、江清睿；M3b 1.0A +32；M3c WP-NPCPK n_na_* +6；M3c 第二輪審查：黃狗改 1.0B −1；第三輪：羊、採礦師改 1.0B −2）")
 	for nid in expect:
 		if not assert_has(view["npcs"], nid, "npc:"):
 			continue
@@ -533,7 +535,13 @@ func test_martial_arts_table() -> void:
 	assert_eq(a["hs_jianfa"]["difficulty"], 0.8)
 	assert_eq(a["hs_jianfa"]["moves"][2]["name"], "白虹貫日")
 	assert_eq(a["mon_guiwang"]["moves"][1]["range"], 2)
-	assert_true({ "type": "quest_flag", "flag": "q_taogu_done" } in a["hs_pishiquan"]["requires"], "劈石 locked")
+	# 0.7.0.1：劈石破玉拳由梁發教（華山心法 30、儒風 10；17173 2003-10-21），不再鎖在不存在的桃谷六仙任務
+	var ps_req := {}
+	for c in a["hs_pishiquan"]["requires"]:
+		if str(c.get("type", "")) == "skill_min":
+			ps_req[str(c["skill"])] = int(c["value"])
+	assert_eq(ps_req, { "hs_xinfa": 30, "rufeng": 10 }, "劈石 華山心法 30、儒風 10")
+	assert_false(str(a["hs_pishiquan"]["requires"]).contains("q_taogu_done"), "劈石 not locked behind 桃谷六仙")
 	for id in a:
 		var row: Dictionary = a[id]
 		# 怪物專用武功：mon_*，或 M3a 門派前綴的 <p>_mon_*
@@ -577,7 +585,7 @@ func test_items_table() -> void:
 	for id in m3c2_econ:
 		assert_has(it, id, "M3c2 WP-ECON")
 	var older := it.keys().filter(func(k): return not str(k).begins_with("i_ch_") and not (str(k) in m3c2_econ))
-	assert_eq(older.size(), 236 + 8, "M3d 1.0A +8（跑腿 5、狀元紅、小木鼎、盟主令牌）；27 + _cmd 8 + 門派 11 + 皮鞭 + 故事包 50 + 審查 14（尋找楊康、陳大寶、2001 雜事）+ M3b 1.0A 44（審查 3：黃罩甲改 1.0B）+ M3c WP-LOOT 1.0A 81（武穆遺書、結婚戒指 1.0B）")
+	assert_eq(older.size(), 236 + 8 + 3, "0.7.0.1 1.0A +3（周芷若的信、張無忌的回信、鐵指環）；M3d 1.0A +8（跑腿 5、狀元紅、小木鼎、盟主令牌）；27 + _cmd 8 + 門派 11 + 皮鞭 + 故事包 50 + 審查 14（尋找楊康、陳大寶、2001 雜事）+ M3b 1.0A 44（審查 3：黃罩甲改 1.0B）+ M3c WP-LOOT 1.0A 81（武穆遺書、結婚戒指 1.0B）")
 	# M3C_PLAN §1.4 F1：官方武器表第二個數字是重量 → 武器 def 一律 0
 	assert_eq([it["w_mudao"]["weapon_type"], it["w_mudao"]["atk"], it["w_mudao"]["def"], it["w_mudao"]["price"]], ["BLADE", 4, 0, 20])
 	assert_eq(it["a_cubudaopao"]["effects"], [{ "type": "attr", "stat": "wit", "value": 2 }])
@@ -595,7 +603,7 @@ func test_items_table() -> void:
 
 func test_monsters_table() -> void:
 	var m: Dictionary = view["monsters"]
-	assert_eq(m.size(), 118 + 7, "M3d 1.0A +7（賞金獵人 3、沙漠白猿、血池三階）；M3c2 少林切磋弟子 m_sl_dizi +1；M1 的 8 種 + M2_PLAN 4.9 的山賊頭目、守城官兵 + M3a 33 + 故事包 32 + 審查 8 + 第三輪審查 1（李莫愁）+ M3b 1.0A 15（馬賊、馬王審查改 1.0B）+ M3c m_npc_* 10 + M3c 審查 2（滅派專用 m_npc_gm_dizi、m_npc_wd_hushan）+ 第二輪審查 6（門口硬闖 m_npc_<p>_gate；黃狗 m_npc_huanggou 是 1.0B 不算）")
+	assert_eq(m.size(), 118 + 7 + 1, "0.7.0.1 1.0A +1（周芷若）；M3d 1.0A +7（賞金獵人 3、沙漠白猿、血池三階）；M3c2 少林切磋弟子 m_sl_dizi +1；M1 的 8 種 + M2_PLAN 4.9 的山賊頭目、守城官兵 + M3a 33 + 故事包 32 + 審查 8 + 第三輪審查 1（李莫愁）+ M3b 1.0A 15（馬賊、馬王審查改 1.0B）+ M3c m_npc_* 10 + M3c 審查 2（滅派專用 m_npc_gm_dizi、m_npc_wd_hushan）+ 第二輪審查 6（門口硬闖 m_npc_<p>_gate；黃狗 m_npc_huanggou 是 1.0B 不算）")
 	assert_has(m, "m_bandit_chief", "M2 4.9:")
 	assert_has(m, "m_city_guard", "M2 4.9:")
 	if m.has("m_city_guard"):
@@ -648,7 +656,7 @@ func test_life_skills_table() -> void:
 
 func test_quests_table() -> void:
 	var q: Dictionary = view["quests"]
-	assert_eq(q.size(), 112 + 6, "M3d 1.0A +6（小木鼎、豬哥義、便當 2、酒鬼、阿虎）；M3c2 審查：少林幫農、學佛 +2；M3c2 1.0A 雜務 q_ch_* 40；M1/M2 6 + M3a 8 + 故事包 35（P0 12、門派 15、2001 雜事 7、第三輪審查的天龍寺前的李莫愁 1）+ M3b 1.0A 21（q_ym_mawang 審查改 1.0B）")
+	assert_eq(q.size(), 112 + 6 + 2, "0.7.0.1 1.0A +2（滅絕師太的絕學、王重陽遺刻）；M3d 1.0A +6（小木鼎、豬哥義、便當 2、酒鬼、阿虎）；M3c2 審查：少林幫農、學佛 +2；M3c2 1.0A 雜務 q_ch_* 40；M1/M2 6 + M3a 8 + 故事包 35（P0 12、門派 15、2001 雜事 7、第三輪審查的天龍寺前的李莫愁 1）+ M3b 1.0A 21（q_ym_mawang 審查改 1.0B）")
 	assert_eq(q["q_rabbit"]["rewards"]["money"], 100)
 	assert_eq(q["q_rabbit"]["rewards"]["learn_points"], 25)
 	assert_eq(q["q_rabbit"]["steps"][0]["item"], "r_bigrabbitskin")

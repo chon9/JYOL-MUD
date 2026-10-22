@@ -588,6 +588,7 @@ static func check_content(view: Dictionary) -> PackedStringArray:
 	errs.append_array(_check_m3d_arts(view))
 	errs.append_array(_check_m3d_events(view))
 	errs.append_array(_check_m3d_errands(view))
+	errs.append_array(_check_0701(view))   # 0.7.0.1
 	return errs
 
 # 1. 房間圖格式、id 全域唯一、出口目標存在、雙向性、features 合法
@@ -3670,4 +3671,74 @@ static func _check_m3d_law(view: Dictionary) -> PackedStringArray:
 		for code in Protocol.M3D_REASONS_LAW:
 			if not tpl.has("err_" + str(code)):
 				errs.append("text_templates: missing 'err_%s' (M3D §7)" % code)
+	return errs
+
+# ==== 0.7.0.1 ====（學不到的武功、玩家文字裡的開發標記）
+## 玩家看得到的說明文字（desc／name／text）不可留里程碑或工作包標記，例如「（M3）」「（M3b 開放）」「WP-LAW」
+const DEV_TAG_TABLES := ["martial_arts", "items", "npcs", "monsters", "quests"]
+const DEV_TAG_FIELDS := ["desc", "name", "text"]
+
+static func dev_tag_in(s: String) -> String:
+	var re := RegEx.new()
+	re.compile("(^|[^A-Za-z0-9_])(M[0-9][a-z0-9]*|WP-[A-Z]+)")
+	var m := re.search(s)
+	return m.get_string(2) if m != null else ""
+
+## 武功列與師父列裡的 quest_flag 都要有東西給（任務的 flags／{"do":"flag"}、試煉的 reward_flag）；
+## 0.7.0.1 之前劈石破玉拳、佛光普照掌、九陰真經、飛星術的旗標沒有任何任務給，資料裡有、玩家卻學不到
+static func flags_given(view: Dictionary) -> Dictionary:
+	var out := {}
+	for t in ["quests", "npcs", "items"]:
+		var tb: Dictionary = view.get(t, {})
+		for id in tb:
+			var r: Variant = tb[id]
+			if not (r is Dictionary):
+				continue
+			for k in r:
+				if str(k) != "requires":
+					_collect_given(r[k], out)
+			var tr: Variant = (r as Dictionary).get("trial", null)
+			if tr is Dictionary and str(tr.get("reward_flag", "")) != "":
+				out[str(tr["reward_flag"])] = true
+	return out
+
+static func _collect_given(v: Variant, out: Dictionary) -> void:
+	if v is Dictionary:
+		if str(v.get("do", "")) == "flag" and v.has("flag"):
+			out[str(v["flag"])] = true
+		for k in v:
+			var x: Variant = v[k]
+			if str(k) == "flags" and x is Array:
+				for f in x:
+					if f is String:
+						out[f] = true
+			elif str(k) != "requires" and str(k) != "if":
+				_collect_given(x, out)
+	elif v is Array:
+		for x in v:
+			_collect_given(x, out)
+
+static func _check_0701(view: Dictionary) -> PackedStringArray:
+	var errs := PackedStringArray()
+	for t in DEV_TAG_TABLES:
+		var tb: Dictionary = view.get(t, {})
+		for id in tb:
+			var r: Variant = tb[id]
+			if not (r is Dictionary):
+				continue
+			for f in DEV_TAG_FIELDS:
+				if r.get(f) is String:
+					var tag := dev_tag_in(str(r[f]))
+					if tag != "":
+						errs.append("%s.%s.%s: player text contains dev tag '%s'" % [t, id, f, tag])
+	var given := flags_given(view)
+	for t in ["martial_arts", "masters"]:
+		var tb2: Dictionary = view.get(t, {})
+		for id in tb2:
+			var r2: Variant = tb2[id]
+			if not (r2 is Dictionary) or bool(r2.get("monster_only", false)):
+				continue
+			for c in r2.get("requires", []):
+				if c is Dictionary and str(c.get("type", "")) == "quest_flag" and not given.has(str(c.get("flag", ""))):
+					errs.append("%s.%s: quest_flag '%s' is never given by any quest/trial (art unobtainable)" % [t, id, str(c.get("flag", ""))])
 	return errs

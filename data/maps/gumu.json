@@ -83,8 +83,8 @@
           ] }
       ],
       "meditate": {"mult": 1.5, "drain_pct": 0.05} },
-    { "id": "gm_xiaomei", "name": "小梅的房間", "desc": "小小的石室收拾得整整齊齊，床頭插著一枝梅花。小梅常在這裡陪師妹們練習清心的功夫。",
-      "exits": [{"dir": "E", "to": "gm_xiaolongnu"}], "npcs": ["n_gm_xiaomei"], "features": [],
+    { "id": "gm_xiaomei", "name": "小梅的房間", "desc": "小小的石室收拾得整整齊齊，床頭插著一枝梅花。小梅常在這裡陪師妹們練習清心的功夫。床頭後面的石壁上，隱隱約約刻著字。",
+      "exits": [{"dir": "E", "to": "gm_xiaolongnu"}], "npcs": ["n_gm_xiaomei", "n_gm_shibi"], "features": [],
       "requires": [
         { "type": "any_of",
           "options": [

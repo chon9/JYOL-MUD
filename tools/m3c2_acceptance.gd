@@ -931,7 +931,7 @@ func _sc_offline_steam() -> Dictionary:
 		STEAM_IDENT, start])
 
 # ------------------------------------------------------------------------ title / reject
-## 開標題畫面：右下角版本列 = BuildInfo.line(_gd().content_hash)、以 v0.7.0.0 開頭
+## 開標題畫面：右下角版本列 = BuildInfo.line(_gd().content_hash)、以 v0.7.0.1 開頭
 func _sc_title_line() -> Dictionary:
 	var t: Node = (load("res://ui/game/title/title_screen.tscn") as PackedScene).instantiate()
 	root.add_child(t)
@@ -944,8 +944,8 @@ func _sc_title_line() -> Dictionary:
 	await process_frame
 	if got != want or not got.begins_with("v%s　協定 %d　資料 " % [BuildInfo.version(), Protocol.VERSION]):
 		return _err("title line '%s' (want '%s')" % [got, want])
-	if not got.begins_with("v0.7.0.0"):
-		return _err("title line '%s' does not start with v0.7.0.0" % got)
+	if not got.begins_with("v0.7.0.1"):
+		return _err("title line '%s' does not start with v0.7.0.1" % got)
 	var pv := str(ProjectSettings.get_setting("application/config/version", ""))
 	return _ok("標題版本列「%s」（config/version %s）" % [got, pv])
 

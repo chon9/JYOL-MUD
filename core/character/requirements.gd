@@ -17,7 +17,7 @@ static func check(conds: Array, ch: Character, tables: Dictionary, options: Dict
 		if typeof(c) != TYPE_DICTIONARY:
 			continue
 		var t := String(c.get("type", ""))
-		if t == "attr_min" and eff.is_empty():
+		if (t == "attr_min" or t == "attr_max") and eff.is_empty():
 			eff = ch.effective_attrs(tables, options)
 		if not _ok(t, c, ch, tables, options, rules, eff, ctx):
 			return "req_" + t
@@ -78,6 +78,9 @@ static func _ok(t: String, c: Dictionary, ch: Character, tables: Dictionary, opt
 			return ch.gender == String(value)
 		"attr_min":
 			return int(eff.get(String(c.get("attr", "")), 0)) >= CharData.to_int(value)
+		# 0.7.0.1 審查：上限型屬性門檻（郭襄：福緣不到 20 的峨嵋弟子才拿羅煞劍）；看有效屬性（含裝備）
+		"attr_max":
+			return int(eff.get(String(c.get("attr", "")), 0)) <= CharData.to_int(value)
 		"skill_min":
 			return ch.skills.level(String(c.get("skill", ""))) >= CharData.to_int(value)
 		# 審查修正：藍鳳凰台免攻略「基本毒術 < 30」才接得了（上限型門檻）
@@ -209,6 +212,8 @@ static func describe(cond: Dictionary, tables: Dictionary) -> String:
 			return "限%s" % GENDER_NAMES.get(String(value), String(value))
 		"attr_min":
 			return "%s %d 以上" % [CharData.attr_name(tables, String(cond.get("attr", ""))), CharData.to_int(value)]
+		"attr_max":
+			return "%s %d 以下" % [CharData.attr_name(tables, String(cond.get("attr", ""))), CharData.to_int(value)]
 		"skill_min":
 			return "%s %d 級以上" % [SkillBook.skill_name(String(cond.get("skill", "")), tables), CharData.to_int(value)]
 		"skill_max":

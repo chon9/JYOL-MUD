@@ -351,6 +351,29 @@ func test_drain_only_when_both_online() -> void:
 	assert_eq(host().combo.drain_all(d), 0, "夥伴不在線")
 	assert_eq(int(p.peihe), 80)
 
+## 0.7.0.1 #4：消耗照官方 jy1-2-6-1 與 M3D_PLAN §3.3.2——「每隔兩天，會在兩人同時在線上時，耗損雙方配合度」。
+## 跟「最近有沒有一起打」無關（0.7.0.0 的更新紀錄誤寫成「很久沒一起上線才掉」，已改更新紀錄，不改程式）。
+func test_drain_is_every_two_days_while_both_online_even_after_fighting_together() -> void:
+	if not _two():
+		return
+	_bond()
+	var p: Dictionary = host().combo.pair_of(str(ch().id))
+	var a_ch = ch() if str(ch().id) == str(p.a) else _her_ch()
+	var d: int = host().combo.today()
+	p["peihe"] = 50
+	p["drain_day"] = d - 2
+	host().combo.on_battle_settled(null, a_ch, { "bid": 0, "combo_hits": 1 })   # 今天剛一起打過
+	assert_eq(int(p.peihe), 60)
+	assert_eq(host().combo.drain_all(d), 1, "一起打過照樣扣（兩人同時在線、滿兩遊戲日）")
+	assert_eq(int(p.peihe), 40)
+	assert_eq(host().combo.drain_all(d + 1), 0, "隔一天不扣")
+	assert_eq(host().combo.drain_all(d + 2), 1, "再兩天又扣")
+	assert_eq(int(p.peihe), 20)
+	ws.on_peer_disconnected(_her)
+	ws.flush()
+	assert_eq(host().combo.drain_all(d + 10), 0, "很久沒一起上線（夥伴離線）反而不扣")
+	assert_eq(int(p.peihe), 20)
+
 func test_battle_settle_adds_peihe_once() -> void:
 	if not _two():
 		return

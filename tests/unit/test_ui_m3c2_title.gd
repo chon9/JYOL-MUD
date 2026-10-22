@@ -37,8 +37,8 @@ func test_build_line_bottom_right() -> void:
 	assert_true(l != null, "label")
 	assert_eq(str(l.name), "BuildInfoLine")
 	assert_eq(l.text, BuildInfo.line(GameData.content_hash))
-	assert_true(l.text.begins_with("v0.7.0.0　協定 5　資料 "), l.text)
-	assert_eq(l.text.length(), ("v0.7.0.0　協定 5　資料 ").length() + 12, "12-char fingerprint")
+	assert_true(l.text.begins_with("v0.7.0.1　協定 5　資料 "), l.text)
+	assert_eq(l.text.length(), ("v0.7.0.1　協定 5　資料 ").length() + 12, "12-char fingerprint")
 	assert_eq(l.tooltip_text, "跟朋友連線前互相對照：協定與資料指紋都一樣才能連線。")
 	assert_eq(str(l.theme_type_variation), "MutedLabel", "muted")
 	# 右下角：右緣、下緣貼齊畫面（留 12 px 邊）
@@ -69,7 +69,7 @@ func test_foreign_checkbox_follows_world_options_and_sets_host_choice() -> void:
 func test_lobby_host_values() -> void:
 	var TL = (load("res://ui/game/title/title_screen.gd") as GDScript).TitleLobby
 	assert_eq(TL.host_values({ "proto": "4" }), "（主機 協定 4）")
-	assert_eq(TL.host_values({ "proto": "6", "version": "0.7.0.0", "fp": "sha256:abcdefabcdef0000" }), "（主機 v0.7.0.0　協定 6　資料 abcdefabcdef）")
+	assert_eq(TL.host_values({ "proto": "6", "version": "0.7.0.1", "fp": "sha256:abcdefabcdef0000" }), "（主機 v0.7.0.1　協定 6　資料 abcdefabcdef）")
 	assert_eq(TL.host_values({}), "")
 	assert_true(TL.label({ "name": "房", "members": 2, "proto": "4" }).ends_with("版本不符（主機 協定 4）"))
 	assert_false(TL.label({ "name": "房", "members": 2, "proto": str(Protocol.VERSION) }).contains("版本不符"))

@@ -607,7 +607,7 @@ func _initialize() -> void:
 		if r6 == 0:
 			failed += 1
 	# M3d（M3D_PLAN §9.2、§10.2；WP-LAW Day-0）：五個 WP 的案例清單在檔尾各自的區塊；回 -1＝略過（資料還沒合併）
-	for lst in [law_m3d_cases(), combat_m3d_cases(), arts_m3d_cases(), ev_m3d_cases(), er_m3d_cases()]:
+	for lst in [law_m3d_cases(), combat_m3d_cases(), arts_m3d_cases(), ev_m3d_cases(), er_m3d_cases(), quest_fight_0701_cases()]:
 		for c in lst:
 			if only != "" and c[0] != only:
 				continue
@@ -3127,7 +3127,27 @@ const ARTS_POWER_CASES := [
 	# 要兩人都學、一男一女同場才能用，單招只比本派基礎劍法強一些；合體一擊另外 +10–25%（combo_suxin）【設計提案】
 	["arts_suxin_power", "quanzhen", "gm_suxin", "qz_jianfa", 60, [1.1, 1.5]],
 	["arts_suxin_power_gm", "gumu", "gm_suxin", "gm_yunu_jian", 60, [1.1, 1.5]],
+	# 0.7.0.1 審查：劈石破玉拳（華山心法 30、儒風 10 就學得到）30 ÷ 華山劍法 30 ∈ [0.6, 1.0]——空手的入門拳法不壓過本派持劍的劍法【設計提案】
+	["arts_pishi_power", "huashan", "hs_pishiquan", "hs_jianfa", 30, [0.6, 1.0]],
+	# 0.7.0.1 二審：1.0B 世界蘭劍教定性到 60 → 靈鷲本門武功上限 70（其他受門派技能限制的門派仍是 60）。
+	# 跨門派比：第 7 欄 { sect, level } 是分母那門武功的門派與等級（省略＝同門派、同等級）【設計提案】
+	# - 天山六陽掌 70 ÷ 星宿 三陰蜈蚣爪 60（諂媚 50 → 本門 60）∈ [0.8, 1.25]：多出來的 10 級不讓靈鷲的進階掌壓過同級距的進階爪
+	# - 天羽奇劍 70 ÷ 恆山劍法 60（慈悲 50 → 本門 60）∈ [0.9, 1.3]：基礎劍法多 10 級的等級加成，不超過三成
+	["arts_lj_liuyang70_power", "lingjiu", "lj_liuyang", "xh_sanyin", 70, [0.8, 1.25], { "sect": "xingxiu", "level": 60 }],
+	["arts_lj_tianyu70_power", "lingjiu", "lj_tianyu", "hg_jianfa", 70, [0.9, 1.3], { "sect": "hengshan", "level": 60 }],
 ]
+
+## 0.7.0.1 審查：任務戰的勝率（參考角色同 _p_party）
+## - em_zhou_solo_30k／45k：「滅絕師太的絕學」打周芷若是單挑（solo），任務門檻金頂 60、九陽 60、斷惡 60 ≈ 實戰 3 萬 →
+##   單人 3 萬勝率 25–90%（打輸可以再找她），4.5 萬 ≥ 80%（原本氣 2800、防 48：9 萬才 2.5%）
+## - xh_pantu_duo_20k：「捉拿叛徒」的星宿叛徒（不限單挑）在任務門檻（星宿心法 50 ≈ 2 萬）要兩人：兩人各 2 萬 ≥ 80%，單人 2 萬 ≤ 10%
+func quest_fight_0701_cases() -> Array:
+	return [
+		["em_zhou_solo_30k", func(r: int, s0: int) -> int: return _party_case("em_zhou_solo_30k", "m_em_zhouzhiruo", 1, 30000, 1, { "win_min": 0.25, "win_max": 0.90 }, r, s0)],
+		["em_zhou_solo_45k", func(r: int, s0: int) -> int: return _party_case("em_zhou_solo_45k", "m_em_zhouzhiruo", 1, 45000, 1, { "win_min": 0.80 }, r, s0)],
+		["xh_pantu_duo_20k", func(r: int, s0: int) -> int: return _party_case("xh_pantu_duo_20k", "m_xh_pantu", 1, 20000, 2, { "win_min": 0.80 }, r, s0)],
+		["xh_pantu_solo_20k", func(r: int, s0: int) -> int: return _party_case("xh_pantu_solo_20k", "m_xh_pantu", 1, 20000, 1, { "win_max": 0.10 }, r, s0)],
+	]
 
 func arts_m3d_cases() -> Array:
 	var out: Array = []
@@ -3140,13 +3160,16 @@ func _arts_power_case(c: Array, runs: int, seed0: int) -> int:
 		if not _has_art(str(c[2])) or not _has_art(str(c[3])):
 			return _skip(str(c[0]), "武功 %s／%s" % [c[2], c[3]])
 		var tries := maxi(200, ARTS_POWER_TRIES * runs / 500)
+		var other: Dictionary = c[6] if c.size() > 6 else {}
+		var sect_b := str(other.get("sect", c[1]))
+		var lv_b := int(other.get("level", c[4]))
 		var a := _arts_out(str(c[1]), str(c[2]), int(c[4]), tries, seed0)
-		var b := _arts_out(str(c[1]), str(c[3]), int(c[4]), tries, seed0 + 7)
+		var b := _arts_out(sect_b, str(c[3]), lv_b, tries, seed0 + 7)
 		var ratio := float(a.mean) / maxf(0.001, float(b.mean))
 		var band: Array = c[5]
 		var ok := ratio >= float(band[0]) and ratio <= float(band[1])
 		print("%-24s %s  %s %d「%s」每次 %.1f（命中 %.0f%%）÷ %s %d「%s」每次 %.1f（命中 %.0f%%）＝ %.2f（帶 %.2f–%.2f）" % [c[0],
-			"ok  " if ok else "FAIL", c[2], c[4], a.move, a.mean, a.hit * 100.0, c[3], c[4], b.move, b.mean, b.hit * 100.0, ratio,
+			"ok  " if ok else "FAIL", c[2], c[4], a.move, a.mean, a.hit * 100.0, c[3], lv_b, b.move, b.mean, b.hit * 100.0, ratio,
 			band[0], band[1]])
 		return 1 if ok else 0)
 

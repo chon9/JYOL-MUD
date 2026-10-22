@@ -197,6 +197,8 @@ const REQUIRE_TYPES := ["morality_min", "morality_max", "sect", "no_sect", "not_
 	"quest_not_done", "quest_not_active",
 	# 審查修正：上限型武功門檻（藍鳳凰：基本毒術 < 30，台免）
 	"skill_max",
+	# 0.7.0.1 審查：上限型屬性門檻
+	"attr_max",
 	# M3B_PLAN §4.3
 	"sect_not", "sect_rank_min", "org_member", "no_org", "life_min",
 	# M3C2_PLAN §2.3.1（WP-PACE）
@@ -219,7 +221,7 @@ const REQUIRE_FIELDS_BY_TYPE := {
 	"quest_active": ["quest"], "quest_stage": ["quest", "stage"], "quest_var": ["quest", "var", "value"],
 	"quest_outcome": ["quest", "outcome"], "lilian_min": ["value"], "fame_min": ["value"], "combat_xp_max": ["value"],
 	"quest_not_done": ["quest"], "quest_not_active": ["quest"],
-	"skill_max": ["skill", "value"],
+	"skill_max": ["skill", "value"], "attr_max": ["attr", "value"],
 	# M3B_PLAN §4.3（org_member 的 org 選填：空 = 任何組織）
 	"sect_not": ["sect"], "sect_rank_min": ["sect", "value"], "org_member": [], "no_org": [], "life_min": ["skill", "value"],
 	# M3C2_PLAN §2.3.1
