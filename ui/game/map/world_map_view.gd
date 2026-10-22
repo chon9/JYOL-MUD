@@ -46,6 +46,7 @@ const CLOSED_TAG := "（未開）"
 
 var model: Dictionary = {}      # MapData.world_model
 var current_region := ""
+var token_tex: Texture2D = null   # 「你」（MapToken）：站在目前地點的記號上
 var _centers: Dictionary = {}   # region_id -> Vector2（記號中心）
 var _marks: Dictionary = {}     # id -> Rect2（記號）
 var _labels: Dictionary = {}    # id -> Rect2（地名）
@@ -664,6 +665,7 @@ func _draw() -> void:
 		var m: Rect2 = _marks[current_region]
 		var rad := maxf(m.size.x, m.size.y) * 0.75 + 5.0
 		draw_arc(m.get_center(), rad, 0.0, TAU, 40, Color(CUR, 0.9), 2.5, true)
+		MapToken.draw(self, token_tex, Vector2(m.get_center().x, m.get_center().y - rad * 0.2), clampf(rad * 2.2, 26.0, 48.0), get_theme_default_font())
 	var here := here_label()
 	if not here.is_empty():
 		var hr: Rect2 = here["rect"]

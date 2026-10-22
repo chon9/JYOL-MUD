@@ -7,7 +7,7 @@ extends Node
 
 signal state_changed(walking: bool, text: String)
 
-const STEP_DELAY_S := 0.18
+const STEP_DELAY_S := 0.32   # 一步停一下，讓地圖上的棋子看得到一格一格走（MapToken.MOVE_S）
 const VIEW_TIMEOUT_S := 4.0
 const RESUME_DELAY_S := 0.5
 const WALKING_TEXT := "趕路中…"   # 舊名（沒有目的地名稱時的進度列）

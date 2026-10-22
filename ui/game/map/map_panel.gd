@@ -144,6 +144,12 @@ func apply_sheet(s: Dictionary) -> void:
 		_build()
 	sheet = s
 	walker.sheet = s
+	# 地圖上的「你」用自己的造型（入門後是門派服）
+	var tok := LookPicker.sheet_look_texture(s)
+	region_view.token_tex = tok
+	world_view.token_tex = tok
+	if mini_map != null:
+		mini_map.view.token_tex = tok
 	var cid := str(s.get("char_id", ""))
 	if cid != "" and cid != memory.char_id:
 		memory.set_char(cid)
@@ -508,6 +514,8 @@ func walk_to(id: String) -> void:
 ## 主畫面接線：小地圖的「往XXX」、返回、停止、右鍵
 func bind_mini_map(mm: MiniMap) -> void:
 	mini_map = mm
+	if not sheet.is_empty():
+		mm.view.token_tex = LookPicker.sheet_look_texture(sheet)
 	mm.room_clicked.connect(walk_to)
 	mm.region_clicked.connect(show_region)
 	mm.back_requested.connect(back_to_current)

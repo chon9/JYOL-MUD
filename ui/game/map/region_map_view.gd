@@ -63,10 +63,39 @@ const FOLLOW_MARGIN := 5.0         # 畫面 px
 var focus_room := ""
 ## 本區一間都沒去過時畫在中間的字（瀏覽沒去過的鄰區）
 var empty_text := "那裡還沒去過"
+## 地圖上的「你」（MapToken）：角色立繪；換房間時從上一間滑過來
+var token_tex: Texture2D = null
+var _token_prev := ""            # 上一間（滑動起點）；"" = 不滑
+var _token_t := 1.0              # 0–1，1 = 已到
 var _segments: Array = []        # 這次畫出的連線／出口箭頭 [p, q]（標籤避開用）
 var _label_rects: Array = []     # 出口箭頭的文字框
 
+func _process(delta: float) -> void:
+	if _token_t >= 1.0:
+		set_process(false)
+		return
+	_token_t = minf(1.0, _token_t + delta / MapToken.MOVE_S)
+	queue_redraw()
+
+## 棋子現在畫在哪裡（腳底；畫布座標）；目前房間畫不出來時回 null
+func token_foot() -> Variant:
+	if not _rects.has(current) or not is_shown(current):
+		return null
+	var to: Rect2 = _rects[current]
+	var h := token_height()
+	var foot_to := Vector2(to.get_center().x, to.end.y - to.size.y * 0.12)
+	if _token_prev == "" or _token_t >= 1.0 or not _rects.has(_token_prev):
+		return foot_to
+	var fr: Rect2 = _rects[_token_prev]
+	var foot_from := Vector2(fr.get_center().x, fr.end.y - fr.size.y * 0.12)
+	return MapToken.pos_at(foot_from, foot_to, _token_t, h)
+
+## 棋子高度（畫布座標）：畫到螢幕上約 34–46 px
+func token_height() -> float:
+	return (34.0 / zoom) if zoom < 1.0 else 46.0
+
 func _ready() -> void:
+	set_process(false)
 	mouse_filter = Control.MOUSE_FILTER_STOP
 	clip_contents = true
 	size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -78,6 +107,15 @@ func setup(p_tables: Dictionary, p_model: Dictionary, p_visited: Dictionary, p_c
 	tables = p_tables
 	model = p_model
 	visited = p_visited
+	# 換了房間（同一區、上一間也在圖上）：棋子從上一間滑過來
+	var by_id: Dictionary = p_model.get("by_id", {})
+	if p_current != current and current != "" and by_id.has(current) and by_id.has(p_current):
+		_token_prev = current
+		_token_t = 0.0
+		set_process(true)
+	elif p_current != current:
+		_token_prev = ""
+		_token_t = 1.0
 	current = p_current
 	var f := MapData.fog(model, visited)
 	_vis = f["visible"]
@@ -415,12 +453,15 @@ func _draw() -> void:
 		else:
 			_text_center(qc, QUEST_MARK_TEXT, badge_size() + 1, QUEST_MARK, true)
 	# 小地圖跟著玩家置中、目前房間有朱紅粗框：不另外寫「你在這裡」（縮小後只剩 6 px，看不清又壓到連線）
-	var marker := MapArt.texture("marker_here")
-	if marker != null and _rects.has(current) and is_shown(current):
-		# 有「你在這裡」圖：畫在房間框上方（小地圖也畫，圖比字好認）
-		var cr: Rect2 = _rects[current]
-		var ms := (18.0 / zoom) if zoom < 1.0 else 22.0   # 畫到螢幕上約 18–22 px
-		draw_texture_rect(marker, Rect2(Vector2(cr.get_center().x - ms / 2.0, cr.position.y - ms - 1.0), Vector2(ms, ms)), false)
+	# 「你」：角色小立繪（或「俠」字棋子）站在目前房間，換房間時從上一間滑過來（MapToken）
+	var foot: Variant = token_foot()
+	if foot != null:
+		var th := token_height()
+		MapToken.draw(self, token_tex, foot, th, _font())
+		var marker := MapArt.texture("marker_here")
+		if marker != null and _token_t >= 1.0:
+			var ms := (14.0 / zoom) if zoom < 1.0 else 18.0
+			draw_texture_rect(marker, Rect2(Vector2(foot.x - ms / 2.0, foot.y - th - ms - 1.0), Vector2(ms, ms)), false)
 	else:
 		var here := here_label() if zoom >= MIN_FIT_ZOOM - 0.001 else {}
 		if not here.is_empty():
