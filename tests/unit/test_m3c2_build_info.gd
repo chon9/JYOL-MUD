@@ -10,7 +10,7 @@ func test_fingerprint12() -> void:
 func test_line_format() -> void:
 	var line := BuildInfo.line("sha256:9d24a2e10ccc0123456789")
 	assert_eq(line, "v%s　協定 %d　資料 9d24a2e10ccc" % [BuildInfo.version(), Protocol.VERSION])
-	assert_true(line.begins_with("v0.7.0.1　"), line)
+	assert_true(line.begins_with("v0.7.0.2　"), line)
 	assert_eq(BuildInfo.protocol(), 5, "Protocol.VERSION stays 5 (Q1)")
 	assert_eq(BuildInfo.format_line("0.6.0.0", 5, "1a2b3c4d5e6f"), "v0.6.0.0　協定 5　資料 1a2b3c4d5e6f")
 	assert_eq(BuildInfo.format_line("0.6.0.0", 5, ""), "v0.6.0.0　協定 5　資料 ?")
@@ -18,10 +18,10 @@ func test_line_format() -> void:
 		GameData.content_hash.trim_prefix("sha256:").substr(0, 12)])
 
 func test_version_matches_project_and_export_presets() -> void:
-	assert_eq(BuildInfo.version(), "0.7.0.1")
+	assert_eq(BuildInfo.version(), "0.7.0.2")
 	var cfg := ConfigFile.new()
 	assert_eq(cfg.load("res://project.godot"), OK, "project.godot")
-	assert_eq(str(cfg.get_value("application", "config/version", "")), "0.7.0.1")
+	assert_eq(str(cfg.get_value("application", "config/version", "")), "0.7.0.2")
 	var ex := ConfigFile.new()
 	assert_eq(ex.load("res://export_presets.cfg"), OK, "export_presets.cfg")
 	var found := 0
