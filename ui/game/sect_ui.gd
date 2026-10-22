@@ -83,7 +83,10 @@ static func requirement_text(c: Dictionary) -> String:
 			return "身上帶著%s" % UiClient.name_of("items", str(c.get("item", "")))
 		"quest_flag":
 			var flag := str(c.get("flag", ""))
-			return "需要引薦" if flag.ends_with("recommended") else "完成指定任務"
+			if flag.ends_with("recommended"):
+				return "需要引薦"
+			var qn := SectUi.quest_setting_flag(flag)
+			return "完成任務「%s」" % qn if qn != "" else "完成指定任務"
 		"combat_xp_min":
 			return "實戰經驗 %d 以上" % v
 		"sect":
@@ -212,6 +215,12 @@ static func unmet_conditions(sect_id: String, sheet: Dictionary) -> PackedString
 				var en: Variant = sheet.get("enemy_of", [])
 				var tr: Variant = sheet.get("traitor_of", [])
 				bad = (en is Array and (en as Array).has(nm)) or (tr is Array and (tr as Array).has(nm))
+		if bad and str(c.get("type", "")) == "no_sect":
+			# 「不符合：尚未拜入任何門派」看不懂（擁有者截圖：少林弟子去找岳不群）→ 直接說已經是哪派弟子
+			var mine := "你已經是%s弟子" % UiClient.name_of("sects", str(sheet.get("sect", "")))
+			if not out.has(mine):
+				out.append(mine)
+			continue
 		if bad:
 			var t := SectUi.requirement_text(c)
 			if t != "" and not out.has(t):
@@ -329,7 +338,11 @@ static func block_text(reason: String, ban_left_s: float = 0.0) -> String:
 # ---------- M3b 位階（袋位；M3B_PLAN §5.1.1、§7.5） ----------
 ## 技能名：武功表、生活技能表、門派技能（sects.sect_skill）都找
 static func skill_name(id: String) -> String:
-	var r := UiClient.row("martial_arts", id)
+	# 基本武學（基本內功、讀書識字…）也要查：擁有者回報華山拜師條件顯示「basic_inner 5 級以上」
+	var r := UiClient.row("basic_skills", id)
+	if r.has("name"):
+		return str(r["name"])
+	r = UiClient.row("martial_arts", id)
 	if r.has("name"):
 		return str(r["name"])
 	r = UiClient.row("life_skills", id)
@@ -341,6 +354,18 @@ static func skill_name(id: String) -> String:
 		if s is Dictionary and str(s.get("sect_skill", "")) == id:
 			return str(s.get("sect_skill_name", id))
 	return id
+
+## 會給這個任務記號的任務名稱（任務完成獎勵的 flags）；找不到回 ""
+static func quest_setting_flag(flag: String) -> String:
+	var t := UiClient.table("quests")
+	for qid in t:
+		var q: Variant = t[qid]
+		if not (q is Dictionary):
+			continue
+		var rw: Variant = (q as Dictionary).get("rewards", {})
+		if rw is Dictionary and ((rw as Dictionary).get("flags", []) as Array).has(flag):
+			return str((q as Dictionary).get("name", ""))
+	return ""
 
 ## 本地 sect_ranks 表中某派的列（依 rank 排序；客戶端資料已依 era 過濾，只有生效的列）
 static func rank_rows(sect_id: String) -> Array:
