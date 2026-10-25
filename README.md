@@ -1,4 +1,27 @@
-# JY-Mini OL
+# JY-Mini OL（金庸群俠傳 Mini OL）
+
+懷念 2001 年《金庸群俠傳 Online》的愛好者重製：入門派、學武功、打怪、PK、和朋友用 Steam 一起闖江湖。另有原作沒有的單人肉鴿模式「江湖試煉」。非官方、非商業作品。
+
+- **下載**：[Releases](https://github.com/chon9/JYOL-MUD/releases/latest)（Windows 64 位元，解壓後執行 `JY-Mini OL.exe`）
+- **玩法與攻略**：[docs/攻略.md](docs/攻略.md)（新手入門、練功路線、11 派門派與武功、任務、賺錢、PK、江湖試煉、全武功效果一覽）
+- **更新紀錄**：[docs/CHANGELOG.md](docs/CHANGELOG.md)
+
+## 截圖
+
+| 江湖（主畫面與小地圖） | 區域圖：你的角色一格一格趕路 |
+|---|---|
+| ![主畫面](docs/screenshots/v08_main.png) | ![區域圖](docs/screenshots/v08_region_map.png) |
+| **江湖全圖** | **等角戰鬥** |
+| ![江湖全圖](docs/screenshots/v08_world_map.png) | ![戰鬥](docs/screenshots/v08_battle.png) |
+| **江湖試煉：大廳** | **江湖試煉：每回合三選一** |
+| ![試煉大廳](docs/screenshots/v08_rogue_lobby.png) | ![三選一](docs/screenshots/v08_rogue_cards.png) |
+| **江湖試煉：結算與永久點數** | **即將加入的名人（第一批美術）** |
+| ![結算](docs/screenshots/v08_rogue_summary.png) | ![名人](docs/screenshots/v08_rogue_heroes_batch_a.png) |
+
+---
+
+## 開發說明
+
 
 以 Godot 4.6.3 製作的主機權威（host-authoritative）文字武俠連線遊戲。目前進度：**M2 Steam 合作連線與 PK**（已整合：組隊、多人同場戰鬥與中途加入、聊天頻道、叫戰／強制 PK、殺氣與善惡、守城官兵、屍體授權撿取、飛鴿傳書、角色護照、伺服器設定面板；契約見 `docs/M2_PLAN.md`）。M1 單機核心循環（創角到血刀洞迷宮的鬼王，`docs/M1_PLAN.md`）照常可玩（見 `docs/GDD.md` 13.1、`docs/TECH_ARCH.md` 16）。
 M3a（10 個門派、門規與思過處、毒醫暗陣內穴、查看偵察）與**故事包**（2001 事件任務鏈、門派故事任務、江湖傳聞與遊蕩惡人；`docs/STORY_PLAN.md`，見下方「江湖事件」）已整合。
@@ -613,6 +636,42 @@ godot --headless --path . -- --no-steam --dedicated --enet-host --port=24565 --w
 
 伺服器選項都可以在「伺服器設定（主機）」面板改。
 
+## 江湖試煉（肉鴿模式）（0.8.0.0 起）【設計提案・非原作】
+
+原作沒有這個模式：整個江湖試煉是本作的設計提案。契約見 `docs/ROGUE_PLAN.md`（擁有者決定 §1.3、整合紀錄 §12），名人與數值的出處見 `docs/ROGUE_ROSTER.md`。
+
+**怎麼開始**：標題畫面「單機遊玩」右邊的「**江湖試煉**」→ 大廳（試煉者檔案：永久點數 n / 60、局數、最佳勝場、名人錄、最近 5 局）→「開始試煉」。
+試煉開在**記憶體裡的臨時世界**（只開 1.0A、1.0B 和試煉專用的 `rogue` 資料片）：不寫世界檔、不寫角色檔、不送護照；目前只能單人（遠端玩家 → `rogue_solo_only`）。
+
+**一局怎麼走**
+
+1. **開局分配**：照創角規則擲七項屬性（每項 13–25），再分配「5 點自由點＋永久點數」（要剛好分完；單項最多 45）。名字預設「試煉者」，可選性別與造型。開局只有布衣、木刀，沒有武功。
+2. **每回合選一張卡**（三張裡選一張，至少兩種）：
+   - **武**（武功）：學會一門武功到某個等級（凡 25、良 40、稀 60、珍 80、神 100），對應的基本武學一起跟上；已經會的變成「精進」（+15～+35，上限 150）。卡上寫出會一起提升的基本武學與攻擊加成，滑鼠移上去有這門武功的完整說明。也包含基本內功、閃躲縱躍這類基本武學（卡上寫數字）。
+   - **兵**（兵器與護具）：護具直接穿上，換下的丟掉。兵器：手上的兵器有相合的武功時，只在同類而且攻擊不低於目前才換上，否則放進行囊；沒有相合的武功時，相合的或攻擊較高的才換上。背包最多留 3 把兵器，多的丟攻擊最低、沒裝備、不是剛拿到的那把（卡上寫明丟哪一把）。出戰前可以在左邊換兵器。
+   - **屬**（屬性）：+3／4／6／8／10 點，自己分配。
+   - **友**（隊友，第 2 回合起，最多兩位活著的）：門派弟子、小黃，武館教頭、武當弟子、少林武僧，胡斐、周芷若、張松溪，令狐沖、虛竹、小龍女，郭靖、喬峰、張無忌。
+   稀有度凡、良、稀、珍、神依回合變好；同一張卡在同一次三張裡不會重複。
+3. **出戰**：對手依「回合曲線」與「你的戰力」生成一組（1–4 名），每 **5** 回合一位**名人首領**（岳不群、滅絕師太、丘處機、周芷若、李莫愁、葉二娘、南海鱷神；第 10 回合起令狐沖、小龍女、虛竹、天山童姥、丁春秋、血刀老祖；第 15 回合起喬峰、郭靖、張無忌、張三丰；同一局不重複）。準備畫面會預告「下一場：名人登場」，但不說是誰。這一局請過的隊友不會變成首領，見過的首領也不會再變成隊友。同戰力分數的首領實際難度不同，由 `rogue_foes.power_adj` 校準。點數多時前幾回合的對手也會強一點（江湖名聲，第 11 回合起消失）。
+   **不能逃**；你倒下就輸（隊友還活著也一樣，結果框與結算會說明）。試煉的對手會分散出手（先打氣剩下比例最高的人）。沒有實戰、學點、銀兩、掉落，也沒有死亡懲罰。
+4. **打贏**：氣、精、神各回復最大值的 35%，內力回復 50%（打贏首領全滿）；飽食、飲水補滿。打贏首領多選一張，而且那一次三張都至少「稀」。等待不會自己回血。
+5. **結束**：倒下、按「放棄試煉」（兩場之間才能按，要確認）、戰鬥逾時或中途離開，都照同一個公式結算。結算畫面列出撐過幾回合、勝幾場、擊敗幾名、首領幾位、最好的一張卡、招募幾位隊友、永久點數 +N。
+
+**隊友**：戰場上名牌前面有〔友〕、我方的顏色，由電腦自動出手，只打敵人，會用自己全部的武功，不逃。每場依你當下的戰力乘上份額重新縮放（凡 0.45、良 0.55、稀 0.70、珍 0.85、神 1.00），所以跟著你成長；受的傷帶到下一場，打贏時回 35%。**倒下就這一局沒了**，這一局也不會再抽到同一位。醫、傳功可以對隊友用。
+對手的強弱只看你本人，不算隊友（隊友是用一張卡換來的純加成）。
+
+**永久點數**（試煉者檔案 `<資料根目錄>/rogue/profile.json`）
+
+- 每局 `floor(1.3 × √勝場) + 打倒的首領數 +（創新紀錄且 ≥ 3 勝時 1）`；累計 20 點以後每局打折（× 20 /（20 + 累計），至少 1），**終身最多 60 點**。放棄不扣，點數只看勝場與首領。
+- 永久點數**只**在江湖試煉開局時加進可分配點數，**完全不影響** MUD 角色與世界：試煉的資料列全部是 `era: "rogue"`，MUD 世界拒絕開這個資料片（`--eras=1.0A,rogue` 會報錯），MUD 的存檔一個位元組都不會變（`rogue_acceptance mud_unaffected`）。
+- 測試、bot、驗收都寫在測試根目錄；正常遊玩寫在你的資料根目錄。檔案壞了時先改讀備份（`profile.json.bak1`…），都不能用才當作新的試煉者（0 點）。
+
+**量到的數字**（`balance_sim --runs=500`，200 局；模擬玩家用 greedy 挑卡，0.7.x 試煉審查重新校準，見 ROGUE_PLAN §12.5）：第一次玩（永久點數 0）勝場中位數 **6**（P10 3、P90 11，目標 5–8）；亂選卡中位數 4；會看數字挑卡（smart）中位數 11；第 5 回合名人戰勝率 68.5%、第 10 回合 58%，各名人之間差 7～14 個百分點；死在名人回合的局 43%；永久點數累計（平均）第 5 局 18.6、第 10 局 30、第 20 局 48、約第 30 局到 60 點上限；同一個人第 21–30 局的勝場中位數比第 1–10 局多 7（7 → 14）；選隊友平均多 1.3 勝（6.51 對 5.18）；稀以上的隊友單挑整組對手輸 95%（隊友是幫手不是主角）。
+
+**程式在哪裡**：`core/rogue/`（規則、戰力分數、抽卡、對手、一局的狀態、試煉者檔案、隊友）、`server/rogue_system.gd`＋`server/intents/intents_rogue.gd`（主機）、
+`ui/game/rogue/`（大廳、分配、卡片、HUD、結算）、資料 `data/rogue_rules.json`、`data/rogue_cards.json`（153 張：武功 75、兵器與護具 56、屬性 5、隊友 17）、`data/rogue_foes.json`（68 列，其中首領 17）、`data/maps/rogue_trial.json`。
+除錯 intent `rogue_debug`（只在 `--debug-intents`）：`cards`（固定下一次的三張卡）、`foes`（固定下一場的對手、不縮放）、`round`、`points`。
+
 ## 執行方式
 
 ### 從編輯器
@@ -922,6 +981,33 @@ godot --headless --path . --script res://tools/m3d_acceptance.gd -- --no-steam [
 
 成功印每個劇本的 `PASS` 列與 `M3D_ACCEPT_OK`、結束碼 0；失敗印 `M3D_ACCEPT_FAIL <劇本> <原因>` 並傾印 log 尾端，結束碼 1。log 在 `<測試根目錄>/m3d_acceptance/`。
 介面的部分在介面驗收第 23 步（下方）。
+
+### 江湖試煉驗收（ROGUE_PLAN §9.3）
+
+`tools/rogue_acceptance.gd`：每個劇本一個 worker 子行程，worker 用 `tools/rogue_accept_scenarios.gd`（真的 `WorldServer.start_rogue`＋GameHost、`--debug-intents`、測試根目錄下的新資料夾）。
+固定卡與對手（`rogue_debug`）、把角色調強調弱、把隊友直接打倒是測試捷徑，不是受測物。**只跑 headless**。
+
+| 劇本（`--only=`） | 做什麼 |
+|---|---|
+| `start_run` | `rogue_open { seed: 12345 }` → 擲骰 13–25、`alloc_points` = 5＋永久點數；少 1 點 → `rogue_bad_alloc`；單項超 45 → `rogue_attr_cap`；正確 → PICK、三張卡兩種以上、只有布衣木刀、沒有武功 |
+| `pick_each_kind` | 武（華山劍法，基本劍法跟上）、兵（青鋒劍已裝備）、屬（不給分配 → `rogue_bad_alloc`；給了 → 臂力 +N）、友（周芷若、胡斐；第三位 → `rogue_ally_full`） |
+| `win_round` | 固定野狼 → `ROGUE`、`no_flee` → 勝 → `rogue_round_won`、第 2 回合、PICK、氣回復＝min(35%, 缺的)；實戰、學點、銀兩不變，沒有屍體 |
+| `ally_acts` | 隊友至少行動 2 次、只打 side 1；下一場隊友倒下、玩家贏 → `rogue_ally_fallen`、`alive == false`、之後的抽卡不再出現他 |
+| `lose_run` | 固定張三丰、隊友扛得住、玩家倒下 → 判負（O6）、`close.rogue.over`、summary 欄位齊全、`DEATH` → profile 點數增加＝`RogueRules.award`、`runs` +1、`history[0]` |
+| `points_persist` | 輸一局 → 關掉試煉世界再開 → `alloc_points` = 5＋新總點數；`rogue_debug points 59` → 再輸一局 → 60（上限） |
+| `boss_round` | `round 5` → `next_round_is_boss` → 周芷若、`rogue_boss` → 贏 → `extra_picks 1`、三張都 ≥ 稀 → 選完再一次一般 PICK |
+| `abandon` | `confirm: false` → `rogue_confirm`；`true` → `ABANDON`；局中斷線 → `LEAVE`、profile 已寫 |
+| `determinism` | 同種子兩次各打三回合 → 每回合的卡與對手完全相同 |
+| `mud_unaffected` | MUD 世界 `w_rg_mud` 建角存檔 → 跑完整一局試煉 → `worlds/`、`passports/` 雜湊完全相同、只多 `rogue/profile.json` → 重開 MUD：沒有 `rogue` era、沒有 `rg_` 列、角色屬性不變；`--eras=1.0A,rogue` 失敗；試煉中 `move` → `rogue_off` |
+
+```bash
+godot --headless --path . --script res://tools/rogue_acceptance.gd -- --no-steam [--only=start_run,lose_run] [--workers=4] [--timeout=1800]
+```
+
+成功印 `ROGUE_ACCEPT_OK`、結束碼 0；失敗印 `ROGUE_ACCEPT_FAIL <劇本> <原因>`，結束碼 1。log 在 `<測試根目錄>/rogue_acceptance/`。
+平衡案例：`balance_sim --case=rogue_power_fair|rogue_power_match|rogue_first_runs|rogue_random_policy|rogue_profile_growth|rogue_boss_round5|rogue_determinism|rogue_ally_value|rogue_ally_share`
+（校準用：`--rogue-rules=diff_start:0.7,ally_weight:0`、`--rogue-trace`、`--rogue-points=N`）。
+介面驗收第 24 步是江湖試煉（標題 → 大廳 → 分配 → 選卡 → 出戰 → 結算 → 返回標題）；只想跑這一段：`--bot=res://tests/ui/ui_playthrough.gd --ui-rogue-only`（不帶 `--offline`）。
 
 ### Steam 兩帳號手動清單（擁有者；M2_PLAN 6.5）
 

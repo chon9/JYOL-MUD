@@ -1,0 +1,16 @@
+{ "table": "rogue_rules", "version": 1, "rows": [
+  { "id": "rg_rules", "era": "rogue", "src": "proposal", "src_note": "江湖試煉【設計提案・非原作】；0.7.x 試煉審查重新校準（balance_sim：一般回合不再走過場、首領不再是牆、點數的好處留到後面）；第二輪審查：boss_mult 1.15→1.12（首領回合死亡占比與新手中位數都貼著帶的邊，對手改成會補刀之後多留一點餘裕；種子 1／7／13 都過）",
+    "attr_cap": 45, "art_cap": 150, "weapons_keep": 3, "ally_max": 2, "ally_min_round": 2, "boss_every": 5,
+    "kind_weights": { "ART": 35, "WEAPON": 25, "ATTR": 25, "ALLY": 15 },
+    "rarity_bands": [ { "from": 1, "w": [60, 30, 10, 0, 0] }, { "from": 4, "w": [40, 35, 20, 5, 0] }, { "from": 7, "w": [25, 35, 27, 11, 2] },
+                      { "from": 10, "w": [15, 30, 32, 18, 5] }, { "from": 15, "w": [10, 25, 33, 23, 9] } ],
+    "boss_reward_w": [0, 0, 60, 30, 10],
+    "attr_points": { "COMMON": 3, "FINE": 4, "RARE": 6, "TREASURE": 8, "DIVINE": 10 },
+    "art_level": { "COMMON": 25, "FINE": 40, "RARE": 60, "TREASURE": 80, "DIVINE": 100 },
+    "upgrade_by": { "COMMON": 15, "FINE": 20, "RARE": 25, "TREASURE": 30, "DIVINE": 35 },
+    "ally_share": { "COMMON": 0.45, "FINE": 0.55, "RARE": 0.70, "TREASURE": 0.85, "DIVINE": 1.00 },
+    "p0_mult": 0.9, "growth": 1.20, "diff_start": 0.85, "diff_step": 0.04, "diff_max": 1.10, "blend": 0.2, "boss_mult": 1.12,
+    "ally_weight": 0.0, "renown_share": 0.6, "renown_fade": 10,
+    "restore_pct": 0.35, "restore_neili_pct": 0.5,
+    "points_cap": 60, "points_k": 1.3, "points_soft": 20, "points_half": 20 }
+] }

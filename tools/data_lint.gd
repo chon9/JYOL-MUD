@@ -48,6 +48,7 @@ func lint(dir: String, verbose := false) -> int:
 	_check_proc_templates(loader)
 	_check_m3c2_options(loader)   # M3c2 WP-PACE
 	_check_m3d_options(loader)    # M3d（WP-LAW Day-0：五個選項）
+	_check_rogue(loader)          # ROGUE WP-RUN（ROGUE_PLAN §7）
 
 	# 每個 era 加上它的 requires 閉包各跑一次 activate()（5.5.2）
 	var era_ids: Array = eras.keys()
@@ -678,7 +679,7 @@ static func _c_reachability(view: Dictionary) -> PackedStringArray:
 	var ids: Array = idx.keys()
 	ids.sort()
 	for id in ids:
-		if not seen.has(id):
+		if not seen.has(id) and not rogue_isolated_region(view, str(idx[id]["region"])):   # ROGUE WP-RUN
 			errs.append("room %s (%s) unreachable from %s" % [id, idx[id]["region"], START_ROOM])
 	var regions: Dictionary = view.get("regions", {})
 	var births := birth_rooms(view)
@@ -3742,3 +3743,144 @@ static func _check_0701(view: Dictionary) -> PackedStringArray:
 				if c is Dictionary and str(c.get("type", "")) == "quest_flag" and not given.has(str(c.get("flag", ""))):
 					errs.append("%s.%s: quest_flag '%s' is never given by any quest/trial (art unobtainable)" % [t, id, str(c.get("flag", ""))])
 	return errs
+
+# ==== ROGUE WP-RUN ====（ROGUE_PLAN §2.2、§7）
+const ROGUE_TEMPLATES := ["rogue_round_won", "rogue_card_taken", "rogue_boss", "rogue_ally_joined", "rogue_ally_fallen", "rogue_points"]
+## §7.2 最少內容
+const ROGUE_MIN_CARDS := { "ART": 40, "WEAPON": 30, "ATTR": 5, "ALLY": 14 }
+const ROGUE_MIN_FOES := 30
+const ROGUE_MIN_BOSSES := 12
+## 兵器卡每一類至少幾張（ROGUE_PLAN 缺漏：items.json 沒有槍、筆刺類兵器，只檢查有的五類）
+const ROGUE_WEAPON_TYPES_MIN := { "BLADE": 2, "SWORD": 2, "STAFF": 2, "WHIP": 2, "FIST": 2 }
+
+## 只屬於模式專用 era（江湖試煉）的地區：不必從西夏廣場走得到（試煉場沒有出口）
+static func rogue_isolated_region(view: Dictionary, region_id: String) -> bool:
+	var row: Variant = view.get("regions", {}).get(region_id, {})
+	if not (row is Dictionary):
+		return false
+	return DataSchema.era_mode_only(view.get("eras", {}), str(row.get("era", "")))
+
+func _check_rogue(loader: DataLoader) -> void:
+	var eras: Dictionary = loader.all_tables.get("eras", {})
+	var er: Dictionary = eras.get(DataSchema.ROGUE_ERA, {})
+	if er.is_empty():
+		errors.append("eras: missing '%s' (ROGUE §2.2)" % DataSchema.ROGUE_ERA)
+		return
+	if er.get(DataSchema.ERA_MODE_ONLY, false) != true:
+		errors.append("eras.rogue: mode_only must be true")
+	if not (er.get("requires", []) as Array).has("1.0B"):
+		errors.append("eras.rogue: requires 1.0B")
+	for id in eras:
+		if eras[id].has(DataSchema.ERA_MODE_ONLY) and typeof(eras[id][DataSchema.ERA_MODE_ONLY]) != TYPE_BOOL:
+			errors.append("eras.%s: mode_only must be true/false" % id)
+		if str(id) != DataSchema.ROGUE_ERA and (eras[id].get("requires", []) as Array).has(DataSchema.ROGUE_ERA):
+			errors.append("eras.%s: must not require the mode-only era '%s'" % [id, DataSchema.ROGUE_ERA])
+	# 預設選項不得開啟模式專用的 era
+	for e in loader.server_options_default.get("enabled_eras", []):
+		if DataSchema.era_mode_only(eras, str(e)):
+			errors.append("server_options.enabled_eras: mode-only era '%s'" % str(e))
+	for t in ["rogue_rules", "rogue_cards", "rogue_foes"]:
+		for id in loader.all_tables.get(t, {}):
+			if str(loader.all_tables[t][id].get("era", "")) != DataSchema.ROGUE_ERA:
+				errors.append("%s.%s: era must be rogue" % [t, id])
+	for t in loader.all_tables:
+		for id in loader.all_tables[t]:
+			if str(id).begins_with("m_rg_") or str(id).begins_with("rg_mon_"):
+				if str(loader.all_tables[t][id].get("era", "")) != DataSchema.ROGUE_ERA:
+					errors.append("%s.%s: era must be rogue" % [t, id])
+	var view := loader.activate(DataLoader.era_closure(eras, DataSchema.ROGUE_ERA))
+	for e in DataSchema.check_rogue(view):
+		errors.append("rogue: " + e)
+	var rr: Dictionary = view.get("rogue_rules", {}).get(RogueRules.RULES_ID, {})
+	if rr.is_empty():
+		errors.append("rogue_rules: missing row '%s'" % RogueRules.RULES_ID)
+	else:
+		for band in rr.get("rarity_bands", []):
+			if not (band is Dictionary) or (band.get("w", []) as Array).size() != RogueRules.RARITIES.size():
+				errors.append("rogue_rules.rarity_bands: each band needs 5 weights")
+		if (rr.get("boss_reward_w", []) as Array).size() != RogueRules.RARITIES.size():
+			errors.append("rogue_rules.boss_reward_w: needs 5 weights")
+		for k in ["attr_points", "art_level", "upgrade_by", "ally_share"]:
+			for rar in RogueRules.RARITIES:
+				if not (rr.get(k, {}) as Dictionary).has(rar):
+					errors.append("rogue_rules.%s: missing %s" % [k, rar])
+	var cards: Dictionary = view.get("rogue_cards", {})
+	var by_kind := {}
+	var wtypes := {}
+	var slots := {}
+	var attr_rar := {}
+	for id in cards:
+		var c: Dictionary = cards[id]
+		var kind := str(c.get("kind", ""))
+		by_kind[kind] = int(by_kind.get(kind, 0)) + 1
+		if kind == "WEAPON":
+			var it: Dictionary = view.get("items", {}).get(str(c.get("item", "")), {})
+			if str(it.get("slot", "")) == "WEAPON":
+				var wt := str(it.get("weapon_type", "FIST"))
+				wtypes[wt] = int(wtypes.get(wt, 0)) + 1
+			else:
+				slots[str(it.get("slot", ""))] = true
+		elif kind == "ATTR":
+			attr_rar[str(c.get("rarity", ""))] = true
+		elif kind == "ART":
+			var arow: Dictionary = view.get("martial_arts", {}).get(str(c.get("art", "")), {})
+			if str(arow.get("category", "")) in ["FORMATION", "POISON", "MEDIC", "HIDDEN"]:
+				errors.append("rogue_cards.%s: %s arts are not offered (ROGUE §7.2)" % [id, str(arow.get("category", ""))])
+		elif kind == "ALLY" and str(c.get("npc", "")) != "" and not view.get("npcs", {}).has(str(c.get("npc", ""))):
+			errors.append("rogue_cards.%s: npc '%s' missing" % [id, str(c.get("npc", ""))])
+	if not cards.is_empty():
+		for k in ROGUE_MIN_CARDS:
+			if int(by_kind.get(k, 0)) < int(ROGUE_MIN_CARDS[k]):
+				errors.append("rogue_cards: %s cards %d < %d (ROGUE §7.2)" % [k, int(by_kind.get(k, 0)), int(ROGUE_MIN_CARDS[k])])
+		for wt in ROGUE_WEAPON_TYPES_MIN:
+			if int(wtypes.get(wt, 0)) < int(ROGUE_WEAPON_TYPES_MIN[wt]):
+				errors.append("rogue_cards: weapon type %s cards < %d" % [wt, int(ROGUE_WEAPON_TYPES_MIN[wt])])
+		for sl in Inventory.SLOTS:
+			if sl != "WEAPON" and not slots.has(sl):
+				errors.append("rogue_cards: no armor card for slot %s" % sl)
+		for rar in RogueRules.RARITIES:
+			if not attr_rar.has(rar):
+				errors.append("rogue_cards: no ATTR card for rarity %s" % rar)
+	var foes: Dictionary = view.get("rogue_foes", {})
+	var n_norm := 0
+	var n_boss := 0
+	for id in foes:
+		if bool(foes[id].get("boss", false)):
+			n_boss += 1
+			for mid in foes[id].get("minions", []):
+				if foes.has(str(mid)) and bool(foes[str(mid)].get("boss", false)):
+					errors.append("rogue_foes.%s: minion '%s' must not be a boss" % [id, str(mid)])
+		else:
+			n_norm += 1
+		if Encounter.monster_spec(str(foes[id].get("monster", "")), view).is_empty():
+			errors.append("rogue_foes.%s: monster spec empty" % id)
+	if not foes.is_empty() and (n_norm < ROGUE_MIN_FOES or n_boss < ROGUE_MIN_BOSSES):
+		errors.append("rogue_foes: %d normal / %d boss rows (need %d / %d; ROGUE §7.3)" % [n_norm, n_boss, ROGUE_MIN_FOES, ROGUE_MIN_BOSSES])
+	var mons: Dictionary = view.get("monsters", {})
+	for mid in mons:
+		if not str(mid).begins_with("m_rg_"):
+			continue
+		if not bool(mons[mid].get("no_rewards", false)):
+			errors.append("monsters.%s: m_rg_ rows must be no_rewards" % mid)
+		var arts: Array = mons[mid].get("arts", [])
+		var first := str(arts[0].get("art", "")) if not arts.is_empty() and arts[0] is Dictionary else ""
+		if not BattleFormulas.BATTLE_CATEGORIES.has(str(view.get("martial_arts", {}).get(first, {}).get("category", ""))):
+			errors.append("monsters.%s: arts[0] must be the main attack art (ROGUE §7.4)" % mid)
+	var tpl: Dictionary = view.get("text_templates", {})
+	for k in ROGUE_TEMPLATES:
+		if not tpl.has(k):
+			errors.append("text_templates: missing '%s' (ROGUE §6.2)" % k)
+	# 原因碼的模板在 MUD 世界也要有（MUD 世界送 rogue intent 會回 rogue_off）
+	var base_view := loader.activate(["1.0A"])
+	for code in Protocol.ROGUE_REASONS:
+		if not base_view.get("text_templates", {}).has("err_" + str(code)):
+			errors.append("text_templates: missing 'err_%s' in 1.0A (ROGUE §6.4)" % code)
+	# MUD 世界（預設 era）的視圖裡不得有任何 rogue 列
+	var mud_view := loader.activate(loader.server_options_default.get("enabled_eras", ["1.0A"]))
+	for t in mud_view:
+		if t == "eras" or t == "rule_profiles" or not (mud_view[t] is Dictionary):
+			continue
+		for id in mud_view[t]:
+			var row: Variant = mud_view[t][id]
+			if row is Dictionary and str(row.get("era", "")) == DataSchema.ROGUE_ERA:
+				errors.append("MUD view contains rogue row %s.%s" % [t, id])

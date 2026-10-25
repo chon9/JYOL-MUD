@@ -18,7 +18,7 @@ func before_each() -> void:
 
 func test_real_data_loads_without_errors() -> void:
 	assert_eq(loader.errors.size(), 0, "load errors: %s" % ", ".join(loader.errors))
-	assert_eq(loader.all_maps.size(), 44 + 1, "（M3d WP-ERRANDS +1：黑龍潭 1.0B）44 region maps (15 + 16 M3a + 3 故事包 in 1.0A + 2 京城 in 1.0B + M3b 8：京城北郊、丐幫、絕情谷、絕情谷地牢 1.0B；馬王洞、高昌古道、高昌、高昌迷宮 1.0A)")
+	assert_eq(loader.all_maps.size(), 44 + 1 + 1, "（ROGUE +1：試煉場 rg_trial，era rogue）（M3d WP-ERRANDS +1：黑龍潭 1.0B）44 region maps (15 + 16 M3a + 3 故事包 in 1.0A + 2 京城 in 1.0B + M3b 8：京城北郊、丐幫、絕情谷、絕情谷地牢 1.0B；馬王洞、高昌古道、高昌、高昌迷宮 1.0A)")
 
 func test_activate_base_era_without_errors() -> void:
 	var v := loader.activate(["1.0A"])
@@ -84,6 +84,10 @@ func test_every_row_has_era_and_valid_src() -> void:
 			var row: Dictionary = loader.all_tables[t][id]
 			var sid := str(id)
 			assert_true(row.get("src", "") in DataLint.SRC_TAGS, "%s.%s src '%s'" % [t, id, row.get("src", "")])
+			# ROGUE_PLAN §0.2、§7：江湖試煉的列一律 era rogue（rg_／m_rg_ 前綴、rogue_* 模板）；err_rogue_* 是 1.0A（MUD 也會回 rogue_off）
+			if sid.begins_with("rg_") or sid.begins_with("m_rg_") or (t == "text_templates" and sid.begins_with("rogue_")):
+				assert_eq(row.get("era", ""), "rogue", "%s.%s era（江湖試煉）" % [t, id])
+				continue
 			if (t == "sect_ranks" and sid in ["gb_dai3", "gb_dai4", "gb_dai5", "gb_dai6", "gb_dai7"]) or sid == "n_jc_cha_n":
 				# M3b 審查：京城北門的查小鏞是後期擺法 → xkd
 				assert_eq(row.get("era", ""), "xkd", "%s.%s era (三袋以上、北門查小鏞 era xkd)" % [t, id])
@@ -101,7 +105,7 @@ func test_every_row_has_era_and_valid_src() -> void:
 		"heilongtan"]   # M3d WP-ERRANDS
 	for rid in loader.all_maps:
 		assert_true(loader.all_maps[rid].get("src", "") in DataLint.SRC_TAGS, "maps/%s src" % rid)
-		assert_eq(loader.all_maps[rid]["era"], "1.0B" if rid in maps_1b else "1.0A", "maps/%s era" % rid)
+		assert_eq(loader.all_maps[rid]["era"], "rogue" if rid == "rg_trial" else ("1.0B" if rid in maps_1b else "1.0A"), "maps/%s era" % rid)
 
 func test_1_0b_view_activates_and_lints_clean() -> void:
 	var v := loader.activate(["1.0A", "1.0B"])

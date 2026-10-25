@@ -124,6 +124,20 @@ func start_offline(world_id: String = DEFAULT_WORLD) -> Error:
 	session_started.emit(mode)
 	return OK
 
+## ROGUE WP-RUN（ROGUE_PLAN §2.2）：江湖試煉＝離線＋記憶體內的試煉世界（WorldServer.start_rogue；不寫任何世界檔）
+func start_rogue(seed: int = 0) -> Error:
+	leave(true)
+	_set_peer(OfflineMultiplayerPeer.new(), Mode.OFFLINE)
+	var err := WorldServer.start_rogue(seed)
+	if err != OK:
+		_world_start_failed()
+		return err
+	if not dedicated:
+		ClientState.begin_local_session()
+	_set_status("江湖試煉")
+	session_started.emit(mode)
+	return OK
+
 func _world_start_failed() -> void:
 	leave(true)
 	_set_status("無法開啟世界：" + WorldServer.last_error)

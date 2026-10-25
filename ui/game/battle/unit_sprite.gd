@@ -111,7 +111,7 @@ func setup(u: Dictionary, is_ally: bool) -> void:
 ## 暫代剪影種類（依名字猜，只影響沒有圖時的樣子）
 static func shape_for(u: Dictionary) -> String:
 	var kind := str(u.get("kind", ""))
-	if kind == "PLAYER" or kind == "NPC":
+	if kind == "PLAYER" or kind == "NPC" or kind == ROGUE_ALLY_KIND:   # ROGUE WP-ALLY：試煉隊友是人形
 		return "human"
 	var n := str(u.get("name", ""))
 	if "鬼王" in n:
@@ -494,6 +494,8 @@ func plate_name_h(box: Rect2) -> float:
 ## 名字（倒下的加「倒下」：屍體被擋住時也看得出誰倒在哪裡）
 func label_text() -> String:
 	var nm := display_name if (is_me or UnitSprite.show_names()) else ""
+	if nm != "" and UnitSprite.is_rogue_ally(unit):
+		nm = ALLY_TAG + nm   # ROGUE WP-ALLY：隊友名牌前加小牌「友」
 	return nm + (DOWN_SUFFIX if vis_state == "DEAD" else "")
 
 ## 系統開關「顯示名稱」（M2_PLAN D5：本機設定 ui.show_names）；關掉時只留自己的名字
@@ -749,3 +751,11 @@ func _ph_blob(h: float, tint: Color) -> void:
 	_ellipse(Vector2(0, -h * 0.42), Vector2(h * 0.5, h * 0.42), col, tint)
 	_ellipse(Vector2(-h * 0.2, -h * 0.55), Vector2(h * 0.06, h * 0.08), Color("f4f0e0"), tint, false)
 	_ellipse(Vector2(h * 0.02, -h * 0.57), Vector2(h * 0.06, h * 0.08), Color("f4f0e0"), tint, false)
+
+# ==== ROGUE WP-ALLY ====
+## 江湖試煉的 AI 隊友（ROGUE_PLAN §4.6）：快照 kind == "ALLY"。名字色照 side（我方黃），名牌前面加「〔友〕」，剪影當人形。
+const ROGUE_ALLY_KIND := "ALLY"
+const ALLY_TAG := "〔友〕"
+
+static func is_rogue_ally(u: Dictionary) -> bool:
+	return str(u.get("kind", "")) == ROGUE_ALLY_KIND

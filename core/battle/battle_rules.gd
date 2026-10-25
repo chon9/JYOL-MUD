@@ -26,8 +26,8 @@ const QING_JUMP_PER_RANGE := 2
 const QING_ESCAPE_COST := 30           # 輕功脫身：內力 30
 const QING_ESCAPE_MIN := 20.0          # 成功率 clamp(20 + 輕功 × 0.4 + 基本輕功 × 0.2, 20, 80)%
 const QING_ESCAPE_MAX := 80.0
-## 烙跑鞋與輕功脫身都不能用的戰鬥（§3.4）：任務戰、試煉；另外劫鏢方（ROB 的 side 0）也不行
-const FLEE_SHOE_BLOCKED := ["QUEST", "TRIAL"]
+## 烙跑鞋與輕功脫身都不能用的戰鬥（§3.4）：任務戰、試煉、江湖試煉（ROGUE：脫身＝玩家方全倒判負，審查）；另外劫鏢方（ROB 的 side 0）也不行
+const FLEE_SHOE_BLOCKED := ["QUEST", "TRIAL", "ROGUE"]
 const EQUIP_CD_DEFAULT_MS := 0         # spec 與 opts 都沒帶冷卻時不限制（舊戰鬥規格、測試；主機的 spec 一律帶 equip_cd_ms）
 
 ## 閃的人這一下命中率要減多少

@@ -618,6 +618,18 @@ func _initialize() -> void:
 			ran += 1
 			if r7 == 0:
 				failed += 1
+	# ROGUE（ROGUE_PLAN §9.2；WP-RUN Day-0）：WP-RUN、WP-ALLY 的案例清單在檔尾各自的區塊；回 -1＝略過
+	for lst in [rogue_run_cases(), rogue_ally_cases()]:
+		for c in lst:
+			if only != "" and c[0] != only:
+				continue
+			var r8: int = c[1].call(runs, seed0)
+			if r8 < 0:
+				skipped += 1
+				continue
+			ran += 1
+			if r8 == 0:
+				failed += 1
 	if skipped > 0:
 		print("BALANCE note: %d 個 M3a／故事包案例因資料尚未合併而略過（SKIP）" % skipped)
 	print("BALANCE %s (%d cases, %d failed, runs=%d)" % ["OK" if failed == 0 and ran > 0 else "FAIL", ran, failed, runs])
@@ -3795,3 +3807,1019 @@ func _law_total(ppl: Array, pools: Dictionary) -> int:
 	for k in pools:
 		t += int(pools[k])
 	return t
+
+# ==== ROGUE WP-ALLY ====（ROGUE_PLAN §9.2：rogue_ally_value、rogue_ally_share；WP-ALLY 在這個區塊填）
+func rogue_ally_cases() -> Array:
+	return [
+		["rogue_ally_value", case_rogue_ally_value],
+		["rogue_ally_share", case_rogue_ally_share],
+	]
+
+## 用 core 類別直接跑（RogueRun、RogueDraw、RogueFoes、RoguePower、RogueAlly、Battle；不開主機）；
+## WP-RUN 的類別或資料還沒合併 → SKIP（回 -1）。
+const RG_ALLY_PATHS := { "run": "res://core/rogue/rogue_run.gd", "rules": "res://core/rogue/rogue_rules.gd",
+	"draw": "res://core/rogue/rogue_draw.gd", "foes": "res://core/rogue/rogue_foes.gd", "power": "res://core/rogue/rogue_power.gd" }
+const RG_ALLY_MAX_ROUNDS := 40
+const RG_ALLY_RARITIES := ["COMMON", "FINE", "RARE", "TREASURE", "DIVINE"]   # ＝ RogueRules.RARITIES（類別可能還沒合併，不直接引用）
+const RG_ALLY_SPLIT := ["str", "con", "agi", "guts"]   # 開局分配（§9.2）
+const RG_ALLY_ATTR_SPLIT := ["str", "con", "agi"]       # 屬性卡（§9.2 greedy）
+
+func _rg_ally_env() -> Dictionary:
+	var env := {}
+	for k in RG_ALLY_PATHS:
+		if not ResourceLoader.exists(RG_ALLY_PATHS[k]):
+			return {}
+		env[k] = load(RG_ALLY_PATHS[k])
+		if env[k] == null:
+			return {}
+	if _loader == null:
+		return {}
+	var t: Dictionary = _loader.activate(["1.0A", "1.0B", "rogue"])
+	if (t.get("rogue_cards", {}) as Dictionary).is_empty() or (t.get("rogue_foes", {}) as Dictionary).is_empty():
+		return {}
+	env["t"] = t
+	env["opts"] = pace_options()
+	var r: Dictionary = ((env.rules as Script).call("rules", t) as Dictionary).duplicate(true)
+	if float(r.get("p0", 0.0)) <= 0.0:
+		var ps: Script = env.power
+		r["p0"] = float(ps.call("reference_power", t)) if ps.has_method("reference_power") else 0.0
+	env["r"] = r
+	return env
+
+## 平均分 n 點到 keys（輪流一點一點給，單項不超過 cap；主要屬性都滿了才給其他屬性）
+static func _rg_ally_spread(base: Dictionary, n: int, keys: Array, cap: int) -> Dictionary:
+	var out := {}
+	var progress := true
+	while n > 0 and progress:
+		progress = false
+		for k in keys:
+			if n <= 0:
+				break
+			if int(base.get(k, 0)) + int(out.get(k, 0)) + 1 <= cap:
+				out[k] = int(out.get(k, 0)) + 1
+				n -= 1
+				progress = true
+	for a in Character.ATTR_IDS:
+		while n > 0 and int(base.get(a, 0)) + int(out.get(a, 0)) < cap:
+			out[a] = int(out.get(a, 0)) + 1
+			n -= 1
+	return out
+
+## greedy（§9.2）：與兵器相合的 ART（精進優先）→ 與已會武功相合的 WEAPON → 隊友未滿選 ALLY（allow_ally）→ ATTR → 其他
+func _rg_ally_pick(cards: Array, pspec: Dictionary, allow_ally: bool, alive_allies: int, r: Dictionary, t: Dictionary) -> int:
+	var wtype := str(pspec.get("weapon", {}).get("weapon_type", "FIST"))
+	var cats := {}
+	for a in pspec.get("arts", []):
+		cats[str(t.get("martial_arts", {}).get(str(a), {}).get("category", ""))] = true
+	var best := -1
+	var best_score := -1
+	for i in cards.size():
+		var c: Dictionary = cards[i]
+		var score := 0
+		match str(c.get("kind", "")):
+			"ART":
+				var art: Dictionary = c.get("art", {}) if c.get("art") is Dictionary else {}
+				var cat := str(art.get("category", ""))
+				var aid := str(art.get("id", ""))
+				if cat == wtype or cat in ["FIST", "INNER", "LIGHTNESS"] or aid.begins_with("basic_"):
+					score = 60 if bool(c.get("upgrade", false)) else 50
+				else:
+					score = 5
+			"WEAPON":
+				var it: Dictionary = c.get("item", {}) if c.get("item") is Dictionary else {}
+				if str(it.get("slot", "WEAPON")) == "WEAPON" and cats.has(str(it.get("weapon_type", ""))):
+					score = 40
+				else:
+					score = 4
+			"ALLY":
+				if allow_ally and alive_allies < int(r.get("ally_max", 2)):
+					score = 30
+			"ATTR":
+				score = 20
+		score = score * 10 + RG_ALLY_RARITIES.find(str(c.get("rarity", "COMMON")))
+		if score > best_score:
+			best_score = score
+			best = i
+	return best
+
+## 一局（自動玩家＝BattleAI 的玩家路徑；隊友 ai ally；非等待模式）：回 { wins, rounds, bosses, allies_taken }
+func _rg_ally_run(env: Dictionary, sd: int, allow_ally: bool) -> Dictionary:
+	var t: Dictionary = env.t
+	var r: Dictionary = env.r
+	var opts: Dictionary = env.opts
+	var run = (env.run as Script).new()
+	run.seed = sd
+	run.run_id = "sim_%d" % sd
+	run.members = ["sim_rg"]
+	run.roll = CharacterFactory.roll(run.rng_for("roll"))
+	var cap := int(r.get("attr_cap", 45))
+	var alloc := _rg_ally_spread(run.roll, CharacterFactory.FREE_POINTS, RG_ALLY_SPLIT, cap)
+	var start := {}
+	for a in Character.ATTR_IDS:
+		start[a] = int(run.roll.get(a, 0)) + int(alloc.get(a, 0))
+	var crng := RandomNumberGenerator.new()
+	crng.seed = sd
+	var ch := CharacterFactory.create({ "id": "sim_rg", "identity": "local_sim", "name": "試煉者", "gender": "M",
+		"birth_month": 1, "birth_city": "xixia", "alloc": {} }, start, t, opts, crng, 0.0)
+	ch.inventory.remove_item_id("c_jingyao", 99)   # §3.3：只有布衣、木刀
+	ch.vitals["neili"] = 0
+	var allies_taken := 0
+	var pick_left := 1
+	var min_r := ""
+	while run.round <= RG_ALLY_MAX_ROUNDS:
+		# 選卡（打贏首領：多一次、第一次至少「稀」）
+		while pick_left > 0:
+			pick_left -= 1
+			var pspec0: Dictionary = ch.to_combatant(t, opts, 0, 1)
+			var cards: Array = (env.draw as Script).call("draw", run, ch, t, run.rng_for("draw"), min_r)
+			if "draws" in run:
+				run.draws += 1   # WP-RUN 的內部欄位（同一回合第二次抽卡的亂數）
+			min_r = ""
+			var idx := _rg_ally_pick(cards, pspec0, allow_ally, _rg_ally_alive(run.allies).size(), r, t)
+			if idx < 0:
+				continue
+			var card: Dictionary = cards[idx]
+			var al := {}
+			if str(card.get("kind", "")) == "ATTR":
+				al = _rg_ally_spread(ch.attrs, int(card.get("points", 0)), RG_ALLY_ATTR_SPLIT, cap)
+			if run.apply_card(ch, card, al, t, opts, r) == "" and str(card.get("kind", "")) == "ALLY":
+				allies_taken += 1
+		# 開戰（§3.7.1：我方戰力＝玩家＋隊友；隊友依玩家戰力 × 份額縮放）
+		var pspec: Dictionary = ch.to_combatant(t, opts, 0, 1)
+		pspec["ai"] = "melee_basic"
+		var my_p := float((env.power as Script).call("unit_power", pspec, t))
+		var ally_specs: Array = []
+		for a in _rg_ally_alive(run.allies):
+			var s := RogueAlly.spec_for(a, my_p, t)
+			if not s.is_empty():
+				ally_specs.append(s)
+		var mine: Array = [pspec]
+		mine.append_array(ally_specs)
+		var my_power := float((env.power as Script).call("side_power", mine, t))
+		var target := float((env.foes as Script).call("target", run, my_power, r))
+		var gen: Dictionary = (env.foes as Script).call("generate", run, target, t, run.rng_for("foes"))
+		var boss := str(gen.get("boss_id", "")) != ""
+		var b := Battle.new(1, [run.seed, "battle", run.round].hash(), { "wait_mode": false, "escape_tiles": 2, "no_flee": true,
+			"end_on_players_down": true, "kind": "ROGUE" })
+		b.add_unit(pspec)
+		for s in ally_specs:
+			b.add_unit(s)
+		for s in gen.get("specs", []):
+			var fs: Dictionary = (s as Dictionary).duplicate(true)
+			fs["side"] = 1
+			fs["peer"] = 0
+			b.add_unit(fs)
+		b.start(t)
+		while not b.is_over():
+			b.step(Battle.TICK, t)
+		if b.result_name() != "VICTORY":
+			break
+		var out: Dictionary = b.outcome()
+		ch.apply_battle_outcome(out.units[1], t, opts)
+		var killed := 0
+		for u in b.units:
+			if u.side == 1 and u.is_dead():
+				killed += 1
+		var res := RogueAlly.apply_battle(run.allies, b)
+		run.allies = res.allies
+		run.wins += 1
+		run.foes_beaten += killed
+		run.round += 1
+		if boss:
+			run.bosses_beaten += 1
+			if "bosses_seen" in run and not run.bosses_seen.has(str(gen.boss_id)):
+				run.bosses_seen.append(str(gen.boss_id))   # 同局首領不重複（WP-RUN 的內部欄位）
+		(env.rules as Script).call("restore", ch, t, opts, boss, r)
+		var na: Array = []
+		for a in run.allies:
+			na.append(RogueAlly.restore(a, float(r.get("restore_pct", 0.35)), boss))
+		run.allies = na
+		pick_left = 2 if boss else 1
+		min_r = "RARE" if boss else ""
+	return { "wins": run.wins, "rounds": run.round, "bosses": run.bosses_beaten, "allies_taken": allies_taken }
+
+static func _rg_ally_alive(allies: Array) -> Array:
+	return allies.filter(func(a): return a is Dictionary and bool(a.get("alive", false)))
+
+static func _rg_ally_median(xs: Array) -> float:
+	if xs.is_empty():
+		return 0.0
+	var s := xs.duplicate()
+	s.sort()
+	var n := s.size()
+	return float(s[n / 2]) if n % 2 == 1 else (float(s[n / 2 - 1]) + float(s[n / 2])) / 2.0
+
+## rogue_ally_value（§9.2）：同一批種子，greedy（會選隊友）vs greedy 但不選隊友 → 勝場中位數差 ∈ [+0.5, +3]
+## 整合者（ROGUE_PLAN §12）：改用 WP-RUN 的 _rg_play（與主機同一條路：RogueFoes.prepare_fight／ally_spec、ally_weight），
+## policy greedy vs greedy_noally，同一批種子；舊的 _rg_ally_run 留著做對照（直接呼叫 target／generate／spec_for，與主機不同）。
+func case_rogue_ally_value(runs: int, seed0: int) -> int:
+	if not _rg_env():
+		print("%-24s SKIP  江湖試煉的核心類別或資料（rogue_cards／rogue_foes）還沒合併" % "rogue_ally_value")
+		return -1
+	var n := mini(runs, 200)
+	var with_w: Array = []
+	var without_w: Array = []
+	var taken := 0
+	for x in _rg_batch("greedy", n, seed0, 0):
+		with_w.append(int(x.wins))
+		taken += int(x.allies)
+	for x in _rg_batch("greedy_noally", n, seed0, 0):
+		without_w.append(int(x.wins))
+	var m1 := _rg_ally_median(with_w)
+	var m0 := _rg_ally_median(without_w)
+	var diff := m1 - m0
+	var mean1 := 0.0
+	var mean0 := 0.0
+	for x in with_w:
+		mean1 += float(x) / n
+	for x in without_w:
+		mean0 += float(x) / n
+	# 整合者（ROGUE_PLAN §12）：勝場集中在 4–9 的整數上，中位數幾乎不動（選不選隊友都是 7）；改看平均勝場差 ∈ [+0.3, +3]，
+	# 中位數差只印出來參考（不得為負）
+	var mdiff := mean1 - mean0
+	var ok := mdiff >= 0.3 and mdiff <= 3.0 and diff >= 0.0
+	print("%-24s %s  平均勝場 選隊友 %.2f／不選 %.2f（差 %+.2f；帶 +0.3–+3）  中位數 %.1f／%.1f（差 %+.1f，≥ 0）  平均招募 %.2f 位／局  局數 %d%s" % ["rogue_ally_value",
+		"ok  " if ok else "FAIL", mean1, mean0, mdiff, m1, m0, diff, float(taken) / maxf(1.0, n), n, "" if ok else "  (差不在帶內)"])
+	return 1 if ok else 0
+
+## rogue_ally_share（§9.2）：隊友是幫手不是主角——稀以上的隊友（依參考玩家戰力 × 份額縮放）單挑同回合整組對手，輸的比例 ≥ 0.7。
+## 參考玩家戰力＝開局參考角色（rogue_rules.p0 或 RoguePower.reference_power）× growth^(回合−1)。
+func case_rogue_ally_share(runs: int, seed0: int) -> int:
+	var env := _rg_ally_env()
+	if env.is_empty():
+		print("%-24s SKIP  江湖試煉的核心類別或資料（rogue_cards／rogue_foes）還沒合併" % "rogue_ally_share")
+		return -1
+	var t: Dictionary = env.t
+	var r: Dictionary = env.r
+	var cards: Array = []
+	for cid in t.get("rogue_cards", {}):
+		var c: Dictionary = t.rogue_cards[cid]
+		if str(c.get("kind", "")) == "ALLY" and RG_ALLY_RARITIES.find(str(c.get("rarity", "COMMON"))) >= RG_ALLY_RARITIES.find("RARE") \
+				and t.get("monsters", {}).has(str(c.get("monster", ""))):
+			cards.append(c)
+	if cards.is_empty():
+		print("%-24s SKIP  沒有稀以上的隊友卡" % "rogue_ally_share")
+		return -1
+	cards.sort_custom(func(a, b): return str(a.id) < str(b.id))
+	var share_t: Dictionary = r.get("ally_share", {})
+	var p_ref := float(r.get("p0", 0.0))
+	if p_ref <= 0.0:
+		print("%-24s SKIP  沒有參考戰力（RoguePower.reference_power）" % "rogue_ally_share")
+		return -1
+	var growth := float(r.get("growth", 1.16))
+	var n := mini(runs, 200)
+	var rng := RandomNumberGenerator.new()
+	rng.seed = seed0 * 7 + 3
+	var lost := 0
+	var played := 0
+	var per := {}
+	for i in n:
+		var c: Dictionary = cards[i % cards.size()]
+		var rnd := rng.randi_range(2, 14)
+		var run = (env.run as Script).new()
+		run.seed = seed0 * 1000 + i
+		run.round = rnd
+		var p_player := p_ref * pow(growth, rnd - 1)
+		var ally := { "slot": "sim", "card_id": str(c.id), "monster": str(c.monster), "npc": str(c.get("npc", "")),
+			"name": str(c.get("name", "")), "share": float(share_t.get(str(c.rarity), 0.6)), "qi_pct": 1.0, "alive": true }
+		var aspec := RogueAlly.spec_for(ally, p_player, t)
+		if aspec.is_empty():
+			continue
+		var my_power := p_player + float((env.power as Script).call("unit_power", aspec, t))
+		var target := float((env.foes as Script).call("target", run, my_power, r))
+		var gen: Dictionary = (env.foes as Script).call("generate", run, target, t, run.rng_for("foes"))
+		var b := Battle.new(1, [run.seed, "share", i].hash(), { "wait_mode": false, "escape_tiles": 2, "no_flee": true, "kind": "ROGUE" })
+		b.add_unit(aspec)
+		for s in gen.get("specs", []):
+			var fs: Dictionary = (s as Dictionary).duplicate(true)
+			fs["side"] = 1
+			fs["peer"] = 0
+			b.add_unit(fs)
+		b.start(t)
+		while not b.is_over():
+			b.step(Battle.TICK, t)
+		played += 1
+		var won := b.result_name() == "VICTORY"
+		if not won:
+			lost += 1
+		var k := str(c.id)
+		var prev: Array = per.get(k, [0, 0])
+		per[k] = [int(prev[0]) + (1 if won else 0), int(prev[1]) + 1]
+	var lose_rate := float(lost) / maxf(1.0, played)
+	var ok := played > 0 and lose_rate >= 0.7
+	var worst := ""
+	var worst_w := -1.0
+	for k in per:
+		var w := float(per[k][0]) / maxf(1.0, float(per[k][1]))
+		if w > worst_w:
+			worst_w = w
+			worst = k
+	print("%-24s %s  稀以上隊友單挑整組對手：輸 %.1f%%（≥ 70%%）  最常贏的 %s %.0f%%  %d 場%s" % ["rogue_ally_share",
+		"ok  " if ok else "FAIL", lose_rate * 100.0, worst, worst_w * 100.0, played, "" if ok else "  (隊友太強)"])
+	return 1 if ok else 0
+
+# ==== ROGUE WP-RUN ====（ROGUE_PLAN §9.2）
+## 用 core 類別直接跑（RogueRun、RogueDraw、RogueFoes、RoguePower、Battle；不開主機）。雙方都由 BattleAI 控制
+## （玩家方＝BattleAI 的玩家路徑：全部武功裡威力最高的已解鎖招式），隊友 ai ally；非等待模式。
+## 流程與主機（RogueSystem）相同：開局分配 → 選卡 → 開戰（我方戰力＝玩家＋隊友）→ 勝：回復、首領多一次稀以上 → 敗：結束。
+const RG_MAX_ROUNDS := 40
+const RG_START_SPLIT := ["str", "con", "agi", "guts"]   # 開局：自由點與永久點數平均分到這四項
+const RG_ATTR_SPLIT := ["str", "con", "agi"]            # greedy 的屬性卡
+
+var _rg_t: Dictionary = {}
+var _rg_r: Dictionary = {}
+var _rg_cache: Dictionary = {}
+## --rogue-trace：每一場印一行（回合、我方戰力、目標、對手、氣的前後、勝負）——校準用
+var _rg_trace := OS.get_cmdline_user_args().has("--rogue-trace")
+
+func rogue_run_cases() -> Array:
+	return [
+		["rogue_power_fair", case_rogue_power_fair],
+		["rogue_power_match", case_rogue_power_match],
+		["rogue_first_runs", case_rogue_first_runs],
+		["rogue_random_policy", case_rogue_random_policy],
+		["rogue_profile_growth", case_rogue_profile_growth],
+		["rogue_boss_round5", case_rogue_boss_round5],
+		["rogue_determinism", case_rogue_determinism],
+		# 0.7.x 試煉審查的回歸案例
+		["rogue_choice_matters", case_rogue_choice_matters],
+		["rogue_upgrade_offered", case_rogue_upgrade_offered],
+		["rogue_no_wall", case_rogue_no_wall],
+		["rogue_boss_spread", case_rogue_boss_spread],
+		["rogue_points_late", case_rogue_points_late],
+	]
+
+func _rg_env() -> bool:
+	if not _rg_t.is_empty():
+		return true
+	if _loader == null:
+		return false
+	_rg_t = _loader.activate(["1.0A", "1.0B", "rogue"])
+	if (_rg_t.get("rogue_cards", {}) as Dictionary).is_empty() or (_rg_t.get("rogue_foes", {}) as Dictionary).is_empty():
+		_rg_t = {}
+		return false
+	_rg_r = RogueRules.rules(_rg_t)
+	# 校準用（不改資料）：--rogue-rules=diff_start:0.6,restore_pct:0.4
+	for a in OS.get_cmdline_user_args():
+		if a.begins_with("--rogue-rules="):
+			for kv in a.substr(14).split(","):
+				var kvs := kv.split(":")
+				if kvs.size() == 2 and _rg_r.has(kvs[0]):
+					_rg_r[kvs[0]] = float(kvs[1]) if typeof(_rg_r[kvs[0]]) == TYPE_FLOAT else int(kvs[1])
+			print("ROGUE rules override: %s" % a.substr(14))
+	return true
+
+## n 點輪流一點一點分到 keys（單項不超過 cap；都滿了才給其他屬性）
+static func _rg_spread(base: Dictionary, n: int, keys: Array, cap: int) -> Dictionary:
+	var out := {}
+	var progress := true
+	while n > 0 and progress:
+		progress = false
+		for k in keys:
+			if n > 0 and int(base.get(k, 0)) + int(out.get(k, 0)) + 1 <= cap:
+				out[k] = int(out.get(k, 0)) + 1
+				n -= 1
+				progress = true
+	for a in Character.ATTR_IDS:
+		while n > 0 and int(base.get(a, 0)) + int(out.get(a, 0)) < cap:
+			out[a] = int(out.get(a, 0)) + 1
+			n -= 1
+	return out
+
+## greedy（§9.2）：與兵器相合的 ART（精進優先）→ 與已會武功相合的 WEAPON → 隊友未滿選 ALLY → ATTR → 其他（稀有度高者）
+func _rg_pick_greedy(cards: Array, ch: Character, run: RogueRun) -> int:
+	var t := _rg_t
+	var wt := str(ch.inventory.equipped_row("WEAPON", t).get("weapon_type", "FIST"))
+	if wt == "":
+		wt = "FIST"
+	var cats := {}
+	for k in ch.skills.special_arts(t):
+		cats[SkillBook.category_of(k, t)] = true
+	var best := -1
+	var best_score := -1
+	for i in cards.size():
+		var c: Dictionary = cards[i]
+		var score := 1
+		match str(c.kind):
+			"ART":
+				var cat := str(c.art.category)
+				if cat == wt or cat == "FIST":   # 拳掌類任何兵器都能出（BattleAI.usable_moves）＝與兵器相合
+					score = 60 if bool(c.upgrade) else 50
+				elif cat == "INNER" or cat == "LIGHTNESS" or cat == "BASIC":
+					score = 15
+				else:
+					score = 3
+			"WEAPON":
+				if str(c.item.slot) == "WEAPON" and cats.has(str(c.item.weapon_type)) and str(c.item.weapon_type) != "FIST":
+					score = 40
+				elif str(c.item.slot) != "WEAPON":
+					score = 12
+				else:
+					score = 2
+			"ALLY":
+				if run.alive_allies().size() < int(_rg_r.get("ally_max", 2)):
+					score = 30
+			"ATTR":
+				score = 20
+		score = score * 10 + RogueRules.rarity_index(str(c.rarity))
+		if score > best_score:
+			best_score = score
+			best = i
+	return best
+
+## 一局：policy "greedy"／"random"／"greedy_noally"／"smart"；回 { wins, rounds, bosses, foes, draws: [[ids]], fights: [[foe ids]], boss5: -1/0/1,
+## pk：各種卡拿了幾張（UPG＝精進、ARMOR＝護具）, fl：每場 { r, won, boss, fq（對手剩氣比例平均）, mq（我剩氣比例） } }
+## force_boss：第 force_round 回合的首領固定是這一列（rogue_boss_spread 用）
+## snap_round > 0：打到這一回合、開打前停下，回 out.snap = { ch, run }（rogue_boss_spread 用同一批角色輪流打每位首領）
+func _rg_play(sd: int, policy: String, points: int, force_boss: String = "", force_round: int = 0, snap_round: int = 0) -> Dictionary:
+	var t := _rg_t
+	var r := _rg_r
+	var opts := {}
+	var cap := int(r.get("attr_cap", 45))
+	var run := RogueRun.new()
+	run.seed = sd
+	run.run_id = "sim_%d" % sd
+	run.members = ["sim_rg"]
+	run.roll = CharacterFactory.roll(run.rng_for("roll"))
+	run.alloc_points = CharacterFactory.FREE_POINTS + points
+	var alloc := _rg_spread(run.roll, run.alloc_points, RG_START_SPLIT, cap)
+	var start := {}
+	for a in Character.ATTR_IDS:
+		start[a] = int(run.roll.get(a, 0)) + int(alloc.get(a, 0))
+	var crng := run.rng_for("create")
+	var ch := CharacterFactory.create({ "id": "sim_rg", "identity": "local_sim", "name": "試煉者", "gender": "M",
+		"birth_month": 1, "birth_city": "xixia", "alloc": {} }, start, t, opts, crng, 0.0)
+	ch.inventory.remove_item_id("c_jingyao", 99)   # §3.3：只有布衣、木刀
+	Survival.rest_full(ch, t, opts)
+	ch.vitals["neili"] = 0
+	run.members = [ch.id]
+	var prng := RandomNumberGenerator.new()
+	prng.seed = sd * 31 + 7
+	var out := { "wins": 0, "rounds": 1, "bosses": 0, "foes": 0, "draws": [], "fights": [], "boss5": -1, "allies": 0 }
+	var picks := 1
+	var min_r := ""
+	while run.round <= RG_MAX_ROUNDS:
+		while picks > 0:
+			picks -= 1
+			var g := run.rng_for("draw")
+			run.draws += 1
+			var cards := RogueDraw.draw(run, ch, t, g, min_r)
+			min_r = ""
+			(out.draws as Array).append(cards.map(func(c): return str(c.id)))
+			out["upo"] = int(out.get("upo", 0)) + cards.filter(func(c): return str(c.kind) == "ART" and bool(c.upgrade)).size()
+			if cards.is_empty():
+				continue
+			var idx := 0
+			match policy:
+				"random":
+					idx = prng.randi_range(0, cards.size() - 1)
+				"smart":
+					idx = _rg_pick_smart(cards, ch, run)
+				"greedy_noally":
+					var no_ally := cards.filter(func(c): return str(c.kind) != "ALLY")
+					idx = cards.find(no_ally[_rg_pick_greedy(no_ally, ch, run)]) if not no_ally.is_empty() else 0
+				_:
+					idx = _rg_pick_greedy(cards, ch, run)
+			var card: Dictionary = cards[maxi(0, idx)]
+			var al := {}
+			if str(card.kind) == "ATTR":
+				al = _rg_spread(ch.attrs, int(card.points), RG_ATTR_SPLIT, cap)
+			var kk := str(card.kind)
+			if kk == "WEAPON" and str(card.item.slot) != "WEAPON":
+				kk = "ARMOR"
+			elif kk == "ART" and bool(card.upgrade):
+				kk = "UPG"
+			var pk: Dictionary = out.get("pk", {})
+			pk[kk] = int(pk.get(kk, 0)) + 1
+			out["pk"] = pk
+			if run.apply_card(ch, card, al, t, opts, r) == "" and str(card.kind) == "ALLY":
+				out.allies = int(out.allies) + 1
+		if snap_round > 0 and run.round == snap_round:
+			out["snap"] = { "ch": ch.to_dict(), "run": run.to_dict() }
+			break
+		var pspec: Dictionary = ch.to_combatant(t, opts, 0, 0)
+		if force_boss != "" and run.round == force_round:
+			run.bosses_seen = []   # 其他首領都算見過 → 只剩 force_boss
+			for fid in t.rogue_foes:
+				if bool(t.rogue_foes[fid].get("boss", false)) and str(fid) != force_boss:
+					run.bosses_seen.append(str(fid))
+		var prep := RogueFoes.prepare_fight(run, pspec, t, r)
+		var my_unit := float(prep.my_unit)
+		var ally_specs: Array = prep.ally_specs
+		var tgt := float(prep.target)
+		var gen: Dictionary = prep.gen
+		(out.fights as Array).append((gen.foes as Array).duplicate())
+		var boss := str(gen.boss_id) != ""
+		if boss and not run.bosses_seen.has(str(gen.boss_id)):
+			run.bosses_seen.append(str(gen.boss_id))
+		run.fight = { "boss": boss, "boss_id": str(gen.boss_id) }
+		var b := Battle.new(1, run.battle_seed(), { "wait_mode": false, "escape_tiles": 2, "no_flee": true,
+			"end_on_players_down": true, "kind": "ROGUE" })
+		b.add_unit(pspec)
+		for s in ally_specs:
+			b.add_unit(s)
+		for s in gen.specs:
+			var fs: Dictionary = (s as Dictionary).duplicate(true)
+			fs["side"] = 1
+			fs["peer"] = 0
+			b.add_unit(fs)
+		b.start(t)
+		var guard := 0
+		while not b.is_over() and guard < 200000:
+			b.step(Battle.TICK, t)
+			guard += 1
+		var me: BattleUnit = b.unit(1)
+		var won := b.result_name() == "VICTORY" and me != null and not me.is_dead()
+		if _rg_trace:
+			print("  [rg %d] r%d my=%.1f(+%d 隊友) tgt=%.1f foes=%s P=%.1f qi %d/%d→%d arts=%s %s" % [sd, run.round, my_unit,
+				ally_specs.size(), tgt, str(gen.foes), float(gen.power), int(pspec.qi), int(pspec.qi_max), me.qi if me != null else 0,
+				str(pspec.arts), "WIN" if won else "LOSE"])
+		if run.round == 5:
+			out.boss5 = 1 if won else 0
+		var fq := 0.0
+		var nf := 0
+		for u in b.units:
+			if u.side == 1:
+				fq += float(u.qi) / maxf(1.0, float(u.qi_max()))
+				nf += 1
+		var fl: Array = out.get("fl", [])
+		fl.append({ "r": run.round, "won": won, "boss": str(gen.boss_id), "fq": fq / maxf(1.0, nf),
+			"mq": float(me.qi) / maxf(1.0, float(me.qi_max())) if me != null else 0.0 })
+		out["fl"] = fl
+		if not won:
+			break
+		for k in ["qi", "neili", "jing", "shen"]:
+			ch.vitals[k] = int(me.get(k))
+		ch.clamp_vitals(t, opts)
+		var killed := 0
+		for u in b.units:
+			if u.side == 1 and u.is_dead():
+				killed += 1
+			var slot := str(u.spec.get("rg_ally", ""))
+			if slot == "":
+				continue
+			for i in run.allies.size():
+				if str(run.allies[i].get("slot", "")) == slot:
+					var na: Dictionary = run.allies[i]
+					if u.is_dead():
+						na["alive"] = false
+						na["qi_pct"] = 0.0
+					else:
+						na["qi_pct"] = clampf(float(u.qi) / float(u.qi_max()), 0.0, 1.0)
+		run.on_won(killed, boss, str(gen.boss_id))
+		RogueRules.restore(ch, t, opts, boss, r)
+		for a in run.alive_allies():
+			a["qi_pct"] = 1.0 if boss else minf(1.0, float(a.qi_pct) + float(r.get("restore_pct", 0.35)))
+		picks = 1 + run.extra_picks
+		min_r = "RARE" if run.extra_picks > 0 else ""
+		run.extra_picks = 0
+	out.wins = run.wins
+	out.rounds = run.round
+	out.bosses = run.bosses_beaten
+	out.foes = run.foes_beaten
+	return out
+
+## smart：每張卡實際套用在角色副本上，挑「以自己為參考、對參考新角色」強度（RoguePower）最高的；隊友未滿時以 1 + 份額×0.6 計。
+## 代表「看得懂數字」的玩家（rogue_choice_matters：選卡要有差）
+func _rg_pick_smart(cards: Array, ch: Character, run: RogueRun) -> int:
+	var t := _rg_t
+	var r := _rg_r
+	var best := 0
+	var best_v := -1.0
+	var base := _rg_rel(ch)
+	for i in cards.size():
+		var c: Dictionary = cards[i]
+		var v := 1.0
+		if str(c.kind) == "ALLY":
+			if run.alive_allies().size() < int(r.get("ally_max", 2)):
+				v = 1.0 + float((r.get("ally_share", {}) as Dictionary).get(str(c.rarity), 0.5)) * 0.6
+		else:
+			var ch2 := Character.from_dict(ch.to_dict())
+			var run2 := RogueRun.from_dict(run.to_dict())
+			var al := {}
+			if str(c.kind) == "ATTR":
+				al = _rg_spread(ch2.attrs, int(c.points), RG_ATTR_SPLIT, int(r.get("attr_cap", 45)))
+			if run2.apply_card(ch2, c, al, t, {}, r) == "":
+				v = _rg_rel(ch2) / maxf(0.001, base)
+		if v > best_v:
+			best_v = v
+			best = i
+	return best
+
+func _rg_rel(ch: Character) -> float:
+	var t := _rg_t
+	var sp := ch.to_combatant(t, {}, 0, 0)
+	RoguePower.set_reference(sp)
+	var my := RoguePower.unit_power(sp, t)
+	var p0 := RoguePower.reference_power(t)
+	RoguePower.clear_reference()
+	return my / maxf(0.001, p0)
+
+func _rg_batch(policy: String, n: int, seed0: int, points: int) -> Array:
+	var key := "%s|%d|%d|%d" % [policy, n, seed0, points]
+	if _rg_cache.has(key):
+		return _rg_cache[key]
+	var res: Array = []
+	for i in n:
+		res.append(_rg_play(seed0 * 100003 + i * 7919 + 11, policy, points))
+	_rg_cache[key] = res
+	return res
+
+static func _rg_wins(res: Array) -> Array:
+	return res.map(func(x): return int(x.wins))
+
+func _rg_skip(name: String) -> int:
+	print("%-24s SKIP  江湖試煉的資料（rogue_cards／rogue_foes）還沒合併" % name)
+	return -1
+
+## 隨機的試煉者（屬性、武功、兵器、護甲、內功都隨機）
+func _rg_random_player(rng: RandomNumberGenerator) -> Dictionary:
+	var t := _rg_t
+	var ch := Character.new()
+	ch.id = "sim_p"
+	for a in Character.ATTR_IDS:
+		ch.attrs[a] = rng.randi_range(15, 40)
+	var arts := ["hs_jianfa", "xd_daofa", "sl_changquan", "em_huifeng", "qz_tonggui", "lj_liuyang", "wd_taijijian", "gm_yinsuo", "xh_tianshan"]
+	var weapons := { "SWORD": ["w_qingfeng", "w_lt_heijian", "w_lt_huibugujian"], "BLADE": ["w_gangdao", "w_lt_guandao"],
+		"FIST": [], "WHIP": ["w_lt_mabian", "w_lt_zhusuo"], "STAFF": ["w_lt_tiechi", "w_lt_kusangbang"] }
+	var art: String = arts[rng.randi_range(0, arts.size() - 1)]
+	var lv := rng.randi_range(10, 120)
+	ch.skills.set_level(art, lv, t)
+	var cat := SkillBook.category_of(art, t)
+	ch.skills.set_level(BattleFormulas.basic_for_category(cat), lv, t)
+	ch.skills.set_level("basic_dodge", rng.randi_range(0, lv), t)
+	ch.skills.set_level("basic_parry", rng.randi_range(0, lv), t)
+	ch.skills.set_level("basic_inner", rng.randi_range(0, lv), t)
+	var g := RandomNumberGenerator.new()
+	g.seed = rng.randi()
+	var mk := func() -> String: return CharacterFactory.new_item_uid(ch.inventory, g)
+	var pool: Array = weapons.get(cat, [])
+	if not pool.is_empty():
+		var add := ch.inventory.add(str(pool[rng.randi_range(0, pool.size() - 1)]), 1, t, 0.0, -1, mk)
+		ch.inventory.equip(str(add.uid), t)
+	var arm := ["a_bupao", "a_pijia", "a_lt_meihaochangshan"]
+	var add2 := ch.inventory.add(str(arm[rng.randi_range(0, arm.size() - 1)]), 1, t, 0.0, -1, mk)
+	ch.inventory.equip(str(add2.uid), t)
+	Survival.rest_full(ch, t, {})
+	return ch.to_combatant(t, {}, 0, 0)
+
+## rogue_power_fair：隨機試煉者 vs 池中對手縮放到同戰力（±5%）1 對 1 → 試煉者勝率 ∈ [0.35, 0.65]
+func case_rogue_power_fair(runs: int, seed0: int) -> int:
+	if not _rg_env():
+		return _rg_skip("rogue_power_fair")
+	var t := _rg_t
+	var rng := RandomNumberGenerator.new()
+	rng.seed = seed0 * 977 + 5
+	var pool: Array = []
+	for id in t.rogue_foes:
+		if not bool(t.rogue_foes[id].get("boss", false)):
+			pool.append(t.rogue_foes[id])
+	pool.sort_custom(func(a, b): return str(a.id) < str(b.id))
+	var n := mini(maxi(runs, 50), 300)
+	var wins := 0
+	var played := 0
+	var tries := 0
+	while played < n and tries < n * 6:
+		tries += 1
+		var ps := _rg_random_player(rng)
+		RoguePower.set_reference(ps)   # 同主機：以試煉者自己為戰力參考
+		var pp := RoguePower.unit_power(ps, t)
+		var row: Dictionary = pool[rng.randi_range(0, pool.size() - 1)]
+		var res := RoguePower.scale_to(RogueFoes.foe_spec(row, t), pp, t)
+		RoguePower.clear_reference()
+		if absf(float(res.power) - pp) > pp * 0.05:
+			continue
+		var b := Battle.new(1, rng.randi(), { "wait_mode": false, "escape_tiles": 2, "no_flee": true, "kind": "ROGUE" })
+		b.add_unit(ps)
+		var fs: Dictionary = res.spec
+		fs["side"] = 1
+		fs["peer"] = 0
+		b.add_unit(fs)
+		b.start(t)
+		var guard := 0
+		while not b.is_over() and guard < 200000:
+			b.step(Battle.TICK, t)
+			guard += 1
+		played += 1
+		if b.result_name() == "VICTORY":
+			wins += 1
+	var wr := float(wins) / maxf(1.0, played)
+	var ok := played >= n / 2 and wr >= 0.35 and wr <= 0.65
+	print("%-24s %s  同戰力 1 對 1：試煉者勝率 %.1f%%（35–65%%）  %d 場（嘗試 %d）" % ["rogue_power_fair", "ok  " if ok else "FAIL",
+		wr * 100.0, played, tries])
+	return 1 if ok else 0
+
+## rogue_power_match：2000 次對手生成，99% 的組合戰力在目標 ±10%
+func case_rogue_power_match(runs: int, seed0: int) -> int:
+	if not _rg_env():
+		return _rg_skip("rogue_power_match")
+	var t := _rg_t
+	var n := 2000 if runs >= 200 else maxi(200, runs * 10)
+	var rng := RandomNumberGenerator.new()
+	rng.seed = seed0 * 131 + 9
+	var hit := 0
+	var worst := 0.0
+	for i in n:
+		var run := RogueRun.new()
+		run.seed = seed0 * 7 + i
+		run.round = rng.randi_range(1, 20)
+		var my := float(_rg_r.p0) * pow(1.2, run.round - 1) * rng.randf_range(0.6, 1.6)
+		var tgt := RogueFoes.target(run, my, _rg_r)
+		var g := RogueFoes.generate(run, tgt, t, run.rng_for("foes"))
+		var err := absf(float(g.power) - tgt) / maxf(0.001, tgt)
+		worst = maxf(worst, err)
+		if err <= 0.10:
+			hit += 1
+	var rate := float(hit) / n
+	var ok := rate >= 0.99
+	print("%-24s %s  對手組合戰力在目標 ±10%%：%.2f%%（≥ 99%%）  最大誤差 %.1f%%  %d 次" % ["rogue_power_match", "ok  " if ok else "FAIL",
+		rate * 100.0, worst * 100.0, n])
+	return 1 if ok else 0
+
+## rogue_first_runs：200 局、永久點數 0、greedy → 勝場中位數 ∈ [5, 8]、第 10 百分位 ≥ 2、第 90 百分位 ≤ 14
+func case_rogue_first_runs(runs: int, seed0: int) -> int:
+	if not _rg_env():
+		return _rg_skip("rogue_first_runs")
+	var n := mini(runs, 200)
+	var pts := 0
+	for a in OS.get_cmdline_user_args():
+		if a.begins_with("--rogue-points="):   # 校準用：用 N 點永久點數開局（案例本身的條件是 0 點）
+			pts = int(a.substr(15))
+	var res := _rg_batch("greedy", n, seed0, pts)
+	var w := _rg_wins(res)
+	var med := _pct(w, 0.5)
+	var p10 := _pct(w, 0.1)
+	var p90 := _pct(w, 0.9)
+	var ok := med >= 5 and med <= 8 and p10 >= 2 and p90 <= 14
+	var allies := 0
+	for x in res:
+		allies += int(x.allies)
+	print("%-24s %s  勝場 中位數 %.0f（5–8）  P10 %.0f（≥ 2）  P90 %.0f（≤ 14）  平均招募 %.2f 位  %d 局" % ["rogue_first_runs",
+		"ok  " if ok else "FAIL", med, p10, p90, float(allies) / maxf(1.0, n), n])
+	return 1 if ok else 0
+
+## rogue_random_policy：200 局、點數 0、random → 勝場中位數 ∈ [3, 6]
+func case_rogue_random_policy(runs: int, seed0: int) -> int:
+	if not _rg_env():
+		return _rg_skip("rogue_random_policy")
+	var n := mini(runs, 200)
+	var w := _rg_wins(_rg_batch("random", n, seed0, 0))
+	var med := _pct(w, 0.5)
+	var ok := med >= 3 and med <= 6
+	print("%-24s %s  亂選：勝場中位數 %.0f（3–6）  P10 %.0f  P90 %.0f  %d 局" % ["rogue_random_policy", "ok  " if ok else "FAIL",
+		med, _pct(w, 0.1), _pct(w, 0.9), n])
+	return 1 if ok else 0
+
+## rogue_profile_growth：30 局連續累積點數（greedy），重複 reps 次（--runs=200 → 20 次）
+## 前 5 局每局點數中位數 ∈ [3, 5]；第 21–30 局勝場中位數 − 第 1–10 局 ∈ [2, 8]；30 局後點數 ∈ [40, 60] 且從不超過 60
+func case_rogue_profile_growth(runs: int, seed0: int) -> int:
+	if not _rg_env():
+		return _rg_skip("rogue_profile_growth")
+	var reps := clampi(runs / 10, 2, 20)
+	var first5: Array = []
+	var w_early: Array = []
+	var w_late: Array = []
+	var finals: Array = []
+	var curve: Array = []   # 每 5 局的平均累計點數
+	for k in 7:
+		curve.append(0.0)
+	var over_cap := false
+	for rep in reps:
+		var p := RogueProfile.default_profile()
+		for i in 30:
+			var res := _rg_play(seed0 * 7777 + rep * 1009 + i * 31 + 3, "greedy", int(p.points_total))
+			var sm := { "wins": res.wins, "bosses_beaten": res.bosses, "foes_beaten": res.foes, "cause": "DEATH", "t": 1 }
+			p = RogueProfile.apply_run(p, sm, _rg_r)
+			if int(p.points_total) > 60:
+				over_cap = true
+			if i < 5:
+				first5.append(int(sm.points_gained))
+			if i < 10:
+				w_early.append(int(res.wins))
+			elif i >= 20:
+				w_late.append(int(res.wins))
+			if (i + 1) % 5 == 0:
+				curve[(i + 1) / 5] = float(curve[(i + 1) / 5]) + float(p.points_total) / reps
+		finals.append(int(p.points_total))
+	var m5 := _pct(first5, 0.5)
+	var dw := _pct(w_late, 0.5) - _pct(w_early, 0.5)
+	var fmin := _pct(finals, 0.0)
+	var fmax := _pct(finals, 1.0)
+	var ok := m5 >= 3 and m5 <= 5 and dw >= 2 and dw <= 8 and fmin >= 40 and fmax <= 60 and not over_cap
+	var cs: PackedStringArray = []
+	for k in range(1, 7):
+		cs.append("%d局 %.1f" % [k * 5, float(curve[k])])
+	print("%-24s %s  前5局點數中位數 %.0f（3–5）  勝場中位數 21–30 局 %.0f − 1–10 局 %.0f = %+.0f（2–8）  30 局後 %.0f–%.0f（40–60）  曲線 %s  重複 %d 次" % [
+		"rogue_profile_growth", "ok  " if ok else "FAIL", m5, _pct(w_late, 0.5), _pct(w_early, 0.5), dw, fmin, fmax, "，".join(cs), reps])
+	return 1 if ok else 0
+
+## rogue_boss_round5：打到第 5 回合的局，首領戰勝率 ∈ [0.45, 0.75]（用 rogue_first_runs 的同一批局）
+func case_rogue_boss_round5(runs: int, seed0: int) -> int:
+	if not _rg_env():
+		return _rg_skip("rogue_boss_round5")
+	var n := mini(runs, 200)
+	var res := _rg_batch("greedy", n, seed0, 0)
+	var fought := 0
+	var won := 0
+	for x in res:
+		if int(x.boss5) >= 0:
+			fought += 1
+			won += int(x.boss5)
+	var wr := float(won) / maxf(1.0, fought)
+	var ok := fought >= 10 and wr >= 0.45 and wr <= 0.75
+	print("%-24s %s  第 5 回合首領戰勝率 %.1f%%（45–75%%）  %d／%d 局打到第 5 回合" % ["rogue_boss_round5", "ok  " if ok else "FAIL",
+		wr * 100.0, fought, n])
+	return 1 if ok else 0
+
+## rogue_determinism：同種子、同策略跑兩次 → 抽卡與對手組合完全相同
+func case_rogue_determinism(_runs: int, seed0: int) -> int:
+	if not _rg_env():
+		return _rg_skip("rogue_determinism")
+	var same := true
+	for i in 5:
+		var a := _rg_play(seed0 * 13 + i, "greedy", 7)
+		var b := _rg_play(seed0 * 13 + i, "greedy", 7)
+		if a.draws != b.draws or a.fights != b.fights or int(a.wins) != int(b.wins):
+			same = false
+	print("%-24s %s  同種子同策略：抽卡、對手組合%s" % ["rogue_determinism", "ok  " if same else "FAIL", "完全相同" if same else "不同"])
+	return 1 if same else 0
+
+
+# ==== 0.7.x 試煉審查的回歸案例（【設計提案】的門檻；審查數據見 docs/ROGUE_PLAN.md §12） ====
+
+## rogue_choice_matters：200 局、點數 0：看得懂數字的 smart 勝場中位數 − 亂選 ≥ 3；greedy（只看「相合」的簡單策略）平均也要高過亂選
+func case_rogue_choice_matters(runs: int, seed0: int) -> int:
+	if not _rg_env():
+		return _rg_skip("rogue_choice_matters")
+	var n := mini(runs, 200)
+	var sm := _rg_wins(_rg_batch("smart", n, seed0, 0))
+	var rd := _rg_wins(_rg_batch("random", n, seed0, 0))
+	var gr := _rg_wins(_rg_batch("greedy", n, seed0, 0))
+	var d := _pct(sm, 0.5) - _pct(rd, 0.5)
+	var mg := _rg_mean(gr) - _rg_mean(rd)
+	var ok := d >= 3 and mg > 0.0
+	print("%-24s %s  勝場中位數 smart %.0f − 亂選 %.0f = %+.0f（≥ 3）  平均 greedy %.2f − 亂選 %.2f = %+.2f（> 0）  %d 局" % [
+		"rogue_choice_matters", "ok  " if ok else "FAIL", _pct(sm, 0.5), _pct(rd, 0.5), d, _rg_mean(gr), _rg_mean(rd), mg, n])
+	return 1 if ok else 0
+
+static func _rg_mean(a: Array) -> float:
+	var s := 0.0
+	for x in a:
+		s += float(x)
+	return s / maxf(1.0, a.size())
+
+## rogue_upgrade_offered：greedy 200 局（點數 20）：打到第 4 回合以上的局，≥ 40% 至少看過一張精進卡、≥ 30% 至少拿過一張
+## （審查：每門武功只有一張卡，舊規則讓精進卡在實際遊戲中永遠不出現）
+func case_rogue_upgrade_offered(runs: int, seed0: int) -> int:
+	if not _rg_env():
+		return _rg_skip("rogue_upgrade_offered")
+	var n := mini(runs, 200)
+	var res := _rg_batch("greedy", n, seed0, 20)
+	var long := 0
+	var seen := 0
+	var took := 0
+	var total := 0
+	for x in res:
+		if int(x.rounds) < 4:
+			continue
+		long += 1
+		var u := int((x.get("pk", {}) as Dictionary).get("UPG", 0))
+		total += u
+		if u > 0:
+			took += 1
+		if int(x.get("upo", 0)) > 0:
+			seen += 1
+	var rs := float(seen) / maxf(1.0, long)
+	var rt := float(took) / maxf(1.0, long)
+	var ok := rs >= 0.4 and rt >= 0.3
+	print("%-24s %s  看過精進卡的局 %.0f%%（≥ 40%%）  拿過的 %.0f%%（≥ 30%%）  平均每局拿 %.2f 張  %d 局（打到第 4 回合）" % ["rogue_upgrade_offered",
+		"ok  " if ok else "FAIL", rs * 100.0, rt * 100.0, float(total) / maxf(1.0, long), long])
+	return 1 if ok else 0
+
+## rogue_no_wall：greedy 200 局、點數 0：死在首領回合的局 ≤ 60%；打到第 10 回合的首領戰勝率 ≥ 35%（點數 0 與 20 合併）；
+## 輸的那場對手平均剩氣 ≤ 45%（審查：首領是牆、輸都是被輾過）
+func case_rogue_no_wall(runs: int, seed0: int) -> int:
+	if not _rg_env():
+		return _rg_skip("rogue_no_wall")
+	var n := mini(runs, 200)
+	var died_boss := 0
+	var deaths := 0
+	var fq := 0.0
+	var b10 := [0, 0]
+	for pts in [0, 20]:
+		for x in _rg_batch("greedy", n, seed0, pts):
+			for f in x.get("fl", []):
+				if int(f.r) == 10:
+					b10[0] += 1
+					if f.won:
+						b10[1] += 1
+				if not f.won and pts == 0:
+					deaths += 1
+					fq += float(f.fq)
+					if str(f.boss) != "":
+						died_boss += 1
+	var pb := float(died_boss) / maxf(1.0, deaths)
+	var w10 := float(b10[1]) / maxf(1.0, b10[0])
+	var mq := fq / maxf(1.0, deaths)
+	var ok: bool = pb <= 0.60 and w10 >= 0.35 and int(b10[0]) >= 20 and mq <= 0.45
+	print("%-24s %s  死在首領回合 %.0f%%（≤ 60%%）  第 10 回合首領勝率 %.0f%%（≥ 35%%，%d 場）  輸時對手剩氣 %.0f%%（≤ 45%%）" % [
+		"rogue_no_wall", "ok  " if ok else "FAIL", pb * 100.0, w10 * 100.0, b10[0], mq * 100.0])
+	return 1 if ok else 0
+
+## rogue_boss_spread：greedy 的同一批角色（第 5 回合點數 0、第 10 回合點數 20）在首領回合開打前存檔，輪流對每位首領各打一場；
+## 勝率最高 − 最低：第 5 回合 ≤ 25 個百分點、第 10 回合 ≤ 35（審查：抽到哪位首領決定難度——葉二娘 43%、滅絕 89%；
+## 校準靠 rogue_foes.power_adj）
+func case_rogue_boss_spread(runs: int, seed0: int) -> int:
+	if not _rg_env():
+		return _rg_skip("rogue_boss_spread")
+	var t := _rg_t
+	var r := _rg_r
+	var n := clampi(runs / 2, 40, 250)
+	var ok := true
+	var parts: PackedStringArray = []
+	for cfg in [[5, 0, 25.0], [10, 20, 35.0]]:
+		var rd: int = cfg[0]
+		var snaps: Array = []
+		for i in n:
+			var x := _rg_play(seed0 * 100003 + i * 7919 + 11, "greedy", int(cfg[1]), "", 0, rd)
+			if x.has("snap"):
+				snaps.append(x.snap)
+		var lo := 101.0
+		var hi := -1.0
+		var lo_id := ""
+		var hi_id := ""
+		var ids: Array = t.rogue_foes.keys()
+		ids.sort()
+		for fid in ids:
+			var row: Dictionary = t.rogue_foes[fid]
+			var mn := int(row.get("min_round", 1))
+			if not bool(row.get("boss", false)) or mn > rd or (rd == 5 and mn != 5):
+				continue
+			var won := 0
+			for sn in snaps:
+				var ch := Character.from_dict(sn.ch)
+				var run := RogueRun.from_dict(sn.run)
+				run.bosses_seen = []
+				for f2 in t.rogue_foes:
+					if bool(t.rogue_foes[f2].get("boss", false)) and str(f2) != str(fid):
+						run.bosses_seen.append(str(f2))
+				if _rg_fight_once(run, ch):
+					won += 1
+			var w := 100.0 * won / maxf(1.0, snaps.size())
+			if w < lo:
+				lo = w
+				lo_id = str(fid)
+			if w > hi:
+				hi = w
+				hi_id = str(fid)
+		var spread := hi - lo
+		if spread > float(cfg[2]) or snaps.size() < 20:
+			ok = false
+		parts.append("第 %d 回合 %s %.0f%%～%s %.0f%%（差 %.0f，≤ %.0f；%d 人）" % [rd, lo_id.trim_prefix("rg_f_"), lo, hi_id.trim_prefix("rg_f_"), hi,
+			spread, float(cfg[2]), snaps.size()])
+	print("%-24s %s  %s" % ["rogue_boss_spread", "ok  " if ok else "FAIL", "；".join(parts)])
+	return 1 if ok else 0
+
+## 從存檔打一場（同 _rg_play 的戰鬥）；回 true＝贏
+func _rg_fight_once(run: RogueRun, ch: Character) -> bool:
+	var t := _rg_t
+	var pspec: Dictionary = ch.to_combatant(t, {}, 0, 0)
+	var prep := RogueFoes.prepare_fight(run, pspec, t, _rg_r)
+	var gen: Dictionary = prep.gen
+	var b := Battle.new(1, run.battle_seed(), { "wait_mode": false, "escape_tiles": 2, "no_flee": true,
+		"end_on_players_down": true, "kind": "ROGUE" })
+	b.add_unit(pspec)
+	for sp in prep.ally_specs:
+		b.add_unit(sp)
+	for sp in gen.specs:
+		var fs: Dictionary = (sp as Dictionary).duplicate(true)
+		fs["side"] = 1
+		fs["peer"] = 0
+		b.add_unit(fs)
+	b.start(t)
+	var guard := 0
+	while not b.is_over() and guard < 200000:
+		b.step(Battle.TICK, t)
+		guard += 1
+	var me: BattleUnit = b.unit(1)
+	return b.result_name() == "VICTORY" and me != null and not me.is_dead()
+
+## rogue_points_late：greedy 200 局：點數 60 時第 1–4 回合打贏後平均剩氣 ≤ 80%（不是走過場）；勝場中位數 60 點 − 0 點 ≥ 4（點數仍然有用）
+func case_rogue_points_late(runs: int, seed0: int) -> int:
+	if not _rg_env():
+		return _rg_skip("rogue_points_late")
+	var n := mini(runs, 200)
+	var r60 := _rg_batch("greedy", n, seed0, 60)
+	var q := 0.0
+	var k := 0
+	for x in r60:
+		for f in x.get("fl", []):
+			if int(f.r) <= 4 and f.won:
+				q += float(f.mq)
+				k += 1
+	var mq := q / maxf(1.0, k)
+	var d := _pct(_rg_wins(r60), 0.5) - _pct(_rg_wins(_rg_batch("greedy", n, seed0, 0)), 0.5)
+	var ok := mq <= 0.80 and d >= 4
+	print("%-24s %s  60 點：第 1–4 回合打贏後剩氣 %.0f%%（≤ 80%%）  勝場中位數 60 點 − 0 點 = %+.0f（≥ 4）  %d 局" % [
+		"rogue_points_late", "ok  " if ok else "FAIL", mq * 100.0, d, n])
+	return 1 if ok else 0

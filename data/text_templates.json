@@ -1880,6 +1880,20 @@
     {"id": "talk_n_gm_shibi@NIGHT", "era": "1.0A", "self": "燭火搖曳，{npc_name}上的刻字忽明忽暗，像是在你眼前慢慢游動。", "src": "proposal"},
     {"id": "rmr_q_em_tiezhihuan_first", "era": "1.0A", "self": "峨嵋山上傳說，周芷若把鐵指環交給了{name}，滅絕師太竟破例傳了佛光普照掌。", "src": "proposal"},
     {"id": "rmr_q_gm_jiuyin_first", "era": "1.0A", "self": "古墓裡有人說，{name}對著小梅房裡的石壁坐了一整夜，出來時眼神都不一樣了。", "src": "proposal"},
-    {"id": "rmr_q_xh_feixing_first", "era": "1.0B", "self": "大理北門外接連倒了幾個趕路的客人。有人說，是星宿派的{name}替丁春秋清理門戶。", "src": "proposal"}
+    {"id": "rmr_q_xh_feixing_first", "era": "1.0B", "self": "大理北門外接連倒了幾個趕路的客人。有人說，是星宿派的{name}替丁春秋清理門戶。", "src": "proposal"},
+    {"id": "rogue_round_won", "era": "rogue", "self": "第 {round} 回合得勝，稍事調息，氣血回復 {qi}。", "src": "proposal", "src_note": "江湖試煉【設計提案・非原作】"},
+    {"id": "rogue_card_taken", "era": "rogue", "self": "你取得了〔{rarity_name}〕{title}。", "src": "proposal", "src_note": "江湖試煉【設計提案・非原作】"},
+    {"id": "rogue_boss", "era": "rogue", "self": "{name}現身試煉場！", "src": "proposal", "src_note": "江湖試煉【設計提案・非原作】"},
+    {"id": "rogue_ally_joined", "era": "rogue", "self": "{name}願與你並肩作戰。", "src": "proposal", "src_note": "江湖試煉【設計提案・非原作】"},
+    {"id": "rogue_ally_fallen", "era": "rogue", "self": "{name}力戰倒下，退出了這次試煉。", "src": "proposal", "src_note": "江湖試煉【設計提案・非原作】"},
+    {"id": "rogue_points", "era": "rogue", "self": "試煉者的根基更穩了：永久屬性點 +{gained}（共 {total}）。", "src": "proposal", "src_note": "江湖試煉【設計提案・非原作】"},
+    {"id": "err_rogue_off", "era": "1.0A", "self": "【系統】這裡不是江湖試煉。", "src": "proposal", "src_note": "江湖試煉【設計提案・非原作】；MUD 世界也會回這個原因碼，所以放在 1.0A"},
+    {"id": "err_rogue_phase", "era": "1.0A", "self": "【系統】現在不能這麼做。", "src": "proposal", "src_note": "江湖試煉【設計提案・非原作】"},
+    {"id": "err_rogue_bad_card", "era": "1.0A", "self": "【系統】沒有這張卡。", "src": "proposal", "src_note": "江湖試煉【設計提案・非原作】"},
+    {"id": "err_rogue_bad_alloc", "era": "1.0A", "self": "【系統】屬性點要剛好分完。", "src": "proposal", "src_note": "江湖試煉【設計提案・非原作】"},
+    {"id": "err_rogue_attr_cap", "era": "1.0A", "self": "【系統】單項屬性最多 {n}。", "src": "proposal", "src_note": "江湖試煉【設計提案・非原作】"},
+    {"id": "err_rogue_ally_full", "era": "1.0A", "self": "【系統】隊友已滿兩位。", "src": "proposal", "src_note": "江湖試煉【設計提案・非原作】"},
+    {"id": "err_rogue_solo_only", "era": "1.0A", "self": "【系統】江湖試煉目前只能單人進行。", "src": "proposal", "src_note": "江湖試煉【設計提案・非原作】"},
+    {"id": "err_rogue_confirm", "era": "1.0A", "self": "【系統】請再確認一次。", "src": "proposal", "src_note": "江湖試煉【設計提案・非原作】"}
   ]
 }

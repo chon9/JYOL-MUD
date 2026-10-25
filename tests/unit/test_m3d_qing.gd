@@ -90,10 +90,14 @@ func test_escape_rate_and_events() -> void:
 	assert_true(rate >= 0.44 and rate <= 0.56, "脫身率 %.3f" % rate)
 
 func test_escape_blocked_kinds() -> void:
-	for kind in ["QUEST", "TRIAL"]:
+	for kind in ["QUEST", "TRIAL", "ROGUE"]:
 		var b := _b({}, { "kind": kind, "no_flee": true })
 		assert_eq(do_cmd(b, 1, { "cmd": "QING", "mode": "ESCAPE" }).err, "no_flee", kind)
 		assert_false(b.unit_snapshot(b.unit(1), tables()).cmd_avail.QING.has("ESCAPE"), kind + " 快照")
+		# 烙跑鞋（flee_anywhere）也不行（ROGUE 審查：脫身會被當成倒下、結束這一局）
+		var shoe := _b({ "flee_anywhere": true }, { "kind": kind, "no_flee": true })
+		assert_eq(do_cmd(shoe, 1, { "cmd": "FLEE" }).err, "no_flee", kind + " 烙跑鞋")
+		assert_false(bool(shoe.unit_snapshot(shoe.unit(1), tables()).get("flee_anywhere", false)), kind + " 快照 flee_anywhere")
 	var c := _b({}, { "kind": "CHASE", "no_flee": true })
 	assert_eq(do_cmd(c, 1, { "cmd": "QING", "mode": "ESCAPE" }).err, "", "追擊戰可以（功能和烙跑鞋一樣）")
 	var rob := _b({}, { "kind": "ROB" })

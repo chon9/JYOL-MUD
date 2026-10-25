@@ -676,3 +676,69 @@ const ITEM_EFFECT_FLEE_ANYWHERE := "FLEE_ANYWHERE"
 const BOARD_MENU_BOUNTY := "觀看懸賞名單"
 const BOARD_RANKS_LOCKED := "尚未開放"
 const PLAYER_TAGS_M3D := ["押鏢", "劫鏢", "懸賞", "盟主"]
+
+# ==== ROGUE WP-UI ====
+# 江湖試煉（ROGUE_PLAN §5.6、§6；值與 Protocol 相同，VERSION 維持 5。UI 不直接引用 Protocol／core/rogue，對方還沒合併時也能載入）
+# ---- intents ----
+const I_ROGUE_OPEN := "rogue_open"          # { seed:int? }
+const I_ROGUE_START := "rogue_start"        # { alloc, name?, gender?, look? }
+const I_ROGUE_PICK := "rogue_pick"          # { idx, alloc? }
+const I_ROGUE_FIGHT := "rogue_fight"        # {}
+const I_ROGUE_ABANDON := "rogue_abandon"    # { confirm }
+const I_ROGUE_DEBUG := "rogue_debug"        # 只在 --debug-intents
+# ---- 事件 ----
+const E_ROGUE_STATE := "rogue_state"
+const E_ROGUE_OVER := "rogue_over"
+const E_ROGUE_ROUND_WON := "rogue_round_won"
+const E_ROGUE_CARD_TAKEN := "rogue_card_taken"
+const E_ROGUE_BOSS := "rogue_boss"
+const E_ROGUE_ALLY_JOINED := "rogue_ally_joined"
+const E_ROGUE_ALLY_FALLEN := "rogue_ally_fallen"
+const E_ROGUE_POINTS := "rogue_points"
+const ROGUE_UI_EVENTS := [E_ROGUE_STATE, E_ROGUE_OVER]
+## 訊息列要顯示的事件；主機的模板（WP-RUN 寫進 text_templates）還沒有時用這裡的後備文字（與 ROGUE_PLAN §6.2 相同）
+const ROGUE_LOG_FALLBACK := {
+	E_ROGUE_ROUND_WON: "第 {round} 回合得勝，稍事調息，氣血回復 {qi}。",
+	E_ROGUE_CARD_TAKEN: "你取得了〔{rarity_name}〕{title}。",
+	E_ROGUE_BOSS: "{name}現身試煉場！",
+	E_ROGUE_ALLY_JOINED: "{name}願與你並肩作戰。",
+	E_ROGUE_ALLY_FALLEN: "{name}力戰倒下，退出了這次試煉。",
+	E_ROGUE_POINTS: "試煉者的根基更穩了：永久屬性點 +{gained}（共 {total}）。",
+}
+# ---- 原因碼 ----
+const ROGUE_REASONS := ["rogue_off", "rogue_phase", "rogue_bad_card", "rogue_bad_alloc", "rogue_attr_cap",
+	"rogue_ally_full", "rogue_solo_only", "rogue_confirm"]
+# ---- 狀態 ----
+const ROGUE_PHASE_ALLOC := "ALLOC"
+const ROGUE_PHASE_PICK := "PICK"
+const ROGUE_PHASE_READY := "READY"
+const ROGUE_PHASE_BATTLE := "BATTLE"
+const ROGUE_PHASE_OVER := "OVER"
+const ROGUE_PHASES := [ROGUE_PHASE_ALLOC, ROGUE_PHASE_PICK, ROGUE_PHASE_READY, ROGUE_PHASE_BATTLE, ROGUE_PHASE_OVER]
+## 介面多一個「大廳」狀態（還沒有主機時讀試煉者檔案）
+const ROGUE_VIEW_LOBBY := "LOBBY"
+const ROGUE_BATTLE_KIND := "ROGUE"
+const ROGUE_SCENE := "rogue"
+const ROGUE_TITLE := "江湖試煉"
+const ROGUE_DEFAULT_NAME := "試煉者"
+# ---- 卡片 ----
+const ROGUE_KINDS := ["ART", "WEAPON", "ATTR", "ALLY"]
+## ARMOR 只是顯示用（主機的卡種類仍是 WEAPON；item.slot 不是 WEAPON 的護具卡顯示「甲／護具」，審查）
+const ROGUE_KIND_GLYPH := { "ART": "武", "WEAPON": "兵", "ARMOR": "甲", "ATTR": "屬", "ALLY": "友" }
+const ROGUE_KIND_NAMES := { "ART": "武功", "WEAPON": "兵器", "ARMOR": "護具", "ATTR": "屬性", "ALLY": "隊友" }
+## 卡面的戰力變化（主機的 power_pct）；說明放滑鼠提示
+const ROGUE_POWER_HINT := "戰力：攻擊、防禦、氣血與出手速度合起來的估算（以你自己為準）。"
+## 卡的滑鼠提示裡，只在江湖裡用得到的武功說明（試煉中沒有頻道、修煉、拜師、秘笈、煉毒、買賣）不顯示
+const ROGUE_TOOLTIP_SKIP := ["頻道", "熱鍵", "修煉", "向師父學", "秘笈", "煉毒", "買賣", "伺服器開了"]
+const ROGUE_RARITIES := ["COMMON", "FINE", "RARE", "TREASURE", "DIVINE"]
+const ROGUE_RARITY_NAMES := { "COMMON": "凡", "FINE": "良", "RARE": "稀", "TREASURE": "珍", "DIVINE": "神" }
+const ROGUE_UPGRADE_SEAL := "精進"
+# ---- 結算 ----
+const ROGUE_CAUSE_TEXT := { "DEATH": "力戰而亡", "ABANDON": "放棄試煉", "TIMEOUT": "久戰不決", "LEAVE": "離開試煉" }
+## 玩家倒下時隊友還活著（ROGUE_PLAN O6：試煉以你本人為準）
+const ROGUE_DOWN_NOTE := "試煉以你本人為準：你一倒下就結束，隊友還站著也一樣。"
+## 主機沒給時的預設值（ROGUE_PLAN O11、O12）
+const ROGUE_ATTR_CAP := 45
+const ROGUE_POINTS_CAP := 60
+const ROGUE_ALLY_MAX := 2
+const ROGUE_PROFILE_REL := "rogue/profile.json"

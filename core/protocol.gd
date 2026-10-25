@@ -478,6 +478,44 @@ const M3D_REASONS_ERRANDS := ["wlt_cooldown", "wlt_place"]
 ## M3d 服務的中文標籤（UiKeys.SERVICE_LABELS 由 WP-COMBAT 同步）
 const M3D_SERVICE_LABELS := { "BOARD": "佈告欄", "LICENSE": "執照", "CLEANSE": "消災", "TOURNEY": "比武報名" }
 
+# ==== ROGUE WP-RUN ====
+# ---- 江湖試煉（ROGUE_PLAN §6；U7：純新增，RPC 簽名不變 → VERSION 維持 5） ----
+const I_ROGUE_OPEN := "rogue_open"          # { seed:int? }
+const I_ROGUE_START := "rogue_start"        # { alloc:Dictionary, name:String?, gender:String?, look:int? }
+const I_ROGUE_PICK := "rogue_pick"          # { idx:int, alloc:Dictionary? }
+const I_ROGUE_FIGHT := "rogue_fight"        # {}
+const I_ROGUE_ABANDON := "rogue_abandon"    # { confirm:bool }
+const I_ROGUE_DEBUG := "rogue_debug"        # { op:String, ids:Array?, n:int? }（只在 --debug-intents）
+const ROGUE_DEBUG_OPS := ["cards", "foes", "round", "points"]
+## 事件（模板 id＝事件 key；ui 的列在 ROGUE_UI_EVENTS）
+const E_ROGUE_STATE := "rogue_state"            # ui：§6.3
+const E_ROGUE_OVER := "rogue_over"              # ui：§3.9.1 的 summary
+const E_ROGUE_ROUND_WON := "rogue_round_won"    # { round, qi, jing, neili }
+const E_ROGUE_CARD_TAKEN := "rogue_card_taken"  # { title, rarity_name }
+const E_ROGUE_BOSS := "rogue_boss"              # { name }
+const E_ROGUE_ALLY_JOINED := "rogue_ally_joined"  # { name }
+const E_ROGUE_ALLY_FALLEN := "rogue_ally_fallen"  # { name }
+const E_ROGUE_POINTS := "rogue_points"          # { gained, total }
+const ROGUE_UI_EVENTS := [E_ROGUE_STATE, E_ROGUE_OVER]
+## 原因碼（模板 err_<code>）
+const R_ROGUE_OFF := "rogue_off"
+const R_ROGUE_PHASE := "rogue_phase"
+const R_ROGUE_BAD_CARD := "rogue_bad_card"
+const R_ROGUE_BAD_ALLOC := "rogue_bad_alloc"
+const R_ROGUE_ATTR_CAP := "rogue_attr_cap"
+const R_ROGUE_ALLY_FULL := "rogue_ally_full"
+const R_ROGUE_SOLO_ONLY := "rogue_solo_only"
+const R_ROGUE_CONFIRM := "rogue_confirm"
+const ROGUE_REASONS := [R_ROGUE_OFF, R_ROGUE_PHASE, R_ROGUE_BAD_CARD, R_ROGUE_BAD_ALLOC, R_ROGUE_ATTR_CAP,
+	R_ROGUE_ALLY_FULL, R_ROGUE_SOLO_ONLY, R_ROGUE_CONFIRM]
+## 戰鬥 kind 與 world_info.mode
+const BATTLE_KIND_ROGUE := "ROGUE"
+const WORLD_MODE_ROGUE := "ROGUE"
+const WORLD_MODE_MUD := "MUD"
+## alloc 參數最多幾個鍵（同 char_create 的濫用防護）
+const ROGUE_ALLOC_MAX_KEYS := 16
+const ROGUE_DEBUG_IDS_MAX := 8
+
 const CHAT_MAX_LEN := 200
 const MAIL_MAX_LEN := 200
 const PASSPORT_MAX_BYTES := 65536          # passport 參數 var_to_bytes 後的上限
@@ -725,6 +763,14 @@ const INTENT_SCHEMA := {
 	I_TOURNEY_SIGNUP: { "npc": [TYPE_STRING, true], "kind": [TYPE_STRING, true] },
 	I_TOURNEY_WITHDRAW: {},
 	I_TOURNEY_HOST: { "kind": [TYPE_STRING, true], "signup_s": [TYPE_INT, false] },
+	# ---- ROGUE WP-RUN（ROGUE_PLAN §6.1） ----
+	I_ROGUE_OPEN: { "seed": [TYPE_INT, false] },
+	I_ROGUE_START: { "alloc": [TYPE_DICTIONARY, true], "name": [TYPE_STRING, false], "gender": [TYPE_STRING, false],
+		"look": [TYPE_INT, false] },
+	I_ROGUE_PICK: { "idx": [TYPE_INT, true], "alloc": [TYPE_DICTIONARY, false] },
+	I_ROGUE_FIGHT: {},
+	I_ROGUE_ABANDON: { "confirm": [TYPE_BOOL, true] },
+	I_ROGUE_DEBUG: { "op": [TYPE_STRING, true], "ids": [TYPE_ARRAY, false], "n": [TYPE_INT, false] },
 }
 
 ## M3b：consign_send.items 最多幾列（M3B_PLAN §5.2.2「items 最多 10 個 uid」）、org_rank_names 一定 5 個
@@ -754,6 +800,11 @@ const INT_RANGES := {
 	I_BOUNTY_ADD: { "money": [1, 6000000] },
 	I_CLEANSE: { "times": [1, 100] },
 	I_TOURNEY_HOST: { "signup_s": [30, 1800] },
+	# ROGUE WP-RUN（ROGUE_PLAN §6.1）
+	I_ROGUE_OPEN: { "seed": [0, 2147483647] },
+	I_ROGUE_START: { "look": [0, LOOK_MAX] },
+	I_ROGUE_PICK: { "idx": [0, 2] },
+	I_ROGUE_DEBUG: { "n": [0, 999] },
 }
 
 ## 字串參數的列舉（3.6「範圍驗證」欄）：kind -> { arg: [允許值] }
@@ -768,6 +819,9 @@ const ENUMS := {
 	I_VILLAIN_REPLY: { "choice": VILLAIN_CHOICES },
 	I_NPC_ATTACK: { "mode": NPC_ATTACK_MODES },
 	I_CLEANSE: { "what": CLEANSE_WHATS },
+	# ROGUE WP-RUN（ROGUE_PLAN §6.1）
+	I_ROGUE_START: { "gender": GENDERS },
+	I_ROGUE_DEBUG: { "op": ROGUE_DEBUG_OPS },
 }
 
 ## battle_cmd 的 mode 依 cmd 檢查（M3D_PLAN §7）；表上沒有的 cmd 照 M3a 用 INNER_MODES（舊行為不變）
@@ -871,6 +925,17 @@ static func validate_args(kind: String, args: Dictionary) -> String:
 					or (it["uid"] as String).length() > STRING_MAX_LEN or typeof(it.get("n", 1)) != TYPE_INT \
 					or int(it.get("n", 1)) < 1 or (it as Dictionary).size() > 2:
 				return "bad_value:items"
+	# ROGUE WP-RUN：alloc 的內容由 RogueRun／RogueSystem 判定（rogue_bad_alloc），這裡只擋濫用；debug ids 只能是字串
+	if (kind == I_ROGUE_START or kind == I_ROGUE_PICK) and args.has("alloc") \
+			and (args["alloc"] as Dictionary).size() > ROGUE_ALLOC_MAX_KEYS:
+		return "bad_value:alloc"
+	if kind == I_ROGUE_DEBUG and args.has("ids"):
+		var rids: Array = args["ids"]
+		if rids.size() > ROGUE_DEBUG_IDS_MAX:
+			return "bad_value:ids"
+		for x in rids:
+			if typeof(x) != TYPE_STRING or (x as String).length() > STRING_MAX_LEN:
+				return "bad_value:ids"
 	if kind == I_ORG_RANK_NAMES:
 		var names: Array = args["names"]
 		if names.size() != ORG_RANKS:

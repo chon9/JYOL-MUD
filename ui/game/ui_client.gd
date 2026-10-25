@@ -175,6 +175,10 @@ static func reason_inline(reason: String) -> String:
 ## 失敗原因的模板參數：busy 的 {n}（還要幾秒）＝主機在這個結果附上的 left_s；
 ## 沒有（舊主機）就用角色表 cooldowns 裡最長的剩餘秒數，至少 1
 static func reason_params(reason: String) -> Dictionary:
+	if reason == "rogue_attr_cap":   # 江湖試煉：單項屬性上限＝主機 rogue_rules.attr_cap（結果附 cap）
+		var ex: Variant = _field("last_result_extra", {})
+		var cap := int((ex as Dictionary).get("cap", 0)) if ex is Dictionary else 0
+		return { "n": cap if cap > 0 else UiKeys.ROGUE_ATTR_CAP }
 	if reason != "busy":
 		return {}
 	var extra: Variant = _field("last_result_extra", {})

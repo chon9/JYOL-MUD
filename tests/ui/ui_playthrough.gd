@@ -35,6 +35,9 @@ extends Node
 ##   → 西夏錢莊：選單「錢莊」→ 錢莊窗存 50 兩、存一件物品（已用 n／1000 件）→ 西夏鏢局：選單「鏢局」→ 托鏢／取貨／保鏢三頁
 ##   → 西夏打鐵舖：指令窗「製作」→ 製作窗（設施、配方、缺料原因）→ 西夏衙門書吏：選單「組織」→ 創立（輸入名字）
 ##   → 指令窗「組織」→ 組織面板（連署中）。截圖 m3b_*。設定用 debug_set（不是受測物）：善惡、名聲、銀兩、生活技能 1 級、teleport。
+## 江湖試煉（ROGUE_PLAN §9.4；第 24 步，最後一步，從標題畫面開始）：標題「江湖試煉」→ 大廳（永久點數 n／60）→「開始試煉」
+##   → 分配屬性（「平均分到…」→「入陣」）→ 三張卡（rogue_cards）→ 選一張 →「選定」→「出戰」→ 戰鬥（攻／移／防；不能逃）
+##   → 結果框「繼續」→ 勝了就「放棄試煉」＋確認 → 結算畫面（rogue_summary）→「返回標題」。只跑 headless（擁有者 U2）。
 
 const UiDriver := preload("res://tests/ui/ui_driver.gd")
 
@@ -157,7 +160,10 @@ func _check(cond: bool, msg: String) -> bool:
 
 func _run() -> void:
 	var steps: Array[Callable] = [_enter_world, _char_select, _char_create, _main_ready, _npc_quest, _npc_shop,
-		_inner_and_meditate, _panels, _m2_social, _story_quest, _letter_quest, _m3a_setup, _scout, _go_wild_and_fight, _pelts_one_slot, _villain_prompt_ui, _m3a_sect_screens, _m3b_screens, _m3c_screens, _m3d_screens, _m3c2_screens]
+		_inner_and_meditate, _panels, _m2_social, _story_quest, _letter_quest, _m3a_setup, _scout, _go_wild_and_fight, _pelts_one_slot, _villain_prompt_ui, _m3a_sect_screens, _m3b_screens, _m3c_screens, _m3d_screens, _m3c2_screens, _rogue_screens]
+	if CliArgs.current().has("ui-rogue-only"):
+		steps = [_rogue_screens]   # 江湖試煉一段（整合者除錯用：不帶 --offline，從除錯畫面直接換到標題）
+		SceneRouter.goto("title")
 	for s in steps:
 		if _done:
 			return
@@ -3872,3 +3878,150 @@ func _equip_cd_wait() -> void:
 
 func _equip_clicked() -> void:
 	_last_equip_ms = Time.get_ticks_msec()
+
+# ==================================================================== 江湖試煉（ROGUE_PLAN §9.4；整合者）
+const SCENE_TITLE := "res://ui/game/title/title_screen.tscn"
+const SCENE_ROGUE := "res://ui/game/rogue/rogue_screen.tscn"
+
+func _rogue_view() -> String:
+	var sc := ui.current_scene()
+	return str(sc.get("view")) if sc != null and ui.scene_path() == SCENE_ROGUE else ""
+
+func _rogue_wait_view(views: Array, timeout_s: float) -> bool:
+	return await ui.wait_until(func(): return _rogue_view() in views, timeout_s)
+
+func _named_button(n: String) -> Button:
+	return ui.find(func(c): return c is Button and str(c.name) == n) as Button
+
+func _points_label(must: String) -> Label:
+	return ui.find(func(c): return c is Label and str(c.name) == "Points" and (c as Label).text.contains(must)) as Label
+
+## 標題 → 江湖試煉 → 開始 → 分配 → 選卡 → 出戰 → 結果 →（放棄）→ 結算 → 返回標題
+func _rogue_screens() -> bool:
+	_step(24, "江湖試煉：標題 → 大廳 → 開始 → 分配 → 選卡 → 出戰 → 結算 → 返回標題")
+	if not _check(await ui.wait_scene(SCENE_TITLE, 10.0), "江湖試煉：not on the title screen (%s)" % ui.scene_path()):
+		return false
+	# 視窗模式：標題剛換上來、版面還在排時立刻點，滑鼠按下與放開不在同一個按鈕上（0.8.0.0 截圖時發現）；先等一下
+	await get_tree().create_timer(1.0).timeout
+	var rb := ui.find_button(UiKeys.ROGUE_TITLE)
+	if not _check(rb != null and str(rb.name) == "RogueButton", "title: no「江湖試煉」button"):
+		return false
+	if not await ui.click(rb):
+		return false
+	if not _check(await ui.wait_scene(SCENE_ROGUE, 10.0), "江湖試煉 scene not shown"):
+		return false
+	if not _check(await ui.wait_until(func(): return _points_label("/ 60") != null, 5.0), "lobby: no「永久點數 n / 60」label"):
+		return false
+	print("[UiPlay] 江湖試煉 大廳：" + _points_label("/ 60").text)
+	await ui.shot("rogue_lobby")
+	if not await ui.click_text("開始試煉"):
+		return false
+	if not _check(await _rogue_wait_view([UiKeys.ROGUE_PHASE_ALLOC], 10.0), "ALLOC not shown (view=%s)" % _rogue_view()):
+		return false
+	if not await ui.click(_named_button("Even")):
+		return false
+	var conf := _named_button("Confirm")
+	if not _check(conf != null and conf.text == "入陣" and not conf.disabled, "alloc:「入陣」not enabled after 平均分配"):
+		return false
+	await ui.shot("rogue_alloc")
+	if not await ui.click(conf):
+		return false
+	if not _check(await _rogue_wait_view([UiKeys.ROGUE_PHASE_PICK], 10.0), "PICK not shown (view=%s)" % _rogue_view()):
+		return false
+	var sc := ui.current_scene()
+	if not _check(await ui.wait_until(func(): return (sc.get("cards") as Array).size() == 3, 5.0), "PICK: not three cards"):
+		return false
+	await ui.shot("rogue_cards")
+	# 選第一張不是屬性的卡（屬性卡要另外分配；三張至少兩種）
+	var pick: Control = null
+	for c in sc.get("cards"):
+		if str(c.get("kind")) != "ATTR":
+			pick = c
+			break
+	if not _check(pick != null, "PICK: every card is ATTR"):
+		return false
+	print("[UiPlay] 江湖試煉 選卡：" + str((pick.get("data") as Dictionary).get("title", "")))
+	if not await ui.click(pick):
+		return false
+	var pb := _named_button("PickConfirm")
+	if not _check(pb != null and await ui.wait_until(func(): return not pb.disabled, 3.0), "「選定」not enabled after clicking a card"):
+		return false
+	if not await ui.click(pb):
+		return false
+	if not _check(await _rogue_wait_view([UiKeys.ROGUE_PHASE_READY], 10.0), "READY not shown (view=%s)" % _rogue_view()):
+		return false
+	if not await ui.click_text("出戰"):
+		return false
+	if not _check(await ui.wait_until(func(): return _battle() != null, 10.0), "battle screen not shown after 出戰"):
+		return false
+	if not await _rogue_fight():
+		return false
+	if not _check(await _rogue_wait_view([UiKeys.ROGUE_PHASE_PICK, UiKeys.ROGUE_PHASE_OVER], 10.0),
+			"after battle: neither PICK nor OVER (view=%s)" % _rogue_view()):
+		return false
+	if _rogue_view() == UiKeys.ROGUE_PHASE_PICK:
+		if not await ui.click(_named_button("PickAbandon")):
+			return false
+		if not await ui.click(_named_button("AbandonYes")):
+			return false
+		if not _check(await _rogue_wait_view([UiKeys.ROGUE_PHASE_OVER], 10.0), "abandon: OVER not shown"):
+			return false
+	if not _check(await ui.wait_until(func(): return _points_label("累計") != null, 5.0), "summary: no 永久點數 line"):
+		return false
+	print("[UiPlay] 江湖試煉 結算：" + _points_label("累計").text)
+	await ui.shot("rogue_summary")
+	var tb := ui.find(func(c): return c is Button and str(c.name) == "ToTitle") as Button
+	if not await ui.click(tb):
+		return false
+	return _check(await ui.wait_scene(SCENE_TITLE, 10.0), "返回標題 did not go back to the title screen")
+
+## 試煉戰鬥：攻（相鄰）→ 移（靠近）→ 防；不能逃。結果框「繼續」，之後自動返回或按 Enter。
+func _rogue_fight() -> bool:
+	battles += 1
+	var battle := _battle()
+	await ui.frames(2)
+	var t_battle := Time.get_ticks_msec()
+	var t_turn := Time.get_ticks_msec()
+	var turn := 0
+	while true:
+		if _done:
+			return false
+		if not is_instance_valid(battle):
+			return _check(false, "rogue battle screen vanished before result")
+		if _result_shown(battle):
+			break
+		if Time.get_ticks_msec() - t_battle > int(BATTLE_TIMEOUT_S * 1000.0):
+			return _check(false, "rogue battle did not end in %d s" % int(BATTLE_TIMEOUT_S))
+		if not _bar_enabled(battle):
+			if Time.get_ticks_msec() - t_turn > int(TURN_TIMEOUT_S * 1000.0):
+				return _check(false, "rogue: command bar not enabled within %.0f s (%s)" % [TURN_TIMEOUT_S, _turn_text(battle)])
+			await ui.frames(1)
+			continue
+		turn += 1
+		turns_total += 1
+		if turn == 1 and not _check(not _enabled(battle, "逃"), "rogue:「逃」is enabled (試煉不能逃)"):
+			return false
+		var choice := "攻" if _enabled(battle, "攻") else ("移" if _enabled(battle, "移") else "防")
+		var accepted := await _issue(battle, choice)
+		if not accepted and choice != "防" and not _done:
+			ui.last_error = ""
+			accepted = await _issue(battle, "防")
+		if not _check(accepted, "rogue battle command not accepted on turn %d" % turn):
+			return false
+		t_turn = Time.get_ticks_msec()
+	var result_label: Label = battle.get("result_label")
+	var ret: Button = battle.get("return_button")
+	var detail: Variant = battle.get("result_detail")
+	var dt := (detail as RichTextLabel).get_parsed_text() if detail is RichTextLabel else (str((detail as Label).text) if detail is Label else "")
+	print("[UiPlay] 江湖試煉 戰鬥：%s after %d turns；%s" % [result_label.text if result_label else "?", turn, dt.replace("\n", " / ")])
+	if not _check(ret != null and ret.text == "繼續", "rogue result button is not 繼續 (%s)" % (ret.text if ret else "null")):
+		return false
+	if not _check(not dt.contains("實戰") and not dt.contains("學點") and not dt.contains("銀"), "rogue result shows rewards: %s" % dt):
+		return false
+	if not _check(dt.contains("回合") or dt.contains("試煉結束"), "rogue result has no round/over line: %s" % dt):
+		return false
+	await ui.shot("rogue_battle_result")
+	if await ui.wait_until(func(): return _battle() == null, BattleScreen.AUTO_RETURN_S + 3.0):
+		return true
+	await ui.press_key(KEY_ENTER)
+	return _check(await ui.wait_until(func(): return _battle() == null, 5.0), "rogue battle screen did not close")

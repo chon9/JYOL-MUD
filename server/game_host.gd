@@ -144,6 +144,7 @@ func _init(p_ws: Node) -> void:
 	_load_systems(M3C_SYSTEMS)
 	_register_intent_files(M3C_INTENTS)
 	_load_m3d()   # M3d WP-LAW
+	_load_rogue()   # ROGUE WP-RUN
 	_last_shichen = int(clock()["shichen_idx"])
 	if sects != null:
 		m2_call(sects, "init_assembly", [now_s()])   # 新世界／舊世界第一次：從下一次聚會算起
@@ -209,6 +210,8 @@ func _run_intent(s: Session, args: Dictionary, handler: Callable, flags: int, ki
 		var r3: String = sects.jail_gate(s, kind)
 		if r3 != "":
 			return fail(r3)
+	var rg: String = rogue.gate(s, kind) if rogue != null else ""   # ROGUE WP-RUN
+	if rg != "": return fail(rg)   # ROGUE WP-RUN
 	var result: Variant = handler.call(s, args)
 	if not (result is Dictionary):
 		push_error("[GameHost] handler returned non-dictionary")
@@ -638,6 +641,7 @@ func session_for_char(char_id: String) -> Session:
 	return null
 
 func save_char(ch) -> Error:
+	if ws.get("ephemeral") == true: return OK   # ROGUE WP-RUN
 	if ch == null:
 		return ERR_INVALID_PARAMETER
 	return char_store.save(ch)
@@ -704,6 +708,7 @@ func _migrate_corpses() -> void:
 ## 存檔並離開房間（換角、斷線、關服）
 ## from_room：離開時要通知的房間；空字串＝角色目前的位置
 func leave_character(s: Session, announce := true, from_room := "") -> void:
+	m2_call(rogue, "on_leave", [s])   # ROGUE WP-RUN
 	if s.character == null:
 		return
 	# M2_PLAN 4.6.1：離線或換角即離隊；他發出與收到的邀請／叫戰一併刪除
@@ -752,6 +757,7 @@ func switch_out(s: Session) -> void:
 ## 主機關閉（M2_PLAN 2.1「主機離線＝世界凍結」）：戰鬥 ABORTED、存所有在線角色；
 ## 隊伍、待決邀請／叫戰不存檔（4.8），隨 GameHost 一起消失
 func shutdown() -> void:
+	for rs in sessions(): m2_call(rogue, "on_leave", [rs])   # ROGUE WP-RUN
 	battles.abort_all()
 	save_all()
 	for s in sessions():
@@ -816,12 +822,14 @@ func make_passport(ch) -> Dictionary:
 
 ## 送 passport（ui）給本人；客戶端 ClientState 存到 <資料根目錄>/passports/
 func send_passport(s: Session, ch) -> void:
+	if ws.get("ephemeral") == true: return   # ROGUE WP-RUN
 	if s == null or ch == null:
 		return
 	tell(s, Protocol.CH_SYSTEM, Protocol.E_PASSPORT, make_passport(ch), true)
 
 ## WorldServer 自動存檔（每 autosave_interval_s）之後：每個在線且有角色的 session 一份護照
 func on_autosave() -> void:
+	if ws.get("ephemeral") == true: return   # ROGUE WP-RUN
 	for s in sessions():
 		if s.character != null:
 			send_passport(s, s.character)
@@ -1034,3 +1042,12 @@ func m3d_sheet(s: Session, sheet: Dictionary) -> void:
 		var d: Variant = m2_call(sys, "sheet_fields", [s], {})
 		if d is Dictionary:
 			sheet.merge(d, true)
+
+# ==== ROGUE WP-RUN ====（ROGUE_PLAN §2.2：江湖試煉的系統與 intent 檔；MUD 世界也載入，RogueSystem.enabled() 為 false 時不作用）
+const ROGUE_SYSTEMS := { "rogue": "res://server/rogue_system.gd" }
+const ROGUE_INTENTS := ["res://server/intents/intents_rogue.gd"]
+var rogue = null        # RogueSystem 或 null
+
+func _load_rogue() -> void:
+	_load_systems(ROGUE_SYSTEMS)
+	_register_intent_files(ROGUE_INTENTS)

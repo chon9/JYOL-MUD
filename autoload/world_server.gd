@@ -45,6 +45,8 @@ var time_scale := 1.0                    # --time-scale，夾在 [0.1, 100]（D1
 var debug_intents := false
 ## M3c2 WP-CARRY：標題畫面開房前勾選的「允許外來角色」（-1 ＝沒指定；0／1）；start() 套用後清回 -1
 var host_foreign_choice := -1
+## ROGUE WP-RUN：記憶體內的臨時世界（江湖試煉）：不寫世界檔、角色檔、護照；stop() 時設回 false
+var ephemeral := false
 var _tick_acc := 0.0
 
 func _ready() -> void:
@@ -191,6 +193,7 @@ static func decide_new_world_eras(eras_arg: String, opts: Dictionary) -> Diction
 			if e.strip_edges() != "" and not (e.strip_edges() in eras_list):
 				eras_list.append(e.strip_edges())
 		var bad := DataLoader.validate_enabled_eras(all_eras, eras_list)
+		bad.append_array(rogue_mode_only_errors(eras_list))   # ROGUE WP-RUN
 		if not bad.is_empty():
 			return { "eras": [], "source": "cli", "error": "--eras 不合法：%s" % ", ".join(bad) }
 		return { "eras": eras_list, "source": "cli", "error": "" }
@@ -199,6 +202,7 @@ static func decide_new_world_eras(eras_arg: String, opts: Dictionary) -> Diction
 		return { "eras": preset_eras, "source": "preset", "error": "" }
 	var def: Array = (opts.get("enabled_eras", ["1.0A"]) as Array).duplicate() if opts.get("enabled_eras") is Array else ["1.0A"]
 	var bad2 := DataLoader.validate_enabled_eras(all_eras, def)
+	bad2.append_array(rogue_mode_only_errors(def))   # ROGUE WP-RUN
 	if not bad2.is_empty():
 		return { "eras": [], "source": "default", "error": "預設的 enabled_eras 不合法：%s" % ", ".join(bad2) }
 	return { "eras": def, "source": "default", "error": "" }
@@ -227,6 +231,7 @@ func apply_pending_eras() -> bool:
 		if not (str(e) in list):
 			list.append(str(e))
 	var bad := DataLoader.validate_enabled_eras(GameData.loader.all_tables.get("eras", {}), list)
+	bad.append_array(rogue_mode_only_errors(list))   # ROGUE WP-RUN
 	if not bad.is_empty():
 		_warn("待開放的資料片不合法，沒有套用：%s" % ", ".join(bad))
 		return false
@@ -252,6 +257,7 @@ func stop() -> void:
 	game = null
 	_reset_handlers()
 	running = false
+	ephemeral = false   # ROGUE WP-RUN
 	sessions.clear()
 	_outbox.clear()
 	_pending_hello.clear()
@@ -276,6 +282,7 @@ func _create_game() -> void:
 ## 角色檔先、world.json 後。world_first = true 時反過來（翻屍體：物品從 world.json 的屍體移到角色身上，
 ## 兩個檔案無法一起原子寫入；先寫 world.json，當機時最多是物品消失，不會在屍體和角色身上各有一份；M2 審查）
 func save_now(world_first := false) -> Error:
+	if ephemeral: return OK   # ROGUE WP-RUN
 	if world.is_empty():
 		return ERR_UNCONFIGURED
 	if game != null and not world_first:
@@ -326,6 +333,7 @@ func world_info() -> Dictionary:
 		"game_version": BuildInfo.version(),
 		# M3d 審查：換裝間隔（毫秒；1.0B 才有，1.0A-only 世界 0）——客戶端裝備鈕的冷卻跟著主機（IntentsItem.equip_cooldown_ms）
 		"equip_cooldown_ms": clampi(int(options.get("equip_cooldown_ms", 2000)), 0, 5000) if GameData.enabled_eras.has("1.0B") else 0,
+		"mode": str(world.get("mode", "MUD")),   # ROGUE WP-RUN（ROGUE_PLAN §6.4）
 	}
 
 func _birth_cities() -> Array:
@@ -403,7 +411,7 @@ func _process(delta: float) -> void:
 	_advance_world(delta * time_scale)
 	_check_hello_timeouts()
 	_autosave_left -= delta
-	if _autosave_left <= 0.0:
+	if _autosave_left <= 0.0 and not ephemeral:   # ROGUE WP-RUN：臨時世界不自動存檔、不送護照
 		_autosave_left = float(options.get("autosave_interval_s", 60))
 		save_now()
 		if game != null:
@@ -721,3 +729,54 @@ static func reject_wire(reason: String) -> String:
 ## 標題畫面：開房前指定這次開的世界要不要允許外來角色（start() 時存進 options.json）
 func set_host_foreign_choice(allow: bool) -> void:
 	host_foreign_choice = 1 if allow else 0
+
+# ==== ROGUE WP-RUN ====（ROGUE_PLAN §2.2）
+## 江湖試煉世界的選項（預設選項沒有的鍵略過）
+const ROGUE_OPTIONS := { "encounters_enabled": false, "guards_enabled": false, "pk_mode": "OFF", "wait_mode": true,
+	"autosave_interval_s": 999999, "scout_enabled": false, "rumors_enabled": false, "wanderers_enabled": false,
+	"enabled_eras": ["1.0A", "1.0B", "rogue"] }
+const ROGUE_WORLD_ID := "_rogue"
+const ROGUE_WORLD_NAME := "江湖試煉"
+
+## 開記憶體內的試煉世界（不讀不寫任何世界檔、選項檔；ephemeral = true）。seed：這一次試煉的預設種子（world.rogue_seed）
+func start_rogue(seed: int = 0) -> Error:
+	if running:
+		stop()
+	last_error = ""
+	last_warning = ""
+	options = GameData.default_server_options()
+	for k in ROGUE_OPTIONS:
+		if options.has(k):
+			options[k] = ROGUE_OPTIONS[k].duplicate() if ROGUE_OPTIONS[k] is Array else ROGUE_OPTIONS[k]
+	world_id = ROGUE_WORLD_ID
+	world = SaveManager.new_world(ROGUE_WORLD_ID, ROGUE_WORLD_NAME, GameData.content_hash, options)
+	world["mode"] = "ROGUE"
+	world["rogue_seed"] = seed
+	ephemeral = true
+	if not GameData.activate(world.get("enabled_eras", []), world.get("rule_profile", {})):
+		last_error = "資料啟用失敗：%s" % ", ".join(GameData.activate_errors)
+		push_error("[WorldServer] " + last_error)
+		world = {}
+		ephemeral = false
+		return ERR_INVALID_DATA
+	world["content_hash"] = GameData.content_hash
+	rng.randomize()
+	sessions.clear()
+	_outbox.clear()
+	_pending_hello.clear()
+	_autosave_left = float(options.get("autosave_interval_s", 999999))
+	_tick_acc = 0.0
+	running = true
+	_create_game()
+	started.emit(world_id)
+	print("[WorldServer] started ephemeral rogue world")
+	return OK
+
+## MUD 世界不得啟用模式專用的 era（eras.mode_only；ROGUE_PLAN O5）
+static func rogue_mode_only_errors(eras_list: Array) -> PackedStringArray:
+	var errs := PackedStringArray()
+	var all_eras: Dictionary = GameData.loader.all_tables.get("eras", {})
+	for e in eras_list:
+		if DataSchema.era_mode_only(all_eras, str(e)):
+			errs.append("era '%s' 只能用於江湖試煉" % str(e))
+	return errs

@@ -95,6 +95,14 @@ const INT_FIELDS := {
 		"spar_daily_cap",
 		# M3D_PLAN §8.3（WP-COMBAT）
 		"equip_cooldown_ms"],
+	# ROGUE WP-RUN（ROGUE_PLAN §7；檔案不存在時是空表）
+	"rogue_rules": ["attr_cap", "art_cap", "weapons_keep", "ally_max", "ally_min_round", "boss_every", "kind_weights.*",
+		"rarity_bands[].from", "rarity_bands[].w[]", "boss_reward_w[]", "attr_points.*", "art_level.*", "upgrade_by.*",
+		"points_cap", "points_soft", "points_half"],
+	"rogue_cards": ["weight", "min_round", "level", "points", "override.qi", "override.neili", "override.attrs.*",
+		"override.skills.*", "override.armor_power", "override.weapon_atk", "override.effective_inner"],
+	"rogue_foes": ["tier", "min_round", "max_round", "weight", "override.qi", "override.neili", "override.attrs.*",
+		"override.skills.*", "override.armor_power", "override.weapon_atk", "override.effective_inner"],
 }
 
 ## table -> [[path, target_table], ...]；空字串與 null 不檢查。
@@ -135,6 +143,9 @@ const REFS := {
 	# M3B_PLAN §9.3 Day-0（新表）
 	"sect_ranks": [["sect", "sects"], ["quest", "quests"]],
 	"escort_routes": [["from_city", "regions"], ["to_city", "regions"], ["job_quest", "quests"]],
+	# ROGUE WP-RUN（ROGUE_PLAN §7.2、§7.3；ART 卡的 art 可以是 basic_*，由 data_lint 的 _check_rogue 檢查）
+	"rogue_cards": [["item", "items"], ["monster", "monsters"], ["npc", "npcs"]],
+	"rogue_foes": [["monster", "monsters"], ["npc", "npcs"], ["minions[]", "rogue_foes"]],
 }
 
 ## 5.6 的開關與預設值（1.0 行為）
@@ -276,6 +287,89 @@ const REQUIRED_FIELDS := {
 	"sect_ranks": ["id", "sect", "rank", "name", "requires", "promote", "cost", "era", "src"],
 	"escort_routes": ["id", "from_city", "to_city", "consign_delay_shichen", "job_quest", "era", "src"],
 }
+# ==== ROGUE WP-RUN ====（ROGUE_PLAN §2.2、§7）
+## eras.mode_only（bool）：只能用於特定模式（江湖試煉）的 era；MUD 世界不得啟用（WorldServer 擋）
+const ERA_MODE_ONLY := "mode_only"
+const ROGUE_ERA := "rogue"
+## rogue_cards.kind（同 RogueRules.KINDS；core/data 不依賴 core/rogue 的載入順序，照抄字面值）
+const ROGUE_CARD_KINDS := ["ART", "WEAPON", "ATTR", "ALLY"]
+## rogue_foes.override 的鍵（同 RogueFoes.OVERRIDE_KEYS）
+const ROGUE_FOE_OVERRIDE_KEYS := ["qi", "neili", "attrs", "skills", "armor_power", "weapon_atk", "effective_inner"]
+## 新表必備欄位
+const ROGUE_REQUIRED := {
+	"rogue_cards": ["id", "kind", "rarity", "weight", "min_round", "era", "src"],
+	"rogue_foes": ["id", "monster", "tier", "min_round", "max_round", "boss", "weight", "era", "src"],
+	"rogue_rules": ["id", "era", "src"],
+}
+
+## era 列是不是模式專用
+static func era_mode_only(eras: Dictionary, era_id: String) -> bool:
+	var r: Variant = eras.get(era_id, {})
+	return r is Dictionary and (r as Dictionary).get(ERA_MODE_ONLY, false) == true
+
+## 江湖試煉三張表的列檢查（data_lint 用；view 是含 rogue 的生效視圖）
+static func check_rogue(view: Dictionary) -> PackedStringArray:
+	var errs := PackedStringArray()
+	for t in ROGUE_REQUIRED:
+		var tb: Dictionary = view.get(t, {})
+		for id in tb:
+			var row: Dictionary = tb[id]
+			for f in ROGUE_REQUIRED[t]:
+				if not row.has(f):
+					errs.append("%s.%s: missing '%s'" % [t, id, f])
+			if str(row.get("era", "")) != ROGUE_ERA:
+				errs.append("%s.%s: era must be '%s'" % [t, id, ROGUE_ERA])
+			if not str(id).begins_with("rg_"):
+				errs.append("%s.%s: id must start with rg_" % [t, id])
+	var cards: Dictionary = view.get("rogue_cards", {})
+	for id in cards:
+		var c: Dictionary = cards[id]
+		var kind := str(c.get("kind", ""))
+		if not (kind in ROGUE_CARD_KINDS):
+			errs.append("rogue_cards.%s: bad kind '%s'" % [id, kind])
+		if not (str(c.get("rarity", "")) in ITEM_RARITIES):
+			errs.append("rogue_cards.%s: bad rarity '%s'" % [id, str(c.get("rarity", ""))])
+		match kind:
+			"ART":
+				var art := str(c.get("art", ""))
+				if not view.get("martial_arts", {}).has(art) and not view.get("basic_skills", {}).has(art):
+					errs.append("rogue_cards.%s: art '%s' missing" % [id, art])
+				elif view.get("martial_arts", {}).has(art) and bool(view["martial_arts"][art].get("monster_only", false)):
+					errs.append("rogue_cards.%s: art '%s' is monster_only" % [id, art])
+			"WEAPON":
+				var it: Dictionary = view.get("items", {}).get(str(c.get("item", "")), {})
+				if it.is_empty() or not (str(it.get("slot", "")) in ITEM_SLOTS):
+					errs.append("rogue_cards.%s: item '%s' missing or not equippable" % [id, str(c.get("item", ""))])
+			"ALLY":
+				if not view.get("monsters", {}).has(str(c.get("monster", ""))):
+					errs.append("rogue_cards.%s: monster '%s' missing" % [id, str(c.get("monster", ""))])
+		if c.has("override"):
+			if not (c["override"] is Dictionary) or kind != "ALLY":
+				errs.append("rogue_cards.%s: override only on ALLY cards (object)" % id)
+			else:
+				for k in c["override"]:
+					if not (str(k) in ROGUE_FOE_OVERRIDE_KEYS):
+						errs.append("rogue_cards.%s: unknown override key '%s'" % [id, str(k)])
+	var foes: Dictionary = view.get("rogue_foes", {})
+	for id in foes:
+		var f: Dictionary = foes[id]
+		var tier := int(f.get("tier", 0))
+		if tier < 1 or tier > 6:
+			errs.append("rogue_foes.%s: tier must be 1..6" % id)
+		var mr: Dictionary = view.get("monsters", {}).get(str(f.get("monster", "")), {})
+		if not mr.is_empty() and str(mr.get("ai", "")) == "coward":
+			errs.append("rogue_foes.%s: coward monsters are not allowed" % id)
+		if f.get("minions", []) is Array and (f.get("minions", []) as Array).size() > 2:
+			errs.append("rogue_foes.%s: at most 2 minions" % id)
+		if f.has("override"):
+			if not (f["override"] is Dictionary):
+				errs.append("rogue_foes.%s: override must be an object" % id)
+			else:
+				for k in f["override"]:
+					if not (str(k) in ROGUE_FOE_OVERRIDE_KEYS):
+						errs.append("rogue_foes.%s: unknown override key '%s'" % [id, str(k)])
+	return errs
+
 # ---------------------------------------------------------------- M3c（M3C_PLAN §9.4；WP-NPCPK Day-0）
 const ITEM_SLOTS := Protocol.SLOTS
 const ITEM_RARITIES := ["COMMON", "FINE", "RARE", "TREASURE", "DIVINE"]

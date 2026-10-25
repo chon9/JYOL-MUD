@@ -10,7 +10,7 @@ func test_game_host_is_running() -> void:
 	if not game_ok():
 		return
 	for kind in Protocol.INTENT_SCHEMA:
-		if kind == Protocol.I_DEBUG_SET:
+		if kind == Protocol.I_DEBUG_SET or kind == Protocol.I_ROGUE_DEBUG:   # ROGUE_PLAN §3.11：rogue_debug 同 debug_set
 			# M3A_PLAN 6.11：只在 --debug-intents 時註冊
 			assert_false(ws.has_intent_handler(kind), "debug_set 預設不註冊")
 			continue

@@ -15,6 +15,7 @@
     { "id": "wlhd",  "name": "武林浩蕩",   "order": 101, "date": "2005-02-23", "requires": ["lyfh"],  "base": false, "src": "verified" },
     { "id": "lzlhc", "name": "浪子令狐沖", "order": 110, "date": "2006-01-18", "requires": ["bxsc"],  "base": false, "src": "verified" },
     { "id": "rysj",  "name": "日月神教",   "order": 120, "date": "2006-10-04", "requires": ["lzlhc"], "base": false, "src": "verified" },
-    { "id": "wyjp",  "name": "五嶽劍派",   "order": 130, "date": "2007-07-18", "requires": ["rysj"],  "base": false, "src": "verified" }
+    { "id": "wyjp",  "name": "五嶽劍派",   "order": 130, "date": "2007-07-18", "requires": ["rysj"],  "base": false, "src": "verified" },
+    { "id": "rogue", "name": "江湖試煉",   "order": 900, "date": "",           "requires": ["1.0B"],  "base": false, "mode_only": true, "src": "proposal", "src_note": "江湖試煉【設計提案・非原作】：只在試煉世界啟用" }
   ]
 }

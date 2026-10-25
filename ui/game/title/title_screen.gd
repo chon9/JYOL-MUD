@@ -32,7 +32,9 @@ var disconnect_info: Dictionary = {}
 var foreign_check: CheckBox
 var build_label: Label
 const BUILD_TOOLTIP := "跟朋友連線前互相對照：協定與資料指紋都一樣才能連線。"
-const FOREIGN_TOOLTIP := "開房時接受朋友從別的世界帶來的角色（匯入時會檢查並截斷數值）。單機遊玩一律允許。"
+var btn_rogue: Button   # ROGUE WP-UI
+const ROGUE_TOOLTIP := "肉鴿模式【設計提案・非原作】：每回合選一張卡，連戰到倒下為止；永久屬性點只用在試煉，不影響江湖裡的角色。"
+const FOREIGN_TOOLTIP :="開房時接受朋友從別的世界帶來的角色（匯入時會檢查並截斷數值）。單機遊玩一律允許。"
 
 func _ready() -> void:
 	requires_session = false
@@ -77,7 +79,14 @@ func _build() -> void:
 	var row := UiBuild.hbox(col)
 	UiBuild.label(row, "世界名稱").custom_minimum_size = Vector2(90, 0)
 	world_edit = UiBuild.line_edit(row, "default", "default", 32)
-	btn_offline = UiBuild.button(col, "單機遊玩", _on_offline)
+	# ROGUE WP-UI（ROGUE_PLAN §5.1）：「江湖試煉」在「單機遊玩」同一列右邊
+	var orow := UiBuild.hbox(col, 8)
+	orow.name = "OfflineRow"
+	btn_offline = UiBuild.button(orow, "單機遊玩", _on_offline)
+	btn_offline.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	btn_rogue = UiBuild.button(orow, UiKeys.ROGUE_TITLE, _on_rogue, 150)
+	btn_rogue.name = "RogueButton"
+	btn_rogue.tooltip_text = ROGUE_TOOLTIP
 	btn_enet_host = UiBuild.button(col, "區網開房", _on_enet_host)
 	var row2 := UiBuild.hbox(col)
 	UiBuild.label(row2, "主機位址").custom_minimum_size = Vector2(90, 0)
@@ -203,6 +212,10 @@ func _on_offline() -> void:
 		show_message("無法開啟世界：" + str(nm.status_text))
 		return
 	_after_start()
+
+## ROGUE WP-UI（ROGUE_PLAN §5.1）：江湖試煉自己開主機（RogueScreen 的「開始試煉」），這裡只換畫面
+func _on_rogue() -> void:
+	go(UiKeys.ROGUE_SCENE)
 
 func _on_enet_host() -> void:
 	var nm := _nm()

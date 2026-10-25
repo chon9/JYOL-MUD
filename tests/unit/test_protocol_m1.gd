@@ -10,8 +10,8 @@ func test_every_contract_intent_is_known() -> void:
 			"inn_rest", "set_respawn", "meal", "fight", "use_item", "equip", "unequip", "drop_item", "meditate",
 			"exert", "work", "quest_accept", "quest_turn_in", "quest_abandon", "loot_corpse", "battle_cmd"]:
 		assert_true(Protocol.is_known(kind), kind)
-	assert_eq(Protocol.INTENT_SCHEMA.size(), 34 + 21 + 2 + 5 + 6 + 21 + 3 + 16,
-		"M1 的 34 個 + M2_PLAN 4.1 的 21 個 + 查看偵察的 2 個 + M3A_PLAN 6.12 的 5 個 + STORY_PLAN §4.14 的 6 個 + M3B_PLAN §6 的 21 個 + M3C_PLAN §8 的 3 個 + M3D_PLAN §7 的 16 個，沒有多的")
+	assert_eq(Protocol.INTENT_SCHEMA.size(), 34 + 21 + 2 + 5 + 6 + 21 + 3 + 16 + 6,
+		"M1 的 34 個 + M2_PLAN 4.1 的 21 個 + 查看偵察的 2 個 + M3A_PLAN 6.12 的 5 個 + STORY_PLAN §4.14 的 6 個 + M3B_PLAN §6 的 21 個 + M3C_PLAN §8 的 3 個 + M3D_PLAN §7 的 16 個 + ROGUE_PLAN §6.1 的 6 個，沒有多的")
 	assert_eq(Protocol.I_CHAR_CREATE, "char_create")
 	assert_eq(Protocol.I_BATTLE_CMD, "battle_cmd")
 	assert_eq(Protocol.I_QUEST_TURN_IN, "quest_turn_in")

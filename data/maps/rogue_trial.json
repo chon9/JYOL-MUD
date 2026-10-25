@@ -1,0 +1,9 @@
+{
+  "region_id": "rg_trial", "era": "rogue", "src": "proposal",
+  "desc": "四面環山的一片空場，地上用白石灰畫著一個大圓。各路高手輪番入場，與來人一較高下。",
+  "src_note": "江湖試煉【設計提案・非原作】：試煉世界唯一的房間；沒有出口、沒有 NPC、沒有遇敵",
+  "escape_tiles_hint": 2,
+  "rooms": [
+    {"id": "rg_hall", "name": "江湖試煉場", "desc": "四面環山的一片空場，地上用白石灰畫著一個大圓。場邊的木架上擺著兵器，場心一面大鼓，鼓響一聲，便有人入場討教。", "exits": [], "npcs": [], "features": [], "requires": [], "safe": true, "src": "proposal", "src_note": "江湖試煉【設計提案・非原作】"}
+  ]
+}

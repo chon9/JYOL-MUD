@@ -311,7 +311,7 @@ func _build_gauges() -> void:
 	for uid in vm.order:
 		var u: Dictionary = vm.units[uid]
 		var row := UiBuild.hbox(gauge_box, 6)
-		var name_l := UiBuild.label(row, str(u.get("name", "?")), 14)
+		var name_l := UiBuild.label(row, (UnitSprite.ALLY_TAG if UnitSprite.is_rogue_ally(u) else "") + str(u.get("name", "?")), 14)   # ROGUE WP-ALLY
 		name_l.custom_minimum_size = Vector2(GAUGE_NAME_W, 0)
 		name_l.add_theme_color_override("font_color", UiTheme.NAME_ALLY if int(u["side"]) == vm.my_side() else UiTheme.NAME_ENEMY)
 		var bar := ProgressBar.new()
@@ -1081,7 +1081,12 @@ func _show_result_now(result: Dictionary) -> void:
 	result_label.text = UiKeys.RESULT_LABELS.get(r, r)
 	var lines: PackedStringArray = []
 	var rw: Dictionary = result.get("rewards", {})
-	if r == "VICTORY" and bool(result.get("enemies_fled", false)):
+	var rogue := BattleScreen.is_rogue_result(result, vm)   # ROGUE WP-ALLY：試煉不顯示實戰／學點／金錢、死亡損失
+	return_button.text = "繼續" if rogue else "返回"   # ROGUE WP-ALLY
+	if rogue:
+		rw = {}
+		lines = BattleScreen.rogue_result_lines(result)
+	elif r == "VICTORY" and bool(result.get("enemies_fled", false)):
 		result_label.text = "對手逃走了"
 		lines.append("對手逃出戰圈，這一仗沒有任何收穫。下次趁牠氣血不足一成前一口氣解決。")
 	elif not rw.is_empty():
@@ -1092,7 +1097,7 @@ func _show_result_now(result: Dictionary) -> void:
 		if not items.is_empty():
 			lines.append("得到：" + "、".join(items))
 	var death: Dictionary = result.get("death", {})
-	if bool(result.get("you_died", false)) or not death.is_empty():
+	if not rogue and (bool(result.get("you_died", false)) or not death.is_empty()):
 		lines.append("你死了。")
 		for sl in death.get("skill_losses", []):
 			if sl is Dictionary:
@@ -1272,3 +1277,40 @@ func _m3d_events_duel_hud(state: Dictionary) -> void:
 	plate2.position.x = (size.x - plate2.size.x) * 0.5
 	duel_hud.text = BattleScreen.duel_text(left)
 	duel_hud.add_theme_color_override("font_color", UiTheme.JY_RED if left <= 60.0 else UiTheme.JY_TEXT)
+
+# ==== ROGUE WP-ALLY ====
+## ROGUE_PLAN §4.6、§6.4：江湖試煉的結果框。result.kind（或快照 kind）== "ROGUE" → 不顯示實戰／學點／金錢與死亡損失，
+## 改顯示 result.rogue = { round, won, boss, allies_fallen: [名字], over }：「第 N 回合　勝」或「試煉結束」、倒下的隊友名單。
+const ROGUE_KIND := "ROGUE"
+
+static func is_rogue_result(result: Dictionary, model: BattleViewModel = null) -> bool:
+	if str(result.get("kind", "")) == ROGUE_KIND:
+		return true
+	return model != null and model.kind == ROGUE_KIND
+
+static func rogue_result_lines(result: Dictionary) -> PackedStringArray:
+	var out: PackedStringArray = []
+	var rg: Variant = result.get("rogue", {})
+	var d: Dictionary = rg if rg is Dictionary else {}
+	var rnd := UiBuild.num(d.get("round", 0))
+	var won := bool(d.get("won", str(result.get("result", "")) == "VICTORY"))
+	var over := bool(d.get("over", false))
+	if over or not won:
+		if bool(result.get("you_died", false)) or str(result.get("result", "")) == "DEFEAT":
+			out.append("你力戰倒下。")
+			if UiBuild.num(d.get("allies_standing", 0)) > 0:
+				out.append(UiKeys.ROGUE_DOWN_NOTE)   # 審查：「隊友還站著怎麼就輸了」
+		out.append("試煉結束")
+	elif rnd > 0:
+		out.append(("第 %d 回合　勝" % rnd) + ("（名人敗退）" if bool(d.get("boss", false)) else ""))
+	else:
+		out.append("勝")
+	var fallen: PackedStringArray = []
+	var fl: Variant = d.get("allies_fallen", [])
+	var fl_arr: Array = fl if fl is Array else []
+	for n in fl_arr:
+		if str(n) != "":
+			fallen.append(str(n))
+	if not fallen.is_empty():
+		out.append("倒下的隊友：" + "、".join(fallen))
+	return out

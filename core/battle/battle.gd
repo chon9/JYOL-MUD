@@ -487,6 +487,7 @@ func _resolve_pending(tables: Dictionary) -> void:
 
 func _check_end(tables: Dictionary = {}) -> bool:
 	if opts.has("duel_limit_s") and has_method("_duel_check") and bool(call("_duel_check")): return true   # M3d WP-EVENTS
+	if bool(opts.get("end_on_players_down", false)) and _rg_players_down(): return true   # ROGUE WP-ALLY
 	var allies := units.any(func(u): return u.side == 0 and u.is_active())
 	var enemies := units.any(func(u): return u.side == 1 and u.is_active())
 	if allies and enemies:
@@ -590,3 +591,21 @@ func ev_end(winner_side_: int, how: String) -> void:
 	opts["ev_end"] = { "winner_side": winner_side_, "how": how }
 	_pending.clear()
 	_end(Result.VICTORY if winner_side_ == 0 else Result.DEFEAT)
+
+# ==== ROGUE WP-ALLY ====
+## ROGUE_PLAN §4.4（O6）：江湖試煉的戰鬥（opts.end_on_players_down）——我方（side 0）有玩家單位、
+## 而且所有玩家單位都倒下（死亡或逃走）→ 立刻判負，就算 AI 隊友還活著也一樣（隊友不能代打）。回 true＝已結束。
+## 註：同一下行動裡最後一個敵人與最後一位玩家同時倒下時也判負（winner_side() 此時回 -1）；試煉以「玩家倒下」為準。
+func _rg_players_down() -> bool:
+	if state == State.ENDED:
+		return false
+	var has_player := false
+	for u in units:
+		if u.side == 0 and u.is_player():
+			has_player = true
+			if u.is_active():
+				return false
+	if not has_player:
+		return false
+	_end(Result.DEFEAT)
+	return true

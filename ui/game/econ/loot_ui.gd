@@ -12,7 +12,7 @@ const NAMES := { "COMMON": "凡品", "FINE": "良品", "RARE": "精品", "TREASU
 ## M3c 審查：與背包人形的部位名一致（AUTHENTIC_UI_SPEC 背包人形：頭盔、頸、右手、護腕、衣服、披風、戒指、靴子【原作證實】）
 const SLOT_NAMES := { "WEAPON": "兵器", "ARMOR": "衣服", "HEAD": "頭盔", "NECK": "頸", "WRIST": "護腕",
 	"CLOAK": "披風", "RING": "戒指", "BOOTS": "靴子" }
-const WEAPON_NAMES := { "SWORD": "劍", "BLADE": "刀", "STAFF": "杖", "WHIP": "鞭", "FIST": "拳掌", "SPEAR": "槍" }
+const WEAPON_NAMES := { "SWORD": "劍", "BLADE": "刀", "STAFF": "杖", "WHIP": "鞭", "FIST": "拳掌", "SPEAR": "槍", "STAB": "筆" }
 const ATTR_NAMES := { "str": "臂力", "agi": "機敏", "wit": "悟性", "con": "根骨", "guts": "膽識", "luck": "福緣", "cal": "定力" }
 
 static func norm(r: Variant) -> String:

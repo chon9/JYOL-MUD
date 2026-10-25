@@ -10,9 +10,11 @@ const FILES := ["eras", "rule_profiles", "attributes", "basic_skills", "sects", 
 	# M3B_PLAN §4.2、§4.7：WP-MERGE 從碎片建立的兩個新表（都要有 era）
 	"sect_ranks", "escort_routes",
 	# M3C_PLAN §9.4：WP-LOOT 的掉落表（檔案不存在時是空表）
-	"loot_tables"]
+	"loot_tables",
+	"rogue_rules", "rogue_cards", "rogue_foes"]   # ROGUE WP-RUN（ROGUE_PLAN §7）
 ## 選填的表：檔案不存在時是空表、不算錯誤（舊資料夾、測試用的小資料夾）
-const OPTIONAL_FILES := ["rumors", "wanderers", "ambient", "reactions", "sect_ranks", "escort_routes", "loot_tables"]
+const OPTIONAL_FILES := ["rumors", "wanderers", "ambient", "reactions", "sect_ranks", "escort_routes", "loot_tables",
+	"rogue_rules", "rogue_cards", "rogue_foes"]   # ROGUE WP-RUN
 ## M3B_PLAN §4.4：房間的 desc_1_0b 在這個 era 生效時取代 desc
 const DESC_ERA_FIELDS := { "1.0B": "desc_1_0b" }
 const NO_ERA_TABLES := ["eras", "rule_profiles"]

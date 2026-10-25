@@ -17,6 +17,7 @@ const KIND_HARASS := "HARASS"
 const KIND_SEIZE := "SEIZE"
 const KIND_ROB := "ROB"        # M3d WP-EVENTS：劫鏢（side 0＝劫鏢方、side 1＝押鏢者＋鏢單位）
 const KIND_DUEL := "DUEL"      # M3d WP-EVENTS：比武（切磋模式；沒有死亡懲罰）
+const KIND_ROGUE := "ROGUE"    # ROGUE WP-RUN：江湖試煉（不能逃、玩家全倒即判負、沒有獎勵與死亡懲罰）
 const DUEL_LIMIT_DEFAULT_S := 600.0
 const DEFAULT_MAX_HUMANS := 8
 
@@ -71,7 +72,11 @@ func start_ex(s: Session, monster_ids: Array, kind: String, opts: Dictionary) ->
 	var bo := battle_opts(host.index.region_of(room), kind)
 	if bool(opts.get("no_flee", false)):
 		bo["no_flee"] = true
-	var b := Battle.new(bid, host.rng.randi(), bo)
+	if kind == KIND_ROGUE:   # ROGUE WP-RUN
+		bo["no_flee"] = true   # ROGUE WP-RUN
+		bo["end_on_players_down"] = true   # ROGUE WP-RUN
+		bo["kind"] = KIND_ROGUE   # ROGUE WP-RUN
+	var b := Battle.new(bid, int(opts["seed"]) if opts.has("seed") else host.rng.randi(), bo)   # ROGUE WP-RUN：opts.seed（試煉的可重現戰鬥）
 	var entry := _new_entry(b, kind, room)
 	entry["opts"] = opts.duplicate(true)
 	_add_player(entry, s, 0)
@@ -84,6 +89,7 @@ func start_ex(s: Session, monster_ids: Array, kind: String, opts: Dictionary) ->
 			if int(o.character.combat_xp) < min_xp:
 				continue
 			_add_player(entry, o, 0)
+	_rogue_ally_units(entry, b, opts)   # ROGUE WP-ALLY
 	var waves: Array = []
 	for w in opts.get("waves", []):
 		if w is Array and not w.is_empty():
@@ -103,6 +109,11 @@ func start_ex(s: Session, monster_ids: Array, kind: String, opts: Dictionary) ->
 			_npc_unit_spec(spec, npc_id)   # M3C_PLAN §5.7：攻擊 NPC 的主單位（只有第一個）
 			npc_id = ""
 		b.add_unit(spec)
+	for spec in opts.get("foe_specs", []):   # ROGUE WP-RUN：試煉的對手（RogueFoes 產生的完整規格）
+		var fs: Dictionary = (spec as Dictionary).duplicate(true)   # ROGUE WP-RUN
+		fs["side"] = 1   # ROGUE WP-RUN
+		fs["peer"] = 0   # ROGUE WP-RUN
+		b.add_unit(fs)   # ROGUE WP-RUN
 	var later: Array = []
 	for w in waves:
 		var specs: Array = []
@@ -547,7 +558,9 @@ func _finish(entry: Dictionary) -> void:
 	var result := str(out.get("result", "ABORTED"))
 	var pvp := is_pvp_kind(kind)
 	var rewards: Dictionary = {}
-	if result == "VICTORY" and not pvp:
+	if kind == KIND_ROGUE:
+		host.m2_call(host.get("rogue"), "on_battle_finished", [entry, out])   # ROGUE WP-RUN
+	if result == "VICTORY" and not pvp and kind != KIND_ROGUE:   # ROGUE WP-RUN：試煉沒有獎勵
 		# M3C_PLAN §6.6、§11.3 Day-0：一場戰鬥一個 ctx（規則、已有持有者的神兵、參戰角色的強制掉落）；LootSystem 為 null 時 {}
 		var ctx: Variant = host.m2_call(host.get("loot"), "reward_ctx", [entry], {})
 		rewards = compute_rewards(b, host.tables, host.rng, ctx if ctx is Dictionary else {})
@@ -718,7 +731,7 @@ func _settle_player(entry: Dictionary, s: Session, ch, u: Dictionary, r: Variant
 		else:
 			kills = u.get("kills", [])   # 例：no_rewards 的切磋對手，仍要計 KILL 任務
 		if s != null:
-			if not pvp:   # PvP 沒有實戰與學點（5.2），不送「獲得 0 點」的訊息
+			if not pvp and str(entry.get("kind", "")) != KIND_ROGUE:   # PvP 沒有實戰與學點（5.2），不送「獲得 0 點」的訊息（ROGUE WP-RUN：試煉同）
 				host.tell(s, Protocol.CH_BATTLE, Protocol.E_BATTLE_REWARD, {
 					"combat_xp": close["rewards"]["combat_xp"], "learn_points": close["rewards"]["learn_points"],
 					"money": close["rewards"]["money"] })
@@ -735,7 +748,10 @@ func _settle_player(entry: Dictionary, s: Session, ch, u: Dictionary, r: Variant
 	# M3B_PLAN §5.1.8：打獵（WP-ECON 的 LifeSystem；沒有這個方法時略過）
 	if str(entry.get("kind", "")) == KIND_HUNT:
 		host.m2_call(host.life, "on_hunt_settled", [s, ch, summary])
-	if died:
+	var rg_handled := false   # ROGUE WP-RUN
+	if str(entry.get("kind", "")) == KIND_ROGUE:   # ROGUE WP-RUN：close.rogue；試煉的倒下不呼叫 handle_death（O8）
+		rg_handled = bool(host.m2_call(host.get("rogue"), "settle_player", [s, ch, u, per, close], false))   # ROGUE WP-RUN
+	if died and not rg_handled:   # ROGUE WP-RUN
 		close["death"] = handle_death(s, ch, str(entry.get("room", "")), summary)
 	if duel:
 		_m3d_duel_restore(ch, close)   # M3d WP-EVENTS：戰後精氣神內力補滿
@@ -821,7 +837,7 @@ func battle_summary(entry: Dictionary, u: Dictionary, per: String) -> Dictionary
 	var killed_by := { "kind": "", "ref": "", "sect": "" }
 	var k: BattleUnit = b.unit(int(u.get("killed_by", 0)))
 	if k != null:
-		killed_by = { "kind": "PLAYER" if k.is_player() else "MONSTER", "ref": str(k.spec.get("ref", "")), "sect": k.sect() }
+		killed_by = { "kind": k.kind(), "ref": str(k.spec.get("ref", "")), "sect": k.sect() }   # ROGUE WP-ALLY
 	var me: BattleUnit = b.unit(int(u.get("uid", 0)))
 	var same: Array = []
 	if kind == KIND_DUEL:
@@ -1106,3 +1122,28 @@ func side_players(bid: int, side: int) -> Array:
 		var ch = entry["chars"].get(u.peer)
 		out.append({ "peer": u.peer, "char_id": str(u.spec.get("ref", "")), "ch": ch })
 	return out
+
+# ==== ROGUE WP-ALLY ====（ROGUE_PLAN §4.2；WP-RUN Day-0 寫的空殼，由 WP-ALLY 實作）
+## start_ex：玩家加入之後、怪物之前，把 opts.ally_specs 的隊友單位（side 0、peer 0、ai ally）放進戰場
+const ROGUE_ALLY_MAX := 2   # rogue_rules.ally_max 的預設；opts.ally_max 可覆寫
+
+func _rogue_ally_units(entry: Dictionary, b: Battle, opts: Dictionary) -> void:
+	var specs: Variant = opts.get("ally_specs", [])
+	if not (specs is Array) or (specs as Array).is_empty():
+		return
+	var cap := int(opts.get("ally_max", ROGUE_ALLY_MAX))
+	var n := 0
+	for spec in specs:
+		if not (spec is Dictionary) or (spec as Dictionary).is_empty():
+			continue
+		if n >= cap:
+			break
+		var sp: Dictionary = (spec as Dictionary).duplicate(true)
+		sp["side"] = 0   # 隊友永遠站在玩家這一邊（BattleGrid.place_units 放左側）
+		sp["peer"] = 0   # AI 控制：Battle 不會等它下令
+		sp["kind"] = RogueAlly.KIND
+		sp["ai"] = RogueAlly.AI
+		b.add_unit(sp)
+		n += 1
+	if n > 0:
+		entry["rogue_allies"] = n

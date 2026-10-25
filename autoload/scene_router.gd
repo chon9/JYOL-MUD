@@ -10,6 +10,7 @@ const SCENES := {
 	"char_select": "res://ui/game/char/char_select.tscn",
 	"char_create": "res://ui/game/char/char_create.tscn",
 	"main": "res://ui/game/main/main_screen.tscn",
+	"rogue": "res://ui/game/rogue/rogue_screen.tscn",   # ROGUE WP-UI
 }
 
 var current := ""

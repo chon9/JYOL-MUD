@@ -8,6 +8,7 @@ const SCENES := [
 	"res://ui/game/char/char_create.tscn",
 	"res://ui/game/main/main_screen.tscn",
 	"res://ui/game/battle/battle_screen.tscn",
+	"res://ui/game/rogue/rogue_screen.tscn",   # 江湖試煉（ROGUE_PLAN §5；整合者）
 ]
 
 var _nodes: Array = []

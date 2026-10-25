@@ -2712,6 +2712,71 @@
       "alias": "n_bandit_chief",
       "required": false,
       "placeholder": false
+    },
+    "n_er_guojing": {
+      "alias": "n_xx_qiaofeng",
+      "required": false,
+      "placeholder": false
+    },
+    "m_rg_linghuchong": {
+      "alias": "n_hs_linghuchong",
+      "required": false,
+      "placeholder": false
+    },
+    "m_rg_yuebuqun": {
+      "alias": "n_yuebuqun",
+      "required": false,
+      "placeholder": false
+    },
+    "m_rg_miejue": {
+      "alias": "n_em_miejue",
+      "required": false,
+      "placeholder": false
+    },
+    "m_rg_qiuchuji": {
+      "alias": "n_qz_qiuchuji",
+      "required": false,
+      "placeholder": false
+    },
+    "m_rg_zhangsanfeng": {
+      "alias": "n_wd_zhangsanfeng",
+      "required": false,
+      "placeholder": false
+    },
+    "m_rg_tonglao": {
+      "alias": "n_lj_tonglao",
+      "required": false,
+      "placeholder": false
+    },
+    "m_rg_xiaolongnu": {
+      "alias": "n_gm_xiaolongnu",
+      "required": false,
+      "placeholder": false
+    },
+    "m_rg_qiaofeng": {
+      "alias": "n_xx_qiaofeng",
+      "required": false,
+      "placeholder": false
+    },
+    "m_rg_xuzhu": {
+      "alias": "n_xx_xuzhu",
+      "required": false,
+      "placeholder": false
+    },
+    "m_rg_zhangwuji": {
+      "alias": "n_zhangwuji",
+      "required": false,
+      "placeholder": false
+    },
+    "m_rg_guojing": {
+      "alias": "n_er_guojing",
+      "required": false,
+      "placeholder": false
+    },
+    "m_rg_zhouzhiruo": {
+      "alias": "n_em_zhouzhiruo",
+      "required": false,
+      "placeholder": false
     }
   },
   "player_fallback": {
@@ -2935,6 +3000,11 @@
     },
     "gaochang_maze": {
       "alias": "guiwang",
+      "required": false,
+      "placeholder": false
+    },
+    "rg_trial": {
+      "alias": "shaolin",
       "required": false,
       "placeholder": false
     }
